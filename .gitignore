@@ -1,0 +1,6 @@
+*.pptx
+*.docx
+*.pdf
+*.png
+_smoke/
+.playwright-mcp/

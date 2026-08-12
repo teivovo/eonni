@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17131C">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AB%A7%3C/text%3E%3C/svg%3E">
+<title>The Backwards Trick</title>
+<style>
+  :root{
+    --ground:#FCF7F3; --raise:#FFFFFF; --raise2:#F6EEE8; --edge:#E9DCD2;
+    --ink:#2A1F2E; --soft:#6E5F75; --faint:#9C8DA3;
+    --peach:#C1502A; --mint:#14705C; --butter:#8A5A0B;
+    --glow:rgba(193,80,42,.10); --shade:rgba(42,31,46,.07);
+    --voice:Georgia,'Iowan Old Style','Times New Roman',serif;
+    --ui:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+    --num:ui-monospace,'SF Mono','Cascadia Code',Consolas,'Roboto Mono',monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#17131C; --raise:#211B28; --raise2:#2A2233; --edge:#372E42;
+      --ink:#F3ECF2; --soft:#AA9DB3; --faint:#7E7188;
+      --peach:#FF9E76; --mint:#7ED9BF; --butter:#FFD98E;
+      --glow:rgba(255,158,118,.14); --shade:rgba(0,0,0,.30);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#17131C; --raise:#211B28; --raise2:#2A2233; --edge:#372E42;
+    --ink:#F3ECF2; --soft:#AA9DB3; --faint:#7E7188;
+    --peach:#FF9E76; --mint:#7ED9BF; --butter:#FFD98E;
+    --glow:rgba(255,158,118,.14); --shade:rgba(0,0,0,.30);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--ui); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .feed{
+    height:100dvh; height:100vh; overflow-y:scroll; overflow-x:hidden;
+    scroll-snap-type:y mandatory; scrollbar-width:none;
+  }
+  .feed::-webkit-scrollbar{display:none}
+
+  .card{
+    min-height:100dvh; min-height:100vh; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; align-items:center; justify-content:center;
+    padding:72px 22px 96px; position:relative;
+  }
+  .in{width:100%; max-width:520px; display:flex; flex-direction:column; gap:20px}
+
+  .card .rise{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1)}
+  .card.on .rise{opacity:1; transform:none}
+  .card.on .rise:nth-child(2){transition-delay:.08s}
+  .card.on .rise:nth-child(3){transition-delay:.16s}
+  .card.on .rise:nth-child(4){transition-delay:.24s}
+  .card.on .rise:nth-child(5){transition-delay:.32s}
+
+  .eyebrow{
+    font-family:var(--num); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--peach);
+  }
+  h1{
+    font-family:var(--voice); font-weight:400; font-size:clamp(46px,15vw,72px);
+    line-height:.95; letter-spacing:-.02em; text-wrap:balance;
+  }
+  h2{
+    font-family:var(--voice); font-weight:400; font-size:clamp(28px,7.5vw,38px);
+    line-height:1.12; letter-spacing:-.015em; text-wrap:balance;
+  }
+  p{font-family:var(--voice); font-size:19px; line-height:1.62; color:var(--ink)}
+  p.sub{color:var(--soft); font-size:17.5px}
+  b{font-weight:400; color:var(--peach)}
+  .kr{font-family:var(--ui); font-weight:600; white-space:nowrap; word-break:keep-all}
+
+  ul.deal{list-style:none; display:flex; flex-direction:column; gap:14px}
+  ul.deal li{
+    font-family:var(--voice); font-size:18px; line-height:1.5;
+    padding-left:26px; position:relative; color:var(--ink);
+  }
+  ul.deal li::before{
+    content:''; position:absolute; left:2px; top:12px;
+    width:9px; height:9px; border-radius:50%; background:var(--peach);
+  }
+  .panel{
+    background:var(--raise); border:1px solid var(--edge); border-radius:18px;
+    padding:20px 18px; box-shadow:0 1px 0 var(--shade);
+  }
+  .label{
+    font-family:var(--num); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--faint); margin-bottom:14px;
+  }
+
+  /* ---------- decks: one step per screen, swipe sideways ---------- */
+  .card.deck{padding:0; display:block; overflow:hidden}
+  .track{
+    height:100dvh; height:100vh; display:flex;
+    overflow-x:scroll; overflow-y:hidden;
+    scroll-snap-type:x mandatory; scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .track::-webkit-scrollbar{display:none}
+  .slide{
+    flex:0 0 100%; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; align-items:center; justify-content:center;
+    padding:70px 22px 168px;
+  }
+  .slide .in{gap:18px}
+
+  .qhead{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(15px,4.1vw,17px); color:var(--faint);
+    padding:11px 14px; border:1px solid var(--edge); border-radius:12px;
+    background:var(--raise); white-space:nowrap; overflow-x:auto;
+  }
+  .qhead .x,.qhead .n,.qhead .p{opacity:.85}
+
+  .eq{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(24px,7.4vw,34px); line-height:1.6; letter-spacing:.01em;
+    white-space:nowrap; overflow-x:auto; padding:4px 0;
+  }
+  .eq.small{font-size:clamp(19px,5.4vw,24px)}
+
+  .say{font-family:var(--voice); font-size:clamp(19px,5.2vw,22px); line-height:1.5; color:var(--ink)}
+  .say.quietly{color:var(--soft); font-size:clamp(17px,4.6vw,19px)}
+
+  .aha{border-left:2px solid var(--butter); padding:4px 0 4px 16px}
+  .aha em{
+    display:block; margin-bottom:7px; font-style:normal;
+    font-family:var(--num); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--butter);
+  }
+  .aha span.body{font-family:var(--voice); font-size:clamp(18px,4.9vw,20px); line-height:1.5; color:var(--ink); display:block}
+  .aha strong{font-weight:400; color:var(--peach)}
+
+  .work{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(17px,4.8vw,21px); line-height:1.6; color:var(--ink);
+  }
+  .work b{color:var(--peach); font-weight:700}
+  .verdict{font-family:var(--voice); font-size:clamp(19px,5.2vw,21px); line-height:1.5; color:var(--soft)}
+  .verdict.yes{color:var(--mint)}
+
+  /* ---- line art. a picture where a picture explains it better ---- */
+  figure{margin:0; display:flex; flex-direction:column; gap:11px; align-items:center; width:100%}
+  figure svg{width:100%; max-width:340px; height:auto; color:var(--soft); display:block}
+  figcaption{
+    font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--faint); text-align:center;
+  }
+  svg text{fill:currentColor; font-family:var(--num)}
+  .stroke{fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+  .curve{fill:none; stroke:var(--soft); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+  .tan{fill:none; stroke:var(--peach); stroke-width:2.4; stroke-linecap:round}
+  .tan.flat{stroke:var(--mint)}
+  .axis{fill:none; stroke:currentColor; stroke-width:1; opacity:.34}
+  .dot{fill:var(--edge)}
+  .dot.pick{fill:var(--peach)}
+  .dot.pick.yes{fill:var(--mint)}
+
+  sup{font-size:.64em; vertical-align:super; line-height:0}
+  .x{color:var(--peach); font-weight:700}
+  .n{color:var(--butter)}
+  .p{color:var(--mint)}
+  .o{color:var(--faint)}
+  .key{
+    display:flex; gap:18px; flex-wrap:wrap;
+    font-family:var(--num); font-size:12px; letter-spacing:.04em; color:var(--faint);
+  }
+  .key i{font-style:normal}
+
+  .opts{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+  .opt{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14.5px,3.95vw,17px); white-space:nowrap;
+    background:var(--raise2); color:var(--ink);
+    border:1px solid var(--edge); border-radius:14px;
+    padding:16px 8px; cursor:pointer; text-align:center;
+    transition:transform .16s ease, border-color .16s ease, background .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .opt:hover{border-color:var(--peach)}
+  .opt:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .opt:active{transform:scale(.97)}
+  .opt.picked{border-color:var(--peach); background:var(--glow)}
+  .opt.isit{border-color:var(--mint); box-shadow:inset 0 0 0 1px var(--mint)}
+
+  .deckbar{
+    position:absolute; left:0; right:0; bottom:74px; z-index:20;
+    display:flex; flex-direction:column; align-items:center; gap:15px;
+    padding:0 22px; pointer-events:none;
+  }
+  .deckbar > *{pointer-events:auto}
+  .dots{display:flex; gap:7px; align-items:center}
+  .dots i{
+    width:6px; height:6px; border-radius:50%; background:var(--edge);
+    transition:all .3s ease;
+  }
+  .dots i.on{background:var(--peach); width:20px; border-radius:3px}
+  .go{
+    width:100%; max-width:520px;
+    background:var(--peach); color:var(--ground); border:0; border-radius:14px;
+    font-family:var(--ui); font-weight:600; font-size:15.5px;
+    padding:16px 18px; cursor:pointer;
+    transition:transform .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .go:active{transform:scale(.985)}
+  .go:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
+  .go.quiet{
+    background:transparent; color:var(--faint);
+    border:1px dashed var(--edge); font-weight:400;
+    font-family:var(--num); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    padding:14px 18px; cursor:default;
+  }
+  .go.quiet:active{transform:none}
+
+  .rail{
+    position:fixed; right:9px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:6px; z-index:40; pointer-events:none;
+  }
+  .rail i{width:4px; height:4px; border-radius:50%; background:var(--edge); transition:all .3s ease}
+  .rail i.on{background:var(--peach); height:16px; border-radius:3px}
+
+  .next{
+    position:fixed; left:14px; bottom:14px; z-index:50;
+    width:46px; height:46px; border-radius:50%;
+    background:var(--raise); border:1px solid var(--edge); color:var(--soft);
+    display:grid; place-items:center; cursor:pointer;
+    box-shadow:0 6px 22px var(--shade); transition:color .2s ease, border-color .2s ease;
+  }
+  .next:hover{color:var(--peach); border-color:var(--peach)}
+  .next:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .next[hidden]{display:none}
+  .next svg{width:19px; height:19px; display:block}
+
+  .hard{
+    position:fixed; right:14px; bottom:14px; z-index:50;
+    background:var(--raise); color:var(--soft);
+    border:1px solid var(--edge); border-radius:999px;
+    font-family:var(--ui); font-size:13px; padding:11px 16px; cursor:pointer;
+    box-shadow:0 6px 22px var(--shade);
+  }
+  .hard:hover{color:var(--peach); border-color:var(--peach)}
+  .hard:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+
+  .sheet{
+    position:fixed; inset:auto 0 0 0; z-index:60;
+    background:var(--raise); border-top:1px solid var(--edge);
+    border-radius:22px 22px 0 0; padding:26px 22px 30px;
+    transform:translateY(101%); transition:transform .34s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 -10px 40px var(--shade);
+  }
+  .sheet.up{transform:none}
+  .sheet .wrap{max-width:520px; margin:0 auto; display:flex; flex-direction:column; gap:14px}
+  .sheet p{font-size:18px}
+  .sheet button{
+    align-self:flex-start; background:var(--peach); color:var(--ground);
+    border:0; border-radius:999px; font-family:var(--ui); font-weight:600; font-size:15px;
+    padding:12px 22px; cursor:pointer;
+  }
+  .sheet button:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
+
+  .hint{
+    position:absolute; left:0; right:0; bottom:34px; text-align:center;
+    font-family:var(--num); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--faint); animation:bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:1}}
+  .t-touch{display:none}
+  @media (pointer:coarse){ .t-mouse{display:none} .t-touch{display:inline} }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s !important; transition-duration:.001s !important}
+    .card .rise{opacity:1; transform:none}
+    .track{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="feed" id="feed">
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">&#50616;&#45768; &middot; &#54616;&#45208;&#50473; &middot; &#52380;&#52380;&#55176;</div>
+      <h1 class="rise">&#50504;&#45397;.</h1>
+      <p class="rise">I'm your <span class="kr">&#50616;&#45768;</span> for the next week.</p>
+      <p class="rise sub">Rule one: you don't have to do any maths right now. Just swipe. <span class="kr">&#51652;&#51676;</span>.</p>
+    </div>
+    <div class="hint"><span class="t-touch">swipe up</span><span class="t-mouse">scroll, or press the down arrow</span></div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">a silly fact first</div>
+      <h2 class="rise">The <span class="x">=</span> sign exists because a man got bored.</h2>
+      <p class="rise">1557. A Welsh mathematician called Robert Recorde was sick of writing
+        <i>"is equalle to"</i> over and over again.</p>
+      <p class="rise">So he drew two little lines, because <i>"noe .2. thynges can be moare equalle."</i></p>
+      <p class="rise sub">That's it. That's the entire reason. Most of maths is people being lazy
+        and then making it look fancy afterwards.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">something you already do</div>
+      <h2 class="rise">You've never panicked in FairPrice.</h2>
+      <p class="rise">Three for $10, or $3.90 each. You've worked that out a hundred times,
+        in about one second, holding a basket, not thinking about it.</p>
+      <p class="rise"><b>That's the same machinery.</b> You've had it the whole time.</p>
+      <p class="rise sub">Nobody handed you a worksheet in that aisle, so nobody made it frightening.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">what i think actually happened</div>
+      <h2 class="rise">Nobody showed you what the squiggles were <i>of</i>.</h2>
+      <p class="rise">You got handed the notation and skipped the thing it was describing.</p>
+      <p class="rise">Of course it didn't stick. There was nothing underneath to hold on to.</p>
+      <p class="rise sub">That was never your fault. <span class="kr">&#51652;&#51676; &#50500;&#45768;&#50556;</span>.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">the deal</div>
+      <h2 class="rise">Three rules, and I mean them.</h2>
+      <ul class="deal rise">
+        <li><b>No scores.</b> I'm not counting anything. There is no number at the end of this.</li>
+        <li><b>Nothing here can be wrong.</b> Tap whatever you like, in any order.</li>
+        <li><b>That button, bottom right.</b> Press it as often as you want. It isn't quitting. <span class="kr">&#44316;&#52270;&#50500;</span>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" data-easy="Your maths paper is online. Three parts: multiple choice, fill in the blanks, and long questions. I want to show you a trick for the multiple choice part.">
+    <div class="in">
+      <div class="eyebrow rise">now, the useful bit</div>
+      <h2 class="rise">Your paper has a multiple choice section.</h2>
+      <p class="rise">Which means part of your exam is a question with the answer
+        <i>already printed underneath it</i>.</p>
+      <p class="rise"><b>You can get a lot of those right without doing any maths at all.</b></p>
+      <p class="rise sub">Not a cheat. An actual method. The marker cannot tell, because there's nothing to tell.</p>
+    </div>
+  </section>
+
+  <section class="card" data-easy="Solving is hard. Checking is easy. Multiple choice already gives you the answer, so just test the options instead of solving.">
+    <div class="in">
+      <div class="eyebrow rise">the whole idea</div>
+      <h2 class="rise">Solving is hard. Checking is easy.</h2>
+      <p class="rise">Solving means starting at nothing and building your way to an answer.
+        That's the part that makes your brain go quiet.</p>
+      <p class="rise"><b>Checking means someone hands you a number and you see if it fits.</b>
+        That's just... looking.</p>
+      <p class="rise sub">The next four are swipe-sideways. One little step per screen, and you can
+        stop anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
+    </div>
+  </section>
+
+  <section class="card deck" data-mcq="a" data-easy="Put each option back into the equation. If both sides land on the same number, that is your answer."></section>
+
+  <section class="card deck" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
+
+  <section class="card" data-easy="Integration is hard. Differentiation is easy. So to find an integral in multiple choice, differentiate the options instead and see which one gives you back the question.">
+    <div class="in">
+      <div class="eyebrow rise">this is the good one</div>
+      <h2 class="rise">Now do it to integration.</h2>
+      <p class="rise">Integration is the hard direction. Differentiation is the easy one:
+        <b>bring the little number down, then knock it down by one.</b></p>
+      <p class="rise">So don't integrate the question. <b>Differentiate the options</b> and see which one
+        turns back into the question.</p>
+      <div class="key rise">
+        <i><span class="x">x</span> the unknown</i><i><span class="n">7</span> a number</i><i><span class="x">x</span><sup class="p">5</sup> a power</i>
+      </div>
+    </div>
+  </section>
+
+  <section class="card deck" data-mcq="c" data-easy="Differentiate each option. Bring the little number down as a multiplier, then reduce it by one. Whichever gives back 3x to the power 4 is the answer."></section>
+
+  <section class="card deck" data-mcq="d" data-easy="A turning point is where the gradient is zero. Work out the gradient, put each option's x into it, and look for the one that gives zero."></section>
+
+  <section class="card" data-easy="This trick works for: solve for x, which one is the derivative or integral, is this a turning point, and dot product questions. It does not work for explain, draw, or state questions.">
+    <div class="in">
+      <div class="eyebrow rise">being honest with you</div>
+      <h2 class="rise">It doesn't work on everything.</h2>
+      <div class="panel rise">
+        <div class="label">it works beautifully on</div>
+        <ul class="deal">
+          <li>solve for <span class="x">x</span></li>
+          <li>which one is the derivative, or the integral</li>
+          <li>is this a turning point</li>
+          <li>are these two vectors perpendicular</li>
+        </ul>
+      </div>
+      <p class="rise sub">It does nothing for <i>explain</i>, <i>draw</i>, or <i>state</i>.
+        Those need the other thing, and I'll get you there too.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">so</div>
+      <h2 class="rise">You just earned marks without solving anything.</h2>
+      <p class="rise">You didn't get smarter in the last five minutes. You already had this.
+        You just got shown where the easy door was.</p>
+      <p class="rise sub">Most of what's frightening about that paper is like this.
+        Not hard. Just never explained from the right end.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="in">
+      <div class="eyebrow rise">done</div>
+      <h1 class="rise">&#51096;&#54664;&#50612;.</h1>
+      <p class="rise">That's the end of this one. You finished it. That counts.</p>
+      <p class="rise">Next time: the <b>six moves</b> that quietly sit inside every other question
+        on your paper. Six. That's genuinely all there are.</p>
+      <p class="rise sub"><span class="kr">&#54868;&#51060;&#54021;</span>. Come back whenever. I'm not going anywhere. &#129382;</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="rail" id="rail" aria-hidden="true"></div>
+<button class="next" id="nextBtn" aria-label="Next topic">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<button class="hard" id="hardBtn">&#45320;&#47924; &#50612;&#47140;&#50892;</button>
+
+<div class="sheet" id="sheet" role="dialog" aria-label="A gentler version">
+  <div class="wrap">
+    <div class="label">the shorter version</div>
+    <p id="sheetText"></p>
+    <button id="sheetClose">okay</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var X='<span class="x">', N='<span class="n">', O='<span class="o">', E='</span>';
+  function pw(p){ return '<sup class="p">'+p+'</sup>'; }
+
+  /* ---------------- illustrations ----------------
+     An equation is a see-saw. A turning point is the flat bit of a curve.
+     Both are pictures, and neither survives being turned into a paragraph. */
+
+  function fig(svg, cap){
+    return '<figure>' + svg + '<figcaption>' + cap + '</figcaption></figure>';
+  }
+
+  function artBalance(L, R){
+    var level = (L === R);
+    var a = Math.max(-13, Math.min(13, (R - L) * 1.15));
+    var col = level ? 'var(--mint)' : 'var(--peach)';
+    return fig(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A see-saw weighing ' + L + ' against ' + R + '">' +
+        '<g transform="rotate(' + a.toFixed(1) + ' 150 66)">' +
+          '<text x="84" y="26" text-anchor="middle" font-size="10" opacity=".55">LEFT SIDE</text>' +
+          '<text x="216" y="26" text-anchor="middle" font-size="10" opacity=".55">RIGHT SIDE</text>' +
+          '<text x="84" y="50" text-anchor="middle" font-size="21" fill="' + col + '">' + L + '</text>' +
+          '<text x="216" y="50" text-anchor="middle" font-size="21" fill="' + col + '">' + R + '</text>' +
+          '<rect x="46" y="61" width="208" height="9" rx="4.5" fill="currentColor" opacity=".5"/>' +
+        '</g>' +
+        '<polygon points="150,71 133,124 167,124" class="stroke"/>' +
+        '<line x1="110" y1="124" x2="190" y2="124" class="stroke" stroke-width="2.6"/>' +
+      '</svg>',
+      level ? 'level. the key turns.' : 'it tips. not this key.'
+    );
+  }
+
+  /* y = x^2 + 7x + 12, plotted from x = -7 to x = 0 */
+  var CURVE = '30,40 47,71 64,98 81,119 99,136 116,148 133,156 150,158 167,156 184,148 201,136 219,119 236,98 253,71 270,40';
+  var CPTS = [
+    {x:-4,   sx:133, sy:156, g:-1},
+    {x:-3.5, sx:150, sy:158, g:0},
+    {x:-3,   sx:167, sy:156, g:1},
+    {x:-2,   sx:201, sy:136, g:3}
+  ];
+
+  function artCurve(sel){
+    var s = '<svg viewBox="0 0 300 185" role="img" aria-label="The curve y equals x squared plus 7x plus 12, with its lowest point marked">' +
+      '<line x1="20" y1="158" x2="284" y2="158" class="axis"/>' +
+      '<polyline points="' + CURVE + '" class="curve"/>';
+    CPTS.forEach(function(p, i){
+      var on = (sel === i);
+      s += '<circle cx="' + p.sx + '" cy="' + p.sy + '" r="' + (on ? 6 : 4) + '" class="dot' +
+           (on ? (p.g === 0 ? ' pick yes' : ' pick') : '') + '"/>';
+    });
+    if(sel !== null && sel !== undefined){
+      var p2 = CPTS[sel];
+      var m = -0.282 * p2.g, dx = 46;
+      s += '<line x1="' + (p2.sx - dx) + '" y1="' + (p2.sy - m * dx).toFixed(1) +
+           '" x2="' + (p2.sx + dx) + '" y2="' + (p2.sy + m * dx).toFixed(1) +
+           '" class="tan' + (p2.g === 0 ? ' flat' : '') + '"/>';
+    }
+    s += '</svg>';
+    var cap;
+    if(sel === null || sel === undefined) cap = 'four points sitting on the curve';
+    else cap = (CPTS[sel].g === 0) ? 'flat. this is the bottom of the dip.' : 'still sloping. keep looking.';
+    return fig(s, cap);
+  }
+
+  function artHill(){
+    return fig(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A hill: integrating walks up it, differentiating walks down it">' +
+        '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--peach)"/></marker>' +
+          '<marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--mint)"/></marker></defs>' +
+        '<path d="M20,124 C90,124 96,32 150,32 C204,32 210,124 280,124" class="curve"/>' +
+        '<path d="M52,116 C78,112 92,66 118,46" fill="none" stroke="var(--peach)" stroke-width="2.2" marker-end="url(#ah)"/>' +
+        '<path d="M182,46 C208,66 222,112 248,116" fill="none" stroke="var(--mint)" stroke-width="2.2" marker-end="url(#ah2)"/>' +
+        '<text x="24" y="143" font-size="11.5" fill="var(--peach)">integrate</text>' +
+        '<text x="276" y="143" font-size="11.5" text-anchor="end" fill="var(--mint)">differentiate</text>' +
+      '</svg>',
+      'same hill. down is always easier.'
+    );
+  }
+
+  function artPower(){
+    return fig(
+      '<svg viewBox="0 0 300 172" role="img" aria-label="The power rule: 3x to the 5 becomes 15x to the 4, because the 5 comes down to multiply and the power loses one">' +
+        '<defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--butter)"/></marker></defs>' +
+        '<text x="133" y="52" font-size="28" fill="var(--soft)">3</text>' +
+        '<text x="152" y="52" font-size="28" fill="var(--peach)">x</text>' +
+        '<text x="171" y="37" font-size="18" fill="var(--mint)">5</text>' +
+        '<path d="M180,31 C220,45 216,94 143,105" fill="none" stroke="var(--butter)" ' +
+          'stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah3)"/>' +
+        '<text x="128" y="136" font-size="28" fill="var(--mint)">15</text>' +
+        '<text x="163" y="136" font-size="28" fill="var(--peach)">x</text>' +
+        '<text x="182" y="121" font-size="18" fill="var(--mint)">4</text>' +
+        '<text x="103" y="159" text-anchor="middle" font-size="11" fill="var(--butter)">5 &#215; 3 = 15</text>' +
+        '<text x="207" y="159" text-anchor="middle" font-size="11" fill="var(--mint)">5 - 1 = 4</text>' +
+      '</svg>',
+      'it comes down, and loses one'
+    );
+  }
+
+  /* One step per screen. Swipe sideways through a question, swipe up to leave it.
+     A deck can never outgrow the phone, because no step ever stacks on another. */
+  var DECKS = {
+
+    a: {
+      eyebrow:'watch me do one', title:'Find <span class="x">x</span>.',
+      q: N+'3'+E+X+'x'+E+' '+O+'+'+E+' '+N+'8'+E+'  '+O+'='+E+'  '+N+'28'+E+' '+O+'&minus;'+E+' '+X+'x'+E,
+      auto: 1,
+      steps: [
+        {say:'Someone hands you this.'},
+        {say:'It wants to know what '+X+'x'+E+' is. Normally this is the bit where you are meant to start solving, and this is where everything goes quiet.'},
+        {aha:['think of it like','Trying keys in a lock. You do not need to understand how the lock works. You only need to find the key that turns.']},
+        {opts:true, say:'And look. It hands you four keys.'}
+      ],
+      options: ['x = 3','x = 5','x = 7','x = 9'],
+      check: function(i){
+        var v=[3,5,7,9][i], L=3*v+8, R=28-v;
+        return { steps:[
+            {work:'swap every '+X+'x'+E+' for '+N+v+E},
+            {work:'left side&nbsp; &nbsp;3('+v+') + 8&nbsp; =&nbsp; <b>'+L+'</b>'},
+            {work:'right side&nbsp; &nbsp;28 - '+v+'&nbsp; =&nbsp; <b>'+R+'</b>', art: artBalance(L,R)}
+          ], ok: L===R, art: artBalance(L,R),
+          verdict: L===R ? '\uadf8\uac70\uc57c. Both sides land on '+L+'. That is the key.'
+                         : 'Left is '+L+'. Right is '+R+'. They do not meet, so this key does not turn. Swipe back and try another.' };
+      }
+    },
+
+    b: {
+      eyebrow:'your turn now', title:'Same trick, you drive.',
+      q: N+'6'+E+X+'x'+E+' '+O+'&minus;'+E+' '+N+'2'+E+'  '+O+'='+E+'  '+N+'33'+E+' '+O+'+'+E+' '+X+'x'+E,
+      auto: null,
+      steps: [
+        {say:'Here is another one.'},
+        {aha:['remember','The '+X+'='+E+' sign is a see-saw. Whatever the key is, both sides have to sit at exactly the same height.'],
+         art:function(){ return artBalance(40,40); }},
+        {opts:true, say:'Tap any key you like. A wrong one is genuinely fine here. It just will not balance, and you get to watch that happen.'}
+      ],
+      options: ['x = 5','x = 7','x = 9','x = 11'],
+      check: function(i){
+        var v=[5,7,9,11][i], L=6*v-2, R=33+v;
+        return { steps:[
+            {work:'swap every '+X+'x'+E+' for '+N+v+E},
+            {work:'left side&nbsp; &nbsp;6('+v+') - 2&nbsp; =&nbsp; <b>'+L+'</b>'},
+            {work:'right side&nbsp; &nbsp;33 + '+v+'&nbsp; =&nbsp; <b>'+R+'</b>', art: artBalance(L,R)}
+          ], ok: L===R, art: artBalance(L,R),
+          verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
+                         : 'Left is '+L+'. Right is '+R+'. The see-saw tips, so it is not this one. Nothing lost.' };
+      }
+    },
+
+    c: {
+      eyebrow:'watch this one', title:'Which one is the integral?',
+      q: O+'&#8747;'+E+' '+N+'3'+E+X+'x'+E+pw('4')+' '+O+'d'+E+X+'x'+E+'  '+O+'='+E+'  '+O+'?'+E,
+      auto: 0,
+      steps: [
+        {say:'This one looks scary. It is not.'},
+        {say:'That long stretched S just means <i>integrate</i>. That is the whole of it.'},
+        {aha:['think of it like','A hill. Integrating is walking <strong>up</strong> it. Differentiating is walking <strong>down</strong>.'], art:artHill},
+        {say:'So we are not going to climb. We start at the top and walk down.'},
+        {aha:['the whole rule, forever','The little number sits <strong>up high</strong>. It <strong>comes down</strong> to multiply, and <strong>loses one</strong> on the way.'], art:artPower},
+        {opts:true, say:'Four possible tops. We walk each one down and see which lands back on the question.'}
+      ],
+      options: ['(3/5)x'+pw('5')+' + c','12x'+pw('3')+' + c','(3/4)x'+pw('5')+' + c','3x'+pw('5')+' + c'],
+      check: function(i){
+        var r=[
+          {f:'(3/5)x'+pw('5'), d:'(3/5) x 5&nbsp; =&nbsp; 3',  k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'3x'+pw('4')},
+          {f:'12x'+pw('3'),    d:'12 x 3&nbsp; =&nbsp; 36',    k:'x'+pw('3')+'&nbsp; becomes&nbsp; x'+pw('2'), g:'36x'+pw('2')},
+          {f:'(3/4)x'+pw('5'), d:'(3/4) x 5&nbsp; =&nbsp; 3.75', k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'3.75x'+pw('4')},
+          {f:'3x'+pw('5'),     d:'3 x 5&nbsp; =&nbsp; 15',     k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'15x'+pw('4')}
+        ][i];
+        return { steps:[
+            {work:'take&nbsp; '+r.f},
+            {work:'the little number comes down<br>'+r.d},
+            {work:'and loses one on the way<br>'+r.k},
+            {work:'so it becomes&nbsp; <b>'+r.g+'</b>'}
+          ], ok: i===0,
+          verdict: i===0 ? '3x'+pw('4')+'. That is exactly the question, handed straight back to you. This is the answer.'
+                         : 'That gives '+r.g+', but the question was 3x'+pw('4')+'. Not this one.' };
+      }
+    },
+
+    d: {
+      eyebrow:'last one, you drive', title:'Which is a turning point?',
+      q: X+'y'+E+'  '+O+'='+E+'  '+X+'x'+E+pw('2')+' '+O+'+'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'12'+E,
+      auto: null,
+      steps: [
+        {say:'Here is the curve. Those four dots are the four answers.', art:function(){ return artCurve(null); }},
+        {aha:['think of it like','Throwing your phone straight up. Please do not. But at the very top, for one instant, it is not rising and it is not falling. It just hangs there. <strong>That instant is a turning point.</strong>']},
+        {aha:['and gradient just means','How steep something is. Big number, steep climb. <strong>Zero means completely flat.</strong>']},
+        {say:'So: find where the curve goes flat. For this one the gradient is:',
+         eq: O+'gradient'+E+'  '+O+'='+E+'  '+N+'2'+E+X+'x'+E+' '+O+'+'+E+' '+N+'7'+E},
+        {opts:true, say:'Take the '+X+'x'+E+' out of any bracket, drop it into that, and hunt for the zero. You can probably already see which dot it is.'}
+      ],
+      options: ['(-4, 0)','(-3.5, -0.25)','(-3, 0)','(-2, 2)'],
+      check: function(i){
+        var v=[-4,-3.5,-3,-2][i], g=2*v+7, s=Math.round(g*100)/100;
+        return { steps:[
+            {work:'the '+X+'x'+E+' in that bracket is&nbsp; '+N+v+E},
+            {work:'drop it into the gradient<br>2('+v+') + 7'},
+            {work:'which is&nbsp; <b>'+s+'</b>', art: artCurve(i)}
+          ], ok: g===0, art: artCurve(i),
+          verdict: g===0 ? 'Zero. Flat. Look at it sitting right at the bottom of the dip. That is the turning point.'
+                         : 'That is '+s+', not zero. You can see the line still sloping there. Not this one.' };
+      }
+    }
+  };
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+  var feed = document.getElementById("feed");
+  var rail = document.getElementById("rail");
+  var nextBtn = document.getElementById("nextBtn");
+  var sheet = document.getElementById("sheet");
+  var sheetText = document.getElementById("sheetText");
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var current = 0, target = 0, locked = false, settleT, safetyT;
+
+  /* ---------------- deck building ---------------- */
+  function buildDeck(card){
+    var key = card.getAttribute("data-mcq");
+    if(!key) return;
+    var cfg = DECKS[key];
+
+    var track = document.createElement("div");
+    track.className = "track";
+    var bar = document.createElement("div");
+    bar.className = "deckbar";
+    var dots = document.createElement("div");
+    dots.className = "dots";
+    var go = document.createElement("button");
+    go.className = "go"; go.type = "button"; go.textContent = "next";
+    bar.appendChild(dots); bar.appendChild(go);
+    card.appendChild(track); card.appendChild(bar);
+
+    var fixedCount = 0;      // slides that belong to the question itself
+    var here = 0;            // slide index in view
+    var autoT = null;
+    var pending = null;      // the check being walked through
+    var optButtons = [];
+
+    function slide(parts){
+      var s = document.createElement("div"); s.className = "slide";
+      var i = document.createElement("div"); i.className = "in";
+      parts.forEach(function(p){ i.appendChild(p); });
+      s.appendChild(i); track.appendChild(s);
+      return s;
+    }
+    function el(cls, html){ var d=document.createElement("div"); d.className=cls; d.innerHTML=html; return d; }
+    function qhead(){ return el("qhead", cfg.q); }
+
+    function makeOpts(){
+      var box = document.createElement("div"); box.className = "opts";
+      optButtons = [];
+      cfg.options.forEach(function(html, n){
+        var b = document.createElement("button");
+        b.type="button"; b.className="opt"; b.innerHTML = html;
+        b.addEventListener("click", function(){ pick(n, b); });
+        box.appendChild(b); optButtons.push(b);
+      });
+      return box;
+    }
+
+    // opening slide: the question, big, with its picture if it has one
+    var open = [ el("eyebrow", cfg.eyebrow), el("say", cfg.steps[0].say), el("eq", cfg.q) ];
+    if(cfg.steps[0].art) open.push(el("art", cfg.steps[0].art()));
+    slide(open);
+
+    // one slide per remaining step
+    cfg.steps.slice(1).forEach(function(st){
+      var parts = [ qhead() ];
+      if(st.aha){
+        var a = document.createElement("div"); a.className = "aha";
+        a.innerHTML = "<em>" + st.aha[0] + "</em><span class='body'>" + st.aha[1] + "</span>";
+        parts.push(a);
+      }
+      if(st.say) parts.push(el("say" + (st.opts ? " quietly" : ""), st.say));
+      if(st.eq)  parts.push(el("eq small", st.eq));
+      if(st.art) parts.push(el("art", st.art()));
+      if(st.opts) parts.push(makeOpts());
+      slide(parts);
+    });
+    fixedCount = track.children.length;
+
+    function clearCheck(){
+      while(track.children.length > fixedCount){
+        track.removeChild(track.lastChild);
+      }
+    }
+
+    function pick(n, btn, move){
+      stopAuto();
+      clearCheck();
+      optButtons.forEach(function(b){ b.classList.remove("picked"); b.classList.remove("isit"); });
+      btn.classList.add("picked");
+
+      pending = cfg.check(n);
+      pending.btn = btn;
+      pending.steps.forEach(function(st){
+        var parts = [ qhead(), el("work", st.work) ];
+        if(st.art) parts.push(el("art", st.art));
+        slide(parts);
+      });
+      var vparts = [ qhead() ];
+      if(pending.art) vparts.push(el("art", pending.art));
+      vparts.push(el("verdict" + (pending.ok ? " yes" : ""), pending.verdict));
+      slide(vparts);
+      if(pending.ok) btn.classList.add("isit");
+
+      drawDots();
+      if(move === false){ syncLabel(); }               // she arrived, do not shove her
+      else { window.setTimeout(function(){ goSlide(fixedCount); }, 220); }
+    }
+
+    function drawDots(){
+      dots.innerHTML = "";
+      for(var k = 0; k < track.children.length; k++){
+        var d = document.createElement("i");
+        if(k === here) d.className = "on";
+        dots.appendChild(d);
+      }
+    }
+
+    function goSlide(i){
+      if(i < 0) i = 0;
+      if(i > track.children.length - 1) i = track.children.length - 1;
+      track.scrollTo({ left: track.children[i].offsetLeft, behavior: calm ? "auto" : "smooth" });
+    }
+
+    function syncLabel(){
+      var last = track.children.length - 1;
+      var onOpts = !!track.children[here].querySelector(".opts");
+      if(here >= last){
+        if(pending) go.textContent = "swipe up when you are ready";
+        else if(onOpts) go.textContent = "tap an answer above";
+        else go.textContent = "swipe up for the next bit";
+        go.classList.add("quiet");
+      } else {
+        go.textContent = "next";
+        go.classList.remove("quiet");
+      }
+    }
+
+    track.addEventListener("scroll", function(){
+      var w = track.clientWidth || 1;
+      var i = Math.round(track.scrollLeft / w);
+      if(i !== here){ here = i; drawDots(); syncLabel(); maybeAutoPick(); }
+    }, {passive:true});
+
+    go.addEventListener("click", function(){
+      if(go.classList.contains("quiet")) return;
+      stopAuto();
+      goSlide(here + 1);
+    });
+
+    function stopAuto(){ window.clearTimeout(autoT); autoT = null; }
+
+    /* Nothing advances on its own. Sliding the screen out from under her while
+       she is still reading is worse than any passivity it buys. On the watch-me
+       decks the answer picks itself once she ARRIVES at the options, so she
+       never has to choose, but the viewport only ever moves when she moves it. */
+    function maybeAutoPick(){
+      stopAuto();
+      if(cfg.auto === null || pending) return;
+      var slide = track.children[here];
+      if(!slide || !slide.querySelector(".opts")) return;
+      autoT = window.setTimeout(function(){
+        if(cards[current] !== card || pending) return;
+        pick(cfg.auto, optButtons[cfg.auto], false);
+      }, 1300);
+    }
+
+    card._deck = { goSlide:function(d){ stopAuto(); goSlide(here + d); },
+                   stop: stopAuto };
+    card._begin = maybeAutoPick;
+
+    drawDots(); syncLabel();
+  }
+
+  cards.forEach(buildDeck);
+  cards.forEach(function(){ rail.appendChild(document.createElement("i")); });
+
+  /* ---------------- vertical navigation ---------------- */
+  function release(){ window.clearTimeout(safetyT); locked = false; target = current; }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > cards.length - 1) i = cards.length - 1;
+    if(i === target && locked) return;
+    target = i; locked = true;
+    window.clearTimeout(safetyT);
+    safetyT = window.setTimeout(release, 2000);
+    feed.scrollTo({ top: cards[i].offsetTop, behavior: calm ? "auto" : "smooth" });
+    if(calm){ current = i; release(); }
+  }
+
+  feed.addEventListener("scroll", function(){
+    window.clearTimeout(settleT);
+    settleT = window.setTimeout(release, 140);
+  }, {passive:true});
+
+  feed.addEventListener("wheel", function(e){
+    if(sheet.classList.contains("up")) return;
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;     // let sideways wheels through
+    e.preventDefault();
+    if(locked) return;
+    if(Math.abs(e.deltaY) < 3) return;
+    goTo(target + (e.deltaY > 0 ? 1 : -1));
+  }, {passive:false});
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){ sheet.classList.remove("up"); return; }
+    if(sheet.classList.contains("up")) return;
+    var deck = cards[current]._deck;
+    if(e.key === "ArrowRight"){ if(deck){ e.preventDefault(); deck.goSlide(1); } return; }
+    if(e.key === "ArrowLeft"){ if(deck){ e.preventDefault(); deck.goSlide(-1); } return; }
+    if(e.key === "ArrowDown" || e.key === "PageDown" || e.key === " "){
+      if(e.key === " " && e.target && e.target.tagName === "BUTTON") return;
+      e.preventDefault(); goTo(target + 1);
+    } else if(e.key === "ArrowUp" || e.key === "PageUp"){
+      e.preventDefault(); goTo(target - 1);
+    } else if(e.key === "Home"){ e.preventDefault(); goTo(0); }
+    else if(e.key === "End"){ e.preventDefault(); goTo(cards.length - 1); }
+  });
+
+  nextBtn.addEventListener("click", function(){ goTo(target + 1); });
+
+  var begun = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.intersectionRatio < 0.55) return;
+      var card = e.target, idx = cards.indexOf(card);
+      card.classList.add("on");
+      current = idx;
+      if(!locked) target = idx;
+      nextBtn.hidden = (idx === cards.length - 1);
+      Array.prototype.forEach.call(rail.children, function(d,k){ d.classList.toggle("on", k === idx); });
+      cards.forEach(function(c,k){ if(k !== idx && c._deck) c._deck.stop(); });
+      if(card._begin && !begun[idx]){ begun[idx] = true; card._begin(); }
+    });
+  }, {threshold:[0.55]});
+
+  cards.forEach(function(c){ io.observe(c); });
+
+  /* ---------------- the "too much" sheet ---------------- */
+  var FALLBACK = "Nothing on this card matters enough to get stuck on. Swipe past it. You can always come back, and honestly you might not need to. \uad1c\ucc2e\uc544.";
+  document.getElementById("hardBtn").addEventListener("click", function(){
+    var c = cards[current];
+    sheetText.textContent = (c && c.getAttribute("data-easy")) || FALLBACK;
+    sheet.classList.add("up");
+  });
+  document.getElementById("sheetClose").addEventListener("click", function(){
+    sheet.classList.remove("up");
+  });
+
+  cards[0].classList.add("on");
+})();
+</script>
+
+</body>
+</html>
