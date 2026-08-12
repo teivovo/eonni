@@ -159,9 +159,11 @@
   .tan{fill:none; stroke:var(--peach); stroke-width:2.4; stroke-linecap:round}
   .tan.flat{stroke:var(--mint)}
   .axis{fill:none; stroke:currentColor; stroke-width:1; opacity:.34}
-  .dot{fill:var(--edge)}
-  .dot.pick{fill:var(--peach)}
-  .dot.pick.yes{fill:var(--mint)}
+  .dot{fill:var(--raise); stroke:var(--soft); stroke-width:2.2}
+  .dot.pick{fill:var(--peach); stroke:var(--peach)}
+  .dot.pick.yes{fill:var(--mint); stroke:var(--mint)}
+  .drop{stroke:var(--peach); stroke-width:1.4; stroke-dasharray:3 3; opacity:.65}
+  .drop.yes{stroke:var(--mint)}
 
   sup{font-size:.64em; vertical-align:super; line-height:0}
   .x{color:var(--peach); font-weight:700}
@@ -301,11 +303,11 @@
     <div class="in">
       <div class="eyebrow rise">a silly fact first</div>
       <h2 class="rise">The <span class="x">=</span> sign exists because a man got bored.</h2>
-      <p class="rise">1557. A Welsh mathematician called Robert Recorde was sick of writing
-        <i>"is equalle to"</i> over and over again.</p>
+      <p class="rise">1557. A Welsh guy called Robert Recorde got sick of writing
+        <i>"is equalle to"</i> over and over.</p>
       <p class="rise">So he drew two little lines, because <i>"noe .2. thynges can be moare equalle."</i></p>
-      <p class="rise sub">That's it. That's the entire reason. Most of maths is people being lazy
-        and then making it look fancy afterwards.</p>
+      <p class="rise sub">That's it. That's the whole reason. Most of maths is people being lazy
+        and then dressing it up after.</p>
     </div>
   </section>
 
@@ -313,10 +315,10 @@
     <div class="in">
       <div class="eyebrow rise">something you already do</div>
       <h2 class="rise">You've never panicked in FairPrice.</h2>
-      <p class="rise">Three for $10, or $3.90 each. You've worked that out a hundred times,
-        in about one second, holding a basket, not thinking about it.</p>
+      <p class="rise">Three for $10, or $3.90 each. You've done that maths a hundred times,
+        in about a second, holding a basket, not even thinking.</p>
       <p class="rise"><b>That's the same machinery.</b> You've had it the whole time.</p>
-      <p class="rise sub">Nobody handed you a worksheet in that aisle, so nobody made it frightening.</p>
+      <p class="rise sub">Nobody handed you a worksheet in that aisle. So nobody made it scary.</p>
     </div>
   </section>
 
@@ -324,7 +326,7 @@
     <div class="in">
       <div class="eyebrow rise">what i think actually happened</div>
       <h2 class="rise">Nobody showed you what the squiggles were <i>of</i>.</h2>
-      <p class="rise">You got handed the notation and skipped the thing it was describing.</p>
+      <p class="rise">You got handed the squiggles, and nobody ever showed you the thing they were describing.</p>
       <p class="rise">Of course it didn't stick. There was nothing underneath to hold on to.</p>
       <p class="rise sub">That was never your fault. <span class="kr">&#51652;&#51676; &#50500;&#45768;&#50556;</span>.</p>
     </div>
@@ -347,9 +349,9 @@
       <div class="eyebrow rise">now, the useful bit</div>
       <h2 class="rise">Your paper has a multiple choice section.</h2>
       <p class="rise">Which means part of your exam is a question with the answer
-        <i>already printed underneath it</i>.</p>
+        <i>already printed right underneath it</i>.</p>
       <p class="rise"><b>You can get a lot of those right without doing any maths at all.</b></p>
-      <p class="rise sub">Not a cheat. An actual method. The marker cannot tell, because there's nothing to tell.</p>
+      <p class="rise sub">Not cheating. An actual method. The marker can't tell, because there's nothing to tell.</p>
     </div>
   </section>
 
@@ -361,8 +363,7 @@
         That's the part that makes your brain go quiet.</p>
       <p class="rise"><b>Checking means someone hands you a number and you see if it fits.</b>
         That's just... looking.</p>
-      <p class="rise sub">The next four are swipe-sideways. One little step per screen, and you can
-        stop anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
+      <p class="rise sub">The next few go sideways. One tiny step per screen, and you can bail out anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
     </div>
   </section>
 
@@ -401,8 +402,8 @@
           <li>are these two vectors perpendicular</li>
         </ul>
       </div>
-      <p class="rise sub">It does nothing for <i>explain</i>, <i>draw</i>, or <i>state</i>.
-        Those need the other thing, and I'll get you there too.</p>
+      <p class="rise sub">It does nothing for <i>explain</i>, <i>draw</i> or <i>state</i>.
+        Those need the other thing. I'll get you there too.</p>
     </div>
   </section>
 
@@ -493,22 +494,24 @@
     var s = '<svg viewBox="0 0 300 185" role="img" aria-label="The curve y equals x squared plus 7x plus 12, with its lowest point marked">' +
       '<line x1="20" y1="158" x2="284" y2="158" class="axis"/>' +
       '<polyline points="' + CURVE + '" class="curve"/>';
-    CPTS.forEach(function(p, i){
-      var on = (sel === i);
-      s += '<circle cx="' + p.sx + '" cy="' + p.sy + '" r="' + (on ? 6 : 4) + '" class="dot' +
-           (on ? (p.g === 0 ? ' pick yes' : ' pick') : '') + '"/>';
-    });
     if(sel !== null && sel !== undefined){
-      var p2 = CPTS[sel];
+      var p2 = CPTS[sel], yes = (p2.g === 0);
+      s += '<line x1="' + p2.sx + '" y1="' + p2.sy + '" x2="' + p2.sx + '" y2="176" class="drop' +
+           (yes ? ' yes' : '') + '"/>';
       var m = -0.282 * p2.g, dx = 46;
       s += '<line x1="' + (p2.sx - dx) + '" y1="' + (p2.sy - m * dx).toFixed(1) +
            '" x2="' + (p2.sx + dx) + '" y2="' + (p2.sy + m * dx).toFixed(1) +
-           '" class="tan' + (p2.g === 0 ? ' flat' : '') + '"/>';
+           '" class="tan' + (yes ? ' flat' : '') + '"/>';
     }
+    CPTS.forEach(function(p, i){
+      var on = (sel === i);
+      s += '<circle cx="' + p.sx + '" cy="' + p.sy + '" r="' + (on ? 7 : 5) + '" class="dot' +
+           (on ? (p.g === 0 ? ' pick yes' : ' pick') : '') + '"/>';
+    });
     s += '</svg>';
     var cap;
-    if(sel === null || sel === undefined) cap = 'four points sitting on the curve';
-    else cap = (CPTS[sel].g === 0) ? 'flat. this is the bottom of the dip.' : 'still sloping. keep looking.';
+    if(sel === null || sel === undefined) cap = 'four points, all bunched near the bottom';
+    else cap = (CPTS[sel].g === 0) ? 'flat. this is the bottom of the dip.' : 'still tilting. keep looking.';
     return fig(s, cap);
   }
 
@@ -558,10 +561,10 @@
       q: N+'3'+E+X+'x'+E+' '+O+'+'+E+' '+N+'8'+E+'  '+O+'='+E+'  '+N+'28'+E+' '+O+'&minus;'+E+' '+X+'x'+E,
       auto: 1,
       steps: [
-        {say:'Someone hands you this.'},
-        {say:'It wants to know what '+X+'x'+E+' is. Normally this is the bit where you are meant to start solving, and this is where everything goes quiet.'},
-        {aha:['think of it like','Trying keys in a lock. You do not need to understand how the lock works. You only need to find the key that turns.']},
-        {opts:true, say:'And look. It hands you four keys.'}
+        {say:'Okay. Someone hands you this.'},
+        {say:'It wants '+X+'x'+E+'. And this is usually the exact moment your brain goes <i>nope</i>.'},
+        {aha:['think of it like','It\'s like trying keys in a lock. You don\'t have to understand the lock. You just need the one that turns.']},
+        {opts:true, say:'And look, it\'s handing you four keys.'}
       ],
       options: ['x = 3','x = 5','x = 7','x = 9'],
       check: function(i){
@@ -571,8 +574,8 @@
             {work:'left side&nbsp; &nbsp;3('+v+') + 8&nbsp; =&nbsp; <b>'+L+'</b>'},
             {work:'right side&nbsp; &nbsp;28 - '+v+'&nbsp; =&nbsp; <b>'+R+'</b>', art: artBalance(L,R)}
           ], ok: L===R, art: artBalance(L,R),
-          verdict: L===R ? '\uadf8\uac70\uc57c. Both sides land on '+L+'. That is the key.'
-                         : 'Left is '+L+'. Right is '+R+'. They do not meet, so this key does not turn. Swipe back and try another.' };
+          verdict: L===R ? '\uadf8\uac70\uc57c. Both sides land on '+L+'. That\'s the one.'
+                         : 'Left gives '+L+', right gives '+R+'. Doesn\'t match, so that key doesn\'t turn. No harm done, go try another.' };
       }
     },
 
@@ -581,10 +584,10 @@
       q: N+'6'+E+X+'x'+E+' '+O+'&minus;'+E+' '+N+'2'+E+'  '+O+'='+E+'  '+N+'33'+E+' '+O+'+'+E+' '+X+'x'+E,
       auto: null,
       steps: [
-        {say:'Here is another one.'},
-        {aha:['remember','The '+X+'='+E+' sign is a see-saw. Whatever the key is, both sides have to sit at exactly the same height.'],
+        {say:'Here\'s another one.'},
+        {aha:['remember','The '+X+'='+E+' sign is just a see-saw. Whatever the key is, both sides have to sit at the same height.'],
          art:function(){ return artBalance(40,40); }},
-        {opts:true, say:'Tap any key you like. A wrong one is genuinely fine here. It just will not balance, and you get to watch that happen.'}
+        {opts:true, say:'Tap whichever you like. A wrong one is honestly fine, it just won\'t balance, and you get to watch it tip.'}
       ],
       options: ['x = 5','x = 7','x = 9','x = 11'],
       check: function(i){
@@ -595,7 +598,7 @@
             {work:'right side&nbsp; &nbsp;33 + '+v+'&nbsp; =&nbsp; <b>'+R+'</b>', art: artBalance(L,R)}
           ], ok: L===R, art: artBalance(L,R),
           verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
-                         : 'Left is '+L+'. Right is '+R+'. The see-saw tips, so it is not this one. Nothing lost.' };
+                         : 'Left\'s '+L+', right\'s '+R+'. See-saw tips, so nope. Nothing lost, try another.' };
       }
     },
 
@@ -604,12 +607,12 @@
       q: O+'&#8747;'+E+' '+N+'3'+E+X+'x'+E+pw('4')+' '+O+'d'+E+X+'x'+E+'  '+O+'='+E+'  '+O+'?'+E,
       auto: 0,
       steps: [
-        {say:'This one looks scary. It is not.'},
-        {say:'That long stretched S just means <i>integrate</i>. That is the whole of it.'},
-        {aha:['think of it like','A hill. Integrating is walking <strong>up</strong> it. Differentiating is walking <strong>down</strong>.'], art:artHill},
-        {say:'So we are not going to climb. We start at the top and walk down.'},
-        {aha:['the whole rule, forever','The little number sits <strong>up high</strong>. It <strong>comes down</strong> to multiply, and <strong>loses one</strong> on the way.'], art:artPower},
-        {opts:true, say:'Four possible tops. We walk each one down and see which lands back on the question.'}
+        {say:'Okay, this one LOOKS scary. It really isn\'t.'},
+        {say:'That long stretchy S just means <i>integrate</i>. That\'s it. That\'s all it means.'},
+        {aha:['think of it like','It\'s a hill. Integrating is walking <strong>up</strong> it. Differentiating is walking <strong>down</strong>. Guess which one\'s easier.'], art:artHill},
+        {say:'So we\'re not climbing. We start at the top and stroll down.'},
+        {aha:['the whole rule, forever','The little number\'s sitting <strong>up high</strong>. It <strong>comes down</strong>, multiplies, and <strong>loses one</strong> on the way.'], art:artPower},
+        {opts:true, say:'Four possible tops of the hill. Walk each one down, see which lands back on the question.'}
       ],
       options: ['(3/5)x'+pw('5')+' + c','12x'+pw('3')+' + c','(3/4)x'+pw('5')+' + c','3x'+pw('5')+' + c'],
       check: function(i){
@@ -625,8 +628,8 @@
             {work:'and loses one on the way<br>'+r.k},
             {work:'so it becomes&nbsp; <b>'+r.g+'</b>'}
           ], ok: i===0,
-          verdict: i===0 ? '3x'+pw('4')+'. That is exactly the question, handed straight back to you. This is the answer.'
-                         : 'That gives '+r.g+', but the question was 3x'+pw('4')+'. Not this one.' };
+          verdict: i===0 ? '3x'+pw('4')+'. That\'s literally the question again. This is the one.'
+                         : 'That gives '+r.g+'. We wanted 3x'+pw('4')+'. Nope.' };
       }
     },
 
@@ -635,12 +638,12 @@
       q: X+'y'+E+'  '+O+'='+E+'  '+X+'x'+E+pw('2')+' '+O+'+'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'12'+E,
       auto: null,
       steps: [
-        {say:'Here is the curve. Those four dots are the four answers.', art:function(){ return artCurve(null); }},
-        {aha:['think of it like','Throwing your phone straight up. Please do not. But at the very top, for one instant, it is not rising and it is not falling. It just hangs there. <strong>That instant is a turning point.</strong>']},
-        {aha:['and gradient just means','How steep something is. Big number, steep climb. <strong>Zero means completely flat.</strong>']},
-        {say:'So: find where the curve goes flat. For this one the gradient is:',
+        {say:'Here\'s the curve. Those four dots are your four options.', art:function(){ return artCurve(null); }},
+        {aha:['think of it like','Chuck your phone straight up. (Don\'t.) Right at the top, for a split second, it\'s not going up and it\'s not coming down. It just hangs there. <strong>That is a turning point.</strong>']},
+        {aha:['and gradient just means','Just means how steep it is. Big number, steep. <strong>Zero means flat.</strong>']},
+        {say:'So we\'re hunting for where it goes flat. The gradient here is:',
          eq: O+'gradient'+E+'  '+O+'='+E+'  '+N+'2'+E+X+'x'+E+' '+O+'+'+E+' '+N+'7'+E},
-        {opts:true, say:'Take the '+X+'x'+E+' out of any bracket, drop it into that, and hunt for the zero. You can probably already see which dot it is.'}
+        {opts:true, say:'Grab the '+X+'x'+E+' from any bracket, drop it in, look for the zero. You can probably already see which dot it is, honestly.'}
       ],
       options: ['(-4, 0)','(-3.5, -0.25)','(-3, 0)','(-2, 2)'],
       check: function(i){
@@ -650,8 +653,8 @@
             {work:'drop it into the gradient<br>2('+v+') + 7'},
             {work:'which is&nbsp; <b>'+s+'</b>', art: artCurve(i)}
           ], ok: g===0, art: artCurve(i),
-          verdict: g===0 ? 'Zero. Flat. Look at it sitting right at the bottom of the dip. That is the turning point.'
-                         : 'That is '+s+', not zero. You can see the line still sloping there. Not this one.' };
+          verdict: g===0 ? 'Zero. Flat. Look at it, sitting right at the bottom of the dip. That\'s your turning point.'
+                         : 'That\'s '+s+', not zero. See how the line is still tilting? Not this one.' };
       }
     }
   };
@@ -777,18 +780,22 @@
       track.scrollTo({ left: track.children[i].offsetLeft, behavior: calm ? "auto" : "smooth" });
     }
 
+    /* At the end of a deck the button should just take her onward, not tell
+       her to do it herself. The only time it does nothing is when it is
+       genuinely her turn to tap an answer. */
     function syncLabel(){
       var last = track.children.length - 1;
       var onOpts = !!track.children[here].querySelector(".opts");
-      if(here >= last){
-        if(pending) go.textContent = "swipe up when you are ready";
-        else if(onOpts) go.textContent = "tap an answer above";
-        else go.textContent = "swipe up for the next bit";
+      go.classList.remove("quiet");
+      go.classList.remove("done");
+      if(here < last){ go.textContent = "next"; return; }
+      if(onOpts && !pending){
+        go.textContent = "your turn, pick one up there";
         go.classList.add("quiet");
-      } else {
-        go.textContent = "next";
-        go.classList.remove("quiet");
+        return;
       }
+      go.textContent = "okay, what\'s next";
+      go.classList.add("done");
     }
 
     track.addEventListener("scroll", function(){
@@ -798,8 +805,9 @@
     }, {passive:true});
 
     go.addEventListener("click", function(){
-      if(go.classList.contains("quiet")) return;
       stopAuto();
+      if(go.classList.contains("done")){ goTo(target + 1); return; }   // end of deck: take her onward
+      if(go.classList.contains("quiet")) return;                       // her turn to tap an answer
       goSlide(here + 1);
     });
 
