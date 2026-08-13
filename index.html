@@ -41,13 +41,14 @@
   }
 
   .feed{
-    height:100dvh; height:100vh; overflow-y:scroll; overflow-x:hidden;
+    height:100vh; height:100dvh; overflow-y:scroll; overflow-x:hidden;
     scroll-snap-type:y mandatory; scrollbar-width:none;
+    overscroll-behavior-y:contain;
   }
   .feed::-webkit-scrollbar{display:none}
 
   .card{
-    min-height:100dvh; min-height:100vh; scroll-snap-align:start; scroll-snap-stop:always;
+    min-height:100vh; min-height:100dvh; scroll-snap-align:start; scroll-snap-stop:always;
     display:flex; align-items:center; justify-content:center;
     padding:72px 22px 96px; position:relative;
   }
@@ -98,7 +99,7 @@
   /* ---------- decks: one step per screen, swipe sideways ---------- */
   .card.deck{padding:0; display:block; overflow:hidden}
   .track{
-    height:100dvh; height:100vh; display:flex;
+    height:100vh; height:100dvh; display:flex;
     overflow-x:scroll; overflow-y:hidden;
     scroll-snap-type:x mandatory; scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
@@ -107,22 +108,22 @@
   .slide{
     flex:0 0 100%; scroll-snap-align:start; scroll-snap-stop:always;
     display:flex; align-items:center; justify-content:center;
-    padding:70px 22px 168px;
+    padding:56px 20px 146px;
   }
-  .slide .in{gap:18px}
+  .slide .in{gap:15px}
 
   .qhead{
     font-family:var(--num); font-variant-numeric:tabular-nums;
     font-size:clamp(15px,4.1vw,17px); color:var(--faint);
     padding:11px 14px; border:1px solid var(--edge); border-radius:12px;
-    background:var(--raise); white-space:nowrap; overflow-x:auto;
+    background:var(--raise); white-space:nowrap; overflow-x:auto; min-width:0;
   }
   .qhead .x,.qhead .n,.qhead .p{opacity:.85}
 
   .eq{
     font-family:var(--num); font-variant-numeric:tabular-nums;
     font-size:clamp(24px,7.4vw,34px); line-height:1.6; letter-spacing:.01em;
-    white-space:nowrap; overflow-x:auto; padding:4px 0;
+    white-space:nowrap; overflow-x:auto; min-width:0; padding:4px 0;
   }
   .eq.small{font-size:clamp(19px,5.4vw,24px)}
 
@@ -148,7 +149,7 @@
 
   /* ---- line art. a picture where a picture explains it better ---- */
   figure{margin:0; display:flex; flex-direction:column; gap:11px; align-items:center; width:100%}
-  figure svg{width:100%; max-width:340px; height:auto; color:var(--soft); display:block}
+  figure svg{width:100%; max-width:318px; margin:0 auto; height:auto; color:var(--soft); display:block}
   figcaption{
     font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--faint); text-align:center;
@@ -167,8 +168,8 @@
 
   /* ---- experiments: she drags it, the maths answers back ---- */
   .lab{
-    width:100%; display:flex; flex-direction:column; gap:12px;
-    border:1px solid var(--edge); border-radius:16px; padding:15px 16px 17px;
+    width:100%; display:flex; flex-direction:column; gap:10px;
+    border:1px solid var(--edge); border-radius:16px; padding:13px 14px 15px;
     background:var(--raise);
   }
   .labhead{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
@@ -182,7 +183,7 @@
   }
   .lab input[type=range]{
     -webkit-appearance:none; appearance:none; width:100%; height:30px;
-    background:transparent; cursor:grab; touch-action:pan-y;
+    background:transparent; cursor:grab; touch-action:none;
   }
   .lab input[type=range]:active{cursor:grabbing}
   .lab input[type=range]::-webkit-slider-runnable-track{
@@ -199,7 +200,7 @@
     border:3px solid var(--ground);
   }
   .lab input[type=range]:focus-visible{outline:2px solid var(--peach); outline-offset:4px}
-  .lab svg{width:100%; height:auto; display:block; color:var(--soft)}
+  .lab svg{width:100%; max-width:292px; margin:0 auto; height:auto; display:block; color:var(--soft)}
   .labout{
     display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;
     font-family:var(--num); font-size:12px; color:var(--faint);
@@ -210,9 +211,24 @@
   }
   .labnote{
     font-family:var(--voice); font-size:16.5px; line-height:1.4;
-    color:var(--soft); min-height:2.7em;
+    color:var(--soft); min-height:2em;
   }
   .labnote.aha{color:var(--mint)}
+
+  /* spot the mistake: she is the one who catches it */
+  .spot{display:flex; flex-direction:column; gap:7px; width:100%}
+  .sline{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(15px,4.2vw,18px); text-align:left;
+    background:var(--raise2); color:var(--ink);
+    border:1px solid var(--edge); border-radius:11px;
+    padding:13px 14px; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .sline:hover{border-color:var(--peach)}
+  .sline:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
+  .sline.caught{border-color:var(--mint); background:var(--glow)}
 
   /* Slicing animation: the one picture that explains what integrating IS.
      Four densities cross-fading, so you watch the slices get thin. */
@@ -253,7 +269,7 @@
   .linkline{
     font-family:var(--num); font-variant-numeric:tabular-nums;
     font-size:clamp(19px,5.4vw,24px); line-height:1.9;
-    white-space:nowrap; overflow-x:auto;
+    white-space:nowrap; overflow-x:auto; min-width:0;
   }
   .linkline.faded{font-size:clamp(16px,4.6vw,20px); color:var(--faint)}
   .linktag{
@@ -261,15 +277,18 @@
     text-transform:uppercase; color:var(--faint); display:block; margin-bottom:2px;
   }
   .tok{
-    padding:3px 4px; border-radius:6px; cursor:pointer;
-    transition:background .22s ease, box-shadow .22s ease, color .22s ease;
+    display:inline-block; padding:7px 8px; margin:0 1px; min-width:30px; text-align:center;
+    border-radius:8px; cursor:pointer; background:var(--raise2);
+    border-bottom:2px dotted var(--faint);
+    transition:background .22s ease, box-shadow .22s ease, color .22s ease, transform .14s ease;
     -webkit-tap-highlight-color:transparent;
   }
+  .tok:active{transform:scale(.94)}
   .tok.lit{background:var(--glow); box-shadow:0 0 0 1.6px var(--peach); color:var(--ink)}
   .tok:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
   .linknote{
     font-family:var(--voice); font-size:clamp(16px,4.4vw,18px); line-height:1.45;
-    color:var(--soft); min-height:2.9em;
+    color:var(--soft); min-height:2.2em;
   }
   .linknote.hint{color:var(--faint); font-family:var(--num); font-size:12px; letter-spacing:.1em; text-transform:uppercase}
 
@@ -322,9 +341,9 @@
   .opt.isit{border-color:var(--mint); box-shadow:inset 0 0 0 1px var(--mint)}
 
   .deckbar{
-    position:absolute; left:0; right:0; bottom:74px; z-index:20;
+    position:absolute; left:0; right:0; bottom:62px; z-index:20;
     display:flex; flex-direction:column; align-items:center; gap:15px;
-    padding:0 22px; pointer-events:none;
+    padding:0 22px env(safe-area-inset-bottom,0px); pointer-events:none;
   }
   .deckbar > *{pointer-events:auto}
   .dots{display:flex; gap:7px; align-items:center}
@@ -359,7 +378,7 @@
   .rail i.on{background:var(--peach); height:16px; border-radius:3px}
 
   .next{
-    position:fixed; left:14px; bottom:14px; z-index:50;
+    position:fixed; left:14px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:50;
     width:46px; height:46px; border-radius:50%;
     background:var(--raise); border:1px solid var(--edge); color:var(--soft);
     display:grid; place-items:center; cursor:pointer;
@@ -371,7 +390,7 @@
   .next svg{width:19px; height:19px; display:block}
 
   .hard{
-    position:fixed; right:14px; bottom:14px; z-index:50;
+    position:fixed; right:14px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:50;
     background:var(--raise); color:var(--soft);
     border:1px solid var(--edge); border-radius:999px;
     font-family:var(--ui); font-size:13px; padding:11px 16px; cursor:pointer;
@@ -383,7 +402,7 @@
   .sheet{
     position:fixed; inset:auto 0 0 0; z-index:60;
     background:var(--raise); border-top:1px solid var(--edge);
-    border-radius:22px 22px 0 0; padding:26px 22px 30px;
+    border-radius:22px 22px 0 0; padding:26px 22px calc(30px + env(safe-area-inset-bottom,0px));
     transform:translateY(101%); transition:transform .34s cubic-bezier(.2,.8,.3,1);
     box-shadow:0 -10px 40px var(--shade);
   }
@@ -416,13 +435,19 @@
   #starBtn.on{color:var(--butter); border-color:var(--butter)}
   #starBtn.on svg{fill:var(--butter)}
 
+  .scrim{
+    position:fixed; inset:0; z-index:59; background:rgba(0,0,0,.45);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .scrim.on{opacity:1; pointer-events:auto}
+
   .menu{
     position:fixed; inset:auto 0 0 0; z-index:66;
     background:var(--raise); border-top:1px solid var(--edge);
-    border-radius:22px 22px 0 0; padding:16px 0 20px;
+    border-radius:22px 22px 0 0; padding:16px 0 calc(20px + env(safe-area-inset-bottom,0px));
     transform:translateY(101%); transition:transform .34s cubic-bezier(.2,.8,.3,1);
     box-shadow:0 -10px 40px var(--shade);
-    max-height:78dvh; max-height:78vh; display:flex; flex-direction:column;
+    max-height:78vh; max-height:78dvh; display:flex; flex-direction:column;
   }
   .menu.up{transform:none}
   .mhead{
@@ -493,7 +518,7 @@
 
 <div class="feed" id="feed">
 
-  <section class="card">
+  <section class="card" data-id="p:hello">
     <div class="in">
       <div class="eyebrow rise">&#50616;&#45768; &middot; &#54616;&#45208;&#50473; &middot; &#52380;&#52380;&#55176;</div>
       <h1 class="rise">&#50504;&#45397;.</h1>
@@ -503,7 +528,7 @@
     <div class="hint"><span class="t-touch">swipe up</span><span class="t-mouse">scroll, or press the down arrow</span></div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:equals-sign">
     <div class="in">
       <div class="eyebrow rise">a silly fact first</div>
       <h2 class="rise">The <span class="x">=</span> sign exists because a man got bored.</h2>
@@ -515,7 +540,7 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:fairprice">
     <div class="in">
       <div class="eyebrow rise">something you already do</div>
       <h2 class="rise">You've never panicked in FairPrice.</h2>
@@ -526,7 +551,7 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:squiggles">
     <div class="in">
       <div class="eyebrow rise">what i think actually happened</div>
       <h2 class="rise">Nobody showed you what the squiggles were <i>of</i>.</h2>
@@ -536,7 +561,7 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:the-deal">
     <div class="in">
       <div class="eyebrow rise">the deal</div>
       <h2 class="rise">Three rules, and I mean them.</h2>
@@ -548,7 +573,7 @@
     </div>
   </section>
 
-  <section class="card" data-easy="Your maths paper is online. Three parts: multiple choice, fill in the blanks, and long questions. I want to show you a trick for the multiple choice part.">
+  <section class="card" data-id="p:mcq-section" data-easy="Your maths paper is online. Three parts: multiple choice, fill in the blanks, and long questions. I want to show you a trick for the multiple choice part.">
     <div class="in">
       <div class="eyebrow rise">now, the useful bit</div>
       <h2 class="rise">Your paper has a multiple choice section.</h2>
@@ -559,7 +584,7 @@
     </div>
   </section>
 
-  <section class="card" data-easy="Solving is hard. Checking is easy. Multiple choice already gives you the answer, so just test the options instead of solving.">
+  <section class="card" data-id="p:solving-vs-checking" data-easy="Solving is hard. Checking is easy. Multiple choice already gives you the answer, so just test the options instead of solving.">
     <div class="in">
       <div class="eyebrow rise">the whole idea</div>
       <h2 class="rise">Solving is hard. Checking is easy.</h2>
@@ -571,11 +596,11 @@
     </div>
   </section>
 
-  <section class="card deck" data-mcq="a" data-easy="Put each option back into the equation. If both sides land on the same number, that is your answer."></section>
+  <section class="card deck" data-id="d:a" data-mcq="a" data-easy="Put each option back into the equation. If both sides land on the same number, that is your answer."></section>
 
-  <section class="card deck" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
+  <section class="card deck" data-id="d:b" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
 
-  <section class="card" data-easy="You get a formula sheet in the exam. Loads of the questions are answered straight off it. Always read the sheet before trying to be clever.">
+  <section class="card" data-id="p:tail7" data-easy="You get a formula sheet in the exam. Loads of the questions are answered straight off it. Always read the sheet before trying to be clever.">
     <div class="in">
       <div class="eyebrow rise">okay, second trick</div>
       <h2 class="rise">Half the answers are already on your desk.</h2>
@@ -588,13 +613,13 @@
     </div>
   </section>
 
-  <section class="card deck" data-mcq="why" data-easy="Integration means chopping something into tiny slices and adding them all up. The stretchy S is an S for Sum. The + c is the starting amount you were never told."></section>
+  <section class="card deck" data-id="d:why" data-mcq="why" data-easy="Integration means chopping something into tiny slices and adding them all up. The stretchy S is an S for Sum. The + c is the starting amount you were never told."></section>
 
-  <section class="card deck" data-mcq="c" data-easy="Find the matching line on your formula sheet, then fill your own numbers into it. Add one to the power, divide by the new power, add c."></section>
+  <section class="card deck" data-id="d:c" data-mcq="c" data-easy="Find the matching line on your formula sheet, then fill your own numbers into it. Add one to the power, divide by the new power, add c."></section>
 
-  <section class="card deck" data-mcq="d" data-easy="A turning point is where the gradient is zero. Work out the gradient, put each option's x into it, and look for the one that gives zero."></section>
+  <section class="card deck" data-id="d:d" data-mcq="d" data-easy="A turning point is where the gradient is zero. Work out the gradient, put each option's x into it, and look for the one that gives zero."></section>
 
-  <section class="card" data-easy="This trick works for: solve for x, which one is the derivative or integral, is this a turning point, and dot product questions. It does not work for explain, draw, or state questions.">
+  <section class="card" data-id="p:tail8" data-easy="This trick works for: solve for x, which one is the derivative or integral, is this a turning point, and dot product questions. It does not work for explain, draw, or state questions.">
     <div class="in">
       <div class="eyebrow rise">being honest with you</div>
       <h2 class="rise">It doesn't work on everything.</h2>
@@ -611,7 +636,25 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:six-moves-intro" data-easy="Six small moves. Everything else in the module is one of these six wearing different clothes.">
+    <div class="in">
+      <div class="eyebrow rise">the other half</div>
+      <h2 class="rise">There are only six things you actually do.</h2>
+      <p class="rise">Everything on that paper, all twenty-odd lessons of it, is built out of
+        <b>six small moves</b>. Everything else is a costume.</p>
+      <p class="rise sub">One at a time, one sitting each. None of them is new to you.
+        You have just never been shown them on their own before.</p>
+    </div>
+  </section>
+
+  <section class="card deck" data-id="d:m1" data-mcq="m1" data-easy="A function is a machine. You feed it a number, something comes out."></section>
+  <section class="card deck" data-id="d:m2" data-mcq="m2" data-easy="The number outside a bracket gets multiplied by everything inside it."></section>
+  <section class="card deck" data-id="d:m3" data-mcq="m3" data-easy="The little number is which floor the x lives on. Minus means downstairs, onto the bottom of a fraction. A half means square root."></section>
+  <section class="card deck" data-id="d:m4" data-mcq="m4" data-easy="Two fractions will not add together until the bottom numbers match."></section>
+  <section class="card deck" data-id="d:m5" data-mcq="m5" data-easy="Undo in the opposite order to how it was built. Last thing on is the first thing off."></section>
+  <section class="card deck" data-id="d:m6" data-mcq="m6" data-easy="Minus a minus is a plus. And when a number moves across the equals sign, its sign flips."></section>
+
+  <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
       <h2 class="rise">You just earned marks without solving anything.</h2>
@@ -622,13 +665,13 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-id="p:tail10">
     <div class="in">
       <div class="eyebrow rise">done</div>
       <h1 class="rise">&#51096;&#54664;&#50612;.</h1>
       <p class="rise">That's the end of this one. You finished it. That counts.</p>
-      <p class="rise">Next time: the <b>six moves</b> that quietly sit inside every other question
-        on your paper. Six. That's genuinely all there are.</p>
+      <p class="rise">You have the two tricks and all six moves now. Everything left on that
+        paper is those six, wearing a different costume.</p>
       <p class="rise sub"><span class="kr">&#54868;&#51060;&#54021;</span>. Come back whenever. I'm not going anywhere.</p>
       <p class="rise sub" style="color:var(--peach)">Serene <span class="kr">&#50616;&#45768;</span> &#129382;</p>
     </div>
@@ -650,6 +693,8 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 3.6l2.6 5.3 5.8.85-4.2 4.1 1 5.75L12 16.9l-5.2 2.7 1-5.75-4.2-4.1 5.8-.85z"></path></svg>
 </button>
+
+<div class="scrim" id="scrim"></div>
 
 <div class="menu" id="menu" role="dialog" aria-label="Jump to a card">
   <div class="mhead">
@@ -784,75 +829,10 @@
            n + ' slices</text></g>';
   }
 
-  function artSlices(){
-    return fig(
-      '<svg viewBox="0 0 300 172" role="img" aria-label="A speed graph chopped into rectangles that get thinner and thinner until they fill the area under the curve">' +
-        sliceGroup(3, 'sl1') + sliceGroup(6, 'sl2') + sliceGroup(12, 'sl3') + sliceGroup(40, 'sl4') +
-        '<polyline points="' + speedCurve() + '" class="curve"/>' +
-        '<line x1="24" y1="150" x2="276" y2="150" class="axis"/>' +
-        '<text x="24" y="166" font-size="10" opacity=".6">start</text>' +
-        '<text x="276" y="166" text-anchor="end" font-size="10" opacity=".6">20 min later</text>' +
-        '<text x="24" y="46" font-size="10" opacity=".6">speed</text>' +
-      '</svg>',
-      'thinner slices, closer to the truth'
-    );
-  }
 
   /* The general formula sitting directly above her actual numbers. */
-  function artMap(){
-    return fig(
-      '<svg viewBox="0 0 300 148" role="img" aria-label="The sheet formula a x to the n lined up above your question, 3 x to the 4, showing a is 3 and n is 4">' +
-        '<defs><marker id="mm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">' +
-          '<path d="M0,1 L9,5 L0,9 z" fill="var(--faint)"/></marker></defs>' +
-
-        '<text x="34" y="22" font-size="9.5" opacity=".6">WHAT THE SHEET SAYS</text>' +
-        '<text x="34" y="52" font-size="21" fill="var(--faint)">&#8747;</text>' +
-        '<text x="60" y="52" font-size="21" fill="var(--butter)">a</text>' +
-        '<text x="84" y="52" font-size="21" fill="var(--faint)">x</text>' +
-        '<text x="100" y="40" font-size="13" fill="var(--mint)">n</text>' +
-        '<text x="122" y="52" font-size="21" fill="var(--faint)">dx</text>' +
-
-        '<line x1="66" y1="62" x2="66" y2="92" stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#mm)"/>' +
-        '<line x1="103" y1="62" x2="103" y2="92" stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#mm)"/>' +
-        '<text x="176" y="76" font-size="10" opacity=".65">a is your 3</text>' +
-        '<text x="176" y="90" font-size="10" opacity=".65">n is your 4</text>' +
-
-        '<text x="34" y="114" font-size="9.5" opacity=".6">WHAT YOU HAVE</text>' +
-        '<text x="34" y="142" font-size="21" fill="var(--soft)">&#8747;</text>' +
-        '<text x="60" y="142" font-size="21" fill="var(--butter)">3</text>' +
-        '<text x="84" y="142" font-size="21" fill="var(--peach)">x</text>' +
-        '<text x="100" y="130" font-size="13" fill="var(--mint)">4</text>' +
-        '<text x="122" y="142" font-size="21" fill="var(--soft)">dx</text>' +
-      '</svg>',
-      'same shape. just swap the letters for your numbers.'
-    );
-  }
 
   /* Why +c exists: identical curves at different heights. */
-  function artPlusC(){
-    // screen y grows downward, so the squared term is subtracted to draw a
-    // smile rather than a frown, matching the turning-point graph
-    function curveAt(base){
-      var p = [];
-      for(var x = 40; x <= 260; x += 11){
-        p.push(x + ',' + (base - 0.0028 * (x - 150) * (x - 150)).toFixed(1));
-      }
-      return p.join(' ');
-    }
-    var s = '<svg viewBox="0 0 300 180" role="img" aria-label="Three identical curves at different heights, all with the same steepness, showing what the plus c means">';
-    [74, 108, 142].forEach(function(b, i){
-      s += '<polyline points="' + curveAt(b) + '" fill="none" stroke="var(--soft)" ' +
-           'stroke-width="2" opacity="' + (i === 1 ? '1' : '.45') + '"/>';
-      // identical tangent slope on each, at x = 216
-      var y = b - 0.0028 * 66 * 66, m = -0.0056 * 66;
-      s += '<line x1="' + (216 - 26) + '" y1="' + (y - m * 26).toFixed(1) +
-           '" x2="' + (216 + 26) + '" y2="' + (y + m * 26).toFixed(1) +
-           '" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round"/>';
-    });
-    s += '<text x="150" y="172" text-anchor="middle" font-size="10.5" opacity=".7">' +
-         'same steepness. different height.</text></svg>';
-    return fig(s, 'the + c is which one you are on');
-  }
 
   /* Integration and differentiation as mirror images of one move. */
   function artMirror(){
@@ -885,42 +865,7 @@
     );
   }
 
-  function artHill(){
-    return fig(
-      '<svg viewBox="0 0 300 150" role="img" aria-label="A hill: integrating walks up it, differentiating walks down it">' +
-        '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
-          '<path d="M0,1 L9,5 L0,9 z" fill="var(--peach)"/></marker>' +
-          '<marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
-          '<path d="M0,1 L9,5 L0,9 z" fill="var(--mint)"/></marker></defs>' +
-        '<path d="M20,124 C90,124 96,32 150,32 C204,32 210,124 280,124" class="curve"/>' +
-        '<path d="M52,116 C78,112 92,66 118,46" fill="none" stroke="var(--peach)" stroke-width="2.2" marker-end="url(#ah)"/>' +
-        '<path d="M182,46 C208,66 222,112 248,116" fill="none" stroke="var(--mint)" stroke-width="2.2" marker-end="url(#ah2)"/>' +
-        '<text x="24" y="143" font-size="11.5" fill="var(--peach)">integrate</text>' +
-        '<text x="276" y="143" font-size="11.5" text-anchor="end" fill="var(--mint)">differentiate</text>' +
-      '</svg>',
-      'same hill. down is always easier.'
-    );
-  }
 
-  function artPower(){
-    return fig(
-      '<svg viewBox="0 0 300 172" role="img" aria-label="The power rule: 3x to the 5 becomes 15x to the 4, because the 5 comes down to multiply and the power loses one">' +
-        '<defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
-          '<path d="M0,1 L9,5 L0,9 z" fill="var(--butter)"/></marker></defs>' +
-        '<text x="133" y="52" font-size="28" fill="var(--soft)">3</text>' +
-        '<text x="152" y="52" font-size="28" fill="var(--peach)">x</text>' +
-        '<text x="171" y="37" font-size="18" fill="var(--mint)">5</text>' +
-        '<path d="M180,31 C220,45 216,94 143,105" fill="none" stroke="var(--butter)" ' +
-          'stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah3)"/>' +
-        '<text x="128" y="136" font-size="28" fill="var(--mint)">15</text>' +
-        '<text x="163" y="136" font-size="28" fill="var(--peach)">x</text>' +
-        '<text x="182" y="121" font-size="18" fill="var(--mint)">4</text>' +
-        '<text x="103" y="159" text-anchor="middle" font-size="11" fill="var(--butter)">5 &#215; 3 = 15</text>' +
-        '<text x="207" y="159" text-anchor="middle" font-size="11" fill="var(--mint)">5 - 1 = 4</text>' +
-      '</svg>',
-      'it comes down, and loses one'
-    );
-  }
 
   /* One step per screen. Swipe sideways through a question, swipe up to leave it.
      A deck can never outgrow the phone, because no step ever stacks on another. */
@@ -1016,6 +961,113 @@
       draw();
     }
   };
+
+  /* The vending machine. She picks the number that goes in. */
+  LABS.machine = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var found = false;
+
+    function draw(){
+      var x = +range.value, y = 2 * x - 8;
+      var hit = (y === 0);
+      if(hit) found = true;
+      svg.innerHTML =
+        '<rect x="70" y="24" width="160" height="96" rx="14" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+        '<text x="150" y="60" text-anchor="middle" font-size="12" opacity=".6">THE MACHINE</text>' +
+        '<text x="150" y="92" text-anchor="middle" font-size="20" fill="var(--soft)">2x - 8</text>' +
+        '<text x="150" y="18" text-anchor="middle" font-size="13" fill="var(--butter)">you put in ' + x + '</text>' +
+        '<line x1="150" y1="120" x2="150" y2="140" stroke="currentColor" stroke-width="1.4"/>' +
+        '<text x="150" y="164" text-anchor="middle" font-size="26" fill="' +
+          (hit ? "var(--mint)" : "var(--peach)") + '">' + y + '</text>';
+      out.textContent = x;
+      total.textContent = y;
+      if(hit){
+        note.textContent = "Zero. You just solved 2x - 8 = 0 without being told that is what you were doing.";
+        note.className = "labnote aha";
+      } else if(found){
+        note.textContent = "Move it back to find it again if you like.";
+        note.className = "labnote";
+      } else {
+        note.textContent = "Try to make the bottom number land on nothing at all.";
+        note.className = "labnote";
+      }
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* The lift. The only drag in the module that changes the SHAPE of the symbol. */
+  var FLOORS = [
+    {p:"-1",  plain:"1 / x",       floor:"basement",     say:"Down in the basement. A minus power means it lives underneath, on the bottom of a fraction."},
+    {p:"0",   plain:"1",           floor:"ground",       say:"Ground floor. Anything to the power nothing is just 1. Every single time."},
+    {p:"1/2", plain:"&#8730;x",    floor:"half landing", say:"Half a floor up. Half a power is a square root."},
+    {p:"1",   plain:"x",           floor:"first",        say:"First floor. A lonely x has a quiet 1 up there that nobody writes."},
+    {p:"2",   plain:"x &#215; x",  floor:"second",       say:"Second floor. Two of them multiplied together."}
+  ];
+
+  LABS.dial = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+
+    function draw(){
+      var i = +range.value, f = FLOORS[i], s = "";
+      for(var k = FLOORS.length - 1; k >= 0; k--){
+        var y = 26 + (FLOORS.length - 1 - k) * 30, on = (k === i);
+        s += '<line x1="78" y1="' + y + '" x2="196" y2="' + y + '" stroke="currentColor" stroke-width="1" opacity="' + (on ? ".5" : ".16") + '"/>' +
+             '<text x="4" y="' + (y - 5) + '" font-size="10" opacity="' + (on ? ".85" : ".3") + '">' + FLOORS[k].floor + '</text>';
+        if(on){
+          s += '<circle cx="126" cy="' + (y - 9) + '" r="12" fill="var(--glow)" stroke="var(--peach)" stroke-width="1.6"/>' +
+               '<text x="126" y="' + (y - 5) + '" text-anchor="middle" font-size="13" fill="var(--peach)">x</text>' +
+               '<text x="142" y="' + (y - 12) + '" font-size="9" fill="var(--mint)">' + f.p + '</text>';
+        }
+      }
+      s += '<text x="206" y="' + (26 + (FLOORS.length - 1 - i) * 30 - 4) + '" font-size="16" fill="var(--soft)">= ' + f.plain + '</text>';
+      svg.innerHTML = s;
+      out.innerHTML = "x<sup class='p'>" + f.p + "</sup>";
+      total.innerHTML = f.plain;
+      note.innerHTML = f.say;
+      note.className = "labnote" + (i === 0 || i === 2 ? " aha" : "");
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* Spot the mistake. She catches it. Nothing buzzes, nothing is marked. */
+  function spot(lines, badIndex, why){
+    var s = '<div class="spot" data-spot="' + badIndex + '">';
+    lines.forEach(function(l, i){
+      s += '<button type="button" class="sline" data-i="' + i + '">' + l + '</button>';
+    });
+    return s + '<div class="labnote" data-note>' + "" + '</div>' +
+           '<span hidden data-why="' + why + '"></span></div>';
+  }
+
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest(".sline");
+    if(!b) return;
+    var wrap = b.closest(".spot");
+    var bad = +wrap.getAttribute("data-spot");
+    var i = +b.getAttribute("data-i");
+    var note = wrap.querySelector("[data-note]");
+    Array.prototype.forEach.call(wrap.querySelectorAll(".sline"), function(n){
+      n.classList.remove("caught");
+    });
+    if(i === bad){
+      b.classList.add("caught");
+      note.innerHTML = wrap.querySelector("[data-why]").getAttribute("data-why");
+      note.className = "labnote aha";
+    } else {
+      note.textContent = "That line is fine. Keep looking.";
+      note.className = "labnote";
+    }
+  });
 
   function lab(kind, label, min, max, val, outLabel, unit){
     return '<div class="lab" data-lab="' + kind + '">' +
@@ -1121,6 +1173,105 @@
           verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
                          : 'Left\'s '+L+', right\'s '+R+'. See-saw tips, so nope. Nothing lost, try another.' };
       }
+    },
+
+    /* ---- the six moves. short, named, never numbered ---- */
+
+    m1: {
+      eyebrow:'move one of six', title:'Putting a number in.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Start with the smallest thing in the whole module, because everything else is built on it.'},
+        {aha:['think of it like','A vending machine. You put a coin in, something comes out. <strong>f(x)</strong> is the machine. <strong>x</strong> is whatever you feed it.']},
+        {say:'This one is called 2x - 8. Feed it a number and see what falls out.',
+         art:function(){ return lab('machine','you put in',-2,10,-2,'out comes','') ; }},
+        {say:'When you found the number that made it come out as nothing, you solved an equation. Nobody mentioned it at the time.'},
+        {say:'This shows up everywhere later: putting an x back into a gradient, putting two numbers into an integral, putting a point in to find c.'},
+        {say:'That is the whole move. One down.'}
+      ]
+    },
+
+    m2: {
+      eyebrow:'move two of six', title:'Opening brackets.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Two songs on a playlist, and you want the same three effects on both of them.'},
+        {aha:['so','You do not apply the effects to "the playlist". You apply them to each song. <strong>3(p + g)</strong> means 3 of the p and 3 of the g.']},
+        {say:'The number outside gets handed to everything inside. Nobody is left out.',
+         art:function(){ return linked([
+            {tag:'this', html:N+'3'+E+O+'('+E+X+'p'+E+O+' + '+E+X+'g'+E+O+')'+E},
+            {tag:'is the same as', html:N+'3'+E+X+'p'+E+O+' + '+E+N+'3'+E+X+'g'+E}
+          ]); }},
+        {say:'Where it turns up: you cannot differentiate (3x' + pw('2') + ' + 5)(x' + pw('2') + ' + 1) until you have opened it. That exact one is on your paper.'},
+        {say:'Two down.'}
+      ]
+    },
+
+    m3: {
+      eyebrow:'move three of six', title:'Powers and roots.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'This is the one that unlocks the most, so it gets the longest go.'},
+        {aha:['think of it like','A lift. The little number up top is <strong>which floor the x is living on</strong>.']},
+        {say:'Take it up and down and watch what it turns into.',
+         art:function(){ return lab('dial','the floor',0,4,4,'which means','') ; }},
+        {say:'The basement is the one worth remembering. A minus power is not a minus number. It just means the x moved downstairs, onto the bottom of a fraction.'},
+        {say:'Which is why 6/x can be written 6x' + pw('-1') + '. Same thing, different floor.'},
+        {say:'None of those are printed on your formula sheet, so they live in your head. There are fourteen things like that in the whole module and you already have three of them.'},
+        {say:'Three down, and that was the big one.'}
+      ]
+    },
+
+    m4: {
+      eyebrow:'move four of six', title:'Fractions.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Two tracks at different tempos. They will not mix until you beat-match them.'},
+        {aha:['and that is all a denominator is','The bottom number is the tempo. Two fractions will not add together until their bottoms match. Once they do, they slide straight into one.']},
+        {say:'Same tempo, so they mix.',
+         art:function(){ return linked([
+            {tag:'these two', html:N+'1'+E+O+'/'+E+N+'4'+E+O+'  +  '+E+N+'1'+E+O+'/'+E+N+'4'+E},
+            {tag:'become', html:N+'2'+E+O+'/'+E+N+'4'+E}
+          ]); }},
+        {say:'Different tempos, so one of them has to change first. 1/2 becomes 2/4, and now it will mix.'},
+        {say:'Splitting one fraction back into two is the same move run backwards. That is a whole topic later, and it is this.'},
+        {say:'Four down.'}
+      ]
+    },
+
+    m5: {
+      eyebrow:'move five of six', title:'Getting x on its own.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Taking your makeup off.'},
+        {aha:['the whole rule','<strong>Last thing on is the first thing off.</strong> You undo in the opposite order to how it was put on.']},
+        {say:'So with 3x + 7 = 22, the +7 went on last. It comes off first.',
+         art:function(){ return linked([
+            {tag:'take the 7 off both sides', html:N+'3'+E+X+'x'+E+O+' = '+E+N+'15'+E},
+            {tag:'then undo the times 3', html:X+'x'+E+O+' = '+E+N+'5'+E}
+          ]); }},
+        {say:'Whatever you do to one side you do to the other, because the = is a see-saw and it has to stay level.'},
+        {say:'You will use this to rearrange 3y = 6x + 24 into something that tells you the steepness, and to dig constants out of growth equations.'},
+        {say:'Five down. One to go.'}
+      ]
+    },
+
+    m6: {
+      eyebrow:'move six of six', title:'Signs.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'The quietest one. Nothing here is difficult, which is exactly why it costs people marks.'},
+        {aha:['two minuses','Money out, then that money given back. A refund of a refund leaves you up. <strong>Minus a minus is a plus.</strong>']},
+        {say:'Here is a worked line with one slip in it. Have a look and tap where it goes wrong.',
+         art:function(){ return spot([
+            '2(x - 3) = 10',
+            '2x - 6 = 10',
+            '2x = 10 - 6',
+            'x = 2'
+          ], 2, 'The 6 was being taken away, so it moves across as a plus. It should be 2x = 10 + 6, which makes x = 8. Everything else was right.'); }},
+        {say:'You caught it. That is the same thing markers are doing when they read your working.'},
+        {say:'Six down. That is the whole toolkit, and everything after this is those six wearing different clothes.'}
+      ]
     },
 
     why: {
@@ -1262,8 +1413,19 @@
   /* Remember where she stopped. Five minute bursts on a phone means she must
      never have to re-swipe her way back to where she was. Nothing leaves the
      device: no account, no server, just one line in localStorage. */
-  var STORE = "eonni.backwards.v1";
+  var STORE = "eonni.pos.v2";
   var restoring = false;
+
+  /* Keyed on a stable card id, never on its position. Adding a lesson used to
+     silently repoint every saved star at whatever moved into that slot. */
+  function cardId(i){
+    var c = cards[i];
+    return (c && c.getAttribute("data-id")) || ("i:" + i);
+  }
+  function indexOfId(id){
+    for(var i = 0; i < cards.length; i++){ if(cardId(i) === id) return i; }
+    return -1;
+  }
 
   function saveSpot(){
     if(restoring) return;
@@ -1271,14 +1433,18 @@
       if(current === 0){ window.localStorage.removeItem(STORE); return; }  // back at the top: nothing to resume
       var d = cards[current] && cards[current]._deck;
       window.localStorage.setItem(STORE, JSON.stringify({
-        c: current, s: d ? d.at() : 0
+        id: cardId(current), s: d ? d.at() : 0
       }));
     }catch(e){ /* private mode: carry on without memory */ }
   }
 
   function loadSpot(){
-    try{ return JSON.parse(window.localStorage.getItem(STORE) || "null"); }
-    catch(e){ return null; }
+    try{
+      var v = JSON.parse(window.localStorage.getItem(STORE) || "null");
+      if(!v || !v.id) return null;
+      var i = indexOfId(v.id);
+      return i > 0 ? {c: i, s: v.s || 0} : null;
+    }catch(e){ return null; }
   }
 
   function forgetSpot(){
@@ -1483,7 +1649,7 @@
   }, {passive:true});
 
   feed.addEventListener("wheel", function(e){
-    if(sheet.classList.contains("up")) return;
+    if(sheet.classList.contains("up") || menu.classList.contains("up")) return;
     if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;     // let sideways wheels through
     e.preventDefault();
     if(locked) return;
@@ -1494,7 +1660,8 @@
   document.addEventListener("keydown", function(e){
     if(e.key === "Escape"){
       sheet.classList.remove("up");
-      document.getElementById("menu").classList.remove("up");
+      menu.classList.remove("up");
+      syncScrim();
       return;
     }
     if(sheet.classList.contains("up")) return;
@@ -1521,7 +1688,7 @@
       card.classList.add("on");
       current = idx;
       if(!locked) target = idx;
-      nextBtn.hidden = (idx === cards.length - 1);
+      nextBtn.hidden = (idx === cards.length - 1) || !!card._deck;   // decks have their own button
       Array.prototype.forEach.call(rail.children, function(d,k){ d.classList.toggle("on", k === idx); });
       cards.forEach(function(c,k){ if(k !== idx && c._deck) c._deck.stop(); });
       if(card._begin && !begun[idx]){ begun[idx] = true; card._begin(); }
@@ -1538,20 +1705,25 @@
     var c = cards[current];
     sheetText.textContent = (c && c.getAttribute("data-easy")) || FALLBACK;
     sheet.classList.add("up");
+    syncScrim();
   });
   document.getElementById("sheetClose").addEventListener("click", function(){
     sheet.classList.remove("up");
+    syncScrim();
   });
 
   /* ---------------- stars and the jump list ---------------- */
-  var STARS = "eonni.backwards.stars";
+  var STARS = "eonni.stars.v2";
 
-  function getStars(){
+  function getStarIds(){
     try{ return JSON.parse(window.localStorage.getItem(STARS) || "[]"); }
     catch(e){ return []; }
   }
-  function setStars(a){
+  function setStarIds(a){
     try{ window.localStorage.setItem(STARS, JSON.stringify(a)); }catch(e){}
+  }
+  function getStars(){                       // as indices, for drawing
+    return getStarIds().map(indexOfId).filter(function(i){ return i >= 0; });
   }
 
   var LABELS = cards.map(function(c, i){
@@ -1569,9 +1741,9 @@
   }
 
   starBtn.addEventListener("click", function(){
-    var a = getStars(), i = a.indexOf(current);
-    if(i === -1) a.push(current); else a.splice(i, 1);
-    setStars(a);
+    var a = getStarIds(), id = cardId(current), i = a.indexOf(id);
+    if(i === -1) a.push(id); else a.splice(i, 1);
+    setStarIds(a);
     syncStar();
   });
 
@@ -1606,15 +1778,27 @@
     cards.forEach(function(c, i){ mlist.appendChild(row(i, stars)); });
   }
 
+  var scrim = document.getElementById("scrim");
+  function anyPanelOpen(){
+    return sheet.classList.contains("up") || menu.classList.contains("up");
+  }
+  function syncScrim(){ scrim.classList.toggle("on", anyPanelOpen()); }
+  scrim.addEventListener("click", function(){
+    sheet.classList.remove("up");
+    menu.classList.remove("up");
+    syncScrim();
+  });
+
   function openMenu(){
     sheet.classList.remove("up");
     document.getElementById("toast").classList.remove("show");
     buildMenu();
     menu.classList.add("up");
+    syncScrim();
     var now = mlist.querySelector(".mitem.now");
     if(now) now.scrollIntoView({block:"center"});
   }
-  function closeMenu(){ menu.classList.remove("up"); }
+  function closeMenu(){ menu.classList.remove("up"); syncScrim(); }
 
   document.getElementById("menuBtn").addEventListener("click", openMenu);
   document.getElementById("menuClose").addEventListener("click", closeMenu);
