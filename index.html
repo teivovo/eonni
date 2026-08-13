@@ -165,6 +165,70 @@
   .drop{stroke:var(--peach); stroke-width:1.4; stroke-dasharray:3 3; opacity:.65}
   .drop.yes{stroke:var(--mint)}
 
+  /* ---- experiments: she drags it, the maths answers back ---- */
+  .lab{
+    width:100%; display:flex; flex-direction:column; gap:12px;
+    border:1px solid var(--edge); border-radius:16px; padding:15px 16px 17px;
+    background:var(--raise);
+  }
+  .labhead{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+  .labk{
+    font-family:var(--num); font-size:10px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .labv{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:21px; color:var(--peach);
+  }
+  .lab input[type=range]{
+    -webkit-appearance:none; appearance:none; width:100%; height:30px;
+    background:transparent; cursor:grab; touch-action:pan-y;
+  }
+  .lab input[type=range]:active{cursor:grabbing}
+  .lab input[type=range]::-webkit-slider-runnable-track{
+    height:5px; border-radius:3px; background:var(--edge);
+  }
+  .lab input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:26px; height:26px; margin-top:-11px;
+    border-radius:50%; background:var(--peach); border:3px solid var(--ground);
+    box-shadow:0 2px 8px var(--shade);
+  }
+  .lab input[type=range]::-moz-range-track{height:5px; border-radius:3px; background:var(--edge)}
+  .lab input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:var(--peach);
+    border:3px solid var(--ground);
+  }
+  .lab input[type=range]:focus-visible{outline:2px solid var(--peach); outline-offset:4px}
+  .lab svg{width:100%; height:auto; display:block; color:var(--soft)}
+  .labout{
+    display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;
+    font-family:var(--num); font-size:12px; color:var(--faint);
+  }
+  .labout b{
+    font-size:20px; color:var(--mint); font-weight:400;
+    font-variant-numeric:tabular-nums;
+  }
+  .labnote{
+    font-family:var(--voice); font-size:16.5px; line-height:1.4;
+    color:var(--soft); min-height:2.7em;
+  }
+  .labnote.aha{color:var(--mint)}
+
+  /* Slicing animation: the one picture that explains what integrating IS.
+     Four densities cross-fading, so you watch the slices get thin. */
+  .slice{fill:var(--peach); fill-opacity:.20; stroke:var(--peach); stroke-width:.7; stroke-opacity:.55}
+  .sl1,.sl2,.sl3,.sl4{animation-duration:10s; animation-iteration-count:infinite; animation-timing-function:ease-in-out}
+  .sl1{animation-name:slA} .sl2{animation-name:slB} .sl3{animation-name:slC} .sl4{animation-name:slD}
+  @keyframes slA{0%,17%{opacity:1} 25%,100%{opacity:0}}
+  @keyframes slB{0%,17%{opacity:0} 25%,42%{opacity:1} 50%,100%{opacity:0}}
+  @keyframes slC{0%,42%{opacity:0} 50%,67%{opacity:1} 75%,100%{opacity:0}}
+  @keyframes slD{0%,67%{opacity:0} 75%,100%{opacity:1}}
+  .slcount{font-size:10px; fill:var(--peach)}
+  @media (prefers-reduced-motion:reduce){
+    .sl1,.sl2,.sl3{display:none}
+    .sl4{animation:none; opacity:1}
+  }
+
   /* "it is printed on your sheet" -- the single most useful habit in the module */
   .fsheet{
     border:1px dashed var(--edge); border-radius:12px; padding:15px 16px;
@@ -183,12 +247,44 @@
     padding:9px 10px; margin:-3px -4px;
   }
 
+  /* Tap a box, the matching part of the formula lights up. Makes the mapping
+     something she does with her thumb rather than something I assert. */
+  .linkwrap{display:flex; flex-direction:column; gap:14px; width:100%}
+  .linkline{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(19px,5.4vw,24px); line-height:1.9;
+    white-space:nowrap; overflow-x:auto;
+  }
+  .linkline.faded{font-size:clamp(16px,4.6vw,20px); color:var(--faint)}
+  .linktag{
+    font-family:var(--num); font-size:9.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint); display:block; margin-bottom:2px;
+  }
+  .tok{
+    padding:3px 4px; border-radius:6px; cursor:pointer;
+    transition:background .22s ease, box-shadow .22s ease, color .22s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tok.lit{background:var(--glow); box-shadow:0 0 0 1.6px var(--peach); color:var(--ink)}
+  .tok:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
+  .linknote{
+    font-family:var(--voice); font-size:clamp(16px,4.4vw,18px); line-height:1.45;
+    color:var(--soft); min-height:2.9em;
+  }
+  .linknote.hint{color:var(--faint); font-family:var(--num); font-size:12px; letter-spacing:.1em; text-transform:uppercase}
+
   /* park every given number in a labelled box before touching a formula */
   .boxes{display:flex; gap:9px; flex-wrap:wrap}
   .box{
     border:1px solid var(--edge); border-radius:11px; padding:9px 14px;
     background:var(--raise2); text-align:center; min-width:64px;
+    cursor:pointer; font:inherit;
+    transition:border-color .2s ease, background .2s ease, transform .16s ease;
+    -webkit-tap-highlight-color:transparent;
   }
+  .box:active{transform:scale(.97)}
+  .box.lit{border-color:var(--peach); background:var(--glow)}
+  .box:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
   .box .k{
     display:block; font-family:var(--num); font-size:10px; letter-spacing:.16em;
     text-transform:uppercase; color:var(--faint);
@@ -417,7 +513,9 @@
     </div>
   </section>
 
-  <section class="card deck" data-mcq="c" data-easy="Differentiate each option. Bring the little number down as a multiplier, then reduce it by one. Whichever gives back 3x to the power 4 is the answer."></section>
+  <section class="card deck" data-mcq="why" data-easy="Integration means chopping something into tiny slices and adding them all up. The stretchy S is an S for Sum. The + c is the starting amount you were never told."></section>
+
+  <section class="card deck" data-mcq="c" data-easy="Find the matching line on your formula sheet, then fill your own numbers into it. Add one to the power, divide by the new power, add c."></section>
 
   <section class="card deck" data-mcq="d" data-easy="A turning point is where the gradient is zero. Work out the gradient, put each option's x into it, and look for the one that gives zero."></section>
 
@@ -564,6 +662,101 @@
     return s + '</div>';
   }
 
+  /* ---- the WHY pictures ---- */
+
+  function speedY(t){ return 150 - (0.35 + 0.5 * Math.sin(Math.PI * t)) * 100; }
+
+  function speedCurve(){
+    var p = [];
+    for(var i = 0; i <= 24; i++){
+      var t = i / 24;
+      p.push((30 + t * 240).toFixed(1) + ',' + speedY(t).toFixed(1));
+    }
+    return p.join(' ');
+  }
+
+  function sliceGroup(n, cls){
+    var w = 240 / n, s = '';
+    for(var i = 0; i < n; i++){
+      var y = speedY((i + 0.5) / n);
+      s += '<rect x="' + (30 + i * w).toFixed(1) + '" y="' + y.toFixed(1) +
+           '" width="' + Math.max(w - 0.8, 0.8).toFixed(1) + '" height="' + (150 - y).toFixed(1) +
+           '" class="slice"/>';
+    }
+    return '<g class="' + cls + '">' + s + '<text x="270" y="26" text-anchor="end" class="slcount">' +
+           n + ' slices</text></g>';
+  }
+
+  function artSlices(){
+    return fig(
+      '<svg viewBox="0 0 300 172" role="img" aria-label="A speed graph chopped into rectangles that get thinner and thinner until they fill the area under the curve">' +
+        sliceGroup(3, 'sl1') + sliceGroup(6, 'sl2') + sliceGroup(12, 'sl3') + sliceGroup(40, 'sl4') +
+        '<polyline points="' + speedCurve() + '" class="curve"/>' +
+        '<line x1="24" y1="150" x2="276" y2="150" class="axis"/>' +
+        '<text x="24" y="166" font-size="10" opacity=".6">start</text>' +
+        '<text x="276" y="166" text-anchor="end" font-size="10" opacity=".6">20 min later</text>' +
+        '<text x="24" y="46" font-size="10" opacity=".6">speed</text>' +
+      '</svg>',
+      'thinner slices, closer to the truth'
+    );
+  }
+
+  /* The general formula sitting directly above her actual numbers. */
+  function artMap(){
+    return fig(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="The sheet formula a x to the n lined up above your question, 3 x to the 4, showing a is 3 and n is 4">' +
+        '<defs><marker id="mm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--faint)"/></marker></defs>' +
+
+        '<text x="34" y="22" font-size="9.5" opacity=".6">WHAT THE SHEET SAYS</text>' +
+        '<text x="34" y="52" font-size="21" fill="var(--faint)">&#8747;</text>' +
+        '<text x="60" y="52" font-size="21" fill="var(--butter)">a</text>' +
+        '<text x="84" y="52" font-size="21" fill="var(--faint)">x</text>' +
+        '<text x="100" y="40" font-size="13" fill="var(--mint)">n</text>' +
+        '<text x="122" y="52" font-size="21" fill="var(--faint)">dx</text>' +
+
+        '<line x1="66" y1="62" x2="66" y2="92" stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#mm)"/>' +
+        '<line x1="103" y1="62" x2="103" y2="92" stroke="var(--faint)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#mm)"/>' +
+        '<text x="176" y="76" font-size="10" opacity=".65">a is your 3</text>' +
+        '<text x="176" y="90" font-size="10" opacity=".65">n is your 4</text>' +
+
+        '<text x="34" y="114" font-size="9.5" opacity=".6">WHAT YOU HAVE</text>' +
+        '<text x="34" y="142" font-size="21" fill="var(--soft)">&#8747;</text>' +
+        '<text x="60" y="142" font-size="21" fill="var(--butter)">3</text>' +
+        '<text x="84" y="142" font-size="21" fill="var(--peach)">x</text>' +
+        '<text x="100" y="130" font-size="13" fill="var(--mint)">4</text>' +
+        '<text x="122" y="142" font-size="21" fill="var(--soft)">dx</text>' +
+      '</svg>',
+      'same shape. just swap the letters for your numbers.'
+    );
+  }
+
+  /* Why +c exists: identical curves at different heights. */
+  function artPlusC(){
+    // screen y grows downward, so the squared term is subtracted to draw a
+    // smile rather than a frown, matching the turning-point graph
+    function curveAt(base){
+      var p = [];
+      for(var x = 40; x <= 260; x += 11){
+        p.push(x + ',' + (base - 0.0028 * (x - 150) * (x - 150)).toFixed(1));
+      }
+      return p.join(' ');
+    }
+    var s = '<svg viewBox="0 0 300 180" role="img" aria-label="Three identical curves at different heights, all with the same steepness, showing what the plus c means">';
+    [74, 108, 142].forEach(function(b, i){
+      s += '<polyline points="' + curveAt(b) + '" fill="none" stroke="var(--soft)" ' +
+           'stroke-width="2" opacity="' + (i === 1 ? '1' : '.45') + '"/>';
+      // identical tangent slope on each, at x = 216
+      var y = b - 0.0028 * 66 * 66, m = -0.0056 * 66;
+      s += '<line x1="' + (216 - 26) + '" y1="' + (y - m * 26).toFixed(1) +
+           '" x2="' + (216 + 26) + '" y2="' + (y + m * 26).toFixed(1) +
+           '" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round"/>';
+    });
+    s += '<text x="150" y="172" text-anchor="middle" font-size="10.5" opacity=".7">' +
+         'same steepness. different height.</text></svg>';
+    return fig(s, 'the + c is which one you are on');
+  }
+
   /* Integration and differentiation as mirror images of one move. */
   function artMirror(){
     return fig(
@@ -634,6 +827,157 @@
 
   /* One step per screen. Swipe sideways through a question, swipe up to leave it.
      A deck can never outgrow the phone, because no step ever stacks on another. */
+  /* ================= hands-on bits =================
+     She drags, the maths answers back. No instructions printed anywhere:
+     things that can be touched are shaped like things that can be touched. */
+
+  function speedAt(t){ return 20 + 40 * Math.sin(Math.PI * t); }   // km/h
+  function speedSY(s){ return 150 - (s / 60) * 105; }
+  var TRUE_KM = (1 / 3) * (20 + 40 * 2 / Math.PI);                  // about 15.15
+
+  var LABS = {
+
+    slices: function(root){
+      var range = root.querySelector("input");
+      var out   = root.querySelector("[data-out]");
+      var total = root.querySelector("[data-total]");
+      var note  = root.querySelector("[data-note]");
+      var svg   = root.querySelector("svg");
+      var best  = 0;
+
+      function draw(){
+        var n = +range.value, s = "", sum = 0, w = 240 / n;
+        for(var i = 0; i < n; i++){
+          var sp = speedAt((i + 0.5) / n), y = speedSY(sp);
+          sum += sp * (1 / 3) / n;
+          s += '<rect x="' + (30 + i * w).toFixed(1) + '" y="' + y.toFixed(1) +
+               '" width="' + Math.max(w - 0.7, 0.7).toFixed(1) + '" height="' + (150 - y).toFixed(1) +
+               '" class="slice"/>';
+        }
+        var p = [];
+        for(var k = 0; k <= 40; k++){
+          var t = k / 40;
+          p.push((30 + t * 240).toFixed(1) + "," + speedSY(speedAt(t)).toFixed(1));
+        }
+        svg.innerHTML = s +
+          '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+          '<line x1="24" y1="150" x2="276" y2="150" class="axis"/>' +
+          '<text x="24" y="44" font-size="10" opacity=".6">speed</text>' +
+          '<text x="276" y="166" text-anchor="end" font-size="10" opacity=".6">20 min later</text>';
+        out.textContent = n;
+        total.textContent = sum.toFixed(2);
+        best = Math.max(best, n);
+        if(best >= 30){
+          note.textContent = "It stopped moving. However thin you slice it now, it settles on the same number. That number is the answer, and finding it is what integrating does.";
+          note.className = "labnote aha";
+        } else if(best >= 10){
+          note.textContent = "Keep going. Watch what the total does.";
+          note.className = "labnote";
+        } else {
+          note.textContent = "Fat slices poke out over the curve, so the total is a guess.";
+          note.className = "labnote";
+        }
+      }
+      range.addEventListener("input", draw);
+      draw();
+    },
+
+    shift: function(root){
+      var range = root.querySelector("input");
+      var out   = root.querySelector("[data-out]");
+      var slope = root.querySelector("[data-total]");
+      var note  = root.querySelector("[data-note]");
+      var svg   = root.querySelector("svg");
+      var moves = 0;
+
+      function sx(x){ return 150 + x * 40; }
+      function sy(y){ return 155 - (y + 3) * 8.333; }
+
+      function draw(){
+        var c = +range.value / 10, p = [];
+        for(var i = -30; i <= 30; i++){
+          var x = i / 10;
+          p.push(sx(x).toFixed(1) + "," + sy(x * x + c).toFixed(1));
+        }
+        var tx = 1.5, ty = tx * tx + c, m = 2 * tx;
+        var x1 = sx(tx - 1), y1 = sy(ty - m), x2 = sx(tx + 1), y2 = sy(ty + m);
+        svg.innerHTML =
+          '<line x1="30" y1="' + sy(0).toFixed(1) + '" x2="270" y2="' + sy(0).toFixed(1) + '" class="axis"/>' +
+          '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+          '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) +
+          '" y2="' + y2.toFixed(1) + '" class="tan flat"/>' +
+          '<circle cx="' + sx(tx).toFixed(1) + '" cy="' + sy(ty).toFixed(1) + '" r="5.5" class="dot pick yes"/>';
+        out.textContent = (c > 0 ? "+" : "") + c.toFixed(1);
+        slope.textContent = m.toFixed(2);
+        moves++;
+        if(moves > 5){
+          note.textContent = "The whole curve slides up and down. The green line never changes its angle. That is the point: c moves the height and nothing else, which is exactly why it goes missing when you differentiate.";
+          note.className = "labnote aha";
+        }
+      }
+      range.addEventListener("input", draw);
+      draw();
+    }
+  };
+
+  function lab(kind, label, min, max, val, outLabel, unit){
+    return '<div class="lab" data-lab="' + kind + '">' +
+      '<div class="labhead"><span class="labk">' + label + '</span>' +
+      '<span class="labv" data-out>' + val + '</span></div>' +
+      '<input type="range" min="' + min + '" max="' + max + '" value="' + val + '">' +
+      '<svg viewBox="0 0 300 172" role="img" aria-label="' + label + ' experiment"></svg>' +
+      '<div class="labout"><span>' + outLabel + '</span><b data-total>0</b><span>' + unit + '</span></div>' +
+      '<div class="labnote" data-note></div>' +
+    '</div>';
+  }
+
+  /* Tap a piece, its twin lights up and explains itself. */
+  function linked(rows, boxRow){
+    var s = '<div class="linkwrap">';
+    rows.forEach(function(r){
+      s += '<div>' + (r.tag ? '<span class="linktag">' + r.tag + '</span>' : "") +
+           '<div class="linkline' + (r.faded ? " faded" : "") + '">' + r.html + '</div></div>';
+    });
+    if(boxRow){
+      s += '<div class="boxes">';
+      boxRow.forEach(function(b){
+        s += '<button type="button" class="box" data-link="' + b[0] + '"' +
+             (b[3] ? ' data-note-text="' + b[3] + '"' : "") + '>' +
+             '<span class="k">' + b[1] + '</span><span class="v">' + b[2] + '</span></button>';
+      });
+      s += '</div>';
+    }
+    return s + '<div class="linknote" data-note></div></div>';
+  }
+
+  function tok(key, html, note){
+    return '<span class="tok" data-link="' + key + '" tabindex="0"' +
+           (note ? ' data-note-text="' + note + '"' : "") + '>' + html + '</span>';
+  }
+
+  document.addEventListener("click", function(e){
+    var t = e.target.closest && e.target.closest("[data-link]");
+    if(!t) return;
+    var wrap = t.closest(".linkwrap");
+    if(!wrap) return;
+    var key = t.getAttribute("data-link");
+    Array.prototype.forEach.call(wrap.querySelectorAll("[data-link]"), function(n){
+      n.classList.toggle("lit", n.getAttribute("data-link") === key);
+    });
+    var note = wrap.querySelector("[data-note]");
+    var src = wrap.querySelector("[data-link='" + key + "'][data-note-text]");
+    if(note && src) note.innerHTML = src.getAttribute("data-note-text");
+  });
+
+  function initInteractive(root){
+    Array.prototype.forEach.call(root.querySelectorAll("[data-lab]"), function(el){
+      if(el._ready) return;
+      el._ready = true;
+      var fn = LABS[el.getAttribute("data-lab")];
+      if(fn) fn(el);
+    });
+  }
+
   var DECKS = {
 
     a: {
@@ -682,8 +1026,35 @@
       }
     },
 
+    why: {
+      eyebrow:'no maths in this one', title:'What integration actually is.',
+      q: null,
+      auto: null, options: null,
+      steps: [
+        {say:'Before any of the how, let me tell you what this thing actually <i>is</i>. Nobody ever does.'},
+        {say:'You\'re in a Grab. Twenty minutes across town. You\'re watching the speedometer the whole way.'},
+        {say:'Question: how far did you travel?'},
+        {aha:['the easy version','If the car went at exactly the same speed the whole time, it\'s just <strong>speed x time</strong>. One multiply. That\'s a rectangle, and you could do it in your head.']},
+        {say:'But no one drives like that. You speed up, you crawl, there\'s a light, you speed up again.'},
+        {say:'So here\'s the move. Chop the journey into slices of time.'},
+        {say:'In one thin sliver the speed barely changes, so that sliver <i>is</i> basically a rectangle. Work out each one, add them up.',
+         art:function(){ return lab('slices','how many slices',1,60,3,'your total','km'); }},
+        {aha:['and that is the whole idea','Integration is <strong>chopping something into infinitely many tiny pieces and adding them up</strong>. That stretchy S? It\'s an S. For <strong>Sum</strong>.']},
+        {say:'And what you\'ve just added up is the <b>area underneath the graph</b>. That\'s why every integration question secretly turns into an area.'},
+        {say:'Now. There\'s a second way to look at it, and it\'s the one your exam leans on.'},
+        {aha:['the two directions','<strong>Differentiating</strong> asks: I know the amount, how fast is it changing? <strong>Integrating</strong> asks the opposite: I know the rate, what\'s the total?'], art:artMirror},
+        {say:'Which brings us to the weird little <b>+ c</b> stuck on the end of every integral.'},
+        {aha:['think of it like','I tell you exactly what you spent every day this month. Can you tell me your bank balance? <strong>No.</strong> Not unless I also tell you what you started with.']},
+        {say:'Same story. Knowing the rate can never tell you the starting height. So we write <b>+ c</b> for "some starting amount, still unknown".'},
+        {say:'Here\'s the same curve with a different c each time.',
+         art:function(){ return lab('shift','the value of c',-30,30,0,'steepness at the green dot','') ; }},
+        {say:'And when a question says <i>"the curve passes through (0, 3)"</i> - that\'s them handing you the starting balance, so you can finally work out what c is.'},
+        {say:'That\'s it. That\'s integration. Adding up slivers, or undoing a rate. The rest is just filling in a formula.'}
+      ]
+    },
+
     c: {
-      eyebrow:'the lazier trick', title:'Which one is the integral?',
+      eyebrow:'now the easy bit', title:'Which one is the integral?',
       q: O+'&#8747;'+E+' '+N+'3'+E+X+'x'+E+pw('4')+' '+O+'d'+E+X+'x'+E+'  '+O+'='+E+'  '+O+'?'+E,
       auto: 0,
       steps: [
@@ -697,8 +1068,16 @@
           ], 1); }},
         {say:'It\'s <b>printed on your formula sheet</b>. You don\'t have to remember it. You just have to know it\'s there.'},
         {aha:['so read it like an instruction','<strong>Add one</strong> to the power. Then <strong>divide</strong> by the number you just made. Done.']},
-        {say:'Ours is 3'+X+'x'+E+pw('4')+'. So the power is '+N+'4'+E+'.',
-         art:function(){ return boxes([['a','3'],['n','4']]); }},
+        {say:'The sheet uses letters. Yours uses numbers. Same thing.',
+         art:function(){ return linked([
+            {tag:'the sheet says', faded:true,
+             html:'&#8747; '+tok('a','a')+tok('n','x<sup>n</sup>')+' d'+X+'x'+E},
+            {tag:'yours',
+             html:'&#8747; '+tok('a','3')+tok('n','x<sup>4</sup>')+' d'+X+'x'+E}
+          ], [
+            ['a','a','3','<b>a</b> is whatever number sits in front. On the sheet it is called a. In yours it is 3.'],
+            ['n','n','4','<b>n</b> is the power, the little one up high. On the sheet it is called n. In yours it is 4.']
+          ]); }},
         {say:'Add one to the power: '+N+'4'+E+' becomes '+N+'5'+E+'. So we\'ve got 3'+X+'x'+E+pw('5')+'.'},
         {say:'Now divide by that new number, '+N+'5'+E+'. Three divided by five is 3/5.',
          eq: O+'&#8594;'+E+'  (3/5)'+X+'x'+E+pw('5')},
@@ -741,9 +1120,17 @@
             'Turning point is:  <b>( -b/2a ,  c - b'+pw('2')+'/4a )</b>'
           ], 1); }},
         {say:'It\'s <b>on the sheet</b>. So we don\'t have to be clever. We just have to fill it in.'},
-        {aha:['first, always','Park each number in its own labelled box <strong>before</strong> you touch the formula. This is the single cheapest way to stop losing track of which number is which.'],
-         art:function(){ return boxes([['a','1'],['b','7'],['c','12']]); }},
-        {say:'Careful with '+N+'a'+E+': there\'s no number in front of '+X+'x'+E+pw('2')+', and that quietly means '+N+'1'+E+'.'},
+        {aha:['first, always','Park each number in its own labelled box <strong>before</strong> you touch the formula. Cheapest possible way to stop losing track of which number is which.'],
+         art:function(){ return linked([
+            {tag:'the sheet says', faded:true,
+             html:X+'y'+E+' = '+tok('a','a')+'x<sup>2</sup> + '+tok('b','b')+'x + '+tok('c','c')},
+            {tag:'yours',
+             html:X+'y'+E+' = '+tok('a','x<sup>2</sup>')+' + '+tok('b','7')+'x + '+tok('c','12')}
+          ], [
+            ['a','a','1','<b>a</b> is the number in front of x<sup>2</sup>. There is nothing written there, and that quietly means <b>1</b>. It catches everybody.'],
+            ['b','b','7','<b>b</b> is the number in front of the plain x. Here that is <b>7</b>.'],
+            ['c','c','12','<b>c</b> is the lonely number on its own at the end. Here that is <b>12</b>.']
+          ]); }},
         {say:'Now the x of the turning point: '+O+'-b/2a'+E+'  =  -7 / (2 x 1)  =  '+N+'-3.5'+E,
          art:function(){ return artCurve(1); }},
         {opts:true, say:'So the '+X+'x'+E+' is -3.5. Only one option starts with that.'}
@@ -801,12 +1188,13 @@
     function slide(parts){
       var s = document.createElement("div"); s.className = "slide";
       var i = document.createElement("div"); i.className = "in";
-      parts.forEach(function(p){ i.appendChild(p); });
+      parts.filter(Boolean).forEach(function(p){ i.appendChild(p); });
       s.appendChild(i); track.appendChild(s);
+      initInteractive(s);
       return s;
     }
     function el(cls, html){ var d=document.createElement("div"); d.className=cls; d.innerHTML=html; return d; }
-    function qhead(){ return el("qhead", cfg.q); }
+    function qhead(){ return cfg.q ? el("qhead", cfg.q) : null; }
 
     function makeOpts(){
       var box = document.createElement("div"); box.className = "opts";
@@ -821,7 +1209,10 @@
     }
 
     // opening slide: the question, big, with its picture if it has one
-    var open = [ el("eyebrow", cfg.eyebrow), el("say", cfg.steps[0].say), el("eq", cfg.q) ];
+    var open = [ el("eyebrow", cfg.eyebrow) ];
+    if(cfg.title) open.push(el("say", cfg.title));
+    open.push(el("say" + (cfg.q ? " quietly" : ""), cfg.steps[0].say));
+    if(cfg.q) open.push(el("eq", cfg.q));
     if(cfg.steps[0].art) open.push(el("art", cfg.steps[0].art()));
     slide(open);
 
@@ -892,14 +1283,14 @@
     function syncLabel(){
       var last = track.children.length - 1;
       var onOpts = !!track.children[here].querySelector(".opts");
+      go.hidden = false;                  // reset first, or it stays hidden forever
       go.classList.remove("quiet");
       go.classList.remove("done");
-      if(here < last){ go.textContent = "next"; return; }
       if(onOpts && !pending){
-        go.textContent = "your turn, pick one up there";
-        go.classList.add("quiet");
+        go.hidden = true;                 // the options are obviously tappable
         return;
       }
+      if(here < last){ go.textContent = "next"; return; }
       go.textContent = "okay, what\'s next";
       go.classList.add("done");
     }
