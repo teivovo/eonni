@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17131C">
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AB%A7%3C/text%3E%3C/svg%3E">
-<title>The Backwards Trick</title>
+<title>Two Lazy Tricks</title>
 <style>
   :root{
     --ground:#FCF7F3; --raise:#FFFFFF; --raise2:#F6EEE8; --edge:#E9DCD2;
@@ -164,6 +164,39 @@
   .dot.pick.yes{fill:var(--mint); stroke:var(--mint)}
   .drop{stroke:var(--peach); stroke-width:1.4; stroke-dasharray:3 3; opacity:.65}
   .drop.yes{stroke:var(--mint)}
+
+  /* "it is printed on your sheet" -- the single most useful habit in the module */
+  .fsheet{
+    border:1px dashed var(--edge); border-radius:12px; padding:15px 16px;
+    background:var(--raise2); display:flex; flex-direction:column; gap:11px; width:100%;
+  }
+  .fsheet .tag{
+    font-family:var(--num); font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--faint);
+  }
+  .fsheet .ln{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14px,3.9vw,17px); color:var(--faint); line-height:1.5;
+  }
+  .fsheet .ln.hot{
+    color:var(--ink); background:var(--glow); border-radius:7px;
+    padding:9px 10px; margin:-3px -4px;
+  }
+
+  /* park every given number in a labelled box before touching a formula */
+  .boxes{display:flex; gap:9px; flex-wrap:wrap}
+  .box{
+    border:1px solid var(--edge); border-radius:11px; padding:9px 14px;
+    background:var(--raise2); text-align:center; min-width:64px;
+  }
+  .box .k{
+    display:block; font-family:var(--num); font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .box .v{
+    display:block; font-family:var(--num); font-size:22px; color:var(--butter);
+    margin-top:3px; font-variant-numeric:tabular-nums;
+  }
 
   sup{font-size:.64em; vertical-align:super; line-height:0}
   .x{color:var(--peach); font-weight:700}
@@ -371,17 +404,16 @@
 
   <section class="card deck" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
 
-  <section class="card" data-easy="Integration is hard. Differentiation is easy. So to find an integral in multiple choice, differentiate the options instead and see which one gives you back the question.">
+  <section class="card" data-easy="You get a formula sheet in the exam. Loads of the questions are answered straight off it. Always read the sheet before trying to be clever.">
     <div class="in">
-      <div class="eyebrow rise">this is the good one</div>
-      <h2 class="rise">Now do it to integration.</h2>
-      <p class="rise">Integration is the hard direction. Differentiation is the easy one:
-        <b>bring the little number down, then knock it down by one.</b></p>
-      <p class="rise">So don't integrate the question. <b>Differentiate the options</b> and see which one
-        turns back into the question.</p>
-      <div class="key rise">
-        <i><span class="x">x</span> the unknown</i><i><span class="n">7</span> a number</i><i><span class="x">x</span><sup class="p">5</sup> a power</i>
-      </div>
+      <div class="eyebrow rise">okay, second trick</div>
+      <h2 class="rise">Half the answers are already on your desk.</h2>
+      <p class="rise">They give you a <b>formula sheet</b> in that exam. Two pages of it.</p>
+      <p class="rise">I went through it against your questions, and honestly? A big chunk of
+        that paper is answered by <i>reading a line off the sheet and filling in your numbers</i>.
+        No cleverness required.</p>
+      <p class="rise sub">So the order is: <b>look at the sheet first</b>. Only get clever if it isn't there.
+        The next two show you exactly what I mean.</p>
     </div>
   </section>
 
@@ -394,15 +426,14 @@
       <div class="eyebrow rise">being honest with you</div>
       <h2 class="rise">It doesn't work on everything.</h2>
       <div class="panel rise">
-        <div class="label">it works beautifully on</div>
+        <div class="label">so the order, every single time</div>
         <ul class="deal">
-          <li>solve for <span class="x">x</span></li>
-          <li>which one is the derivative, or the integral</li>
-          <li>is this a turning point</li>
-          <li>are these two vectors perpendicular</li>
+          <li><b>1.</b> Is it on the formula sheet? Fill in your numbers. Usually it is.</li>
+          <li><b>2.</b> Not there? Try the options and see which one fits.</li>
+          <li><b>3.</b> Got an answer already? Test it anyway. Takes ten seconds.</li>
         </ul>
       </div>
-      <p class="rise sub">It does nothing for <i>explain</i>, <i>draw</i> or <i>state</i>.
+      <p class="rise sub">Neither one does anything for <i>explain</i>, <i>draw</i> or <i>state</i>.
         Those need the other thing. I'll get you there too.</p>
     </div>
   </section>
@@ -515,6 +546,55 @@
     return fig(s, cap);
   }
 
+  /* The formula sheet, quoted back at her. Half the questions in this module
+     are answered by a line she already has on the desk in front of her. */
+  function fsheet(lines, hot){
+    var s = '<div class="fsheet"><div class="tag">on your formula sheet</div>';
+    lines.forEach(function(l, i){
+      s += '<div class="ln' + (i === hot ? ' hot' : '') + '">' + l + '</div>';
+    });
+    return s + '</div>';
+  }
+
+  function boxes(pairs){
+    var s = '<div class="boxes">';
+    pairs.forEach(function(p){
+      s += '<div class="box"><span class="k">' + p[0] + '</span><span class="v">' + p[1] + '</span></div>';
+    });
+    return s + '</div>';
+  }
+
+  /* Integration and differentiation as mirror images of one move. */
+  function artMirror(){
+    return fig(
+      '<svg viewBox="0 0 300 168" role="img" aria-label="Integrating 3x to the 4 gives three fifths x to the 5; differentiating it gives 3x to the 4 back">' +
+        '<defs><marker id="mi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--peach)"/></marker>' +
+          '<marker id="md" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--mint)"/></marker></defs>' +
+
+        '<text x="16" y="46" font-size="18" fill="var(--soft)">3x</text>' +
+        '<text x="38" y="38" font-size="12" fill="var(--mint)">4</text>' +
+        '<line x1="60" y1="40" x2="190" y2="40" stroke="var(--peach)" stroke-width="1.8" marker-end="url(#mi)"/>' +
+        '<text x="125" y="30" text-anchor="middle" font-size="11" fill="var(--peach)">integrate</text>' +
+        '<text x="125" y="58" text-anchor="middle" font-size="9.5" opacity=".75">up one, then divide by it</text>' +
+        '<text x="200" y="46" font-size="18" fill="var(--soft)">(3/5)x</text>' +
+        '<text x="256" y="38" font-size="12" fill="var(--mint)">5</text>' +
+
+        '<line x1="20" y1="86" x2="280" y2="86" class="axis"/>' +
+
+        '<text x="16" y="132" font-size="18" fill="var(--soft)">(3/5)x</text>' +
+        '<text x="72" y="124" font-size="12" fill="var(--mint)">5</text>' +
+        '<line x1="92" y1="126" x2="212" y2="126" stroke="var(--mint)" stroke-width="1.8" marker-end="url(#md)"/>' +
+        '<text x="152" y="116" text-anchor="middle" font-size="11" fill="var(--mint)">differentiate</text>' +
+        '<text x="152" y="144" text-anchor="middle" font-size="9.5" opacity=".75">down one, times the old power</text>' +
+        '<text x="222" y="132" font-size="18" fill="var(--soft)">3x</text>' +
+        '<text x="244" y="124" font-size="12" fill="var(--mint)">4</text>' +
+      '</svg>',
+      'each one undoes the other'
+    );
+  }
+
   function artHill(){
     return fig(
       '<svg viewBox="0 0 300 150" role="img" aria-label="A hill: integrating walks up it, differentiating walks down it">' +
@@ -603,33 +683,47 @@
     },
 
     c: {
-      eyebrow:'watch this one', title:'Which one is the integral?',
+      eyebrow:'the lazier trick', title:'Which one is the integral?',
       q: O+'&#8747;'+E+' '+N+'3'+E+X+'x'+E+pw('4')+' '+O+'d'+E+X+'x'+E+'  '+O+'='+E+'  '+O+'?'+E,
       auto: 0,
       steps: [
-        {say:'Okay, this one LOOKS scary. It really isn\'t.'},
-        {say:'That long stretchy S just means <i>integrate</i>. That\'s it. That\'s all it means.'},
-        {aha:['think of it like','It\'s a hill. Integrating is walking <strong>up</strong> it. Differentiating is walking <strong>down</strong>. Guess which one\'s easier.'], art:artHill},
-        {say:'So we\'re not climbing. We start at the top and stroll down.'},
-        {aha:['the whole rule, forever','The little number\'s sitting <strong>up high</strong>. It <strong>comes down</strong>, multiplies, and <strong>loses one</strong> on the way.'], art:artPower},
-        {opts:true, say:'Four possible tops of the hill. Walk each one down, see which lands back on the question.'}
+        {say:'Okay. This one looks properly scary.'},
+        {say:'That long stretchy S just means <i>integrate</i>. That\'s the whole word. It\'s an S for "sum".'},
+        {say:'And here\'s the bit nobody makes a fuss about.',
+         art:function(){ return fsheet([
+            '&#8747; a sin(kx) dx = ...',
+            '&#8747; a x'+pw('n')+' dx  =  <b>a x'+pw('n+1')+' / (n+1)</b>  + c',
+            '&#8747; a e'+pw('kx+b')+' dx = ...'
+          ], 1); }},
+        {say:'It\'s <b>printed on your formula sheet</b>. You don\'t have to remember it. You just have to know it\'s there.'},
+        {aha:['so read it like an instruction','<strong>Add one</strong> to the power. Then <strong>divide</strong> by the number you just made. Done.']},
+        {say:'Ours is 3'+X+'x'+E+pw('4')+'. So the power is '+N+'4'+E+'.',
+         art:function(){ return boxes([['a','3'],['n','4']]); }},
+        {say:'Add one to the power: '+N+'4'+E+' becomes '+N+'5'+E+'. So we\'ve got 3'+X+'x'+E+pw('5')+'.'},
+        {say:'Now divide by that new number, '+N+'5'+E+'. Three divided by five is 3/5.',
+         eq: O+'&#8594;'+E+'  (3/5)'+X+'x'+E+pw('5')},
+        {aha:['and the little +c','Integrating loses a bit of information, so we tack on <strong>+ c</strong> to stand for "some number we don\'t know yet". Every single integral gets one.']},
+        {opts:true, say:'So we\'re after (3/5)'+X+'x'+E+pw('5')+' + c. Go find it.'}
       ],
       options: ['(3/5)x'+pw('5')+' + c','12x'+pw('3')+' + c','(3/4)x'+pw('5')+' + c','3x'+pw('5')+' + c'],
       check: function(i){
-        var r=[
-          {f:'(3/5)x'+pw('5'), d:'(3/5) x 5&nbsp; =&nbsp; 3',  k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'3x'+pw('4')},
-          {f:'12x'+pw('3'),    d:'12 x 3&nbsp; =&nbsp; 36',    k:'x'+pw('3')+'&nbsp; becomes&nbsp; x'+pw('2'), g:'36x'+pw('2')},
-          {f:'(3/4)x'+pw('5'), d:'(3/4) x 5&nbsp; =&nbsp; 3.75', k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'3.75x'+pw('4')},
-          {f:'3x'+pw('5'),     d:'3 x 5&nbsp; =&nbsp; 15',     k:'x'+pw('5')+'&nbsp; becomes&nbsp; x'+pw('4'), g:'15x'+pw('4')}
+        var why=[
+          '',
+          'the power went <i>down</i>, not up. that\'s differentiating, the opposite way.',
+          'the power is right, but we divided by 4 instead of 5.',
+          'the power is right, but we forgot to divide at all.'
         ][i];
-        return { steps:[
-            {work:'take&nbsp; '+r.f},
-            {work:'the little number comes down<br>'+r.d},
-            {work:'and loses one on the way<br>'+r.k},
-            {work:'so it becomes&nbsp; <b>'+r.g+'</b>'}
-          ], ok: i===0,
-          verdict: i===0 ? '3x'+pw('4')+'. That\'s literally the question again. This is the one.'
-                         : 'That gives '+r.g+'. We wanted 3x'+pw('4')+'. Nope.' };
+        if(i===0){
+          return { steps:[
+              {work:'power went up:&nbsp; '+N+'4'+E+' &#8594; '+N+'5'+E},
+              {work:'divided by the new power:&nbsp; 3 / 5'},
+              {work:'and the&nbsp; <b>+ c</b>'}
+            ], ok:true, art: artMirror(),
+            verdict:'That\'s the one. And you never integrated anything, you just read the sheet and followed it.' };
+        }
+        return { steps:[{work:'compare it to ours:&nbsp; <b>(3/5)x'+pw('5')+' + c</b>'}],
+          ok:false,
+          verdict:'Close, but '+why+' Have another look.' };
       }
     },
 
@@ -639,22 +733,34 @@
       auto: null,
       steps: [
         {say:'Here\'s the curve. Those four dots are your four options.', art:function(){ return artCurve(null); }},
-        {aha:['think of it like','Chuck your phone straight up. (Don\'t.) Right at the top, for a split second, it\'s not going up and it\'s not coming down. It just hangs there. <strong>That is a turning point.</strong>']},
-        {aha:['and gradient just means','Just means how steep it is. Big number, steep. <strong>Zero means flat.</strong>']},
-        {say:'So we\'re hunting for where it goes flat. The gradient here is:',
-         eq: O+'gradient'+E+'  '+O+'='+E+'  '+N+'2'+E+X+'x'+E+' '+O+'+'+E+' '+N+'7'+E},
-        {opts:true, say:'Grab the '+X+'x'+E+' from any bracket, drop it in, look for the zero. You can probably already see which dot it is, honestly.'}
+        {aha:['what a turning point is','Chuck your phone straight up. (Don\'t.) Right at the top, for a split second, it\'s not going up and it\'s not coming down. It just hangs there. <strong>That is a turning point.</strong>']},
+        {say:'So on this curve, it\'s the very bottom of the dip. You can see roughly where it is already.'},
+        {say:'Now, same move as before.',
+         art:function(){ return fsheet([
+            'y = ax'+pw('2')+' + bx + c',
+            'Turning point is:  <b>( -b/2a ,  c - b'+pw('2')+'/4a )</b>'
+          ], 1); }},
+        {say:'It\'s <b>on the sheet</b>. So we don\'t have to be clever. We just have to fill it in.'},
+        {aha:['first, always','Park each number in its own labelled box <strong>before</strong> you touch the formula. This is the single cheapest way to stop losing track of which number is which.'],
+         art:function(){ return boxes([['a','1'],['b','7'],['c','12']]); }},
+        {say:'Careful with '+N+'a'+E+': there\'s no number in front of '+X+'x'+E+pw('2')+', and that quietly means '+N+'1'+E+'.'},
+        {say:'Now the x of the turning point: '+O+'-b/2a'+E+'  =  -7 / (2 x 1)  =  '+N+'-3.5'+E,
+         art:function(){ return artCurve(1); }},
+        {opts:true, say:'So the '+X+'x'+E+' is -3.5. Only one option starts with that.'}
       ],
       options: ['(-4, 0)','(-3.5, -0.25)','(-3, 0)','(-2, 2)'],
       check: function(i){
-        var v=[-4,-3.5,-3,-2][i], g=2*v+7, s=Math.round(g*100)/100;
-        return { steps:[
-            {work:'the '+X+'x'+E+' in that bracket is&nbsp; '+N+v+E},
-            {work:'drop it into the gradient<br>2('+v+') + 7'},
-            {work:'which is&nbsp; <b>'+s+'</b>', art: artCurve(i)}
-          ], ok: g===0, art: artCurve(i),
-          verdict: g===0 ? 'Zero. Flat. Look at it, sitting right at the bottom of the dip. That\'s your turning point.'
-                         : 'That\'s '+s+', not zero. See how the line is still tilting? Not this one.' };
+        if(i===1){
+          return { steps:[
+              {work:'x&nbsp; =&nbsp; -b/2a&nbsp; =&nbsp; <b>-3.5</b>'},
+              {work:'y&nbsp; =&nbsp; c - b'+pw('2')+'/4a<br>=&nbsp; 12 - 49/4&nbsp; =&nbsp; <b>-0.25</b>'}
+            ], ok:true, art: artCurve(1),
+            verdict:'(-3.5, -0.25). Sitting right at the bottom of the dip, exactly where your eye said it was.' };
+        }
+        var v=[-4,-3.5,-3,-2][i];
+        return { steps:[{work:'that one\'s x is&nbsp; '+N+v+E+', but we worked out&nbsp; <b>-3.5</b>'}],
+          ok:false, art: artCurve(i),
+          verdict:'That point is on the curve, but it\'s not the bottom. See how the line still tilts there?' };
       }
     }
   };
