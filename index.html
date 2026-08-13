@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17131C">
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AB%A7%3C/text%3E%3C/svg%3E">
-<title>Two Lazy Tricks</title>
+<title>Maths, one bit at a time</title>
 <style>
   :root{
     --ground:#FCF7F3; --raise:#FFFFFF; --raise2:#F6EEE8; --edge:#E9DCD2;
@@ -635,6 +635,16 @@
         Those need the other thing. I'll get you there too.</p>
     </div>
   </section>
+
+  <section class="card deck" data-id="d:sim" data-mcq="sim" data-easy="Two unknowns need two facts. Either make one match and subtract it away, or rearrange one and post it into the other."></section>
+  <section class="card deck" data-id="d:ineq" data-mcq="ineq" data-easy="An inequality is a whole stretch of answers. Solve it like an equation, but if you multiply or divide by a negative the sign turns round."></section>
+  <section class="card deck" data-id="d:tramp" data-mcq="tramp" data-easy="sin, cos and tan are three ways of comparing two sides of a right-angled triangle. SOH CAH TOA."></section>
+  <section class="card deck" data-id="d:wave" data-mcq="wave" data-easy="A is how tall, B is how many, C slides it sideways, D lifts it up. And a flat line crosses a wave more than once, so there is usually a second answer."></section>
+
+  <section class="card deck" data-id="d:vec" data-mcq="vec" data-easy="A vector is a size with a direction. AB means where you end minus where you started. Its length is Pythagoras on the arrow."></section>
+  <section class="card deck" data-id="d:vang" data-mcq="vang" data-easy="Dot product, then the length of each arrow, then put all three into the printed formula. Zero dot product means right angles."></section>
+  <section class="card deck" data-id="d:pf" data-mcq="pf" data-easy="One fraction taken back apart into the pieces that made it. All three patterns are printed; you only have to spot which one it is."></section>
+  <section class="card deck" data-id="d:line" data-mcq="line" data-easy="y = mx + c. m is the steepness, c is where it crosses the upright axis. Parallel means same m."></section>
 
   <section class="card deck" data-id="d:mat" data-mcq="mat" data-easy="Rows first, then columns. Two grids only multiply if the inside numbers match. Determinant and inverse are both printed on your sheet."></section>
   <section class="card deck" data-id="d:defint" data-mcq="defint" data-easy="The two little numbers say where to start and stop. Integrate first, substitute second, then take the bottom answer away from the top one."></section>
@@ -1281,6 +1291,165 @@
           verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
                          : 'Left\'s '+L+', right\'s '+R+'. See-saw tips, so nope. Nothing lost, try another.' };
       }
+    },
+
+    /* ---- simultaneous, inequalities, trig ---- */
+
+    sim: {
+      eyebrow:'two facts, two unknowns', title:'Simultaneous equations.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Two dresses and three shirts cost $35. Three dresses and four shirts cost $50. How much is one dress?'},
+        {say:'That is straight off your paper, and you can feel why one line on its own is not enough. Two dresses and three shirts for $35 could be all sorts of prices.'},
+        {aha:['so','Two unknowns need <strong>two facts</strong>. That is the whole reason this topic exists, and it is why they always come in pairs.']},
+        {say:'First way: make one of them match, then take one line away from the other so it disappears.',
+         art:function(){ return linked([
+            {tag:'multiply the top by 3, the bottom by 2', html:O+'6d + 9s = 105'+E+'<br>'+O+'6d + 8s = 100'+E},
+            {tag:'take one from the other', html:O+'s = '+E+N+'5'+E}
+          ]); }},
+        {say:'The 6d is in both, so subtracting kills it. One shirt is $5, and putting that back in gives the dress. <b>Coefficient</b> just means the number sitting in front, by the way.'},
+        {say:'Second way: rearrange one line to get a letter on its own, then post that into the other line. That is the makeup lesson, then the vending machine.'},
+        {say:'Both ways land on the same answer. Use whichever looks less horrible on the day.'}
+      ]
+    },
+
+    ineq: {
+      eyebrow:'one rule to remember', title:'Inequalities.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'A height limit at a theme park. Not "you must be exactly 140cm". Anything from 140 upwards.'},
+        {aha:['so','An inequality is not one answer. It is a <strong>whole stretch</strong> of answers, and the drawing shows you which stretch.']},
+        {say:'On the number line, a <b>hollow</b> circle means that exact number is not allowed. A <b>solid</b> one means it is included.'},
+        {say:'Solving one is the same as solving an equation. Same moves, same order.'},
+        {aha:['except for one thing','If you multiply or divide by a <strong>negative</strong>, the sign turns round. Less-than becomes greater-than. That is the only difference in the entire topic.']},
+        {say:'Why: 3 is less than 5. But owing $3 is better than owing $5, so once you cross zero the order reverses.'},
+        {say:'Here is one with the flip forgotten. Tap the line where it goes wrong.',
+         art:function(){ return spot([
+            '-2x  &gt;  8',
+            'divide both sides by -2',
+            'x  &gt;  -4',
+            'so x is anything above -4'
+          ], 2, 'Dividing by a negative turns the sign round, so it should be <b>x &lt; -4</b>. Everything else was right. This one line is the whole topic.'); }},
+        {say:'Your paper asks it as shopping: clothes priced between $199 and $299, with $26 off. Two inequalities at once, same rules.'}
+      ]
+    },
+
+    tramp: {
+      eyebrow:'three ratios of a ramp', title:'Trigonometry.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'A wheelchair ramp. It has a height, a length along the ground, and a slope. Change one and the others have to move.'},
+        {aha:['that is all sin, cos and tan are','Three ways of comparing two sides of a right-angled triangle. Not operations. Just <strong>ratios</strong>, like a recipe.']},
+        {say:'SOH CAH TOA: Sin is Opposite over Hypotenuse, Cos is Adjacent over Hypotenuse, Tan is Opposite over Adjacent. The hypotenuse is always the long slanted one.'},
+        {say:'Opposite means across from the angle you are looking at. Adjacent means next to it. Which is which depends on which corner you are standing in, and that is the only genuinely fiddly part.'},
+        {aha:['not on your sheet, and asked','The <strong>sine rule</strong>, for triangles that are not right-angled. If you are given two sides and an angle opposite one of them, that is the one to reach for. Your paper finishes with exactly that.']},
+        {say:'The identities are printed, including sin2A. Worth knowing they exist, because one integration question on your paper is impossible without one.'},
+        {say:'Degrees when a question asks for an angle between 0 and 360. Radians when you see a &#960;. Check the calculator once.'}
+      ]
+    },
+
+    wave: {
+      eyebrow:'last one', title:'Waves.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Last one. And it is the one nearly everybody loses marks on, for one specific reason: the answer is usually <b>two</b> answers, and most people stop after finding the first.'},
+        {say:'A wave is what you get when something goes round and round. Tides. Daylight through the year. A lightstick.'},
+        {say:'Every wave question on your paper is the same equation with four letters in it, and each letter does exactly one job.',
+         art:function(){ return linked([
+            {tag:'the shape of every one of them', html:X+'y'+E+' = '+tok('A','A')+' sin('+tok('B','B')+X+'x'+E+' + '+tok('C','C')+') + '+tok('D','D')},
+            {tag:'and nothing here is on your sheet', html:O+'so this is the one to carry in'+E}
+          ], [
+            ['A','A','tall','<b>A</b> stretches it taller. It is how far the wave swings above and below its middle.'],
+            ['B','B','many','<b>B</b> squeezes more waves into the same space. Bigger B, more wiggles.'],
+            ['C','C','slid','<b>C</b> slides the whole thing sideways.'],
+            ['D','D','high','<b>D</b> lifts the whole thing up. It sets where the middle of the wave sits.']
+          ]); }},
+        {say:'Reading one off a graph, which your paper asks twice: the middle line gives you D, how far it swings gives you A, and counting the waves gives you B.'},
+        {say:'Highest and lowest without drawing anything: middle plus A, and middle minus A. That is one whole question answered in two additions.'},
+        {aha:['and the trap','Draw a flat line across a wave and it crosses it <strong>more than once</strong>. So when a question asks for angles between 0 and 360, there is nearly always a second answer, and it is worth as many marks as the first.']},
+        {say:'The way to catch it: find the first answer, then use 180 minus it, or 360 minus it, and check whether that one is also in the range you were given.'},
+        {say:'That is the whole module. Everything on that paper is one of the six moves wearing a costume, and you have met every costume now.'}
+      ]
+    },
+
+    /* ---- vectors, partial fractions, straight lines ---- */
+
+    vec: {
+      eyebrow:'arrows', title:'Vectors.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Someone asks you how to get to the shop. You say "200 metres". That is useless. You say "200 metres <i>that way</i>" and now it is directions.'},
+        {aha:['that is the whole idea','A <strong>vector</strong> is a size with a direction attached. Written as a little column: how far across on top, how far up underneath.']},
+        {aha:['the one formula that matters','<strong>AB = OB - OA.</strong> Where you end, minus where you started. Not on your sheet, so it lives in your head. It is the second most useful thing in this topic.']},
+        {say:'And swapping the two round flips every sign, which is why BA is just AB with a minus in front. Your paper sets a trap on exactly that.',
+         art:function(){ return linked([
+            {tag:'A is (1,2) and B is (5,4), so', html:O+'AB = ('+E+N+'5-1'+E+O+', '+E+N+'4-2'+E+O+') = ('+E+N+'4'+E+O+', '+E+N+'2'+E+O+')'+E},
+            {tag:'and the other way', html:O+'BA = ('+E+N+'1-5'+E+O+', '+E+N+'2-4'+E+O+') = ('+E+N+'-4'+E+O+', '+E+N+'-2'+E+O+')'+E}
+          ]); }},
+        {aha:['how long is it','<strong>Also not on your sheet</strong>, and it catches people out. But it is only Pythagoras: the arrow is the slope of a right-angled triangle, so square the across, square the up, add, square root.']},
+        {say:'Adding two vectors is across-plus-across and up-plus-up. Multiplying by a number stretches it without turning it.'},
+        {say:'And a chain like PC = PX - CX is that same subtraction. Go carefully with which way round each arrow points, because the signs are the whole question.'}
+      ]
+    },
+
+    vang: {
+      eyebrow:'the three step routine', title:'The angle between two arrows.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Pushing a trolley at an angle. Only the part of your push that goes forward actually moves it. The sideways part is wasted.'},
+        {aha:['that is the dot product','It measures how much two arrows agree. Multiply the acrosses, multiply the ups, add them together. One number. It is printed on your sheet.']},
+        {say:'If that number comes out as <b>zero</b>, nothing at all is going forward, which means the two arrows are at right angles. That is a whole question type answered by one calculation.'},
+        {say:'For the angle itself your lecturer prints the same three steps every time, so learn the shape of it rather than the maths.'},
+        {say:'Step one, dot product. Step two, the length of each arrow. Step three, put all three into the printed formula.',
+         art:function(){ return fsheet([
+            'a &#183; b  =  a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + a<sub>3</sub>b<sub>3</sub>',
+            '&#952; = cos<sup>-1</sup> <b>( a &#183; b / |a| |b| )</b>'
+          ], 1); }},
+        {aha:['an honest warning','Two of those three lines are printed for you. The middle one, the length, <strong>is not</strong>. Do not go hunting for it in the exam. It is the Pythagoras one you already have.']},
+        {say:'Cross product is printed on your sheet <b>in full</b>, and your paper has three questions on it. Substituting into a formula that is already written down is about the most reliable mark on the paper.'},
+        {say:'Picture for it: turning a bottle cap. You twist sideways and the cap travels <i>upwards</i>, out of the bottle. The answer points out of the page, at right angles to both.'}
+      ]
+    },
+
+    pf: {
+      eyebrow:'mostly just recognising', title:'Partial fractions.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'A group dinner. The bill comes back as one number, and now you have to work out who ordered what.'},
+        {aha:['that is the whole topic','One combined fraction, taken back apart into the pieces that made it. Nothing more than that.']},
+        {say:'All three patterns are printed on your sheet, so nothing needs remembering. The only real skill is <b>spotting which one you are looking at</b>, and you do that by looking at the bottom.',
+         art:function(){ return fsheet([
+            '(x+p)(x+q)  &#8594;  A/(x+p)  +  B/(x+q)',
+            '(x+p)(x+q)&#178;  &#8594;  A/(x+p) + B/(x+q) + C/(x+q)&#178;',
+            'x&#178;+qx+r that will not come apart  &#8594;  (Bx+C)/(x&#178;+qx+r)'
+          ], 0); }},
+        {say:'Three things to tell apart: two different brackets, the same bracket twice, or one that will not come apart at all. That is the entire decision.'},
+        {say:'Then finding A and B is the vending machine again. Pick the number that makes one bracket vanish, and whatever is left tells you the other letter.'},
+        {aha:['one extra thing on your paper','The <strong>factor theorem</strong>, which is the same trick used as a test. Put a number in, and if the answer comes out as zero then that bracket divides in exactly. Two questions on your paper, and it is not on your sheet.']},
+        {say:'Long division is not in this syllabus, so the horrible ones never turn up. This is one of the safest topics you have.'}
+      ]
+    },
+
+    line: {
+      eyebrow:'two pins and a road', title:'Straight lines.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Two pins dropped on a map, and the road running between them.'},
+        {aha:['steepness again','<strong>Gradient</strong> is how sharply the road climbs. Up divided by along. Same word as the speedometer lesson, same idea, and it is printed on your sheet.']},
+        {say:'Every straight line in the world can be written the same way, and this is also printed.',
+         art:function(){ return linked([
+            {tag:'the sheet says', faded:true,
+             html:X+'y'+E+' = '+tok('m','m')+X+'x'+E+' + '+tok('c','c')},
+            {tag:'so for example', html:X+'y'+E+' = '+tok('m','2')+X+'x'+E+' + '+tok('c','5')}
+          ], [
+            ['m','m','2','<b>m</b> is the steepness. Bigger number, steeper climb. A minus one goes downhill.'],
+            ['c','c','5','<b>c</b> is where the line crosses the upright axis. Nothing else, just that.']
+          ]); }},
+        {say:'Given two points, work out the steepness first, then put one of the points back in to find c. Two moves you already have.'},
+        {say:'Something like 3y = 6x + 24 is the same line in disguise. Divide everything by 3 and it turns into y = 2x + 8, and now you can read both numbers straight off.'},
+        {aha:['two facts worth having','<strong>Parallel</strong> lines have the same m. <strong>Perpendicular</strong> ones have gradients that multiply to give minus one. Neither is on your sheet.']},
+        {say:'Distance between the pins and the point halfway along are both printed, and both are quick. The distance one is Pythagoras again, which by now you have met three times.'}
+      ]
     },
 
     /* ---- matrices, definite integrals, growth and decay, logs ---- */
