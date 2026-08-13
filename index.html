@@ -636,6 +636,11 @@
     </div>
   </section>
 
+  <section class="card deck" data-id="d:mat" data-mcq="mat" data-easy="Rows first, then columns. Two grids only multiply if the inside numbers match. Determinant and inverse are both printed on your sheet."></section>
+  <section class="card deck" data-id="d:defint" data-mcq="defint" data-easy="The two little numbers say where to start and stop. Integrate first, substitute second, then take the bottom answer away from the top one."></section>
+  <section class="card deck" data-id="d:fod" data-mcq="fod" data-easy="Four situations, four graph shapes. Match the story to the shape first, then pick the equation that goes with it."></section>
+  <section class="card deck" data-id="d:logs" data-mcq="logs" data-easy="A log asks how many times the multiplying happened. The log laws are on your sheet; change of base is not."></section>
+
   <section class="card deck" data-id="d:dwhy" data-mcq="dwhy" data-easy="Differentiating means: given how far you have gone, work out how fast you are going. The steepness of one graph is the height of the other."></section>
   <section class="card deck" data-id="d:drw" data-mcq="drw" data-easy="Your sheet has one rule for differentiating and it only accepts things shaped like a number, an x, and a little number on top. Most of the work is getting everything into that shape."></section>
   <section class="card deck" data-id="d:drule" data-mcq="drule" data-easy="The little number comes down and multiplies what is already there, then the power drops by one. ln is not on the sheet: differentiate the inside, put it over the inside."></section>
@@ -1276,6 +1281,95 @@
           verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
                          : 'Left\'s '+L+', right\'s '+R+'. See-saw tips, so nope. Nothing lost, try another.' };
       }
+    },
+
+    /* ---- matrices, definite integrals, growth and decay, logs ---- */
+
+    mat: {
+      eyebrow:'more free marks than you think', title:'Matrices.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'A matrix is a price list that somebody forgot to draw the lines on. That is the whole mystery.'},
+        {aha:['and why anyone bothers','Two facts about two unknowns can be written as one grid times one column. Then a printed formula unpicks it in one go. That is the point of the whole topic.']},
+        {say:'Before any of that, four questions on your paper are answered by <b>counting</b>. The size of a grid is rows first, then columns. Always that way round.',
+         art:function(){ return linked([
+            {tag:'this one', html:O+'[ 2  5  1 ]'+E+'<br>'+O+'[ 7  0  3 ]'+E},
+            {tag:'is', html:N+'2'+E+O+' rows by '+E+N+'3'+E+O+' columns'+E}
+          ]); }},
+        {say:'Can two grids be multiplied? Put their sizes side by side. The two inside numbers have to match, and the two outside numbers tell you the answer size.'},
+        {say:'So a 2 by 3 and a 3 by 4 will join, because the 3s meet in the middle, and the answer is 2 by 4. A 2 by 3 and a 2 by 4 will not join at all.'},
+        {say:'Adding, taking away, or multiplying by one number: you just do it position by position. Nothing lines up, nothing cancels.'},
+        {say:'Then the two printed ones.',
+         art:function(){ return fsheet([
+            'det A  =  <b>ad - bc</b>',
+            'A<sup>-1</sup>  =  <b>(1/det A)</b> [ d  -b ; -c  a ]'
+          ], 0); }},
+        {aha:['the inverse as a gesture','<strong>Swap</strong> the two on the main diagonal. <strong>Flip the signs</strong> on the other two. <strong>Divide</strong> the whole thing by the determinant. Three moves, in that order, every time.']},
+        {say:'If the determinant comes out as zero there is no inverse at all. Like a drink you cannot un-mix. That is worth knowing because it is a question.'},
+        {say:'Careful with one thing: the multiplying pattern printed on your sheet is the 2 by 2 case. Your paper also does a 1 by 3 with a 3 by 3, so do not assume everything is 2 by 2.'}
+      ]
+    },
+
+    defint: {
+      eyebrow:'where to start, where to stop', title:'Definite integrals.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Nobody integrates from the beginning of time. Every real question tells you where to start and where to stop.'},
+        {say:'Those two little numbers on the stretchy S are exactly that. Where to begin, where to end.'},
+        {say:'And it is printed for you, including what to do with them.',
+         art:function(){ return fsheet([
+            '&#8747; a x' + pw('n') + ' dx  =  a x' + pw('n+1') + ' / (n+1)  + c',
+            '&#8747;<sub>a</sub><sup>b</sup> f&#39;(x) dx  =  <b>[ f(x) ]  =  f(b) - f(a)</b>'
+          ], 1); }},
+        {aha:['the order matters','<strong>Integrate first. Substitute second.</strong> Do the whole integral, put it in square brackets, and only then put the top number in and take away the bottom number.']},
+        {say:'And because you take one away from the other, the +c cancels itself out. So in this kind of question you do not write it.'},
+        {aha:['but the opposite question exists too','When there are <strong>no</strong> start and stop numbers, the +c does not cancel, and the question hands you a point on the curve so you can work out what c actually is. Three questions on your paper do that. Put the point in, see what c has to be.']},
+        {say:'Two more things worth having. Anything shaped one-over-something integrates to a <b>ln</b>, and that is not on your sheet.'},
+        {aha:['the trap nobody warns you about','Your calculator has a <strong>degrees</strong> mode and a <strong>radians</strong> mode. Angle questions asking for 0 to 360 are degrees. Anything written with a &#960; in it is radians. cos(0.5) is 0.88 in one and 1.00 in the other, and the page will not tell you which you used.']},
+        {say:'Nothing else in this whole module changes that setting. Check it once at the start and once when you see a &#960;.'}
+      ]
+    },
+
+    fod: {
+      eyebrow:'looks worst, is a matching game', title:'Growth, decay and coffee.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'This is the topic that looks like the end of the world on the syllabus. Your paper asks it as multiple choice.'},
+        {say:'Four situations. Four shapes. That is the entire question.'},
+        {aha:['one','A hot kopi in an air-conditioned room. Cools fast at first, then slower, then just sits at room temperature and stays there.']},
+        {aha:['two','Money left in an account earning interest. It never flattens off. It just keeps climbing, faster and faster.']},
+        {aha:['three','A radioactive sample, or your battery at 5 percent. Falls towards nothing and never quite arrives.']},
+        {aha:['four','A cafe filling up. Slow, then a rush, then it stops because there are no seats left. An S on its side.']},
+        {say:'Now the equations, and they are only labels for shapes you already sorted.',
+         art:function(){ return fsheet([
+            'falls to nothing:  dx/dt = -kx      x = A e' + pw('-kt'),
+            'climbs forever:  dx/dt = kx      x = A e' + pw('kt'),
+            'falls to a level:  dx/dt = -k(x - c)      x = number + A e' + pw('-kt'),
+            'S shape:  dx/dt = kx(c - x)'
+          ], 0); }},
+        {say:'The dx/dt is the same idea as dy/dx from the speedometer lesson. Different letters, same job: how fast is this changing.'},
+        {aha:['the trick that actually wins it','On your paper, two of the four options carry the <strong>same equation and the same solution</strong>, and differ only in the graph. So reading the shape first is not a shortcut. It is the only thing that separates them.']},
+        {say:'What the exam wants: set it up, recognise which of those four it is, use the numbers you are given to pin down the constants, then sketch it and read the answer off.'},
+        {say:'You are never asked to solve one from scratch, so do not learn how. Coffee at 90 degrees, room at 20, k of 0.01. Set up, recognise, fit, read.'}
+      ]
+    },
+
+    logs: {
+      eyebrow:'and where e came from', title:'Logs.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'A rumour. You tell two people, they each tell two, and by lunchtime the whole level knows.'},
+        {say:'Here is that from your own paper: 3, 12, 48, 192, and then one more.'},
+        {say:'Each one is four times the last. So the blank is 768. You did that by spotting the pattern, not by being taught anything.'},
+        {say:'Now the real question: starting at 3, how many of those four-times steps get you to 3072?'},
+        {aha:['count them','3, 12, 48, 192, 768, 3072. Five steps. <strong>And that count is a log.</strong> A log is just asking: how many times did that multiplying happen?']},
+        {say:'That is all the word means. The notation came second, and it is only a way of writing down the question you just answered.'},
+        {aha:['not on your sheet','Turning it around. <strong>y = b</strong><sup>x</sup> and <strong>x = log</strong><sub>b</sub><strong> y</strong> say exactly the same thing, read from opposite ends. Your paper has a whole section on this.']},
+        {say:'The log laws themselves are all printed, so you look those up rather than remember them.'},
+        {aha:['also not on your sheet','<strong>Change of base.</strong> To get log base 2 of 10, do log(10) divided by log(2). Your calculator has no button for base 2, and your paper asks for exactly that.']},
+        {say:'And solving something like 5' + pw('x') + ' = 8: take the log of both sides, and it turns into a rearrange. Which is the makeup lesson.'},
+        {say:'Finally, e. It is a particular number, about 2.718, that turns up whenever something grows at a rate set by its own size. Which is why it was all over the coffee lesson. And <b>ln</b> is simply a log with e as its base.'}
+      ]
     },
 
     /* ---- differentiation and quadratics ---- */
