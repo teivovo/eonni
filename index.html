@@ -492,7 +492,7 @@
         That's the part that makes your brain go quiet.</p>
       <p class="rise"><b>Checking means someone hands you a number and you see if it fits.</b>
         That's just... looking.</p>
-      <p class="rise sub">The next few go sideways. One tiny step per screen, and you can bail out anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
+      <p class="rise sub">The next few go sideways. One tiny step per screen, and you can stop anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
     </div>
   </section>
 
@@ -1035,13 +1035,13 @@
         {say:'You\'re in a Grab. Twenty minutes across town. You\'re watching the speedometer the whole way.'},
         {say:'Question: how far did you travel?'},
         {aha:['the easy version','If the car went at exactly the same speed the whole time, it\'s just <strong>speed x time</strong>. One multiply. That\'s a rectangle, and you could do it in your head.']},
-        {say:'But no one drives like that. You speed up, you crawl, there\'s a light, you speed up again.'},
+        {say:'But no one drives like that. You speed up, you slow down behind a bus, you stop at a traffic light, you speed up again.'},
         {say:'So here\'s the move. Chop the journey into slices of time.'},
-        {say:'In one thin sliver the speed barely changes, so that sliver <i>is</i> basically a rectangle. Work out each one, add them up.',
+        {say:'In one thin slice the speed barely changes, so that slice <i>is</i> basically a rectangle. Work out each one, add them up.',
          art:function(){ return lab('slices','how many slices',1,60,3,'your total','km'); }},
         {aha:['and that is the whole idea','Integration is <strong>chopping something into infinitely many tiny pieces and adding them up</strong>. That stretchy S? It\'s an S. For <strong>Sum</strong>.']},
         {say:'And what you\'ve just added up is the <b>area underneath the graph</b>. That\'s why every integration question secretly turns into an area.'},
-        {say:'Now. There\'s a second way to look at it, and it\'s the one your exam leans on.'},
+        {say:'Now. There\'s a second way to look at it, and it\'s the one your exam actually uses.'},
         {aha:['the two directions','<strong>Differentiating</strong> asks: I know the amount, how fast is it changing? <strong>Integrating</strong> asks the opposite: I know the rate, what\'s the total?'], art:artMirror},
         {say:'Which brings us to the weird little <b>+ c</b> stuck on the end of every integral.'},
         {aha:['think of it like','I tell you exactly what you spent every day this month. Can you tell me your bank balance? <strong>No.</strong> Not unless I also tell you what you started with.']},
@@ -1049,7 +1049,7 @@
         {say:'Here\'s the same curve with a different c each time.',
          art:function(){ return lab('shift','the value of c',-30,30,0,'steepness at the green dot','') ; }},
         {say:'And when a question says <i>"the curve passes through (0, 3)"</i> - that\'s them handing you the starting balance, so you can finally work out what c is.'},
-        {say:'That\'s it. That\'s integration. Adding up slivers, or undoing a rate. The rest is just filling in a formula.'}
+        {say:'That\'s it. That\'s integration. Adding up slices, or undoing a rate. The rest is just filling in a formula.'}
       ]
     },
 
@@ -1058,9 +1058,9 @@
       q: O+'&#8747;'+E+' '+N+'3'+E+X+'x'+E+pw('4')+' '+O+'d'+E+X+'x'+E+'  '+O+'='+E+'  '+O+'?'+E,
       auto: 0,
       steps: [
-        {say:'Okay. This one looks properly scary.'},
+        {say:'Okay. This one looks really scary.'},
         {say:'That long stretchy S just means <i>integrate</i>. That\'s the whole word. It\'s an S for "sum".'},
-        {say:'And here\'s the bit nobody makes a fuss about.',
+        {say:'And here\'s the part nobody tells you about.',
          art:function(){ return fsheet([
             '&#8747; a sin(kx) dx = ...',
             '&#8747; a x'+pw('n')+' dx  =  <b>a x'+pw('n+1')+' / (n+1)</b>  + c',
@@ -1112,7 +1112,7 @@
       auto: null,
       steps: [
         {say:'Here\'s the curve. Those four dots are your four options.', art:function(){ return artCurve(null); }},
-        {aha:['what a turning point is','Chuck your phone straight up. (Don\'t.) Right at the top, for a split second, it\'s not going up and it\'s not coming down. It just hangs there. <strong>That is a turning point.</strong>']},
+        {aha:['what a turning point is','Throw your phone up into the air. (Don\'t actually do it.) Right at the top, for a split second, it\'s not going up and it\'s not coming down. It just hangs there. <strong>That is a turning point.</strong>']},
         {say:'So on this curve, it\'s the very bottom of the dip. You can see roughly where it is already.'},
         {say:'Now, same move as before.',
          art:function(){ return fsheet([
