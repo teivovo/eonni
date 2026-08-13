@@ -636,6 +636,11 @@
     </div>
   </section>
 
+  <section class="card deck" data-id="d:dwhy" data-mcq="dwhy" data-easy="Differentiating means: given how far you have gone, work out how fast you are going. The steepness of one graph is the height of the other."></section>
+  <section class="card deck" data-id="d:drw" data-mcq="drw" data-easy="Your sheet has one rule for differentiating and it only accepts things shaped like a number, an x, and a little number on top. Most of the work is getting everything into that shape."></section>
+  <section class="card deck" data-id="d:drule" data-mcq="drule" data-easy="The little number comes down and multiplies what is already there, then the power drops by one. ln is not on the sheet: differentiate the inside, put it over the inside."></section>
+  <section class="card deck" data-id="d:quad" data-mcq="quad" data-easy="Where the curve crosses the upright line is just c. The turning point is two numbers printed on your sheet, so the max height questions need no calculus at all."></section>
+
   <section class="card" data-id="p:six-moves-intro" data-easy="Six small moves. Everything else in the module is one of these six wearing different clothes.">
     <div class="in">
       <div class="eyebrow rise">the other half</div>
@@ -962,6 +967,104 @@
     }
   };
 
+  /* Distance on top, speed underneath, one draggable point driving both.
+     The steepness up there IS the height down here. That is differentiation. */
+  LABS.tangent = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var sawZero = false, sawTop = false;
+
+    function dist(t){ return 3*t*t - 0.2*t*t*t; }
+    function spd(t){ return 6*t - 0.6*t*t; }
+    function sx(t){ return 30 + t * 24; }
+    function syD(d){ return 112 - d * 0.88; }
+    function syV(v){ return 212 - v * 4.2; }
+
+    function draw(){
+      var t = +range.value / 10, d = dist(t), v = spd(t);
+      var p1 = [], p2 = [];
+      for(var k = 0; k <= 40; k++){
+        var tt = k / 4;
+        p1.push(sx(tt).toFixed(1) + "," + syD(dist(tt)).toFixed(1));
+        p2.push(sx(tt).toFixed(1) + "," + syV(spd(tt)).toFixed(1));
+      }
+      var m = -v * 0.88 / 24, dx = 32;
+      svg.innerHTML =
+        '<text x="28" y="14" font-size="9.5" opacity=".6">HOW FAR YOU HAVE GONE</text>' +
+        '<line x1="24" y1="112" x2="278" y2="112" class="axis"/>' +
+        '<polyline points="' + p1.join(" ") + '" class="curve"/>' +
+        '<line x1="' + (sx(t)-dx) + '" y1="' + (syD(d)-m*dx).toFixed(1) +
+          '" x2="' + (sx(t)+dx) + '" y2="' + (syD(d)+m*dx).toFixed(1) +
+          '" class="tan' + (v < 0.4 ? " flat" : "") + '"/>' +
+        '<circle cx="' + sx(t).toFixed(1) + '" cy="' + syD(d).toFixed(1) + '" r="6" class="dot pick"/>' +
+        '<text x="28" y="136" font-size="9.5" opacity=".6">HOW FAST YOU ARE GOING</text>' +
+        '<line x1="24" y1="212" x2="278" y2="212" class="axis"/>' +
+        '<polyline points="' + p2.join(" ") + '" class="curve"/>' +
+        '<line x1="' + sx(t).toFixed(1) + '" y1="' + syV(v).toFixed(1) +
+          '" x2="' + sx(t).toFixed(1) + '" y2="212" class="drop"/>' +
+        '<circle cx="' + sx(t).toFixed(1) + '" cy="' + syV(v).toFixed(1) + '" r="6" class="dot pick' +
+          (v < 0.4 ? " yes" : "") + '"/>';
+      out.textContent = t.toFixed(1) + "s";
+      total.textContent = v.toFixed(1);
+      if(v < 0.4){ sawZero = true; }
+      if(v > 14.5){ sawTop = true; }
+      if(sawZero && sawTop){
+        note.innerHTML = "Steepest on top, biggest below. Flat on top, nothing below. <strong>The steepness up there is the number down here.</strong>";
+        note.className = "labnote aha";
+      } else if(sawZero){
+        note.textContent = "Flat on top, nothing below. Now find the steepest part.";
+        note.className = "labnote";
+      } else {
+        note.textContent = "Find the flattest bit up top. Watch the number below.";
+        note.className = "labnote";
+      }
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* One slider, one discovery: a negative a turns the whole arc upside down. */
+  LABS.quad = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var flipped = false;
+
+    function draw(){
+      var a = +range.value / 10;
+      if(a === 0) a = 0.05;
+      var b = 2, c = 1, p = [];
+      for(var i = -34; i <= 34; i++){
+        var x = i / 8, y = a*x*x + b*x + c;
+        var sx = 150 + x * 26, sy = 130 - y * 9;
+        if(sy > -20 && sy < 210) p.push(sx.toFixed(1) + "," + sy.toFixed(1));
+      }
+      var tx = -b / (2*a), ty = c - b*b/(4*a);
+      var tsx = 150 + tx * 26, tsy = 130 - ty * 9;
+      var onScreen = tsx > 20 && tsx < 280 && tsy > 6 && tsy < 200;
+      svg.innerHTML =
+        '<line x1="20" y1="130" x2="280" y2="130" class="axis"/>' +
+        '<line x1="150" y1="8" x2="150" y2="200" class="axis"/>' +
+        '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+        (onScreen ? '<circle cx="' + tsx.toFixed(1) + '" cy="' + tsy.toFixed(1) +
+          '" r="6" class="dot pick' + (a < 0 ? " yes" : "") + '"/>' : "");
+      out.textContent = (a > 0 ? "+" : "") + a.toFixed(2);
+      total.textContent = a < 0 ? "a frown" : "a smile";
+      if(a < 0) flipped = true;
+      note.innerHTML = flipped
+        ? "There it is. <strong>A minus a turns the whole thing upside down</strong>, so the dot becomes the highest point instead of the lowest. That is how the fireworks and the football questions on your paper work: they are all upside-down ones, and the dot is the answer."
+        : "Take a below zero and watch what happens to the shape.";
+      note.className = "labnote" + (flipped ? " aha" : "");
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
   /* The vending machine. She picks the number that goes in. */
   LABS.machine = function(root){
     var range = root.querySelector("input");
@@ -1074,7 +1177,7 @@
       '<div class="labhead"><span class="labk">' + label + '</span>' +
       '<span class="labv" data-out>' + val + '</span></div>' +
       '<input type="range" min="' + min + '" max="' + max + '" value="' + val + '">' +
-      '<svg viewBox="0 0 300 172" role="img" aria-label="' + label + ' experiment"></svg>' +
+      '<svg viewBox="0 0 300 ' + (kind === "tangent" ? 222 : 172) + '" role="img" aria-label="' + label + ' experiment"></svg>' +
       '<div class="labout"><span>' + outLabel + '</span><b data-total>0</b><span>' + unit + '</span></div>' +
       '<div class="labnote" data-note></div>' +
     '</div>';
@@ -1173,6 +1276,112 @@
           verdict: L===R ? '\uc644\ubcbd. Both sides are '+L+'. Done, and you solved nothing.'
                          : 'Left\'s '+L+', right\'s '+R+'. See-saw tips, so nope. Nothing lost, try another.' };
       }
+    },
+
+    /* ---- differentiation and quadratics ---- */
+
+    dwhy: {
+      eyebrow:'no maths in this one', title:'What differentiating is.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Your Grab is doing 43 km/h. Not on average for the trip. Right now, this second. Something in that car is working out a number nobody ever actually measured.'},
+        {say:'Because a speedometer cannot measure a whole journey. It can only look at how fast the distance is changing at this exact moment.'},
+        {aha:['a word you will need','<strong>Steepness</strong>. How sharply a line climbs. The maths word for it is <strong>gradient</strong>, and they mean the same thing. That is the only new word in this lesson.']},
+        {aha:['and one picture','Rest a ruler against a curve so it just touches at one point and lies along the direction the curve is going. That ruler is called a <strong>tangent</strong>. It is a picture, not a calculation.']},
+        {say:'The journey on top. The speedometer underneath. One dot moves both.',
+         art:function(){ return lab('tangent','at this moment',0,100,20,'speedometer says','km/h'); }},
+        {say:'That is differentiating. Given how far you have gone, work out how fast you are going. Given the amount, find the rate.'},
+        {say:'It has three names and they all mean this same thing.',
+         art:function(){ return linked([
+            {tag:'all of these say the same thing', html:O+'dy/dx'+E+'    '+O+'f&#39;(x)'+E+'    '+O+'y&#39;'+E},
+            {tag:'and in growth questions', html:O+'dx/dt'+E+'  &#8212; different letters, same idea'}
+          ]); }},
+        {say:'Next two lessons are the doing. This one was just so you know what you are doing it to.'}
+      ]
+    },
+
+    drw: {
+      eyebrow:'the tidying up', title:'Getting it into shape.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'The 4x' + pw('5') + ' is not what stops you. Neither is the 7x. It is the 6/x, and you are right to flinch at it. It does not belong there yet.'},
+        {say:'Here is the whole question, and the only awkward part of it.',
+         eq: X+'y'+E+' '+O+'='+E+' '+N+'4'+E+X+'x'+E+pw('5')+' '+O+'+'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'6'+E+O+'/'+E+X+'x'+E},
+        {aha:['why this lesson exists','Your sheet has exactly <strong>one</strong> rule for differentiating, and it only accepts things shaped a particular way. So most of the work is not the differentiating. It is getting everything into that shape first.']},
+        {say:'The shape it wants is: a number, an x, and a little number up top. Nothing else.',
+         art:function(){ return fsheet([
+            'd/dx  <b>a x' + pw('n') + '</b>  =  a n x' + pw('n-1'),
+            'd/dx  A sin x  =  A cos x',
+            'd/dx  a e' + pw('kx+b') + '  =  a k e' + pw('kx+b')
+          ], 0); }},
+        {say:'And you already know how to move an x between floors. That is all this is.',
+         art:function(){ return lab('dial','the floor',0,4,0,'which means',''); }},
+        {say:'So 6/x is 6x' + pw('-1') + ', and &#8730;x is x' + pw('1/2') + '. Both of those are now the right shape, and both are on your paper.'},
+        {say:'Brackets are the same story. (3x' + pw('2') + ' + 5)(x' + pw('2') + ' + 1) has to be opened out before the rule will take it.'},
+        {say:'Here is a tidy-up with one slip in it. Tap the line where it goes wrong.',
+         art:function(){ return spot([
+            '6/x',
+            '6 x to the power 1',
+            '&#8730;x  =  x to the power 1/2',
+            '2/x&#178;  =  2 x to the power -2'
+          ], 1, 'The x went down to the basement, so the power should be <b>-1</b>, not 1. The other two are right. That one line is where most of the lost marks in this topic live.'); }},
+        {say:'You caught it. Nothing else in this topic is harder than that.'}
+      ]
+    },
+
+    drule: {
+      eyebrow:'and then one rule', title:'Comes down, loses one.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Everything is in shape. Now there is one rule, and it is printed for you.'},
+        {say:'Read it slowly, because it looks worse than it is.',
+         art:function(){ return linked([
+            {tag:'the sheet says', faded:true,
+             html:O+'d/dx'+E+'  '+tok('a','a')+tok('n','x<sup>n</sup>')+'  '+O+'='+E+'  '+tok('a','a')+tok('n','n')+X+'x'+E+'<sup>n-1</sup>'},
+            {tag:'out loud', html:O+'a times n, then x, one power lower'+E}
+          ], [
+            ['a','a','4','<b>a</b> is the number already in front. Here it is 4.'],
+            ['n','n','5','<b>n</b> is the little number up top. Here it is 5. It comes down and multiplies, then drops by one.']
+          ]); }},
+        {say:'So 4x' + pw('5') + ' becomes 20x' + pw('4') + '. Five came down, multiplied the four, and the power dropped to four.'},
+        {say:'Actually, hold on. Let me say that better, because I said it in the wrong order and that is exactly how people get it muddled.'},
+        {say:'The five comes down and <b>multiplies what is already there</b>. 5 times 4 is 20. Then the power loses one. 20x' + pw('4') + '. Same answer, but that order is the one that will not let you down.'},
+        {say:'Trig and exponentials work the same way, and they are printed too. You look them up, you do not remember them.'},
+        {aha:['one that is NOT printed','<strong>ln</strong>. Differentiate the inside, then put it over the inside. Your paper asks for it twice, and there is no line for it on the sheet, so this one lives in your head.'],
+         art:function(){ return linked([
+            {tag:'your actual question', html:X+'y'+E+' = ln('+X+'x'+E+pw('4')+' + 4'+X+'x'+E+')'},
+            {tag:'so', html:O+'(4'+E+X+'x'+E+pw('3')+O+' + 4)'+E+O+' / ('+E+X+'x'+E+pw('4')+O+' + 4'+E+X+'x'+E+O+')'+E}
+          ]); }},
+        {say:'That is fourteen things in the whole module that are not on the sheet, and you now have four of them.'},
+        {say:'Last thing. Doing it twice tells you whether a curve is at a peak or a dip: a minus answer means a frown, so it is a peak. Your paper asks that twice too.'}
+      ]
+    },
+
+    quad: {
+      eyebrow:'the biggest pile of easy marks', title:'Quadratics.',
+      q:null, auto:null, options:null,
+      steps:[
+        {say:'Throw something. Anything. That arc it makes on the way up and down is a quadratic, and every question in this topic is about that shape.'},
+        {say:'Have a go at bending it.',
+         art:function(){ return lab('quad','the value of a',-12,12,8,'shape','') ; }},
+        {say:'Before anything else, the free one. Where the curve crosses the upright line is just <b>c</b>, the lonely number at the end. It is already sitting in the equation. Four questions on your paper ask exactly that.'},
+        {say:'Where it crosses the ground is harder, and that is what the big formula on your sheet is for. The plus-or-minus in it means: do it twice, once each way. That is why you get two answers.'},
+        {aha:['and the one worth knowing','The very top of the arc, or the very bottom of the dip, is called the <strong>turning point</strong>. Your sheet prints <strong>both</strong> of its coordinates. Not one. Both.'],
+         art:function(){ return fsheet([
+            'y = ax&#178; + bx + c',
+            'Turning point is:  <b>( -b/2a ,  c - b&#178;/4a )</b>'
+          ], 1); }},
+        {say:'So for the fireworks question and the football question, the highest point is two numbers read off a sheet. No differentiating at all.'},
+        {say:'Park the numbers in boxes first, and mind that a hides when it is 1.',
+         art:function(){ return linked([
+            {tag:'yours', html:X+'y'+E+' = '+tok('a','x<sup>2</sup>')+' + '+tok('b','7')+X+'x'+E+' + '+tok('c','12')}
+          ], [
+            ['a','a','1','<b>a</b> is the number in front of x&#178;. Nothing is written, and that quietly means <b>1</b>.'],
+            ['b','b','7','<b>b</b> is the number in front of the plain x.'],
+            ['c','c','12','<b>c</b> is the lonely number, and it is also where the curve crosses the upright line.']
+          ]); }},
+        {say:'You can still find the turning point by differentiating, and the fill-in-the-blanks questions want you to. But now you have a ten second check that proves you got it right.'}
+      ]
     },
 
     /* ---- the six moves. short, named, never numbered ---- */
