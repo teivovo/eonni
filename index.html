@@ -1365,7 +1365,7 @@
         '<text x="34" y="126" font-size="17" fill="var(--peach)">+</text>' +
         '<line x1="38" y1="34" x2="38" y2="108" class="axis"/>' +
         '<polygon points="38,116 34,106 42,106" fill="var(--peach)"/>' +
-        '<text x="18" y="12" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
+        '<text x="18" y="136" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
       '</svg>',
       'small ones slip through faster');
   }
@@ -1542,7 +1542,11 @@
         '<polygon points="' + x1 + ',' + y1 + ' ' + (hx + px) + ',' + (hy + py) + ' ' +
         (hx - px) + ',' + (hy - py) + '" fill="' + col + '"/>';
       if(lbl){
-        out += '<text x="' + ((x0 + x1) / 2 + 10) + '" y="' + ((y0 + y1) / 2 - 4) +
+        /* Offset the label along the perpendicular of the arrow, not always to
+           the right. A vertical arrow put its label straight onto the axis. */
+        var ux = -dy / L, uy = dx / L;
+        if(ux < 0){ ux = -ux; uy = -uy; }
+        out += '<text x="' + ((x0 + x1) / 2 + ux * 14 + 4) + '" y="' + ((y0 + y1) / 2 + uy * 14) +
                '" font-size="12" fill="' + col + '">' + lbl + '</text>';
       }
       return out;
@@ -1758,13 +1762,13 @@
         '<text x="238" y="100" text-anchor="middle" font-size="11">2NO&#8322;</text>' +
         '<line x1="106" y1="112" x2="106" y2="38" stroke="var(--peach)" stroke-width="2"/>' +
         '<polygon points="106,30 101,42 111,42" fill="var(--peach)"/>' +
-        '<text x="70" y="76" font-size="11" fill="var(--peach)">+180</text>' +
+        '<text x="66" y="64" text-anchor="end" font-size="11" fill="var(--peach)">+180</text>' +
         '<line x1="194" y1="36" x2="194" y2="76" stroke="var(--mint)" stroke-width="2"/>' +
         '<polygon points="194,84 189,72 199,72" fill="var(--mint)"/>' +
         '<text x="200" y="56" font-size="11" fill="var(--mint)">&#8722;112</text>' +
         '<line x1="26" y1="118" x2="26" y2="84" stroke="var(--butter)" stroke-width="2" stroke-dasharray="4 3"/>' +
         '<line x1="26" y1="84" x2="202" y2="84" stroke="var(--butter)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
-        '<text x="30" y="76" font-size="12" fill="var(--butter)">net +68</text>' +
+        '<text x="30" y="104" font-size="12" fill="var(--butter)">net +68</text>' +
       '</svg>',
       'up 180, back down 112');
   }
@@ -1787,12 +1791,12 @@
     g += '<text x="28" y="57" text-anchor="end" font-size="11">0.3</text>' +
          '<text x="28" y="111" text-anchor="end" font-size="11">0.5</text>' +
          '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">' +
-         'three carbons only need one and a half oxygens</text>' +
+         '0.3 mol of carbon only needs 0.15 mol of oxygen</text>' +
          '<rect x="104" y="88" width="148" height="36" rx="9" fill="none" stroke="var(--faint)" ' +
          'stroke-width="1.4" stroke-dasharray="4 3"/>' +
          '<text x="170" y="140" text-anchor="middle" font-size="10" opacity=".65">' +
-         '3.5 left over, and the carbon is gone</text>';
-    return scene('<svg viewBox="0 0 300 150" role="img" aria-label="Three carbons use one and a half of the five oxygens, so three and a half are left unused">' +
+         '0.35 mol left over, and the carbon is gone</text>';
+    return scene('<svg viewBox="0 0 300 150" role="img" aria-label="0.3 mol of carbon uses 0.15 mol of the 0.5 mol of oxygen, so 0.35 mol is left unused">' +
       g + '</svg>', 'more of it does not mean enough of it');
   }
 
@@ -1913,7 +1917,7 @@
         box(70, 34, 'P') + box(108, 34, 'O', 'var(--raise)') +
         box(146, 42, 'lacZ') + box(192, 42, 'lacY') + box(238, 42, 'lacA') +
         '<text x="14" y="38" font-size="9" fill="var(--peach)">makes the repressor</text>' +
-        '<text x="125" y="38" text-anchor="middle" font-size="9" opacity=".62">it sits here</text>' +
+        '<text x="92" y="116" text-anchor="middle" font-size="9" opacity=".62">the repressor sits here</text>' +
         '<line x1="146" y1="86" x2="280" y2="86" stroke="var(--mint)" stroke-width="2.4"/>' +
         '<text x="213" y="102" text-anchor="middle" font-size="9.5" fill="var(--mint)">one mRNA, three genes</text>' +
       '</svg>',
@@ -2200,12 +2204,12 @@
         '<text x="125" y="30" text-anchor="middle" font-size="11" fill="var(--peach)">integrate</text>' +
         '<text x="125" y="58" text-anchor="middle" font-size="9.5" opacity=".75">up one, then divide by it</text>' +
         '<text x="200" y="46" font-size="18" fill="var(--soft)">(3/5)x</text>' +
-        '<text x="256" y="38" font-size="12" fill="var(--mint)">5</text>' +
+        '<text x="268" y="38" font-size="12" fill="var(--mint)">5</text>' +
 
         '<line x1="20" y1="86" x2="280" y2="86" class="axis"/>' +
 
         '<text x="16" y="132" font-size="18" fill="var(--soft)">(3/5)x</text>' +
-        '<text x="72" y="124" font-size="12" fill="var(--mint)">5</text>' +
+        '<text x="84" y="124" font-size="12" fill="var(--mint)">5</text>' +
         '<line x1="92" y1="126" x2="212" y2="126" stroke="var(--mint)" stroke-width="1.8" marker-end="url(#md)"/>' +
         '<text x="152" y="116" text-anchor="middle" font-size="11" fill="var(--mint)">differentiate</text>' +
         '<text x="152" y="144" text-anchor="middle" font-size="9.5" opacity=".75">down one, times the old power</text>' +
@@ -3155,8 +3159,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'A pair of simultaneous equations can be written as one matrix times a column of unknowns. Once it is in that shape, the inverse solves it in a single step.'},
         {say:'The numbers in front of x and y become the matrix, the unknowns become a column, and the right-hand sides become another column.',
-         art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;(x, y) =','the same pair of equations, written as one multiplication'); },
-         art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;(x, y) =','the equations, written as one multiplication'); }},
+         art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;','the equations, written as one multiplication'); }},
         {say:'Determinant first, always.',
          eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">27</span> <span class="o">&#8722;</span> <span class="n">35</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
         {say:'Then multiply the inverse by the right-hand column. Your calculator will do this if it has a matrix mode, and it is worth knowing whether yours does.'},
@@ -3841,7 +3844,7 @@
          eq: '<span class="o">(</span><span class="n">5</span><span class="o">+</span><span class="n">7</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">12</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span>'},
         {say:'Now split it into the two positions. Top equals top.',
          eq: '<span class="n">12</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>',
-         art:function(){ return sceneVec([[12,6,'left side','var(--peach)'],[12,6,'right side','var(--mint)']],'both sides have to land on the same point'); }},
+         art:function(){ return sceneVec([[12,6,'left side','var(--peach)'],[12,6,'','var(--mint)']],'both sides land on the same point, which is the whole equation'); }},
         {say:'And bottom equals bottom, which has nothing to do with the top.',
          eq: '<span class="x">y</span> <span class="o">+</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>   <span class="o">so</span>   <span class="x">y</span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'That is the whole trick with these. One vector equation is really one small equation per position.'}
