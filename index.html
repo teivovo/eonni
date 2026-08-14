@@ -658,7 +658,10 @@
 
   
   /* The opening hint sat underneath the escape button in the bottom-right. */
-  .hint{padding-right:128px}
+  /* The hint sat under the down-arrow and the escape button at every width
+     tested. It moves above them instead of trying to share the row. */
+  .hint{padding-right:0; bottom:auto; top:auto}
+  .card > .hint{position:absolute; left:0; right:0; bottom:184px; text-align:center}
 
   
   /* A sentence was being cut mid-word rather than wrapping. */
@@ -1017,15 +1020,16 @@
     <div class="in">
       <div class="eyebrow rise">the other half of calculus</div>
       <h2 class="rise">Every one of these is on your sheet.</h2>
-      <p class="rise">There is not a single integral in this topic that you have to remember.
-        They are all printed, and the whole skill is spotting which line you need.</p>
+      <p class="rise">Almost none of them has to be remembered. Five are printed on your sheet and the whole skill
+        is spotting which line you need. There is <b>one</b> exception, and it is flagged when
+        it arrives.</p>
       <p class="rise sub">Which means the marks are not lost in the integrating. They are lost
         in the rewriting beforehand, and in one subtraction at the end.</p>
     </div>
   </section>
   <section class="card deck" data-id="d:i1" data-mcq="i1" data-easy="Add one to the power, then divide by the new power, then plus c. A plain number like 50 becomes 50x."></section>
   <section class="card deck" data-id="d:i2" data-mcq="i2" data-easy="Rewrite 1 over x cubed as x to the power -3 first. Then add one to the power and divide by the new power, which is -2."></section>
-  <section class="card deck" data-id="d:i3" data-mcq="i3" data-easy="An x on the bottom with no power means the answer is a log. Divide by whatever multiplies the x, which here is -4."></section>
+  <section class="card deck" data-id="d:i3" data-mcq="i3" data-easy="An x on the bottom with no power means the answer is a log. Divide by whatever multiplies the x, which here is -4. This one is not on your formula sheet, so learn it."></section>
   <section class="card deck" data-id="d:i4" data-mcq="i4" data-easy="Use 2 sin x cos x = sin 2x to rewrite it first. Then it is an ordinary sine integral off your sheet."></section>
   <section class="card deck" data-id="d:i5" data-mcq="i5" data-easy="Do each term separately off the sheet. Sine goes to minus cosine, e stays e, and both get divided by the number multiplying x."></section>
   <section class="card deck" data-id="d:i6" data-mcq="i6" data-easy="Integrate first to get y with a c in it. Then put the given x and y in to find c, and write out the full equation."></section>
@@ -1115,11 +1119,11 @@
   <section class="card deck" data-sub="biology" data-id="d:b4" data-mcq="b4" data-easy="Semi-conservative. Helicase breaks the hydrogen bonds to unwind it. Doubling means times 2 per round. The lagging strand needs many RNA primers because it is built in fragments."></section>
   <section class="card deck" data-sub="biology" data-id="d:b5" data-mcq="b5" data-easy="lacI codes the repressor. One promoter over several genes gives one polycistronic mRNA. No lactose normally means the repressor blocks transcription, so ask which part the mutation has broken."></section>
   <section class="card deck" data-sub="biology" data-id="d:b6" data-mcq="b6" data-easy="Three sodium out, two potassium in, both against their gradients, so it needs ATP. Two things in opposite directions makes it an antiporter."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules cross the membrane and use receptors inside the cell. Hydrophilic ones cannot get in at all, whatever their shape. Ovary to bloodstream to a distant tissue is endocrine."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules slip through the membrane on their own and use receptors inside the cell. Hydrophilic ones cannot cross by themselves, so they either need a transport protein or they work on a receptor at the surface. Ovary to bloodstream to a distant tissue is endocrine."></section>
   <section class="card deck" data-sub="biology" data-id="d:b8" data-mcq="b8" data-easy="Glycolysis is in the cytosol, the citric acid cycle in the mitochondrial matrix, the electron transport chain on the inner membrane. Per glucose, glycolysis nets 2 ATP and 2 NADH."></section>
   <section class="card deck" data-sub="biology" data-id="d:b9" data-mcq="b9" data-easy="Km is the substrate concentration that gives half the maximum rate. Low Km means high affinity, which is what the comparison question is asking about."></section>
   <section class="card deck" data-sub="biology" data-id="d:b10" data-mcq="b10" data-easy="Competitive raises Km and leaves Vmax alone. Non-competitive lowers Vmax and leaves Km alone. If more substrate reduces the inhibition, it is competitive."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b11" data-mcq="b11" data-easy="Damage: superoxide, hydrogen peroxide, hydroxyl radical. Defence: superoxide dismutase, catalase, glutathione peroxidase, vitamin C. If an enzyme is broken, its substrate builds up."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b11" data-mcq="b11" data-easy="Damage: superoxide, hydrogen peroxide, hydroxyl radical, though hydrogen peroxide is not itself a radical. Defence: superoxide dismutase, catalase, glutathione peroxidase, vitamin C. If an enzyme is broken, its substrate builds up."></section>
   <section class="card deck" data-sub="biology" data-id="d:b12" data-mcq="b12" data-easy="DNA is negatively charged because of its phosphate backbone, so it moves towards the positive electrode. Small fragments travel further. A stronger gel slows everything and separates the small ones better."></section>
   <section class="card deck" data-sub="biology" data-id="d:b13" data-mcq="b13" data-easy="It recognises a specific sequence and breaks the phosphodiester bonds. Staggered cuts give sticky ends. Heat denatures it, so the active site loses its shape and can no longer bind."></section>
   <section class="card deck" data-sub="biology" data-id="d:b14" data-mcq="b14" data-easy="High blood sugar means insulin and storage. Low means glucagon and release. Empty stores and still low means gluconeogenesis, building glucose from scratch."></section>
@@ -1139,7 +1143,7 @@
   <section class="card deck" data-sub="chemistry" data-id="d:c4" data-mcq="c4" data-easy="Work out what each reactant could produce on its own using the ratio, then take the smaller answer. Never compare the raw amounts."></section>
   <section class="card deck" data-sub="chemistry" data-id="d:c5" data-mcq="c5" data-easy="Count the bonds and the lone pairs around the central atom. Those two numbers decide the shape. Lone pairs take up space even though you cannot see them."></section>
   <section class="card deck" data-sub="chemistry" data-id="d:c6" data-mcq="c6" data-easy="Metal with non-metal is ionic. Two identical atoms is non-polar covalent. Two different non-metals is polar covalent."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c7" data-mcq="c7" data-easy="Hydrogen bonding needs H attached directly to N, O or F. It is the strongest intermolecular force, so it gives the highest boiling point."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c7" data-mcq="c7" data-easy="Hydrogen bonding needs H attached directly to N, O or F. It is the strongest force BETWEEN MOLECULES, so among molecular compounds it gives the highest boiling point. Ionic solids are a different case and boil higher still."></section>
   <section class="card deck" data-sub="chemistry" data-id="d:c8" data-mcq="c8" data-easy="Add the given reactions so the unwanted things cancel, then add their energies the same way. Reverse a reaction and you flip the sign of its energy."></section>
   <section class="card deck" data-sub="chemistry" data-id="d:c9" data-mcq="c9" data-easy="An element on its own is zero. Oxygen is usually -2 and hydrogen +1. Everything must add up to the overall charge, so treat it as a small equation."></section>
   <section class="card deck" data-sub="chemistry" data-id="d:c10" data-mcq="c10" data-easy="The more positive reduction potential is reduced, and that is the cathode. The other one reverses and is the anode. Cell voltage is cathode minus anode."></section>
@@ -1784,7 +1788,7 @@
          '<text x="28" y="111" text-anchor="end" font-size="11">0.5</text>' +
          '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">' +
          'three carbons only need one and a half oxygens</text>' +
-         '<rect x="104" y="88" width="132" height="36" rx="9" fill="none" stroke="var(--faint)" ' +
+         '<rect x="104" y="88" width="148" height="36" rx="9" fill="none" stroke="var(--faint)" ' +
          'stroke-width="1.4" stroke-dasharray="4 3"/>' +
          '<text x="170" y="140" text-anchor="middle" font-size="10" opacity=".65">' +
          '3.5 left over, and the carbon is gone</text>';
@@ -2067,6 +2071,14 @@
       'the height is what you cut off');
   }
 
+
+  /* Anything going into an HTML attribute has to have its quotes escaped first.
+     Explanations contain markup, and a double quote inside data-why="..." ends
+     the attribute and paints the rest of the sentence at her as text. Only the
+     quote is escaped: the strings already hold numeric entities, and escaping
+     the ampersand would double-encode them. */
+  function attr(v){ return String(v).replace(/"/g, '&quot;'); }
+
   function fig(svg, cap){
     return '<figure>' + svg + '<figcaption>' + cap + '</figcaption></figure>';
   }
@@ -2291,7 +2303,7 @@
         out.textContent = (c > 0 ? "+" : "") + c.toFixed(1);
         slope.textContent = m.toFixed(2);
         moves++;
-        if(moves > 5){
+        if(moves > 1){
           note.textContent = "The whole curve slides up and down. The green line never changes its angle. That is the point: c moves the height and nothing else, which is exactly why it goes missing when you differentiate.";
           note.className = "labnote aha";
         }
@@ -2484,11 +2496,11 @@
   function spot(lines, badIndex, why, fine){
     var s = '<div class="spot" data-spot="' + badIndex + '">';
     lines.forEach(function(l, i){
-      var f = (fine && fine[i]) ? ' data-fine="' + fine[i] + '"' : '';
+      var f = (fine && fine[i]) ? ' data-fine="' + attr(fine[i]) + '"' : '';
       s += '<button type="button" class="sline" data-i="' + i + '"' + f + '>' + l + '</button>';
     });
     return s + '<div class="labnote" data-note>' + "" + '</div>' +
-           '<span hidden data-why="' + why + '"></span></div>';
+           '<span hidden data-why="' + attr(why) + '"></span></div>';
   }
 
   /* She answers, and gets a real answer back. Never a score, never a nudge to
@@ -2585,18 +2597,18 @@
 
   /* Matching. rows = [[left, right, why], ...]; order = the order the right
      column is shown in, fixed rather than random so it is testable. */
-  function match(rows, order){
+  function match(rows, order, miss){
     var L = '<div class="mcol">';
     rows.forEach(function(r, i){
       L += '<button type="button" class="mL" data-i="' + i + '">' + r[0] + '</button>';
     });
     L += '</div><div class="mcol">';
     order.forEach(function(i){
-      L += '<button type="button" class="mR" data-i="' + i + '" data-why="' + rows[i][2] + '">' +
+      L += '<button type="button" class="mR" data-i="' + i + '" data-why="' + attr(rows[i][2]) + '">' +
            rows[i][1] + '</button>';
     });
     L += '</div>';
-    return '<div class="matchwrap"><div class="mrow">' + L + '</div>' +
+    return '<div class="matchwrap" data-miss="' + attr(miss || '') + '"><div class="mrow">' + L + '</div>' +
            '<div class="labnote" data-note></div></div>';
   }
 
@@ -2608,7 +2620,7 @@
     opts.forEach(function(o, i){
       s += '<button type="button" class="pk' + (prose ? ' prose' : '') +
            '" data-i="' + i + '" data-ok="' + (o[1] ? 1 : 0) +
-           '" data-why="' + o[2] + '">' + o[0] + '</button>';
+           '" data-why="' + attr(o[2]) + '">' + o[0] + '</button>';
     });
     return s + '<div class="labnote" data-note></div></div>';
   }
@@ -2634,7 +2646,8 @@
         note.innerHTML = R.getAttribute("data-why");
         note.className = "labnote aha";
       } else {
-        note.innerHTML = "Not that pair. Look at what happens as time goes on: does it climb, fall to nothing, or fall to somewhere and stop.";
+        note.innerHTML = w2.getAttribute("data-miss") ||
+          "Not that pair. Have another look at what each one is doing.";
         note.className = "labnote";
       }
       return;
@@ -2657,7 +2670,7 @@
 
     c1: {
       eyebrow:'chemistry', title:'Moles, in one sentence.',
-      q: '<span class="o">how</span> <span class="o">many</span> <span class="o">moles</span> <span class="o">are</span> <span class="x">i</span><span class="x">n</span> <span class="n">6.84</span> <span class="x">g</span> <span class="x">o</span><span class="x">f</span> <span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub>',
+      q: '<span class="o">how</span> <span class="o">many</span> <span class="o">moles</span> <span class="o">are</span> <span class="o">in</span> <span class="n">6.84</span> <span class="x">g</span> <span class="o">of</span> <span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
@@ -2675,7 +2688,7 @@
     },
     c2: {
       eyebrow:'chemistry', title:'Concentration.',
-      q: '<span class="n">18.02</span> <span class="x">g</span> <span class="x">o</span><span class="x">f</span> <span class="x">C</span><sub class="p">6</sub><span class="x">H</span><sub class="p">12</sub><span class="x">O</span><sub class="p">6</sub> <span class="x">i</span><span class="x">n</span> <span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="x">o</span><span class="x">f</span> <span class="o">solution</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">molarity</span>',
+      q: '<span class="n">18.02</span> <span class="x">g</span> <span class="o">of</span> <span class="x">C</span><sub class="p">6</sub><span class="x">H</span><sub class="p">12</sub><span class="x">O</span><sub class="p">6</sub> <span class="o">in</span> <span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">of</span> <span class="o">solution</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">molarity</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
@@ -2692,7 +2705,7 @@
     },
     c3: {
       eyebrow:'chemistry', title:'Balancing without guessing.',
-      q: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>',
+      q: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
@@ -2706,13 +2719,13 @@
          eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>',
          art:function(){ return sceneBalance2(); }},
         {say:'Oxygen comes in twos, so you need eight of them.',
-         eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
+         eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
         {say:'Carbon, then hydrogen, then oxygen last. That order turns a puzzle into a routine, and this topic is worth easy marks once it is a routine.'}
       ]
     },
     c4: {
       eyebrow:'chemistry', title:'Which one runs out first.',
-      q: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">o</span><span class="x">f</span> <span class="x">C</span> <span class="o">reacts</span> <span class="o">with</span> <span class="n">0.5</span> <span class="o">mol</span> <span class="x">o</span><span class="x">f</span> <span class="x">O</span><sub class="p">2</sub>   <span class="o">&#183;</span>   <span class="n">2</span><span class="x">C</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">C</span><span class="x">O</span>',
+      q: '<span class="n">0.3</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">C</span> <span class="o">reacts</span> <span class="o">with</span> <span class="n">0.5</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">O</span><sub class="p">2</sub>   <span class="o">&#183;</span>   <span class="n">2</span><span class="x">C</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">C</span><span class="x">O</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
@@ -2738,7 +2751,7 @@
         {say:'VSEPR sounds like theory and it is counting. Everything around the central atom pushes everything else as far away as it can get, and lone pairs push hardest.'},
         {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
         {say:'Everything here is decided by two numbers. Pick what is around the centre, and see which shape it forces.',
-         art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,1]); }},
+         art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,3,1], 'Not that one. Count the bonds and the lone pairs again, and remember the lone pairs take up room.'); }},
         {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.',
          art:function(){ return sceneShapes(); }}
       ]
@@ -2751,7 +2764,7 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Three kinds, and telling them apart is one question: are the atoms sharing, and if so, are they sharing fairly.'},
         {say:'Three kinds of bond, three pairs of atoms. See if you can match them up before reading anything.',
-         art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1]); }},
+         art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1], 'Not that one. Ask whether they are sharing at all, and if so whether they share fairly.'); }},
         {say:'The quickest route through a bonding question: metal with non-metal is ionic, two identical atoms is non-polar, and two different non-metals is polar.'}
       ]
     },
@@ -2763,27 +2776,27 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Hydrogen bonding gets asked about constantly because it explains boiling points, and it has the narrowest rule in the module.'},
         {say:'The rule: hydrogen attached DIRECTLY to nitrogen, oxygen or fluorine. Those three. Not merely present in the molecule, attached to the hydrogen.',
-         eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="x">o</span><span class="x">r</span> <span class="x">F</span>'},
+         eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="o">or</span> <span class="x">F</span>'},
         {say:'Only some of these can hydrogen bond. Have a guess at which, then check yourself against each one.',
          art:function(){ return pickall([['HF',true,'Yes. Hydrogen bonding needs H attached directly to N, O or F, and this is H attached to F. Those three and nothing else.'],['HBr',false,'No. Bromine is not on the list. It is a bigger atom and does not pull hard enough, so this gets ordinary dipole attraction rather than hydrogen bonding.'],['CH4',false,'No. Carbon is not on the list either, and there is nothing here for a hydrogen bond to reach towards.'],['KCl',false,'No, and for a different reason: this is ionic, so there are no molecules to attract one another in the first place.']], true); }},
-        {say:'And the reason it matters. Hydrogen bonds are the strongest of the intermolecular forces, so the compound that has them needs the most energy to pull apart, and therefore has the highest boiling point. That is the standard three-mark answer.'}
+        {say:'And the reason it matters. Among MOLECULES, hydrogen bonding is the strongest of the forces between them, so a molecular compound that has it needs the most energy to pull apart and boils highest. Keep the comparison to molecules: an ionic solid like potassium chloride is held by full charges rather than by forces between molecules, and it beats all of them.'}
       ]
     },
     c8: {
       eyebrow:'chemistry', title:'Adding reactions together.',
-      q: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>',
+      q: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
         {say:'You are given two reactions and asked about a third. The trick is that reactions add up like ordinary sums, and so do their energies.'},
         {say:'Write down what you have.',
-         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
         {say:'And the second.',
-         eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
+         eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
         {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.',
          art:function(){ return sceneEnergy(); }},
         {say:'What survives is nitrogen and two oxygens on the left, and two nitrogen dioxides on the right, which is exactly the reaction you were asked about.',
-         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
         {say:'So add the two energies the same way.',
          eq: '<span class="n">180</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">112</span><span class="o">)</span> <span class="o">=</span> <span class="n">68</span> <span class="x">k</span><span class="x">J</span>'},
         {say:'If a reaction has to be reversed to make things cancel, flip the sign of its energy too. And if it has to be doubled, double the energy. That is all of it.'}
@@ -2797,28 +2810,28 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Oxidation states look arbitrary and they follow a short list of rules applied in order. Working through the list beats guessing every time.'},
         {say:'An element on its own is always nothing. So in octasulfur, sulfur is zero, however many atoms are stuck together.',
-         eq: '<span class="x">S</span><sub class="p">8</sub>   <span class="x">s</span><span class="x">o</span>   <span class="x">S</span> <span class="x">i</span><span class="x">s</span> <span class="n">0</span>'},
+         eq: '<span class="x">S</span><sub class="p">8</sub>   <span class="o">so</span>   <span class="x">S</span> <span class="o">is</span> <span class="n">0</span>'},
         {say:'Oxygen is almost always minus two, and hydrogen is almost always plus one. Those two are what let you find everything else.'},
         {say:'And the whole thing must add to the overall charge, which for a neutral compound is nothing at all.'},
         {say:'So for carbon dioxide: two oxygens at minus two make minus four, and the total has to be zero.',
-         eq: '<span class="x">C</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">C</span> <span class="x">i</span><span class="x">s</span> <span class="o">+</span><span class="n">4</span>'},
+         eq: '<span class="x">C</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">C</span> <span class="o">is</span> <span class="o">+</span><span class="n">4</span>'},
         {say:'Same list every time: elements are zero, oxygen is minus two, hydrogen is plus one, everything adds to the charge. Work it as a small equation rather than trying to remember the answer.'}
       ]
     },
     c10: {
       eyebrow:'chemistry', title:'Which way the electrons go.',
-      q: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">N</span><span class="x">i</span>   <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">0.28</span> <span class="x">V</span>      <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">r</span>   <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">0.74</span> <span class="x">V</span>',
+      q: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.28</span> <span class="x">V</span>      <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.74</span> <span class="x">V</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Electrochemistry questions come down to one comparison, and it is the same comparison every time.'},
         {say:'The more POSITIVE the reduction potential, the more that ion wants to be reduced. Minus 0.28 is more positive than minus 0.74, even though both are negative.',
-         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="x">i</span><span class="x">s</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>',
+         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">is</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>',
          art:function(){ return sceneGalv(); }},
         {say:'So nickel takes the electrons, which means nickel is the cathode. Reduction always happens at the cathode.',
-         eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">N</span><span class="x">i</span>'},
+         eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>'},
         {say:'Which leaves chromium to give the electrons up, so chromium is the anode and its half reaction runs backwards from how it was printed.',
-         eq: '<span class="o">anode</span><span class="o">:</span> <span class="x">C</span><span class="x">r</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span>'},
+         eq: '<span class="o">anode</span><span class="o">:</span> <span class="x">C</span><span class="x">r</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span>'},
         {say:'And the voltage of the cell is the difference between them, cathode take away anode.',
          eq: '<span class="o">&#8722;</span><span class="n">0.28</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">0.74</span><span class="o">)</span> <span class="o">=</span> <span class="n">0.46</span> <span class="x">V</span>'},
         {say:'Two things to hold: reduction happens at the cathode, and a cell voltage that comes out positive means the reaction runs by itself. A negative one would mean it needs pushing.'}
@@ -2864,7 +2877,7 @@
         {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.',
          art:function(){ return sceneInhib(); }},
         {say:'Two graph signatures, two inhibitors. This one is pure recognition, so it is worth doing until it is instant.',
-         art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0]); }},
+         art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0], 'Not that one. Ask which of Km and Vmax has moved, and which has stayed put.'); }},
         {say:'And the shortcut for a worded question with no graph at all. If adding more substrate REDUCES the inhibition, it is competitive, because the two are fighting over the same seat and substrate can win by weight of numbers.'},
         {say:'That is exactly the sulfanilamide question on your sheet. More PABA reduces the inhibition, therefore competitive, and the explanation is that sulfanilamide resembles PABA closely enough to occupy the same active site.'}
       ]
@@ -2877,7 +2890,7 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'This topic is a small cast of characters and knowing which side each one is on answers most of the questions.'},
         {say:'Have a go at each one. Right or wrong, every single one tells you why.',
-         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three ROS to know are superoxide, hydrogen peroxide and the hydroxyl radical. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['Every redox reaction needs an enzyme',false,'No. Iron rusting is a redox reaction and there is no enzyme anywhere near it. The true statement runs the other way round: if a redox reaction IS being catalysed, the enzyme doing it is an oxidoreductase. Read the name in pieces, oxido-reduct-ase, and it tells you what it does.']], true); }},
+         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three reactive oxygen species to know are superoxide, hydrogen peroxide and the hydroxyl radical. Note that only two of those are free RADICALS: hydrogen peroxide has no unpaired electron, so it is a reactive oxygen species without being a radical, and that distinction is exactly what a not-a-free-radical question is testing. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['Every redox reaction needs an enzyme',false,'No. Iron rusting is a redox reaction and there is no enzyme anywhere near it. The true statement runs the other way round: if a redox reaction IS being catalysed, the enzyme doing it is an oxidoreductase. Read the name in pieces, oxido-reduct-ase, and it tells you what it does.']], true); }},
         {say:'Sort them into two lists and the questions become easy. Doing damage: superoxide, hydrogen peroxide, hydroxyl radical, and radiation which makes more of them. Cleaning up: superoxide dismutase, catalase, glutathione peroxidase, vitamin C.'},
         {say:'And the mutation question. If catalase is broken, hydrogen peroxide is not broken down, so it builds up, so it damages proteins, lipids and DNA. Broken enzyme, so its substrate accumulates, so damage follows. That chain shape is the answer to every question of this kind.'}
       ]
@@ -2920,7 +2933,7 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Everything in this topic is one question: is there too much sugar in the blood, or too little. Get the direction right and the details follow.'},
         {say:'Three situations, three responses. The whole topic is deciding which one you are looking at.',
-         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It is what the body turns to once the store is already empty, which is exactly what that exam option is testing.']], [1,2,0]); }},
+         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It is what the body turns to once the store is already empty, which is exactly what that exam option is testing.']], [1,2,0], 'Not that one. Ask first whether there is too much sugar in the blood or too little.'); }},
         {say:'The naming trap worth knowing. Glycogen synthase is ACTIVE when it is dephosphorylated, not when it is phosphorylated. That comes up as a false-statement question and it catches people out because phosphorylation usually means switching on.'},
         {say:'And gluconeogenesis is not the same as glycogenolysis. Genesis means building new glucose from non-carbohydrate. Lysis means splitting existing glycogen. One letter apart on the page, opposite processes.'}
       ]
@@ -2945,7 +2958,7 @@
         {say:'So an answer that stops at the fact has thrown away two thirds of the question. This is the single most expensive habit in the module and it has nothing to do with how much you remember.'},
         {say:'Here are four answers to the same three-mark question about the Golgi apparatus. Tap each one.',
          art:function(){ return sceneSecrete(); }},
-        {art:function(){ return pickall([['Golgi apparatus modifies and packages the protein',true,'One mark. It names the structure and says what it does. But on its own this is a third of a three-mark answer, not the whole thing.'],['Golgi apparatus modifies and packages casein into vesicles, so that it can be transported to the membrane and secreted',true,'Three marks. Structure, what it does, AND what that means for the casein. The words \'so that\' are doing the work. Almost every explain mark in this module is hiding behind a \'so that\' or a \'because\'.'],['Golgi apparatus is important for the cell',false,'No marks. True, and it says nothing. If your sentence would still be true with a different organelle swapped in, it has not earned anything.'],['The Golgi is stacked and flattened in appearance',false,'No marks here, because the question asked for its ROLE. Describing what it looks like answers a question you were not asked, and costs you the time you needed for the one you were.']], true); }},
+        {art:function(){ return pickall([['Golgi apparatus modifies and packages the protein',false,'One mark out of three. It is TRUE, and it is not the answer. It names the structure and says what it does, and then stops before the part that carries the other two marks. Marked here as incomplete rather than wrong, because that is what it is.'],['Golgi apparatus modifies and packages casein into vesicles, so that it can be transported to the membrane and secreted',true,'Three marks. Structure, what it does, AND what that means for the casein. The words \'so that\' are doing the work. Almost every explain mark in this module is hiding behind a \'so that\' or a \'because\'.'],['Golgi apparatus is important for the cell',false,'No marks. True, and it says nothing. If your sentence would still be true with a different organelle swapped in, it has not earned anything.'],['The Golgi is stacked and flattened in appearance',false,'No marks here, because the question asked for its ROLE. Describing what it looks like answers a question you were not asked, and costs you the time you needed for the one you were.']], true); }},
         {say:'The pattern to carry into every long question: name it, say what it does, then say <b>so that</b> and finish the sentence. If your answer has no because and no so that in it, it is not finished yet.'}
       ]
     },
@@ -3052,7 +3065,7 @@
          art:function(){ return sceneMembrane(); }},
         {say:'Estrogen is a steroid, so it is hydrophobic and it crosses. That is why its receptor is INSIDE the cell rather than on the surface.'},
         {say:'So when the question asks whether a hydrophilic version of estrogen would work as a drug, the answer is no, and the reason is not about the receptor at all.'},
-        {say:'It cannot cross the membrane, so it never reaches the receptor, so it cannot activate it, however well it would have fitted. Three steps, three marks.'},
+        {say:'It cannot cross the membrane by itself, and there is no transporter for it, so it never reaches a receptor that sits inside the cell, so it cannot activate it however well it would have fitted. Three steps, three marks.'},
         {say:'And the signalling type. Made in the ovary, carried in the blood, acting on breast tissue somewhere else entirely. Distant target through the bloodstream is endocrine.',
          eq: 'endocrine'},
         {say:'Testosterone will not activate an estrogen receptor either. Both are steroids and both get in, but a receptor binds a shape, and the two are not the same shape.'}
@@ -3093,7 +3106,7 @@
         {say:'And bottom-right is second row, second column.',
          eq: '<span class="n">1</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">7</span><span class="o">&#215;</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
         {say:'So the answer is those four in position. Row tells you which row of the answer, column tells you which column. That is the only bookkeeping there is.',
-         eq: '<span class="o">(</span><span class="n">29</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span> <span class="o">/</span> <span class="n">38</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
+         eq: mat([['29','&#8722;3'],['38','&#8722;1']])}
       ]
     },
     mx3: {
@@ -3129,9 +3142,9 @@
         {say:'For the inverse: swap the two on the leading diagonal, flip the sign of the other two, and divide everything by the determinant.',
          eq: '<span class="o">swap</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">flip</span> <span class="n">2</span> <span class="o">and</span> <span class="n">3</span>'},
         {say:'So it is one over two, times that rearranged block.',
-         eq: '<span class="o">inverse</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
+         art:function(){ return scene(mat([['&#8722;4','&#8722;2'],['&#8722;3','&#8722;2']]), 'swap the leading pair, flip the other two, then halve everything'); }},
         {say:'Which tidies to this.',
-         eq: '<span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">1.5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
+         art:function(){ return scene(mat([['&#8722;2','&#8722;1'],['&#8722;1.5','&#8722;1']]), 'the finished inverse'); }}
       ]
     },
     mx5: {
@@ -3142,7 +3155,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'A pair of simultaneous equations can be written as one matrix times a column of unknowns. Once it is in that shape, the inverse solves it in a single step.'},
         {say:'The numbers in front of x and y become the matrix, the unknowns become a column, and the right-hand sides become another column.',
-         eq: '<span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span> <span class="o">/</span> <span class="n">5</span><span class="o">,</span> <span class="n">9</span><span class="o">)</span><span class="o">(</span><span class="x">x</span><span class="o">,</span> <span class="x">y</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">16</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">24</span><span class="o">)</span>',
+         art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;(x, y) =','the same pair of equations, written as one multiplication'); },
          art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;(x, y) =','the equations, written as one multiplication'); }},
         {say:'Determinant first, always.',
          eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">27</span> <span class="o">&#8722;</span> <span class="n">35</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
@@ -3164,9 +3177,9 @@
         {say:'Multiply the whole line by the original bottom, which makes every fraction disappear.',
          eq: '<span class="x">x</span> <span class="o">+</span> <span class="n">21</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span>'},
         {say:'Now choose x to kill one letter at a time. Put x = 1, and the B bracket becomes nothing.',
-         eq: '<span class="n">22</span> <span class="o">=</span> <span class="n">9</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="frac"><span><span class="n">22</span></span><span><span class="n">9</span></span></span>'},
+         eq: '<span class="n">22</span> <span class="o">=</span> <span class="n">9</span><span class="x">A</span>   <span class="o">so</span>   <span class="x">A</span> <span class="o">=</span> <span class="frac"><span><span class="n">22</span></span><span><span class="n">9</span></span></span>'},
         {say:'Then x = -8, and this time the A bracket vanishes.',
-         eq: '<span class="n">13</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">9</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">13</span></span><span><span class="n">9</span></span></span>'},
+         eq: '<span class="n">13</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">9</span><span class="x">B</span>   <span class="o">so</span>   <span class="x">B</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">13</span></span><span><span class="n">9</span></span></span>'},
         {say:'So the split is done.',
          eq: '<span class="o">=</span> <span class="n">22</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="n">13</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span><span class="o">)</span>'},
         {say:'Choosing the x that makes a bracket zero is the whole method. Never multiply everything out and compare coefficients if you can kill a letter instead.'}
@@ -3204,9 +3217,9 @@
         {say:'Multiply through.',
          eq: '<span class="n">34</span><span class="x">t</span> <span class="o">+</span> <span class="n">10</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">(</span><span class="x">t</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span>'},
         {say:'Kill B by putting t = 5.',
-         eq: '<span class="n">180</span> <span class="o">=</span> <span class="n">6</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="n">30</span>'},
+         eq: '<span class="n">180</span> <span class="o">=</span> <span class="n">6</span><span class="x">A</span>   <span class="o">so</span>   <span class="x">A</span> <span class="o">=</span> <span class="n">30</span>'},
         {say:'Then kill A with t = -1.',
-         eq: '<span class="o">&#8722;</span><span class="n">24</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="n">4</span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">24</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="x">B</span>   <span class="o">so</span>   <span class="x">B</span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'So A is 30 and B is 4.',
          eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">30</span>      <span class="x">B</span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'Check by putting them back: 30(t+1) + 4(t-5) is 30t + 30 + 4t - 20, which is 34t + 10. That is the top line of the question, so it is right.'}
@@ -3214,7 +3227,7 @@
     },
     tr1: {
       eyebrow:'trigonometry', title:'Reading a wave off its description.',
-      q: '<span class="o">max</span> <span class="n">4</span><span class="o">,</span> <span class="o">min</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">two</span> <span class="o">cycles</span> <span class="x">i</span><span class="x">n</span> <span class="n">360</span><span class="o">,</span> <span class="x">n</span><span class="x">o</span> <span class="o">sideways</span> <span class="o">shift</span>',
+      q: '<span class="o">max</span> <span class="n">4</span><span class="o">,</span> <span class="o">min</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">two</span> <span class="o">cycles</span> <span class="o">in</span> <span class="n">360</span><span class="o">,</span> <span class="o">no</span> <span class="o">sideways</span> <span class="o">shift</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -3243,10 +3256,10 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'You do not have to draw this or work anything out. Sine and cosine only ever run between minus one and plus one, and everything else in the expression acts on that.'},
         {say:'The cosine part can be at most 1 and at least -1. That is fixed and it never changes.',
-         eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>',
-         art:function(){ return sceneWave({A:2,B:3,D:5,cos:true,maxmin:true,cap:'the inside number changes how often, not how high'}); }},
+         eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="o">is</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>',
+         art:function(){ return sceneWave({A:-2,B:3,D:5,cos:true,maxmin:true,cap:'the inside number changes how often, not how high'}); }},
         {say:'The -2 multiplies it, so that part runs between -2 and 2. Note the minus flips which end is which, but the two ends are the same two numbers.',
-         eq: '<span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="n">2</span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="o">is</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="n">2</span>'},
         {say:'Then the +5 lifts the whole thing.',
          eq: '<span class="o">max</span> <span class="o">=</span> <span class="n">7</span>      <span class="o">min</span> <span class="o">=</span> <span class="n">3</span>'},
         {say:'The 3 inside the bracket does nothing at all to the answer. It changes how often the wave repeats, not how high it goes, and it is there to see whether you know that.'}
@@ -3260,7 +3273,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The most expensive habit in this topic is stopping after one answer. Between 0 and 360 there are almost always two, and the calculator only ever gives you one of them.'},
         {say:'Get the sine on its own first, exactly like an ordinary equation.',
-         eq: '<span class="n">4</span>sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>   <span class="x">s</span><span class="x">o</span>   sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.5</span>'},
+         eq: '<span class="n">4</span>sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>   <span class="o">so</span>   sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.5</span>'},
         {say:'Now the basic angle. Use the number WITHOUT its minus sign, always.',
          eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> <span class="n">30</span>'},
         {say:'The calculator would hand you -30 here, which is outside the range you were asked for, so it is no use as it stands. Work from the basic angle instead.'},
@@ -3282,7 +3295,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The whole second-answer problem comes down to knowing where each one is positive. Three facts, and they are different for each.'},
         {say:'The second answer depends entirely on this. Match each one to where it is positive.',
-         art:function(){ return match([['sin','positive in the 1st and 2nd quarters','Sine is the up-and-down one, and up is positive in the top half. So if sine comes out positive the two answers straddle 90. If it comes out negative they straddle 270.'],['cos','positive in the 1st and 4th quarters','Cosine is the across one, and across is positive on the right-hand side. So a positive cosine gives two answers that straddle 0 and 360, which is why the second one is 360 take away the first.'],['tan','positive in the 1st and 3rd quarters','Tangent repeats every 180 rather than every 360, which is why its second answer is the first one plus 180 and not 360 minus it. It is the odd one out and it is worth remembering as such.']], [2,0,1]); }},
+         art:function(){ return match([['sin','positive in the 1st and 2nd quarters','Sine is the up-and-down one, and up is positive in the top half. So if sine comes out positive the two answers straddle 90. If it comes out negative they straddle 270.'],['cos','positive in the 1st and 4th quarters','Cosine is the across one, and across is positive on the right-hand side. So a positive cosine gives two answers that straddle 0 and 360, which is why the second one is 360 take away the first.'],['tan','positive in the 1st and 3rd quarters','Tangent repeats every 180 rather than every 360, which is why its second answer is the first one plus 180 and not 360 minus it. It is the odd one out and it is worth remembering as such.']], [2,0,1], 'Not that one. Think about which quarter of the circle each ratio is positive in.'); }},
         {say:'Tangent is the one to watch, because its second answer is plus 180 rather than 360 minus. If you use the sine rule on a tangent question you will lose the second mark every time.'}
       ]
     },
@@ -3325,7 +3338,7 @@
         {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">&#177;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
         {say:'The plus-or-minus means do it twice.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="o">or</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>',
          art:function(){ return scenePara({a:6,b:14,c:-12,roots:[0.667,-3],u:26,uy:1.6,cy:70,cap:'two crossings, two roots'}); }},
         {say:'Two roots, and a is positive so this one is a valley. The y-intercept, free as always, is the -12 on the end.'}
       ]
@@ -3344,19 +3357,19 @@
         {say:'Now it is ordinary. This one factorises, which is quicker than the formula when you can spot it: two numbers that multiply to -10 and add to -9.',
          eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>'},
         {say:'So either bracket being zero makes the whole thing zero.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">10</span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">10</span>      <span class="o">or</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
         {say:'If you cannot spot the factors in about ten seconds, stop looking and use the formula. It always works and it is never worth staring at.'}
       ]
     },
     qa4: {
       eyebrow:'quadratics', title:'The mirror line and the bottom.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">8</span><span class="x">x</span> <span class="o">+</span> <span class="n">15</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">line</span> <span class="x">o</span><span class="x">f</span> <span class="o">symmetry</span> <span class="o">and</span> <span class="o">the</span> <span class="o">turning</span> <span class="o">point</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">8</span><span class="x">x</span> <span class="o">+</span> <span class="n">15</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">line</span> <span class="o">of</span> <span class="o">symmetry</span> <span class="o">and</span> <span class="o">the</span> <span class="o">turning</span> <span class="o">point</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'A parabola is symmetrical, so the turning point sits exactly halfway between the two roots. That gives you a route with no calculus in it at all.'},
         {say:'Find the roots first. This one factorises: two numbers multiplying to 15 and adding to -8.',
-         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="o">,</span> <span class="n">5</span>'},
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="o">,</span> <span class="n">5</span>'},
         {say:'The line of symmetry is halfway between them. Add and halve.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">4</span>',
          art:function(){ return scenePara({a:1,b:-8,c:15,roots:[3,5],tp:[4,-1],u:26,cx:70,uy:11,cy:80,cap:'the low point sits on the mirror line'}); }},
@@ -3369,13 +3382,13 @@
     },
     qa5: {
       eyebrow:'quadratics', title:'Completing the square.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">+</span> <span class="n">3</span>   <span class="o">&#183;</span>   <span class="o">write</span> <span class="x">i</span><span class="x">t</span> <span class="x">a</span><span class="x">s</span> <span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="x">q</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="x">r</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">+</span> <span class="n">3</span>   <span class="o">&#183;</span>   <span class="o">write</span> <span class="o">it</span> <span class="o">as</span> <span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="x">q</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="x">r</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This form is worth having because the turning point falls straight out of it with no work at all. That is the whole reason it is on the paper.'},
         {say:'Take the number in front of the x and halve it. Minus ten halves to minus five, and that minus five is your q.',
-         eq: '<span class="o">half</span> <span class="x">o</span><span class="x">f</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">5</span>'},
+         eq: '<span class="o">half</span> <span class="o">of</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="o">is</span> <span class="o">&#8722;</span><span class="n">5</span>'},
         {say:'Write the bracket with it, and square it.',
          eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>'},
         {say:'But that bracket is not equal to what you started with. Opening it gives x squared minus ten x plus 25, so it has 25 too many. Take them off again.',
@@ -3414,7 +3427,7 @@
         {say:'The second is different. Maximum height means the top of the arc, where the steepness is zero, so this one does need differentiating.',
          eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span>'},
         {say:'Set it to nothing and solve for the time.',
-         eq: '<span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">13</span>'},
+         eq: '<span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">13</span>'},
         {say:'That is WHEN it peaks, not how high. The question asked how high, so put the 13 back into the original.',
          eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">1690</span> <span class="o">&#8722;</span> <span class="n">845</span> <span class="o">=</span> <span class="n">851</span>'},
         {say:'851 metres. Watch for that last step, because stopping at x = 13 answers a question that was not asked.'}
@@ -3443,7 +3456,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'There are six log laws on your sheet and you do not have to remember any of them. What you do have to do is recognise which one a question is an instance of, and that is what these three are.'},
         {say:'Every log question is one of three laws wearing different letters. See which is which.',
-         art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log<sub class="p">2</sub> 5<sup class="p">4</sup>','log m<sup class="p">n</sup> = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5<sup class="p">x</sup> = 8 from impossible into one line.']], [1,2,0]); }},
+         art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log<sub class="p">2</sub> 5<sup class="p">4</sup>','log m<sup class="p">n</sup> = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5<sup class="p">x</sup> = 8 from impossible into one line.']], [1,2,0], 'Not that one. Look at what is happening to the two logs: added, subtracted, or a power.'); }},
         {say:'Every log question on your paper is one of those three wearing different letters. Adding, subtracting, or a power coming out to the front.'}
       ]
     },
@@ -3496,7 +3509,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Integrating is differentiating run in reverse. Where you used to bring the power down, now you push it up. It is printed on your sheet, so read it before you start.'},
         {say:'Add one to the power first. Two becomes three.',
-         eq: '<span class="x">x</span><sup class="p"><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="n">3</span></sup>'},
+         eq: '<span class="x">x</span><sup class="p"><span class="n">2</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="x">x</span><sup class="p"><span class="n">3</span></sup>'},
         {say:'Then divide by the number you have just made. Not by the old one.',
          eq: '<span class="o">&#8722;</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup><span class="o">/</span><span class="n">3</span>'},
         {say:'And a plus c on the end, because there was no number on the integral sign to tell you where it started.',
@@ -3515,7 +3528,7 @@
         {say:'So move the x upstairs first. Bottom of a fraction means the power turns negative.',
          eq: '<span class="frac"><span><span class="n">1</span></span><span><span class="x">x</span><sup class="p"><span class="n">3</span></sup></span></span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>'},
         {say:'Now add one to the power. Careful: minus three add one is minus two, not minus four.',
-         eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
+         eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
         {say:'And divide by that new power, which is minus two.',
          eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
         {say:'Tidy the double negative and send the x back downstairs, which is how the answer is usually written.',
@@ -3530,7 +3543,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This one looks like the last one and is not. The bottom has an x with something added to it, and that changes which line of the sheet you need.'},
         {say:'Try the old way and watch it fail. Adding one to the power of the bracket gives you a power of nothing, and dividing by nothing is not allowed. So there has to be another rule, and there is.'},
-        {say:'Your sheet has it: one over something linear integrates to a log of that something.',
+        {say:'This one is NOT on your sheet, so it has to live in your head. It is the only integral in the topic that does. One over something linear integrates to a log of that something.',
          eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="x">a</span></span></span><span class="o">)</span>ln<span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Here the number multiplying the x is minus four. That is the a.',
          eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">4</span>'},
@@ -3565,9 +3578,9 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two separate terms added together, so integrate them separately and put them back. Nothing interacts across a plus sign.'},
         {say:'First term. Sine becomes minus cosine, then divide by the 5 that is multiplying the x.',
-         eq: 'sin<span class="n">5</span><span class="x">x</span>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="o">&#8722;</span>cos<span class="n">5</span><span class="x">x</span><span class="o">/</span><span class="n">5</span>'},
+         eq: 'sin<span class="n">5</span><span class="x">x</span>   <span class="o">goes</span> <span class="o">to</span>   <span class="o">&#8722;</span>cos<span class="n">5</span><span class="x">x</span><span class="o">/</span><span class="n">5</span>'},
         {say:'Second term. e stays e, and you divide by whatever multiplies the x, which here is minus four.',
-         eq: '<span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>'},
+         eq: '<span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>'},
         {say:'Put them together and tidy the second minus.',
          eq: '&#8747; <span class="o">=</span> <span class="o">&#8722;</span>cos<span class="n">5</span><span class="x">x</span><span class="o">/</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Both of those divisions are the same instruction as each other, and the same one as in the log question. Divide by the number in front of the x. It is the single most reused move in this topic.'}
@@ -3581,11 +3594,11 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two jobs. Integrate to get the family of curves, then use the point they gave you to work out which one it is.'},
         {say:'Integrate term by term. First one is ordinary.',
-         eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span>'},
+         eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span>'},
         {say:'Second one. Minus two add one is minus one, and you divide by that minus one, so the two minuses cancel.',
-         eq: '<span class="o">&#8722;</span><span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span>'},
         {say:'Third one is a plain number.',
-         eq: '<span class="n">3.5</span>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">3.5</span><span class="x">x</span>'},
+         eq: '<span class="n">3.5</span>   <span class="o">goes</span> <span class="o">to</span>   <span class="n">3.5</span><span class="x">x</span>'},
         {say:'So the family of curves is this, with c still unknown.',
          eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Now use the point. Put x = 2 and y = 7 in, and be careful doing it in your head.',
@@ -3598,15 +3611,15 @@
     },
     i7: {
       eyebrow:'integration', title:'Numbers on the sign.',
-      q: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="x">d</span><span class="x">x</span>',
+      q: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="o">to</span> <span class="n">3</span>   <span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Numbers on the integral sign mean two things. You do not need a plus c, and there is a subtraction waiting at the end.'},
         {say:'Integrate as normal first, ignoring the numbers entirely. Divide by the 2 that multiplies the x.',
-         eq: '<span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>'},
+         eq: '<span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="o">to</span>   <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>'},
         {say:'Write it in the square brackets with its two numbers, which is a way of saying you are about to do it twice.',
-         eq: '<span class="o">[</span> <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>'},
+         eq: '<span class="o">[</span> <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="o">to</span> <span class="n">3</span>'},
         {say:'Top number in first.',
          eq: '<span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">6</span></sup> <span class="o">=</span> <span class="n">1210.29</span>'},
         {say:'Then the bottom number.',
@@ -3624,7 +3637,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The word area is what tells you to integrate. Under a curve, between two x values, is exactly what a definite integral measures.'},
         {say:'So write it as one. The two x values become the numbers on the sign.',
-         eq: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="o">(</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>'},
+         eq: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="o">to</span> <span class="n">3</span>   <span class="o">(</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>'},
         {say:'Integrate the three terms. Add one to each power, divide by the new power.',
          eq: '<span class="o">[</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">]</span>',
          art:function(){ return sceneCubic(); }},
@@ -3645,7 +3658,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This working is right the whole way down except for one line. It is the most common mistake in the topic and it is worth a mark every time.'},
         {say:'One of these lines is where it goes wrong. See if you can find it before I tell you.',
-         art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
+         art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="o">to</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="o">to</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
         {say:'If your area ever comes out negative, this is almost always why. The size is right and the sign is wrong, which is a very cheap thing to check and to fix.'}
       ]
     },
@@ -3664,7 +3677,7 @@
         {say:'Nothing gets solved in this topic. Your paper gives you a story and asks which equation goes with it, so the whole job is telling three shapes apart.'},
         {say:'There are only three, and they differ by two small things: whether there is a minus, and whether there is a bracket.'},
         {say:'Three stories, three equations. Nothing to solve here, so go on instinct and see how you do.',
-         art:function(){ return match([['A radioactive lump, decaying','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="x">x</span>','Decay. The amount falls, and it falls fastest when there is most left, so the rate depends on x and carries a minus. Solution x = Ae<sup class="p">&#8722;kt</sup>, and the graph starts high and slides down towards nothing.'],['Money in an account earning interest','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="x">k</span><span class="x">x</span>','Growth. Same shape, no minus. The more you have, the faster it grows, so it never flattens off. Solution x = Ae<sup class="p">kt</sup>, and the graph climbs forever and gets steeper.'],['Hot kopi cooling in an air-conditioned room','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">c</span><span class="o">)</span>','Cooling. This is the one with the bracket, and the bracket is the whole difference: it cools according to how far ABOVE room temperature it is, not how hot it is. Solution x = c + Ae<sup class="p">&#8722;kt</sup>, and the graph falls but stops at room temperature rather than at nothing.']], [2,0,1]); }},
+         art:function(){ return match([['A radioactive lump, decaying','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="x">x</span>','Decay. The amount falls, and it falls fastest when there is most left, so the rate depends on x and carries a minus. Solution x = Ae<sup class="p">&#8722;kt</sup>, and the graph starts high and slides down towards nothing.'],['Money in an account earning interest','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="x">k</span><span class="x">x</span>','Growth. Same shape, no minus. The more you have, the faster it grows, so it never flattens off. Solution x = Ae<sup class="p">kt</sup>, and the graph climbs forever and gets steeper.'],['Hot kopi cooling in an air-conditioned room','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">c</span><span class="o">)</span>','Cooling. This is the one with the bracket, and the bracket is the whole difference: it cools according to how far ABOVE room temperature it is, not how hot it is. Solution x = c + Ae<sup class="p">&#8722;kt</sup>, and the graph falls but stops at room temperature rather than at nothing.']], [2,0,1], 'Not that pair. Ask where it ends up: nothing, forever upwards, or somewhere and then flat.'); }},
         {say:'The minus is the difference between going up and going down. The bracket is the difference between falling to nothing and falling to somewhere and stopping.'}
       ]
     },
@@ -3677,13 +3690,13 @@
          art:function(){ return sceneFOD(); }},
         {say:'Same three, drawn instead of written. The exam gives you all three columns at once and asks which row is consistent, so being able to go straight from picture to equation is most of the mark.'},
         {say:'Same three again, drawn instead of written. Match each shape to the solution that produces it.',
-         art:function(){ return match([['Starts high, slides down towards nothing','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Decay. It heads for zero and never quite arrives. Nothing is left in the end.'],['Climbs forever, getting steeper','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="x">k</span><span class="x">t</span></sup>','Growth. No ceiling anywhere in it. If a graph flattens off, this is not the one.'],['Falls, then flattens out above the bottom','<span class="x">x</span> <span class="o">=</span> <span class="x">c</span> <span class="o">+</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Cooling. The c is the floor it settles onto. That is room temperature, and it is why this graph stops falling while the decay one does not.']], [1,2,0]); }},
+         art:function(){ return match([['Starts high, slides down towards nothing','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Decay. It heads for zero and never quite arrives. Nothing is left in the end.'],['Climbs forever, getting steeper','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="x">k</span><span class="x">t</span></sup>','Growth. No ceiling anywhere in it. If a graph flattens off, this is not the one.'],['Falls, then flattens out above the bottom','<span class="x">x</span> <span class="o">=</span> <span class="x">c</span> <span class="o">+</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Cooling. The c is the floor it settles onto. That is room temperature, and it is why this graph stops falling while the decay one does not.']], [1,2,0], 'Not that pair. Ask where the line ends up, not where it starts.'); }},
         {say:'One question to ask yourself every time: where does it end up. Nothing, forever upwards, or somewhere in between and then flat. Each answer belongs to exactly one of the three.'}
       ]
     },
     cgpar: {
       eyebrow:'straight lines', title:'Which ones are parallel.',
-      q: '<span class="o">line</span> <span class="x">A</span><span class="x">B</span> <span class="o">is</span> <span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span>   <span class="o">&#183;</span>   <span class="o">which</span> <span class="o">of</span> <span class="o">these</span> <span class="o">are</span> <span class="o">parallel</span> <span class="o">to</span> <span class="x">i</span><span class="x">t</span>',
+      q: '<span class="o">line</span> <span class="x">A</span><span class="x">B</span> <span class="o">is</span> <span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span>   <span class="o">&#183;</span>   <span class="o">which</span> <span class="o">of</span> <span class="o">these</span> <span class="o">are</span> <span class="o">parallel</span> <span class="o">to</span> <span class="o">it</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -3894,7 +3907,7 @@
     },
     v7: {
       eyebrow:'vectors', title:'The cross product, with its own answer check.',
-      q: '<span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="x">m</span><span class="o">,</span> <span class="x">n</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">m</span> <span class="o">and</span> <span class="x">n</span>',
+      q: '<span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span> <span class="o">&#215;</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="x">m</span><span class="o">,</span> <span class="x">n</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">m</span> <span class="o">and</span> <span class="x">n</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
