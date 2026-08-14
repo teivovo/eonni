@@ -597,6 +597,58 @@
   .pk.prose{font-family:var(--ui); font-size:clamp(13px,3.6vw,15px); line-height:1.45}
   .pk.off{border-color:var(--faint); background:var(--raise)}
 
+  
+  /* ---- real fractions ---- */
+  .frac{
+    display:inline-flex; flex-direction:column; align-items:center;
+    vertical-align:middle; margin:0 .18em; line-height:1.08;
+    font-size:.86em;
+  }
+  .frac > span:first-child{border-bottom:1.6px solid currentColor; padding:0 .3em 1px}
+  .frac > span:last-child{padding:1px .3em 0}
+  .frac sup, .frac sub{font-size:.72em}
+
+  
+  /* ---- scenes: the analogies, drawn ---- */
+  .scene{position:relative}
+  .playbtn{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:62px; height:62px; border-radius:50%; border:none; cursor:pointer;
+    background:var(--peach); color:#fff; display:flex; align-items:center;
+    justify-content:center; box-shadow:0 6px 20px rgba(42,31,46,.22);
+    -webkit-tap-highlight-color:transparent; z-index:2;
+  }
+  .playbtn svg{width:26px; height:26px; margin-left:3px}
+  .playbtn.gone{display:none}
+  .scene .anim{animation-play-state:paused !important}
+  .scene.playing .anim{animation-play-state:running !important}
+  .replay{
+    display:none; margin:2px auto 0; border:1px solid var(--edge); background:var(--raise);
+    color:var(--soft); font-family:var(--num); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; cursor:pointer; padding:7px 16px; border-radius:999px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .scene.playing .replay{display:block}
+  .scene{display:flex; flex-direction:column}
+
+  @keyframes drive   {from{transform:translateX(0)}      to{transform:translateX(150px)}}
+  @keyframes needle  {0%{transform:rotate(-62deg)} 45%{transform:rotate(38deg)}
+                      70%{transform:rotate(-10deg)} 100%{transform:rotate(52deg)}}
+  @keyframes slide   {from{transform:translateX(0)}      to{transform:translateX(196px)}}
+  @keyframes fadein  {from{opacity:0}                    to{opacity:1}}
+  @keyframes grow    {from{transform:scaleY(0)}          to{transform:scaleY(1)}}
+
+  
+  /* subject headings in the menu: unmissable, not a small word */
+  .mgroup.subj{
+    display:flex; align-items:center; gap:9px;
+    font-size:13px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--peach); border-top:1px solid var(--edge);
+    margin-top:14px; padding-top:15px;
+  }
+  .mgroup.subj:first-child{border-top:none; margin-top:0}
+  .mico{font-size:19px; line-height:1}
+
   </style>
 </head>
 <body>
@@ -677,7 +729,7 @@
   </section>
   <section class="card deck" data-id="d:a" data-mcq="a" data-easy="Put each option back into the equation. If both sides land on the same number, that is your answer."></section>
   <section class="card deck" data-id="d:b" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
-  <section class="card rest" data-id="r:checkin-1" data-easy="Two questions done. Take a break if you want one.">
+  <section class="card rest" data-id="r:checkin-1" data-label="Breather: how are you doing" data-easy="Two questions done. Take a break if you want one.">
     <div class="in">
       <div class="eyebrow rise">hold on a second</div>
       <div class="say rise">That is two questions done, and you did not solve either of them. You just checked.</div>
@@ -715,7 +767,7 @@
         Those need the other thing. I'll get you there too.</p>
     </div>
   </section>
-  <section class="card rest setup" data-id="s:six" data-easy="There are only six moves. Every topic is those six arranged differently.">
+  <section class="card rest setup" data-id="s:six" data-label="Before we start: the six moves" data-easy="There are only six moves. Every topic is those six arranged differently.">
     <div class="in">
       <div class="eyebrow rise">before we start properly</div>
       <div class="say rise">Can I tell you the thing that actually made this click for me?</div>
@@ -728,7 +780,7 @@
   <section class="card deck" data-id="d:m1" data-mcq="m1" data-easy="A function is a machine. You feed it a number, something comes out."></section>
   <section class="card deck" data-id="d:m2" data-mcq="m2" data-easy="The number outside a bracket gets multiplied by everything inside it."></section>
   <section class="card deck" data-id="d:m3" data-mcq="m3" data-easy="The little number is which floor the x lives on. Minus means downstairs, onto the bottom of a fraction. A half means square root."></section>
-  <section class="card rest" data-id="r:checkin-lift" data-easy="The lift lesson is the most useful one. If it did not land, come back to it later.">
+  <section class="card rest" data-id="r:checkin-lift" data-label="Breather: did the lift land" data-easy="The lift lesson is the most useful one. If it did not land, come back to it later.">
     <div class="in">
       <div class="eyebrow rise">that was the big one</div>
       <div class="say rise">The lift is the one that unlocks the most. Anything with a fraction or a square root in it goes through that door.</div>
@@ -739,7 +791,7 @@
   <section class="card deck" data-id="d:m4" data-mcq="m4" data-easy="Two fractions will not add together until the bottom numbers match."></section>
   <section class="card deck" data-id="d:m5" data-mcq="m5" data-easy="Undo in the opposite order to how it was built. Last thing on is the first thing off."></section>
   <section class="card deck" data-id="d:m6" data-mcq="m6" data-easy="Minus a minus is a plus. And when a number moves across the equals sign, its sign flips."></section>
-  <section class="card rest" data-id="r:six-done" data-easy="You have done all six moves. Everything else is those six in disguise.">
+  <section class="card rest" data-id="r:six-done" data-label="Six for six" data-easy="You have done all six moves. Everything else is those six in disguise.">
     <div class="in">
       <div class="eyebrow rise">six for six</div>
       <div class="say rise">That is the whole toolkit.</div>
@@ -748,7 +800,7 @@
       <div class="quiet-note rise">Now go and get a drink. I mean it. This is a good place to stop.</div>
     </div>
   </section>
-  <section class="card rest setup" data-id="s:diff" data-easy="Differentiation is a speedometer. That is genuinely all it is.">
+  <section class="card rest setup" data-id="s:diff" data-label="Story: the speedometer" data-easy="Differentiation is a speedometer. That is genuinely all it is.">
     <div class="in">
       <div class="eyebrow rise">story first</div>
       <div class="say rise">I want to tell you about the first time I saw <b>dy/dx</b>.</div>
@@ -761,7 +813,7 @@
   <section class="card deck" data-id="d:dwhy" data-mcq="dwhy" data-easy="Differentiating means: given how far you have gone, work out how fast you are going. The steepness of one graph is the height of the other."></section>
   <section class="card deck" data-id="d:drw" data-mcq="drw" data-easy="Your sheet has one rule for differentiating and it only accepts things shaped like a number, an x, and a little number on top. Most of the work is getting everything into that shape."></section>
   <section class="card deck" data-id="d:drule" data-mcq="drule" data-easy="The little number comes down and multiplies what is already there, then the power drops by one. ln is not on the sheet: differentiate the inside, put it over the inside."></section>
-  <section class="card rest" data-id="r:checkin-diff" data-easy="Differentiation is: tidy it up, then bring the little number down. Have a break.">
+  <section class="card rest" data-id="r:checkin-diff" data-label="Breather: after differentiating" data-easy="Differentiation is: tidy it up, then bring the little number down. Have a break.">
     <div class="in">
       <div class="eyebrow rise">breathe</div>
       <div class="say rise">Differentiation. The thing with the frightening name.</div>
@@ -769,7 +821,7 @@
       <div class="checkin rise"><div class="say">Where are you at?</div><div class="chips"><button type="button" class="chip" data-r="Good. Quadratics next, and it is the biggest pile of marks for the least writing on the entire paper. Worth doing while you are warm.">okay, keep going</button><button type="button" class="chip" data-r="Then that is your lot for now. A full head does not take any more in, it just gets tired and cross.">head is full</button><button type="button" class="chip" data-r="That is not a memory problem, it is a not-enough-times problem. Nobody has this after one go. Do that deck again tomorrow, it takes four minutes.">i keep forgetting it</button><button type="button" class="chip" data-r="Late, probably. Go to sleep. Tired revision is the one kind that genuinely does not work.">what time is it</button></div><div class="creply" data-reply></div></div>
     </div>
   </section>
-  <section class="card rest setup" data-id="s:quad" data-easy="Every quadratic is the arc something makes when you throw it. The top of the arc is printed on your sheet.">
+  <section class="card rest setup" data-id="s:quad" data-label="Story: throwing something" data-easy="Every quadratic is the arc something makes when you throw it. The top of the arc is printed on your sheet.">
     <div class="in">
       <div class="eyebrow rise">the friendly one</div>
       <div class="say rise">Throw your keys up in the air and catch them.</div>
@@ -780,7 +832,7 @@
     </div>
   </section>
   <section class="card deck" data-id="d:quad" data-mcq="quad" data-easy="Where the curve crosses the upright line is just c. The turning point is two numbers printed on your sheet, so the max height questions need no calculus at all."></section>
-  <section class="card rest" data-id="r:silly-1" data-easy="Just a fact about the plus sign. Nothing to learn here.">
+  <section class="card rest" data-id="r:silly-1" data-label="Silly fact: the plus sign" data-easy="Just a fact about the plus sign. Nothing to learn here.">
     <div class="in">
       <div class="eyebrow rise">nothing to do with your exam</div>
       <div class="say rise">Quick one while you are here.</div>
@@ -788,7 +840,7 @@
       <div class="quiet-note rise">So when you write 2 + 2, you are technically writing 2 and 2 in very bad handwriting from the 1400s. Anyway. Onwards.</div>
     </div>
   </section>
-  <section class="card rest setup" data-id="s:mat" data-easy="A matrix is a table of numbers. Most of the questions are just counting rows and columns.">
+  <section class="card rest setup" data-id="s:mat" data-label="Story: what a matrix is" data-easy="A matrix is a table of numbers. Most of the questions are just counting rows and columns.">
     <div class="in">
       <div class="eyebrow rise">worst name in the module</div>
       <div class="say rise"><b>Matrix.</b> Honestly. It sounds like something from a film about robots taking over.</div>
@@ -800,7 +852,7 @@
   </section>
   <section class="card deck" data-id="d:mat" data-mcq="mat" data-easy="Rows first, then columns. Two grids only multiply if the inside numbers match. Determinant and inverse are both printed on your sheet."></section>
   <section class="card deck" data-id="d:defint" data-mcq="defint" data-easy="The two little numbers say where to start and stop. Integrate first, substitute second, then take the bottom answer away from the top one."></section>
-  <section class="card rest setup" data-id="s:fod" data-easy="Growth and decay is four everyday situations and four graph shapes. The exam asks it as multiple choice.">
+  <section class="card rest setup" data-id="s:fod" data-label="Story: growth and decay" data-easy="Growth and decay is four everyday situations and four graph shapes. The exam asks it as multiple choice.">
     <div class="in">
       <div class="eyebrow rise">the one that looks worst</div>
       <div class="say rise">If you have flipped through the syllabus and felt your stomach drop at something, it was probably this one.</div>
@@ -812,7 +864,7 @@
   </section>
   <section class="card deck" data-id="d:fod" data-mcq="fod" data-easy="Four situations, four graph shapes. Match the story to the shape first, then pick the equation that goes with it."></section>
   <section class="card deck" data-id="d:logs" data-mcq="logs" data-easy="A log asks how many times the multiplying happened. The log laws are on your sheet; change of base is not."></section>
-  <section class="card rest" data-id="r:checkin-mid" data-easy="You are past the middle. Skip around with the menu if you like.">
+  <section class="card rest" data-id="r:checkin-mid" data-label="Breather: past the middle" data-easy="You are past the middle. Skip around with the menu if you like.">
     <div class="in">
       <div class="eyebrow rise">past the middle</div>
       <div class="say rise">You have gone past the middle of this thing.</div>
@@ -820,7 +872,7 @@
       <div class="checkin rise"><div class="say">How is it going?</div><div class="chips"><button type="button" class="chip" data-r="Say that to yourself again next week when you are sitting in the hall. It will still be true then.">better than expected</button><button type="button" class="chip" data-r="It is long. You are not meant to do it in one go, and one go is honestly the worst way to do it. Bits of it, whenever.">long</button><button type="button" class="chip" data-r="Then skip. Use the list at the top left and go straight to whatever is nearest your next lesson. There is no order police.">bored</button><button type="button" class="chip" data-r="Okay. Put it down. Nothing on that paper is worth what it is doing to you tonight, and all of it will still be here tomorrow.">stressed</button></div><div class="creply" data-reply></div></div>
     </div>
   </section>
-  <section class="card rest setup" data-id="s:vec" data-easy="A vector is a size with a direction attached. That is the whole idea.">
+  <section class="card rest setup" data-id="s:vec" data-label="Story: a small rant about vectors" data-easy="A vector is a size with a direction attached. That is the whole idea.">
     <div class="in">
       <div class="eyebrow rise">a small rant</div>
       <div class="say rise">Someone once gave me directions outside Somerset as <i>about two hundred metres</i>.</div>
@@ -834,7 +886,7 @@
   <section class="card deck" data-id="d:vang" data-mcq="vang" data-easy="Dot product, then the length of each arrow, then put all three into the printed formula. Zero dot product means right angles."></section>
   <section class="card deck" data-id="d:pf" data-mcq="pf" data-easy="One fraction taken back apart into the pieces that made it. All three patterns are printed; you only have to spot which one it is."></section>
   <section class="card deck" data-id="d:line" data-mcq="line" data-easy="y = mx + c. m is the steepness, c is where it crosses the upright axis. Parallel means same m."></section>
-  <section class="card rest" data-id="r:silly-2" data-easy="The word sin comes from an old mistranslation. The notation really is arbitrary.">
+  <section class="card rest" data-id="r:silly-2" data-label="Silly fact: where sin came from" data-easy="The word sin comes from an old mistranslation. The notation really is arbitrary.">
     <div class="in">
       <div class="eyebrow rise">a small betrayal</div>
       <div class="say rise">Something your lecturer will probably not tell you.</div>
@@ -845,7 +897,7 @@
   </section>
   <section class="card deck" data-id="d:sim" data-mcq="sim" data-easy="Two unknowns need two facts. Either make one match and subtract it away, or rearrange one and post it into the other."></section>
   <section class="card deck" data-id="d:ineq" data-mcq="ineq" data-easy="An inequality is a whole stretch of answers. Solve it like an equation, but if you multiply or divide by a negative the sign turns round."></section>
-  <section class="card rest setup" data-id="s:trig" data-easy="Trigonometry is fiddly rather than hard. Most lost marks come from stopping too early.">
+  <section class="card rest setup" data-id="s:trig" data-label="Story: fiddly, not hard" data-easy="Trigonometry is fiddly rather than hard. Most lost marks come from stopping too early.">
     <div class="in">
       <div class="eyebrow rise">last stretch</div>
       <div class="say rise">Right. Before we do the last two, something worth knowing.</div>
@@ -856,7 +908,7 @@
     </div>
   </section>
   <section class="card deck" data-id="d:tramp" data-mcq="tramp" data-easy="sin, cos and tan are three ways of comparing two sides of a right-angled triangle. SOH CAH TOA."></section>
-  <section class="card rest" data-id="r:before-last" data-easy="Last lesson. The trap is stopping after the first answer.">
+  <section class="card rest" data-id="r:before-last" data-label="One to go" data-easy="Last lesson. The trap is stopping after the first answer.">
     <div class="in">
       <div class="eyebrow rise">one to go</div>
       <div class="say rise">Right. Last one.</div>
@@ -1127,6 +1179,315 @@
   /* ---------------- illustrations ----------------
      An equation is a see-saw. A turning point is the flat bit of a curve.
      Both are pictures, and neither survives being turned into a paragraph. */
+
+
+  /* A fraction you can read at a glance rather than decode. */
+  function fr(a, b){
+    return '<span class="frac"><span>' + a + '</span><span>' + b + '</span></span>';
+  }
+
+
+  /* ---------------- scenes ----------------
+     Every analogy in the text gets a picture. A metaphor she has to imagine is
+     a metaphor doing half its job. ---------------- */
+
+  var PLAY = '<button type="button" class="playbtn" aria-label="play">' +
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+    '<path d="M8 5v14l11-7z"/></svg></button>';
+
+  function scene(svg, cap, animated){
+    return '<figure><div class="scene' + (animated ? ' canplay' : '') + '">' + svg +
+      (animated ? PLAY + '<button type="button" class="replay">again</button>' : '') +
+      '</div><figcaption>' + cap + '</figcaption></figure>';
+  }
+
+  document.addEventListener("click", function(e){
+    var p = e.target.closest && e.target.closest(".playbtn");
+    if(p){
+      var sc = p.closest(".scene");
+      sc.classList.add("playing");
+      p.classList.add("gone");
+      return;
+    }
+    var r = e.target.closest && e.target.closest(".replay");
+    if(r){
+      var sc2 = r.closest(".scene");
+      sc2.classList.remove("playing");
+      /* force the animations to restart from the beginning */
+      void sc2.offsetWidth;
+      sc2.classList.add("playing");
+    }
+  });
+
+  function person(x, y, k){
+    k = k || 1;
+    return '<g class="stroke" transform="translate(' + x + ' ' + y + ') scale(' + k + ')">' +
+      '<circle cx="0" cy="-11" r="4.2" fill="var(--raise)"/>' +
+      '<line x1="0" y1="-6.6" x2="0" y2="4"/>' +
+      '<line x1="0" y1="-3" x2="-5" y2="1"/><line x1="0" y1="-3" x2="5" y2="1"/>' +
+      '<line x1="0" y1="4" x2="-4.4" y2="11"/><line x1="0" y1="4" x2="4.4" y2="11"/>' +
+      '</g>';
+  }
+
+  /* the Grab: a car with two people in it and a speedometer underneath */
+  function sceneGrab(){
+    var car =
+      '<g class="anim" style="animation:drive 4.2s ease-in-out forwards">' +
+        '<path d="M40 62 L52 44 H92 L104 62 Z" class="stroke" fill="var(--raise)"/>' +
+        '<rect x="30" y="62" width="86" height="20" rx="7" class="stroke" fill="var(--raise2)"/>' +
+        '<circle cx="48" cy="84" r="7.5" class="stroke" fill="var(--raise)"/>' +
+        '<circle cx="98" cy="84" r="7.5" class="stroke" fill="var(--raise)"/>' +
+        person(62, 46, .62) + person(82, 46, .62) +
+      '</g>';
+    return scene(
+      '<svg viewBox="0 0 300 190" role="img" aria-label="A car driving along a road with a speedometer below it">' +
+        '<line x1="8" y1="93" x2="292" y2="93" class="axis"/>' +
+        '<text x="8" y="20" font-size="10" opacity=".55">TWENTY MINUTES ACROSS TOWN</text>' +
+        car +
+        '<g transform="translate(150 152)">' +
+          '<path d="M-46 0 A46 46 0 0 1 46 0" class="stroke"/>' +
+          '<line x1="-46" y1="0" x2="46" y2="0" class="axis"/>' +
+          '<g class="anim" style="animation:needle 4.2s ease-in-out forwards; transform-origin:0 0">' +
+            '<line x1="0" y1="0" x2="0" y2="-38" class="tan"/>' +
+          '</g>' +
+          '<circle cx="0" cy="0" r="4" class="dot pick"/>' +
+          '<text x="0" y="20" text-anchor="middle" font-size="11">km/h</text>' +
+        '</g>' +
+      '</svg>',
+      'the whole trip, and this second', true);
+  }
+
+  /* powers as floors of a lift */
+  function sceneLift(){
+    var rows = [['x' + pw('3'), 'x times x times x', 34],
+                ['x' + pw('2'), 'x times x', 62],
+                ['x' + pw('1'), 'x', 90],
+                ['x' + pw('0'), '1', 118],
+                ['x' + pw('-1'), '1 over x', 146]];
+    var g = '';
+    rows.forEach(function(r, i){
+      var base = (i === 3), down = (i === 4);
+      g += '<line x1="46" y1="' + (r[2] + 8) + '" x2="266" y2="' + (r[2] + 8) + '" class="axis"/>' +
+           '<text x="58" y="' + r[2] + '" font-size="15" fill="' +
+             (down ? 'var(--peach)' : base ? 'var(--mint)' : 'currentColor') + '">' + r[0] + '</text>' +
+           '<text x="140" y="' + r[2] + '" font-size="12" opacity=".65">' + r[1] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 172" role="img" aria-label="A lift shaft with the powers of x on each floor">' +
+        '<rect x="34" y="16" width="244" height="142" rx="10" class="stroke" fill="none"/>' +
+        g +
+        '<text x="42" y="' + 168 + '" font-size="10" opacity=".5">BASEMENT</text>' +
+      '</svg>',
+      'the little number is the floor');
+  }
+
+  /* the three shapes every FOD question is asking you to tell apart */
+  function sceneFOD(){
+    function panel(dx, path, title, sub, col){
+      return '<g transform="translate(' + dx + ' 0)">' +
+        '<line x1="6" y1="86" x2="86" y2="86" class="axis"/>' +
+        '<line x1="6" y1="16" x2="6" y2="86" class="axis"/>' +
+        '<path d="' + path + '" fill="none" stroke="' + col + '" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<text x="46" y="104" text-anchor="middle" font-size="11">' + title + '</text>' +
+        '<text x="46" y="118" text-anchor="middle" font-size="9.5" opacity=".6">' + sub + '</text>' +
+        '</g>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 128" role="img" aria-label="Three graphs: decay falling to nothing, growth climbing forever, and cooling levelling off above zero">' +
+        panel(2,   'M8 22 C30 66, 52 82, 84 84', 'decay', 'falls to nothing', 'var(--peach)') +
+        panel(104, 'M8 84 C40 82, 62 60, 84 20', 'growth', 'climbs forever', 'var(--butter)') +
+        panel(206, 'M8 22 C30 58, 46 64, 84 65', 'cooling', 'levels off', 'var(--mint)') +
+        '<line x1="212" y1="65" x2="292" y2="65" stroke="var(--mint)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>' +
+      '</svg>',
+      'where does it end up');
+  }
+
+  /* competitive against non-competitive inhibition */
+  function sceneInhib(){
+    function ax(dx, ttl){
+      return '<g transform="translate(' + dx + ' 0)">' +
+        '<line x1="14" y1="92" x2="126" y2="92" class="axis"/>' +
+        '<line x1="14" y1="14" x2="14" y2="92" class="axis"/>' +
+        '<text x="70" y="112" text-anchor="middle" font-size="11">' + ttl + '</text>' +
+        '<text x="70" y="125" text-anchor="middle" font-size="9" opacity=".55">substrate along the bottom</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 132" role="img" aria-label="Two graphs comparing competitive and non-competitive inhibition">' +
+        ax(0, 'competitive') +
+          '<path d="M14 92 C46 34, 78 26, 126 24" class="curve"/>' +
+          '<path d="M14 92 C60 56, 92 32, 126 26" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="4 3"/>' +
+          '<line x1="14" y1="24" x2="126" y2="24" class="axis"/>' +
+          '<text x="122" y="20" text-anchor="end" font-size="9" fill="var(--mint)">same Vmax</text>' +
+        '</g>' +
+        ax(158, 'non-competitive') +
+          '<path d="M14 92 C46 34, 78 26, 126 24" class="curve"/>' +
+          '<path d="M14 92 C46 58, 78 52, 126 51" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="4 3"/>' +
+          '<line x1="14" y1="51" x2="126" y2="51" class="axis"/>' +
+          '<text x="122" y="47" text-anchor="end" font-size="9" fill="var(--peach)">Vmax drops</text>' +
+        '</g>' +
+      '</svg>',
+      'dashed line is with the inhibitor');
+  }
+
+  /* gel electrophoresis */
+  function sceneGel(){
+    var bands = '';
+    [[0, 30], [1, 62], [2, 104], [3, 150]].forEach(function(b){
+      bands += '<rect x="86" y="' + (34 + b[0] * 22) + '" width="' + (54 - b[0] * 4) +
+               '" height="7" rx="3" fill="var(--soft)" opacity="' + (0.9 - b[0] * 0.13) + '"/>' +
+               '<text x="152" y="' + (41 + b[0] * 22) + '" font-size="9.5" opacity=".6">' +
+                 (b[0] === 0 ? 'biggest, barely moved' : b[0] === 3 ? 'smallest, went furthest' : '') +
+               '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 140" role="img" aria-label="A gel with DNA bands, small fragments travelling further towards the positive electrode">' +
+        '<rect x="70" y="14" width="180" height="112" rx="8" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="82" y="18" width="60" height="9" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<text x="112" y="12" text-anchor="middle" font-size="9" opacity=".6">WELL</text>' +
+        bands +
+        '<text x="34" y="24" font-size="15" fill="var(--soft)">&#8722;</text>' +
+        '<text x="34" y="126" font-size="17" fill="var(--peach)">+</text>' +
+        '<line x1="38" y1="34" x2="38" y2="108" class="axis"/>' +
+        '<polygon points="38,116 34,106 42,106" fill="var(--peach)"/>' +
+        '<text x="12" y="74" font-size="9" opacity=".6" transform="rotate(-90 12 74)">DNA IS NEGATIVE</text>' +
+      '</svg>',
+      'small ones slip through faster');
+  }
+
+  /* a galvanic cell */
+  function sceneGalv(){
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A galvanic cell with chromium as the anode and nickel as the cathode">' +
+        '<path d="M40 54 H120 V126 H40 Z" class="stroke" fill="var(--raise2)"/>' +
+        '<path d="M180 54 H260 V126 H180 Z" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="74" y="34" width="12" height="74" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<rect x="214" y="34" width="12" height="74" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<path d="M80 34 V16 H220 V34" class="stroke"/>' +
+        '<rect x="120" y="60" width="60" height="14" rx="6" class="stroke" fill="var(--raise)"/>' +
+        '<text x="150" y="71" text-anchor="middle" font-size="9" opacity=".65">SALT BRIDGE</text>' +
+        '<text x="80" y="124" text-anchor="middle" font-size="11" fill="var(--peach)">Cr</text>' +
+        '<text x="220" y="124" text-anchor="middle" font-size="11" fill="var(--mint)">Ni</text>' +
+        '<text x="80" y="142" text-anchor="middle" font-size="9.5" opacity=".7">anode, gives</text>' +
+        '<text x="220" y="142" text-anchor="middle" font-size="9.5" opacity=".7">cathode, takes</text>' +
+        '<polygon points="150,10 140,17 150,24" fill="var(--peach)"/>' +
+        '<text x="150" y="38" text-anchor="middle" font-size="9.5" fill="var(--peach)">electrons</text>' +
+      '</svg>',
+      'electrons go to the more positive one');
+  }
+
+  /* the secretion pathway */
+  function sceneSecrete(){
+    var steps = [['nucleus', 34], ['rough ER', 100], ['Golgi', 166], ['vesicle', 232]];
+    var g = '';
+    steps.forEach(function(st, i){
+      var x = st[1];
+      g += '<circle cx="' + x + '" cy="52" r="21" class="stroke" fill="var(--raise)"/>' +
+           '<text x="' + x + '" y="90" text-anchor="middle" font-size="10">' + st[0] + '</text>';
+      if(i < 3){
+        g += '<line x1="' + (x + 24) + '" y1="52" x2="' + (x + 40) + '" y2="52" class="stroke"/>' +
+             '<polygon points="' + (x + 44) + ',52 ' + (x + 37) + ',48 ' + (x + 37) + ',56 " fill="currentColor"/>';
+      }
+    });
+    return scene(
+      '<svg viewBox="0 0 300 112" role="img" aria-label="Casein made in the nucleus, folded in the rough ER, packaged by the Golgi and carried out in a vesicle">' +
+        g +
+        '<line x1="256" y1="18" x2="256" y2="86" class="stroke" stroke-dasharray="4 3"/>' +
+        '<text x="272" y="56" font-size="9.5" opacity=".65" transform="rotate(90 272 56)">OUT</text>' +
+        '<text x="34" y="24" text-anchor="middle" font-size="9" opacity=".55">GENE</text>' +
+      '</svg>',
+      'one road, four stops');
+  }
+
+  /* A=T against G=C */
+  function sceneBases(){
+    function pair(dx, a, b, n, col){
+      var lines = '';
+      for(var i = 0; i < n; i++){
+        lines += '<line x1="' + (dx + 44) + '" y1="' + (40 + i * 9) + '" x2="' + (dx + 84) + '" y2="' + (40 + i * 9) + '" stroke="' + col + '" stroke-width="2.4" stroke-linecap="round"/>';
+      }
+      return '<g>' +
+        '<rect x="' + dx + '" y="30" width="44" height="' + (10 + n * 9) + '" rx="6" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="' + (dx + 84) + '" y="30" width="44" height="' + (10 + n * 9) + '" rx="6" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="' + (dx + 22) + '" y="' + (44 + n * 4) + '" text-anchor="middle" font-size="14">' + a + '</text>' +
+        '<text x="' + (dx + 106) + '" y="' + (44 + n * 4) + '" text-anchor="middle" font-size="14">' + b + '</text>' +
+        lines +
+        '<text x="' + (dx + 64) + '" y="' + (34 + n * 9 + 24) + '" text-anchor="middle" font-size="10" fill="' + col + '">' + n + ' bonds</text>' +
+        '</g>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="A and T held by two hydrogen bonds, G and C held by three">' +
+        pair(10, 'A', 'T', 2, 'var(--butter)') +
+        pair(162, 'G', 'C', 3, 'var(--peach)') +
+      '</svg>',
+      'three is harder to pull apart than two');
+  }
+
+  /* sodium potassium pump */
+  function scenePump(){
+    var na = '', k = '';
+    for(var i = 0; i < 3; i++){
+      na += '<circle cx="' + (40 + i * 20) + '" cy="30" r="8" fill="var(--peach)" opacity=".85"/>' +
+            '<text x="' + (40 + i * 20) + '" y="34" text-anchor="middle" font-size="8" fill="#fff">Na</text>';
+    }
+    for(var j = 0; j < 2; j++){
+      k += '<circle cx="' + (210 + j * 20) + '" cy="122" r="8" fill="var(--mint)" opacity=".85"/>' +
+           '<text x="' + (210 + j * 20) + '" y="126" text-anchor="middle" font-size="8" fill="#fff">K</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 152" role="img" aria-label="The pump moving three sodium out and two potassium in, using ATP">' +
+        '<rect x="8" y="62" width="284" height="28" rx="5" fill="var(--raise2)" class="stroke"/>' +
+        '<text x="16" y="20" font-size="10" opacity=".55">OUTSIDE</text>' +
+        '<text x="16" y="146" font-size="10" opacity=".55">INSIDE</text>' +
+        '<rect x="120" y="54" width="60" height="44" rx="9" class="stroke" fill="var(--raise)"/>' +
+        '<text x="150" y="80" text-anchor="middle" font-size="10">pump</text>' +
+        na + k +
+        '<polygon points="100,44 92,56 108,56" fill="var(--peach)"/>' +
+        '<polygon points="200,108 192,96 208,96" fill="var(--mint)"/>' +
+        '<text x="150" y="118" text-anchor="middle" font-size="10" fill="var(--butter)">ATP</text>' +
+        '<text x="60" y="52" font-size="9.5" opacity=".7">3 out</text>' +
+        '<text x="212" y="106" font-size="9.5" opacity=".7">2 in</text>' +
+      '</svg>',
+      'both uphill, so it costs energy');
+  }
+
+  /* VSEPR shapes */
+  function sceneShapes(){
+    function centre(dx, dy){ return '<circle cx="' + dx + '" cy="' + dy + '" r="7" class="dot pick"/>'; }
+    function arm(x1, y1, x2, y2){ return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" class="stroke"/><circle cx="' + x2 + '" cy="' + y2 + '" r="5.4" class="dot"/>'; }
+    function lone(x, y){ return '<circle cx="' + x + '" cy="' + y + '" r="7" fill="var(--faint)" opacity=".45"/>'; }
+    var a = '<g transform="translate(38 46)">' + arm(0,0,0,-26) + arm(0,0,-24,14) + arm(0,0,24,14) + arm(0,0,0,26) + centre(0,0) + '</g>' +
+            '<text x="38" y="98" text-anchor="middle" font-size="8.6">tetrahedral</text>';
+    var b = '<g transform="translate(118 46)">' + arm(0,0,-22,16) + arm(0,0,22,16) + lone(0,-20) + centre(0,0) + '</g>' +
+            '<text x="118" y="98" text-anchor="middle" font-size="8.6">bent</text>';
+    var c = '<g transform="translate(198 46)">' + arm(0,0,-24,0) + arm(0,0,24,0) + arm(0,0,0,-24) + arm(0,0,0,24) + lone(-15,-16) + lone(15,16) + centre(0,0) + '</g>' +
+            '<text x="198" y="98" text-anchor="middle" font-size="8.6">square planar</text>';
+    var d = '<g transform="translate(268 46)">' + arm(0,0,0,-24) + arm(0,0,22,0) + arm(0,0,0,24) + lone(-16,-12) + lone(-16,12) + centre(0,0) + '</g>' +
+            '<text x="268" y="98" text-anchor="middle" font-size="8.6">T-shaped</text>';
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="Four molecular shapes: tetrahedral, bent, square planar and T-shaped">' +
+        a + b + c + d +
+        
+      '</svg>',
+      'grey blobs are lone pairs, and they take up room');
+  }
+
+  /* slices under a curve, animated */
+  function sceneSlices(){
+    var bars = '';
+    for(var i = 0; i < 14; i++){
+      var x = 24 + i * 18, h = 18 + 52 * Math.sin((i + 1) / 15 * Math.PI);
+      bars += '<rect class="anim" style="animation:grow .5s ease-out ' + (i * 0.09) + 's forwards; transform-origin:' + (x + 8) + 'px 104px" x="' + x + '" y="' + (104 - h) + '" width="15" height="' + h + '" rx="2" fill="var(--peach)" opacity=".26"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 126" role="img" aria-label="Thin rectangles filling the area under a curve">' +
+        '<line x1="16" y1="104" x2="286" y2="104" class="axis"/>' +
+        bars +
+        '<path d="M24 86 C90 34, 170 26, 276 62" class="curve"/>' +
+        '<text x="16" y="20" font-size="10" opacity=".55">SPEED</text>' +
+        '<text x="252" y="122" font-size="10" opacity=".55">TIME</text>' +
+      '</svg>',
+      'chop it, add the pieces up', true);
+  }
 
   function fig(svg, cap){
     return '<figure>' + svg + '<figcaption>' + cap + '</figcaption></figure>';
@@ -1798,7 +2159,8 @@
         {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
         {say:'Tap what is around the centre, then tap the shape it makes.',
          art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,1]); }},
-        {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.'}
+        {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.',
+         art:function(){ return sceneShapes(); }}
       ]
     },
     c6: {
@@ -1870,7 +2232,8 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Electrochemistry questions come down to one comparison, and it is the same comparison every time.'},
         {say:'The more POSITIVE the reduction potential, the more that ion wants to be reduced. Minus 0.28 is more positive than minus 0.74, even though both are negative.',
-         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="x">i</span><span class="x">s</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>'},
+         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="x">i</span><span class="x">s</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>',
+         art:function(){ return sceneGalv(); }},
         {say:'So nickel takes the electrons, which means nickel is the cathode. Reduction always happens at the cathode.',
          eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">N</span><span class="x">i</span>'},
         {say:'Which leaves chromium to give the electrons up, so chromium is the anode and its half reaction runs backwards from how it was printed.',
@@ -1916,7 +2279,8 @@
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.'},
+        {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.',
+         art:function(){ return sceneInhib(); }},
         {say:'Tap what the graph does, then tap which inhibitor does it.',
          art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0]); }},
         {say:'And the shortcut for a worded question with no graph at all. If adding more substrate REDUCES the inhibition, it is competitive, because the two are fighting over the same seat and substrate can win by weight of numbers.'},
@@ -1943,7 +2307,8 @@
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Gel electrophoresis questions look like lab trivia and they are answerable from one property of DNA that you already know.'},
-        {say:'DNA has a phosphate backbone, and phosphates carry a negative charge. So every piece of DNA is negative, all along its length.'},
+        {say:'DNA has a phosphate backbone, and phosphates carry a negative charge. So every piece of DNA is negative, all along its length.',
+         art:function(){ return sceneGel(); }},
         {say:'Opposite charges attract, so DNA moves towards the POSITIVE electrode. If the question shows you which way the DNA travelled, it has told you which electrode is positive.'},
         {say:'Then the size part. The gel is a mesh, and small fragments slip through it faster than big ones, so the small ones end up furthest along.'},
         {say:'So if the agarose is made stronger, from 1% to 5%, the mesh gets tighter. Everything moves less far, and the small fragments separate out more clearly from each other.'},
@@ -1995,7 +2360,8 @@
         {say:'That split is nearly always the same underneath: one mark for the thing, two marks for the because.',
          eq: 'name it = 1      why it matters = 2'},
         {say:'So an answer that stops at the fact has thrown away two thirds of the question. This is the single most expensive habit in the module and it has nothing to do with how much you remember.'},
-        {say:'Here are four answers to the same three-mark question about the Golgi apparatus. Tap each one.'},
+        {say:'Here are four answers to the same three-mark question about the Golgi apparatus. Tap each one.',
+         art:function(){ return sceneSecrete(); }},
         {art:function(){ return pickall([['Golgi apparatus modifies and packages the protein',true,'One mark. It names the structure and says what it does. But on its own this is a third of a three-mark answer, not the whole thing.'],['Golgi apparatus modifies and packages casein into vesicles, so that it can be transported to the membrane and secreted',true,'Three marks. Structure, what it does, AND what that means for the casein. The words \'so that\' are doing the work. Almost every explain mark in this module is hiding behind a \'so that\' or a \'because\'.'],['Golgi apparatus is important for the cell',false,'No marks. True, and it says nothing. If your sentence would still be true with a different organelle swapped in, it has not earned anything.'],['The Golgi is stacked and flattened in appearance',false,'No marks here, because the question asked for its ROLE. Describing what it looks like answers a question you were not asked, and costs you the time you needed for the one you were.']], true); }},
         {say:'The pattern to carry into every long question: name it, say what it does, then say <b>so that</b> and finish the sentence. If your answer has no because and no so that in it, it is not finished yet.'}
       ]
@@ -2031,7 +2397,8 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'A favourite question, and it is answerable from one fact you already have. Which pair takes more energy to pull apart, A with T or G with C.'},
         {say:'The fact: the two pairs are not held by the same number of hydrogen bonds.',
-         eq: 'A=T has 2      G=C has 3'},
+         eq: 'A=T has 2      G=C has 3',
+         art:function(){ return sceneBases(); }},
         {say:'So G to C takes more energy to separate. That is the answer, and on its own it is one mark out of three.'},
         {say:'The other two marks are the because. More hydrogen bonds means more energy needed to break them, so a region rich in G and C is harder to pull apart and melts at a higher temperature.'},
         {say:'And that is why it matters, which is where explain questions usually want you to land. Regions that have to open often, like the start of a gene, tend to be A and T rich, because they are cheaper to open.'}
@@ -2079,7 +2446,8 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'One pump, and almost every question about it comes back to the same two words: against and gradient.'},
         {say:'It moves three sodium out and two potassium in, and both are moving from where they are scarce to where they are already plentiful.',
-         eq: '3 Na out, 2 K in'},
+         eq: '3 Na out, 2 K in',
+         art:function(){ return scenePump(); }},
         {say:'Which answers the energy question in one line. Moving anything against its concentration gradient does not happen by itself, so it needs ATP. That is active transport, and it is the definition rather than a fact to memorise.'},
         {say:'Is it an antiporter. Yes, and the reason is the whole word: it carries two different things in OPPOSITE directions at the same time. Same direction would be a symporter.',
          eq: 'antiporter'},
@@ -2170,7 +2538,7 @@
         {say:'For the inverse: swap the two on the leading diagonal, flip the sign of the other two, and divide everything by the determinant.',
          eq: '<span class="o">swap</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">flip</span> <span class="n">2</span> <span class="o">and</span> <span class="n">3</span>'},
         {say:'So it is one over two, times that rearranged block.',
-         eq: '<span class="o">inverse</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
+         eq: '<span class="o">inverse</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
         {say:'Which tidies to this.',
          eq: '<span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">1.5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
       ]
@@ -2204,9 +2572,9 @@
         {say:'Multiply the whole line by the original bottom, which makes every fraction disappear.',
          eq: '<span class="x">x</span> <span class="o">+</span> <span class="n">21</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span>'},
         {say:'Now choose x to kill one letter at a time. Put x = 1, and the B bracket becomes nothing.',
-         eq: '<span class="n">22</span> <span class="o">=</span> <span class="n">9</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="n">22</span><span class="o">/</span><span class="n">9</span>'},
+         eq: '<span class="n">22</span> <span class="o">=</span> <span class="n">9</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="frac"><span><span class="n">22</span></span><span><span class="n">9</span></span></span>'},
         {say:'Then x = -8, and this time the A bracket vanishes.',
-         eq: '<span class="n">13</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">9</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">13</span><span class="o">/</span><span class="n">9</span>'},
+         eq: '<span class="n">13</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">9</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">13</span></span><span><span class="n">9</span></span></span>'},
         {say:'So the split is done.',
          eq: '<span class="o">=</span> <span class="n">22</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="n">13</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span><span class="o">)</span>'},
         {say:'Choosing the x that makes a bracket zero is the whole method. Never multiply everything out and compare coefficients if you can kill a letter instead.'}
@@ -2266,7 +2634,7 @@
         {say:'B is about how squashed it is. Two full cycles in 360 means each one takes 180.',
          eq: '<span class="o">period</span> <span class="o">=</span> <span class="n">180</span>'},
         {say:'And B is 360 divided by the period. This is the one people get upside down, so it is worth writing the division out.',
-         eq: '<span class="x">B</span> <span class="o">=</span> <span class="n">360</span><span class="o">/</span><span class="n">180</span> <span class="o">=</span> <span class="n">2</span>'},
+         eq: '<span class="x">B</span> <span class="o">=</span> <span class="frac"><span><span class="n">360</span></span><span><span class="n">180</span></span></span> <span class="o">=</span> <span class="n">2</span>'},
         {say:'C is the sideways shift, and the question says there is none.',
          eq: '<span class="x">C</span> <span class="o">=</span> <span class="n">0</span>'},
         {say:'Put the four in their places.',
@@ -2361,7 +2729,7 @@
         {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">+</span><span class="o">&#8722;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
         {say:'The plus-or-minus means do it twice.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">8</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="n">2</span><span class="o">/</span><span class="n">3</span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">36</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
         {say:'Two roots, and a is positive so this one is a valley. The y-intercept, free as always, is the -12 on the end.'}
       ]
     },
@@ -2460,7 +2828,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Exponential growth means it multiplies by the same number every step, rather than adding the same number. Find that multiplier and the table finishes itself.'},
         {say:'Divide any term by the one before it. Do it twice to check you get the same answer both times.',
-         eq: '<span class="n">12</span><span class="o">/</span><span class="n">3</span> <span class="o">=</span> <span class="n">4</span>      <span class="n">48</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="n">4</span>'},
+         eq: '<span class="frac"><span><span class="n">12</span></span><span><span class="n">3</span></span></span> <span class="o">=</span> <span class="n">4</span>      <span class="frac"><span><span class="n">48</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'So it multiplies by four each step. The next one is the last one times four.',
          eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="o">&#215;</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>'},
         {say:'The check that tells growth from the other kind: differences here are 9, 36, 144, all different, but the ratios are 4, 4, 4, all the same. Same ratio means exponential.'}
@@ -2538,19 +2906,19 @@
     },
     i2: {
       eyebrow:'integration', title:'The one that has to be rewritten.',
-      q: '&#8747; <span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="x">d</span><span class="x">x</span>',
+      q: '&#8747; <span class="frac"><span><span class="n">1</span></span><span><span class="x">x</span><sup class="p"><span class="n">3</span></sup></span></span> <span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This is the same trap as in differentiating, and it costs the same marks. The rule cannot see a fraction. It only takes x to a power.'},
         {say:'So move the x upstairs first. Bottom of a fraction means the power turns negative.',
-         eq: '<span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>'},
+         eq: '<span class="frac"><span><span class="n">1</span></span><span><span class="x">x</span><sup class="p"><span class="n">3</span></sup></span></span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>'},
         {say:'Now add one to the power. Careful: minus three add one is minus two, not minus four.',
          eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
         {say:'And divide by that new power, which is minus two.',
          eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
         {say:'Tidy the double negative and send the x back downstairs, which is how the answer is usually written.',
-         eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'}
+         eq: '&#8747; <span class="frac"><span><span class="n">1</span></span><span><span class="x">x</span><sup class="p"><span class="n">3</span></sup></span></span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'}
       ]
     },
     i3: {
@@ -2562,11 +2930,11 @@
         {say:'This one looks like the last one and is not. The bottom has an x with something added to it, and that changes which line of the sheet you need.'},
         {say:'Try the old way and watch it fail. Adding one to the power of the bracket gives you a power of nothing, and dividing by nothing is not allowed. So there has to be another rule, and there is.'},
         {say:'Your sheet has it: one over something linear integrates to a log of that something.',
-         eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="x">a</span><span class="o">)</span>ln<span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
+         eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="x">a</span></span></span><span class="o">)</span>ln<span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Here the number multiplying the x is minus four. That is the a.',
          eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">4</span>'},
         {say:'So it is the log, divided by minus four, with the seven still out in front.',
-         eq: '&#8747; <span class="n">7</span><span class="o">/</span><span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="o">(</span><span class="n">7</span><span class="o">/</span><span class="n">4</span><span class="o">)</span>ln<span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
+         eq: '&#8747; <span class="n">7</span><span class="o">/</span><span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="o">(</span><span class="frac"><span><span class="n">7</span></span><span><span class="n">4</span></span></span><span class="o">)</span>ln<span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'The tell for this whole family is an x on the bottom with nothing squared or cubed about it. Power on the bottom means rewrite. Plain x on the bottom means log.'}
       ]
     },
@@ -2614,17 +2982,17 @@
         {say:'Integrate term by term. First one is ordinary.',
          eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span>'},
         {say:'Second one. Minus two add one is minus one, and you divide by that minus one, so the two minuses cancel.',
-         eq: '<span class="o">&#8722;</span><span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">0.5</span><span class="o">/</span><span class="x">x</span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span>'},
         {say:'Third one is a plain number.',
          eq: '<span class="n">3.5</span>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">3.5</span><span class="x">x</span>'},
         {say:'So the family of curves is this, with c still unknown.',
-         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="n">0.5</span><span class="o">/</span><span class="x">x</span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'},
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Now use the point. Put x = 2 and y = 7 in, and be careful doing it in your head.',
          eq: '<span class="n">7</span> <span class="o">=</span> <span class="n">8</span> <span class="o">+</span> <span class="n">0.25</span> <span class="o">+</span> <span class="n">7</span> <span class="o">+</span> <span class="x">c</span>'},
         {say:'Which gives c.',
          eq: '<span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8.25</span>'},
         {say:'And the full answer. The question asked for y, not for c, so this line is the answer and c on its own is not.',
-         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="n">0.5</span><span class="o">/</span><span class="x">x</span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">8.25</span>'}
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="frac"><span><span class="n">0.5</span></span><span><span class="x">x</span></span></span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">8.25</span>'}
       ]
     },
     i7: {
@@ -2675,7 +3043,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This working is right the whole way down except for one line. It is the most common mistake in the topic and it is worth a mark every time.'},
         {say:'Tap the line where it goes wrong.',
-         art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="n">3</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">3</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
+         art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
         {say:'If your area ever comes out negative, this is almost always why. The size is right and the sign is wrong, which is a very cheap thing to check and to fix.'}
       ]
     },
@@ -2689,7 +3057,8 @@
       q: null,
       auto:null, options:null,
       steps:[
-        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.',
+         art:function(){ return sceneFOD(); }},
         {say:'Nothing gets solved in this topic. Your paper gives you a story and asks which equation goes with it, so the whole job is telling three shapes apart.'},
         {say:'There are only three, and they differ by two small things: whether there is a minus, and whether there is a bracket.'},
         {say:'Tap a story, then tap the equation you think belongs to it.',
@@ -2702,7 +3071,8 @@
       q: null,
       auto:null, options:null,
       steps:[
-        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.',
+         art:function(){ return sceneFOD(); }},
         {say:'Same three, drawn instead of written. The exam gives you all three columns at once and asks which row is consistent, so being able to go straight from picture to equation is most of the mark.'},
         {say:'Same again. Tap the shape, then the solution that draws it.',
          art:function(){ return match([['Starts high, slides down towards nothing','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Decay. It heads for zero and never quite arrives. Nothing is left in the end.'],['Climbs forever, getting steeper','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="x">k</span><span class="x">t</span></sup>','Growth. No ceiling anywhere in it. If a graph flattens off, this is not the one.'],['Falls, then flattens out above the bottom','<span class="x">x</span> <span class="o">=</span> <span class="x">c</span> <span class="o">+</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Cooling. The c is the floor it settles onto. That is room temperature, and it is why this graph stops falling while the decay one does not.']], [1,2,0]); }},
@@ -2731,7 +3101,7 @@
         {say:'Gradient is how much it climbs divided by how far it goes across. Up over along.',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">0</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
         {say:'Both subtractions run the same way round: second point take away first, on the top and on the bottom.',
-         eq: '<span class="x">m</span> <span class="o">=</span> <span class="n">10</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">5</span>'},
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="frac"><span><span class="n">10</span></span><span><span class="n">2</span></span></span> <span class="o">=</span> <span class="n">5</span>'},
         {say:'So it climbs 5 up for every 1 across. If you had done the top one way and the bottom the other, you would have got minus 5, which is a line sloping the other way entirely.'}
       ]
     },
@@ -2763,7 +3133,7 @@
         {say:'Gradient first. Same order top and bottom.',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
         {say:'Careful with the top: minus two take away four is minus six, not minus two.',
-         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="o">/</span><span class="n">3</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>'},
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">6</span></span><span><span class="n">3</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>'},
         {say:'Now pick either point, it does not matter which, and use the same shape as before.',
          eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="n">4</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
         {say:'Open the bracket. Minus two times minus two is plus four.',
@@ -2811,7 +3181,7 @@
         {say:'So the length is:',
          eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> <span class="n">13.04</span>'},
         {say:'Now direction, and this is where the marks go. First get the basic angle, using the numbers WITHOUT their minus signs.',
-         eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> tan<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="n">11</span><span class="o">/</span><span class="n">7</span><span class="o">)</span> <span class="o">=</span> <span class="n">57.53</span>'},
+         eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> tan<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="frac"><span><span class="n">11</span></span><span><span class="n">7</span></span></span><span class="o">)</span> <span class="o">=</span> <span class="n">57.53</span>'},
         {say:'Now think about where the arrow actually points. Both numbers are negative, so it goes left and down. That is the bottom-left quarter.'},
         {say:'Measured anticlockwise from the positive x-axis, the bottom-left quarter starts at 180. So add.',
          eq: '<span class="o">direction</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">57.53</span> <span class="o">=</span> <span class="n">237.53</span>'},
@@ -2936,13 +3306,13 @@
 
     q1: {
       eyebrow:'from your practice sheet &#183; highlighted', title:'Rewrite, then one rule.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">5</span></sup> <span class="o">+</span> <span class="n">7</span><span class="x">x</span> <span class="o">+</span> <span class="n">6</span><span class="o">/</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">5</span></sup> <span class="o">+</span> <span class="n">7</span><span class="x">x</span> <span class="o">+</span> <span class="frac"><span><span class="n">6</span></span><span><span class="x">x</span></span></span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The rule only accepts a number, an x and a power. Two of these are ready. The last one is not.'},
         {say:'Send the x upstairs. Bottom of a fraction means the power goes negative.',
-         eq: '<span class="n">6</span><span class="o">/</span><span class="x">x</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup>'},
+         eq: '<span class="frac"><span><span class="n">6</span></span><span><span class="x">x</span></span></span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup>'},
         {say:'Now go term by term. Power down to the front, then take one off it.',
          eq: '<span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">5</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">20</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup>'},
         {say:'7x is 7x to the power one. 7 times 1 is 7, and x to the power nought is 1.',
@@ -2950,26 +3320,26 @@
         {say:'And the negative one. 6 times -1 is -6, and -1 take one is -2.',
          eq: '<span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
         {say:'That is the answer. Either line gets the mark.',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">20</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">7</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'}
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">20</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">7</span> <span class="o">&#8722;</span> <span class="frac"><span><span class="n">6</span></span><span><span class="x">x</span><sup class="p"><span class="n">2</span></sup></span></span>'}
       ]
     },
     q2: {
       eyebrow:'from your practice sheet &#183; highlighted', title:'Roots are powers too.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8730;</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">3</span></sup> <span class="o">+</span> <span class="n">98</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8730;</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="frac"><span><span class="n">1</span></span><span><span class="n">3</span></span></span></sup> <span class="o">+</span> <span class="n">98</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Same job as the last one. Nothing here is in the right shape yet, so nothing can be differentiated yet.'},
         {say:'A root is a fraction power. The root number goes on the bottom of the fraction.',
-         eq: '<span class="o">&#8730;</span><span class="x">x</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>'},
+         eq: '<span class="o">&#8730;</span><span class="x">x</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span></sup>'},
         {say:'First term. Bring the half down, then a half take one is minus a half.',
-         eq: '<span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>'},
+         eq: '<span class="x">x</span><sup class="p"><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span></sup>'},
         {say:'Second term the same way. A third take one is minus two thirds.',
-         eq: '<span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">3</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">3</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span><span class="o">/</span><span class="n">3</span></sup>'},
+         eq: '<span class="x">x</span><sup class="p"><span class="frac"><span><span class="n">1</span></span><span><span class="n">3</span></span></span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">3</span></span></span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span></sup>'},
         {say:'And 98 on its own differentiates to nothing at all. A flat number has no steepness.',
          eq: '<span class="n">98</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">0</span>'},
         {say:'So, remembering the minus in front of the second term:',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">3</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span><span class="o">/</span><span class="n">3</span></sup>'}
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">3</span></span></span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span></sup>'}
       ]
     },
     q3: {
@@ -3058,28 +3428,28 @@
     },
     q9: {
       eyebrow:'from your practice sheet', title:'A fraction in the power.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'It looks worse than it is. Only one thing matters: what is multiplying the x.'},
         {say:'Open the bracket in the power just enough to see it. The x is being multiplied by a half.',
-         eq: '<span class="o">power</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span>'},
+         eq: '<span class="o">power</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span>'},
         {say:'The sheet says that number comes to the front. So -2 times a half.',
-         eq: '<span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#215;</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#215;</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
         {say:'The power itself is unchanged. It never changes.',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>'}
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>'}
       ]
     },
     q10: {
       eyebrow:'from your practice sheet', title:'Four terms, one at a time.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Long, not hard. Four terms, and you already know how to do all four. Take them one at a time and do not hold them all in your head.'},
         {say:'First. The 2 from the power comes to the front: a half times 2 is 1.',
-         eq: '<span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>'},
+         eq: '<span class="o">(</span><span class="frac"><span><span class="n">1</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>'},
         {say:'Second.',
          eq: '<span class="o">&#8722;</span><span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span>'},
         {say:'Third.',
@@ -3668,7 +4038,8 @@
       eyebrow:'no maths in this one', title:'What differentiating is.',
       q:null, auto:null, options:null,
       steps:[
-        {say:'Your Grab is doing 43 km/h. Not on average for the trip. Right now, this second. Something in that car is working out a number nobody ever actually measured.'},
+        {say:'Your Grab is doing 43 km/h. Not on average for the trip. Right now, this second. Something in that car is working out a number nobody ever actually measured.',
+         art:function(){ return sceneGrab(); }},
         {say:'Because a speedometer cannot measure a whole journey. It can only look at how fast the distance is changing at this exact moment.'},
         {aha:['a word you will need','<strong>Steepness</strong>. How sharply a line climbs. The maths word for it is <strong>gradient</strong>, and they mean the same thing. That is the only new word in this lesson.']},
         {aha:['and one picture','Rest a ruler against a curve so it just touches at one point and lies along the direction the curve is going. That ruler is called a <strong>tangent</strong>. It is a picture, not a calculation.']},
@@ -3828,7 +4199,8 @@
                   'Take it down and see. Then keep going, into the basement.'],
          say:'Take it up and down and watch what it turns into.',
          art:function(){ return lab('dial','the floor',0,4,4,'which means','') ; }},
-        {say:'The basement is the one worth remembering. A minus power is not a minus number. It just means the x moved downstairs, onto the bottom of a fraction.'},
+        {say:'The basement is the one worth remembering. A minus power is not a minus number. It just means the x moved downstairs, onto the bottom of a fraction.',
+         art:function(){ return sceneLift(); }},
         {say:'Which is why 6/x can be written 6x' + pw('-1') + '. Same thing, different floor.'},
         {say:'None of those are printed on your formula sheet, so they live in your head. There are fourteen things like that in the whole module and you already have three of them.'},
         {say:'Three down, and that was the big one.'}
@@ -3898,7 +4270,8 @@
       auto: null, options: null,
       steps: [
         {say:'Before any of the how, let me tell you what this thing actually <i>is</i>. Nobody ever does.'},
-        {say:'You\'re in a Grab. Twenty minutes across town. You\'re watching the speedometer the whole way.'},
+        {say:'You\'re in a Grab. Twenty minutes across town. You\'re watching the speedometer the whole way.',
+         art:function(){ return sceneGrab(); }},
         {say:'Question: how far did you travel?'},
         {aha:['the easy version','If the car went at exactly the same speed the whole time, it\'s just <strong>speed x time</strong>. One multiply. That\'s a rectangle, and you could do it in your head.']},
         {say:'But no one drives like that. You speed up, you slow down behind a bus, you stop at a traffic light, you speed up again.'},
@@ -3909,7 +4282,8 @@
          say:'In one thin slice the speed barely changes, so that slice <i>is</i> basically a rectangle. Work out each one, add them up.',
          art:function(){ return lab('slices','how many slices',1,60,3,'your total','km'); }},
         {aha:['and that is the whole idea','Integration is <strong>chopping something into infinitely many tiny pieces and adding them up</strong>. That stretchy S? It\'s an S. For <strong>Sum</strong>.']},
-        {say:'And what you\'ve just added up is the <b>area underneath the graph</b>. That\'s why every integration question secretly turns into an area.'},
+        {say:'And what you\'ve just added up is the <b>area underneath the graph</b>. That\'s why every integration question secretly turns into an area.',
+         art:function(){ return sceneSlices(); }},
         {say:'Now. There\'s a second way to look at it, and it\'s the one your exam actually uses.'},
         {aha:['the two directions','<strong>Differentiating</strong> asks: I know the amount, how fast is it changing? <strong>Integrating</strong> asks the opposite: I know the rate, what\'s the total?'], art:artMirror},
         {say:'Which brings us to the weird little <b>+ c</b> stuck on the end of every integral.'},
@@ -4371,8 +4745,15 @@
     return getStarIds().map(indexOfId).filter(function(i){ return i >= 0; });
   }
 
+  var SUBICON = {
+    maths:     '&#128290;',   /* input numbers */
+    biology:   '&#129440;',   /* microbe */
+    chemistry: '&#129514;'    /* test tube */
+  };
   var LABELS = cards.map(function(c, i){
     if(c._label) return c._label;
+    var explicit = c.getAttribute("data-label");
+    if(explicit) return explicit;
     var h = c.querySelector("h1, h2");
     return h ? h.textContent.trim() : "Card " + (i + 1);
   });
@@ -4426,7 +4807,8 @@
       if(t !== sub){
         sub = t;
         var h = document.createElement("div");
-        h.className = "mgroup"; h.textContent = t;
+        h.className = "mgroup subj";
+        h.innerHTML = '<span class="mico">' + SUBICON[t] + '</span>' + t;
         mlist.appendChild(h);
       }
       mlist.appendChild(row(i, stars));
