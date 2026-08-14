@@ -1720,7 +1720,10 @@
         {say:'Because a speedometer cannot measure a whole journey. It can only look at how fast the distance is changing at this exact moment.'},
         {aha:['a word you will need','<strong>Steepness</strong>. How sharply a line climbs. The maths word for it is <strong>gradient</strong>, and they mean the same thing. That is the only new word in this lesson.']},
         {aha:['and one picture','Rest a ruler against a curve so it just touches at one point and lies along the direction the curve is going. That ruler is called a <strong>tangent</strong>. It is a picture, not a calculation.']},
-        {say:'The journey on top. The speedometer underneath. One dot moves both.',
+        {predict:['Before you move it. When the road on top goes flat, what does the speedometer underneath do?',
+                  ['reads zero','reads its highest','no idea, just show me'],
+                  'Hold that thought. Now drag the dot along and watch the bottom number.'],
+         say:'The journey on top. The speedometer underneath. One dot moves both.',
          art:function(){ return lab('tangent','at this moment',0,100,20,'speedometer says','km/h'); }},
         {say:'That is differentiating. Given how far you have gone, work out how fast you are going. Given the amount, find the rate.'},
         {say:'It has three names and they all mean this same thing.',
@@ -1746,7 +1749,10 @@
             'd/dx  A sin x  =  A cos x',
             'd/dx  a e' + pw('kx+b') + '  =  a k e' + pw('kx+b')
           ], 0); }},
-        {say:'And you already know how to move an x between floors. That is all this is.',
+        {predict:['Before you touch it. If the little number up top goes below zero, where does the x end up?',
+                  ['on the bottom of a fraction','it turns into a minus number','not sure'],
+                  'Keep that in mind, and take it down past zero.'],
+         say:'And you already know how to move an x between floors. That is all this is.',
          art:function(){ return lab('dial','the floor',0,4,0,'which means',''); }},
         {say:'So 6/x is 6x' + pw('-1') + ', and &#8730;x is x' + pw('1/2') + '. Both of those are now the right shape, and both are on your paper.'},
         {say:'Brackets are the same story. (3x' + pw('2') + ' + 5)(x' + pw('2') + ' + 1) has to be opened out before the rule will take it.'},
@@ -1795,11 +1801,14 @@
     },
 
     quad: {
-      eyebrow:'the biggest pile of easy marks', title:'Quadratics.',
+      eyebrow:'the biggest pile of marks', title:'Quadratics.',
       q:null, auto:null, options:null,
       steps:[
         {say:'Throw something. Anything. That arc it makes on the way up and down is a quadratic, and every question in this topic is about that shape.'},
-        {say:'Have a go at bending it.',
+        {predict:['Before you bend it. What happens to the arc when a goes past zero into the minuses?',
+                  ['it flips over','it gets wider','it slides sideways'],
+                  'Go and find out. Drag a all the way across.'],
+         say:'Have a go at bending it.',
          art:function(){ return lab('quad','the value of a',-12,12,8,'shape','') ; }},
         {say:'Before anything else, the free one. Where the curve crosses the upright line is just <b>c</b>, the lonely number at the end. It is already sitting in the equation. Four questions on your paper ask exactly that.'},
         {say:'Where it crosses the ground is harder, and that is what the big formula on your sheet is for. The plus-or-minus in it means: do it twice, once each way. That is why you get two answers.'},
@@ -1829,7 +1838,10 @@
       steps:[
         {say:'Start with the smallest thing in the whole module, because everything else is built on it.'},
         {aha:['think of it like','A vending machine. You put a coin in, something comes out. <strong>f(x)</strong> is the machine. <strong>x</strong> is whatever you feed it.']},
-        {say:'This one is called 2x - 8. Feed it a number and see what falls out.',
+        {predict:['Before you feed it. Which number makes this machine give you nothing at all?',
+                  ['0','4','8'],
+                  'Go and find it. Slide it along until the bottom reads zero.'],
+         say:'This one is called 2x - 8. Feed it a number and see what falls out.',
          art:function(){ return lab('machine','you put in',-2,10,-2,'out comes','') ; }},
         {say:'When you found the number that made it come out as nothing, you solved an equation. Nobody mentioned it at the time.'},
         {say:'This shows up everywhere later: putting an x back into a gradient, putting two numbers into an integral, putting a point in to find c.'},
@@ -1859,7 +1871,10 @@
       steps:[
         {say:'This is the one that unlocks the most, so it gets the longest go.'},
         {aha:['think of it like','A lift. The little number up top is <strong>which floor the x is living on</strong>.']},
-        {say:'Take it up and down and watch what it turns into.',
+        {predict:['Before you move the lift. What is x when the floor number hits zero?',
+                  ['zero','one','x, unchanged'],
+                  'Take it down and see. Then keep going, into the basement.'],
+         say:'Take it up and down and watch what it turns into.',
          art:function(){ return lab('dial','the floor',0,4,4,'which means','') ; }},
         {say:'The basement is the one worth remembering. A minus power is not a minus number. It just means the x moved downstairs, onto the bottom of a fraction.'},
         {say:'Which is why 6/x can be written 6x' + pw('-1') + '. Same thing, different floor.'},
@@ -1936,7 +1951,10 @@
         {aha:['the easy version','If the car went at exactly the same speed the whole time, it\'s just <strong>speed x time</strong>. One multiply. That\'s a rectangle, and you could do it in your head.']},
         {say:'But no one drives like that. You speed up, you slow down behind a bus, you stop at a traffic light, you speed up again.'},
         {say:'So here\'s the move. Chop the journey into slices of time.'},
-        {say:'In one thin slice the speed barely changes, so that slice <i>is</i> basically a rectangle. Work out each one, add them up.',
+        {predict:['Before you slide it. As you chop the journey into more and more slices, what does your total do?',
+                  ['keeps climbing forever','settles on one number','bounces around'],
+                  'Drag it up to sixty, and watch the total rather than the picture.'],
+         say:'In one thin slice the speed barely changes, so that slice <i>is</i> basically a rectangle. Work out each one, add them up.',
          art:function(){ return lab('slices','how many slices',1,60,3,'your total','km'); }},
         {aha:['and that is the whole idea','Integration is <strong>chopping something into infinitely many tiny pieces and adding them up</strong>. That stretchy S? It\'s an S. For <strong>Sum</strong>.']},
         {say:'And what you\'ve just added up is the <b>area underneath the graph</b>. That\'s why every integration question secretly turns into an area.'},
@@ -1945,7 +1963,10 @@
         {say:'Which brings us to the weird little <b>+ c</b> stuck on the end of every integral.'},
         {aha:['think of it like','I tell you exactly what you spent every day this month. Can you tell me your bank balance? <strong>No.</strong> Not unless I also tell you what you started with.']},
         {say:'Same story. Knowing the rate can never tell you the starting height. So we write <b>+ c</b> for "some starting amount, still unknown".'},
-        {say:'Here\'s the same curve with a different c each time.',
+        {predict:['Before you slide c. The whole curve is about to move up and down. What happens to the steepness at the green dot?',
+                  ['it changes with the curve','it stays exactly the same','no idea'],
+                  'Slide c all the way across, and keep your eye on the steepness number.'],
+         say:'Here\'s the same curve with a different c each time.',
          art:function(){ return lab('shift','the value of c',-30,30,0,'steepness at the green dot','') ; }},
         {say:'And when a question says <i>"the curve passes through (0, 3)"</i> - that\'s them handing you the starting balance, so you can finally work out what c is.'},
         {say:'That\'s it. That\'s integration. Adding up slices, or undoing a rate. The rest is just filling in a formula.'}
@@ -2134,6 +2155,26 @@
       return s;
     }
     function el(cls, html){ var d=document.createElement("div"); d.className=cls; d.innerHTML=html; return d; }
+
+    /* A slider she just drags is observation. A slider she has committed a guess
+       to first is generation, and generation is where the effect lives. Every
+       option returns the SAME reply on purpose: this asks her to commit, it
+       does not mark her. The slider itself is the answer. */
+    function predictBox(pr){
+      var w = el("checkin", "");
+      w.appendChild(el("say", pr[0]));
+      var c = el("chips", "");
+      pr[1].forEach(function(o){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "chip";
+        b.setAttribute("data-r", pr[2]); b.innerHTML = o;
+        c.appendChild(b);
+      });
+      w.appendChild(c);
+      var r = el("creply", ""); r.setAttribute("data-reply", "");
+      w.appendChild(r);
+      return w;
+    }
     function qhead(){ return cfg.q ? el("qhead", cfg.q) : null; }
 
     function makeOpts(){
@@ -2158,6 +2199,7 @@
 
     // one slide per remaining step
     cfg.steps.slice(1).forEach(function(st){
+      if(st.predict) slide([ qhead(), predictBox(st.predict) ]);
       var parts = [ qhead() ];
       if(st.aha){
         var a = document.createElement("div"); a.className = "aha";
