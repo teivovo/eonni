@@ -1049,6 +1049,13 @@
   <section class="card deck" data-sub="biology" data-id="d:b5" data-mcq="b5" data-easy="lacI codes the repressor. One promoter over several genes gives one polycistronic mRNA. No lactose normally means the repressor blocks transcription, so ask which part the mutation has broken."></section>
   <section class="card deck" data-sub="biology" data-id="d:b6" data-mcq="b6" data-easy="Three sodium out, two potassium in, both against their gradients, so it needs ATP. Two things in opposite directions makes it an antiporter."></section>
   <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules cross the membrane and use receptors inside the cell. Hydrophilic ones cannot get in at all, whatever their shape. Ovary to bloodstream to a distant tissue is endocrine."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b8" data-mcq="b8" data-easy="Glycolysis is in the cytosol, the citric acid cycle in the mitochondrial matrix, the electron transport chain on the inner membrane. Per glucose, glycolysis nets 2 ATP and 2 NADH."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b9" data-mcq="b9" data-easy="Km is the substrate concentration that gives half the maximum rate. Low Km means high affinity. It is the number you compare two enzymes on."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b10" data-mcq="b10" data-easy="Competitive raises Km and leaves Vmax alone. Non-competitive lowers Vmax and leaves Km alone. If more substrate reduces the inhibition, it is competitive."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b11" data-mcq="b11" data-easy="Damage: superoxide, hydrogen peroxide, hydroxyl radical. Defence: superoxide dismutase, catalase, glutathione peroxidase, vitamin C. If an enzyme is broken, its substrate builds up."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b12" data-mcq="b12" data-easy="DNA is negatively charged because of its phosphate backbone, so it moves towards the positive electrode. Small fragments travel further. A stronger gel slows everything and separates the small ones better."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b13" data-mcq="b13" data-easy="It recognises a specific sequence and breaks the phosphodiester bonds. Staggered cuts give sticky ends. Heat denatures it, so the active site loses its shape and can no longer bind."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b14" data-mcq="b14" data-easy="High blood sugar means insulin and storage. Low means glucagon and release. Empty stores and still low means gluconeogenesis, building glucose from scratch."></section>
 
 </div>
 
@@ -1686,6 +1693,103 @@
   });
 
   var DECKS = {
+
+    /* ---- A110 biology, second wave: L04, L09, L12, L13. ---- */
+
+    b8: {
+      eyebrow:'biology', title:'Glycolysis and where things happen.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'This topic is mostly numbers and addresses. There is nothing to reason out, so it is worth finding out now which ones are actually in your head.'},
+        {say:'Tap any of them. Right or wrong, each one explains itself.',
+         art:function(){ return pickall([['Two glucose through glycolysis gives 4 ATP and 4 NADH',true,'Correct, and the trap is the word TWO. Per glucose it is 2 and 2, so read the number in the question before answering from memory.'],['The citric acid cycle happens in the mitochondrial matrix',true,'Correct. Glycolysis is in the cytosol, the citric acid cycle is in the matrix, and the electron transport chain is on the inner membrane. Three processes, three addresses.'],['ATP is produced when pyruvate is converted to lactate',false,'No. That step makes no ATP at all. Its only purpose is to reoxidise NADH back to NAD+ so that glycolysis can keep running, and glycolysis is where the ATP came from.'],['Lactate fermentation produces no carbon dioxide',true,'Correct, and it is the clean difference from alcohol fermentation, which does. That is what the comparison question is after.'],['Fermentation happens in the absence of oxygen',true,'Correct. And the reason it exists at all is to regenerate NAD+, without which glycolysis stops after a few seconds.']], true); }},
+        {say:'Three addresses to keep: glycolysis in the cytosol, citric acid cycle in the matrix, electron transport chain on the inner membrane. A surprising number of questions are only asking which room.'}
+      ]
+    },
+    b9: {
+      eyebrow:'biology', title:'Km, and what it actually measures.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Km gets treated as a definition to memorise and it is really a description of how eager an enzyme is. Once you have that, the questions answer themselves.'},
+        {say:'The definition first, because it is a mark on its own.',
+         eq: 'Km = the substrate concentration that gives half of Vmax'},
+        {say:'So a LOW Km means the enzyme reaches half speed with barely any substrate around, which means it grabs substrate readily. High affinity.'},
+        {say:'And a high Km means it needs a lot of substrate before it gets going. Low affinity.'},
+        {say:'Which is why Km, and not size or optimum pH, is what you compare two enzymes on. It is the one number that says how good each is at its job.'},
+        {say:'One more that is worth having ready, because it is four true-or-false marks in one question. Enzymes DO change shape while working, that is induced fit. They CAN form bonds with reactants. They ARE affected by temperature and pH. And they are NOT used up.'}
+      ]
+    },
+    b10: {
+      eyebrow:'biology', title:'Which inhibitor is it.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.'},
+        {say:'Tap what the graph does, then tap which inhibitor does it.',
+         art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0]); }},
+        {say:'And the shortcut for a worded question with no graph at all. If adding more substrate REDUCES the inhibition, it is competitive, because the two are fighting over the same seat and substrate can win by weight of numbers.'},
+        {say:'That is exactly the sulfanilamide question on your sheet. More PABA reduces the inhibition, therefore competitive, and the explanation is that sulfanilamide resembles PABA closely enough to occupy the same active site.'}
+      ]
+    },
+    b11: {
+      eyebrow:'biology', title:'Free radicals and the defence against them.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'This topic is a small cast of characters and knowing which side each one is on answers most of the questions.'},
+        {say:'Tap any of them. Right or wrong, each one explains itself.',
+         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three ROS to know are superoxide, hydrogen peroxide and the hydroxyl radical. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['A redox reaction involves an oxidoreductase enzyme',true,'Correct, and the name gives it away: oxido-reduct-ase. Several enzyme names in this module say what they do if you read them in pieces.']], true); }},
+        {say:'Sort them into two lists and the questions become easy. Doing damage: superoxide, hydrogen peroxide, hydroxyl radical, and radiation which makes more of them. Cleaning up: superoxide dismutase, catalase, glutathione peroxidase, vitamin C.'},
+        {say:'And the mutation question. If catalase is broken, hydrogen peroxide is not broken down, so it builds up, so it damages proteins, lipids and DNA. Broken enzyme, so its substrate accumulates, so damage follows. That chain shape is the answer to every question of this kind.'}
+      ]
+    },
+    b12: {
+      eyebrow:'biology', title:'Why the DNA moves that way.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Gel electrophoresis questions look like lab trivia and they are answerable from one property of DNA that you already know.'},
+        {say:'DNA has a phosphate backbone, and phosphates carry a negative charge. So every piece of DNA is negative, all along its length.'},
+        {say:'Opposite charges attract, so DNA moves towards the POSITIVE electrode. If the question shows you which way the DNA travelled, it has told you which electrode is positive.'},
+        {say:'Then the size part. The gel is a mesh, and small fragments slip through it faster than big ones, so the small ones end up furthest along.'},
+        {say:'So if the agarose is made stronger, from 1% to 5%, the mesh gets tighter. Everything moves less far, and the small fragments separate out more clearly from each other.'},
+        {say:'Two facts doing all the work: DNA is negative, and small things move faster. Almost every question here is one of those two.'}
+      ]
+    },
+    b13: {
+      eyebrow:'biology', title:'Cutting DNA, and why heat stops it.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Restriction enzymes come up as three short questions and they are all answerable from what an enzyme is.'},
+        {say:'What it does: it recognises a specific short sequence, then cuts by breaking the phosphodiester bonds in the backbone. Recognises, then cuts. Both halves are marks.'},
+        {say:'Straight across both strands at the same point gives blunt ends. A staggered cut leaves short single-stranded overhangs, and those are cohesive ends, also called sticky.'},
+        {say:'Sticky ends matter because the overhang can base pair with any other fragment cut by the same enzyme, which is what makes joining DNA from two sources possible at all.'},
+        {say:'And the temperature question, which is not really about restriction enzymes. At 80 degrees the enzyme denatures: the bonds holding its shape break, so the active site loses its shape, so it can no longer bind the recognition sequence.'},
+        {say:'Note that shape is the whole answer. Enzymes work by fitting, so anything that ruins the fit stops the enzyme, whether that is heat, pH or a mutation.'}
+      ]
+    },
+    b14: {
+      eyebrow:'biology', title:'Which hormone, and which direction.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Everything in this topic is one question: is there too much sugar in the blood, or too little. Get the direction right and the details follow.'},
+        {say:'Tap the situation, then tap what the body reaches for.',
+         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It only happens when the store is already empty, which is exactly what that exam option is testing.']], [1,2,0]); }},
+        {say:'The naming trap worth knowing. Glycogen synthase is ACTIVE when it is dephosphorylated, not when it is phosphorylated. That comes up as a false-statement question and it catches people out because phosphorylation usually means switching on.'},
+        {say:'And gluconeogenesis is not the same as glycogenolysis. Genesis means building new glucose from non-carbohydrate. Lysis means splitting existing glycogen. One letter apart on the page, opposite processes.'}
+      ]
+    },
 
     /* ---- A110 biology, first wave. Paper on 18 August.
        Shaped around answer structure rather than recall, because every
