@@ -116,7 +116,12 @@
     font-family:var(--num); font-variant-numeric:tabular-nums;
     font-size:clamp(15px,4.1vw,17px); color:var(--faint);
     padding:11px 14px; border:1px solid var(--edge); border-radius:12px;
-    background:var(--raise); white-space:nowrap; overflow-x:auto; min-width:0;
+    background:var(--raise); min-width:0;
+    /* The pinned question WRAPS rather than scrolls. It is there so she never has
+       to remember what she is solving, and a reminder you have to drag sideways to
+       read is not a reminder. .eq below still scrolls, because breaking an
+       expression across lines mid-term is worse than scrolling it. */
+    white-space:normal; overflow-wrap:break-word;
   }
   .qhead .x,.qhead .n,.qhead .p{opacity:.85}
 
@@ -820,6 +825,23 @@
     </div>
   </section>
   <section class="card deck" data-id="d:wave" data-mcq="wave" data-easy="A is how tall, B is how many, C slides it sideways, D lifts it up. And a flat line crosses a wave more than once, so there is usually a second answer."></section>
+  <section class="card" data-id="p:worked-intro">
+    <div class="in">
+      <div class="eyebrow rise">you asked for these</div>
+      <h2 class="rise">Six of them, start to finish.</h2>
+      <p class="rise">Whole questions, worked all the way through. No steps skipped, and
+        nothing left as <i>"and then it follows that"</i>.</p>
+      <p class="rise sub">The question stays at the top of every screen, so you can never
+        lose track of what you are actually doing. If you drift off halfway, look up. It is
+        still sitting there.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:w1" data-mcq="w1" data-easy="Rewrite every term as a number times x to a power. Then bring the power down to the front and take one off it."></section>
+  <section class="card deck" data-id="d:w2" data-mcq="w2" data-easy="Name a, b and c first. Then read both coordinates straight off the formula sheet."></section>
+  <section class="card deck" data-id="d:w3" data-mcq="w3" data-easy="Add one to the power, then divide by the new power. Then top number minus bottom number."></section>
+  <section class="card deck" data-id="d:w4" data-mcq="w4" data-easy="Name a, b and c. Do the inside of the root on its own first. The plus-or-minus means two answers."></section>
+  <section class="card deck" data-id="d:w5" data-mcq="w5" data-easy="Solve it like an equation. If you divide by a negative, the sign turns round."></section>
+  <section class="card deck" data-id="d:w6" data-mcq="w6" data-easy="Opposite and hypotenuse means sine. Then shift-sin turns the number back into an angle. Calculator in degrees."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1410,6 +1432,138 @@
   }
 
   var DECKS = {
+
+    /* ---------------- worked examples ----------------
+       She asked for these directly. Every one keeps the question pinned at the
+       top of every screen via q, because the thing she said closes a page is
+       that she no longer knows what it is talking about. So she must never have
+       to hold the question in her head while working on it. Full solutions, no
+       step skipped, nothing left as "and then it follows". ---------------- */
+
+    w1: {
+      eyebrow:'worked example, one of six', title:'Differentiating.',
+      q: X+'y'+E+' '+O+'='+E+' '+N+'4'+E+X+'x'+E+pw('5')+' '+O+'+'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'6'+E+O+'/'+E+X+'x'+E+'   &#183;   '+O+'find dy/dx'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'Nothing in this is hard. The whole job is getting it into the shape the rule accepts, and then turning one handle.'},
+        {say:'The rule only takes a number, an x, and a power. That last term is not in that shape yet, so it goes first.',
+         eq: N+'6'+E+O+'/'+E+X+'x'+E+'   '+O+'='+E+'   '+N+'6'+E+X+'x'+E+pw('-1')},
+        {say:'Now every term is the right shape. Nothing has changed value. It is the same expression, written so the rule will accept it.',
+         eq: X+'y'+E+' '+O+'='+E+' '+N+'4'+E+X+'x'+E+pw('5')+' '+O+'+'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'6'+E+X+'x'+E+pw('-1')},
+        {aha:['the only rule you need','Bring the power down to the front and multiply by it. Then take one off the power. That is the whole of differentiating.']},
+        {say:'First term. 4 times 5 is 20, and the power drops from 5 to 4.',
+         eq: N+'4'+E+X+'x'+E+pw('5')+'   '+O+'goes to'+E+'   '+N+'20'+E+X+'x'+E+pw('4')},
+        {say:'Second term. 7x is really 7x to the power one. 7 times 1 is 7, and x to the power zero is just 1, so the x vanishes.',
+         eq: N+'7'+E+X+'x'+E+'   '+O+'goes to'+E+'   '+N+'7'},
+        {say:'Third term, the basement one. 6 times -1 is -6, and -1 take away one is -2.',
+         eq: N+'6'+E+X+'x'+E+pw('-1')+'   '+O+'goes to'+E+'   '+O+'-'+E+N+'6'+E+X+'x'+E+pw('-2')},
+        {say:'Put the three back together, and that is the answer.',
+         eq: 'dy/dx   '+O+'='+E+'   '+N+'20'+E+X+'x'+E+pw('4')+' '+O+'+'+E+' '+N+'7'+E+' '+O+'-'+E+' '+N+'6'+E+X+'x'+E+pw('-2')},
+        {say:'If the question wants it written the way it came in, send the x back downstairs. Both lines say the same thing and both get the mark.',
+         eq: O+'='+E+'   '+N+'20'+E+X+'x'+E+pw('4')+' '+O+'+'+E+' '+N+'7'+E+' '+O+'-'+E+' '+N+'6'+E+O+'/'+E+X+'x'+E+pw('2')}
+      ]
+    },
+
+    w2: {
+      eyebrow:'worked example, two of six', title:'Turning point.',
+      q: X+'y'+E+' '+O+'='+E+' '+N+'2'+E+X+'x'+E+pw('2')+' '+O+'-'+E+' '+N+'8'+E+X+'x'+E+' '+O+'+'+E+' '+N+'5'+E+'   &#183;   '+O+'find the turning point'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'Both coordinates are printed on your formula sheet. You do not have to differentiate anything to get this one.'},
+        {say:'Name your three numbers before you touch the formula. This is the cheapest mark-saving habit in the module.',
+         eq: X+'a'+E+' '+O+'='+E+' '+N+'2'+E+'     '+X+'b'+E+' '+O+'='+E+' '+O+'-'+E+N+'8'+E+'     '+X+'c'+E+' '+O+'='+E+' '+N+'5'},
+        {aha:['what the sheet hands you','Turning point  =  <strong>( -b/2a , c - b'+pw('2')+'/4a )</strong>.  Both halves of it. Not one.']},
+        {say:'The x half first. Minus b turns the -8 into +8. And 2a is 4.',
+         eq: O+'-'+E+X+'b'+E+O+' / '+E+N+'2'+E+X+'a'+E+'   '+O+'='+E+'   '+N+'8'+E+O+' / '+E+N+'4'+E+'   '+O+'='+E+'   '+N+'2'},
+        {say:'Now the y half. b squared is 64, and 4a is 8. Careful here: b squared comes out positive, because a minus times a minus is a plus.',
+         eq: X+'c'+E+' '+O+'-'+E+' '+X+'b'+E+pw('2')+O+' / '+E+N+'4'+E+X+'a'+E+'   '+O+'='+E+'   '+N+'5'+E+' '+O+'-'+E+' '+N+'64'+E+O+' / '+E+N+'8'},
+        {say:'64 over 8 is 8. And 5 take away 8 is -3.',
+         eq: O+'='+E+'   '+N+'5'+E+' '+O+'-'+E+' '+N+'8'+E+'   '+O+'='+E+'   '+O+'-'+E+N+'3'},
+        {say:'So there it is. Two numbers, both read straight off the sheet.',
+         eq: O+'('+E+' '+N+'2'+E+O+' , '+E+O+'-'+E+N+'3'+E+' '+O+')'+E},
+        {say:'A ten second check, if you have time at the end. Differentiate and set it to zero: 4x - 8 = 0 gives x = 2, which matches what you got. If it had not matched, you would know to look again.'}
+      ]
+    },
+
+    w3: {
+      eyebrow:'worked example, three of six', title:'Integrating with limits.',
+      q: '&#8747;'+' '+O+'from'+E+' '+N+'1'+E+' '+O+'to'+E+' '+N+'3'+E+'   '+O+'('+E+N+'3'+E+X+'x'+E+pw('2')+' '+O+'-'+E+' '+N+'2'+E+X+'x'+E+O+')'+E+' d'+X+'x'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'Integrating is the same rule run backwards. Add one to the power, then divide by the power you just made.'},
+        {say:'First term. The power goes from 2 up to 3, and then you divide by that 3. The threes cancel each other out.',
+         eq: N+'3'+E+X+'x'+E+pw('2')+'   '+O+'goes to'+E+'   '+N+'3'+E+X+'x'+E+pw('3')+O+' / '+E+N+'3'+E+'   '+O+'='+E+'   '+X+'x'+E+pw('3')},
+        {say:'Second term. The power goes from 1 up to 2, and you divide by 2. The twos cancel.',
+         eq: O+'-'+E+N+'2'+E+X+'x'+E+'   '+O+'goes to'+E+'   '+O+'-'+E+N+'2'+E+X+'x'+E+pw('2')+O+' / '+E+N+'2'+E+'   '+O+'='+E+'   '+O+'-'+E+X+'x'+E+pw('2')},
+        {aha:['and no + c on this one','Because there are numbers on the integral sign, it is a <strong>definite</strong> one. You subtract one result from the other at the end, so a + c would cancel itself out anyway.']},
+        {say:'Write it in the square brackets with the two numbers. That notation is just a way of saying you are about to do this twice.',
+         eq: O+'['+E+' '+X+'x'+E+pw('3')+' '+O+'-'+E+' '+X+'x'+E+pw('2')+' '+O+']'+E+'  '+O+'from'+E+' '+N+'1'+E+' '+O+'to'+E+' '+N+'3'},
+        {say:'Top number in first. 3 cubed is 27, and 3 squared is 9.',
+         eq: N+'27'+E+' '+O+'-'+E+' '+N+'9'+E+'   '+O+'='+E+'   '+N+'18'},
+        {say:'Then the bottom number. 1 cubed is 1, and 1 squared is 1.',
+         eq: N+'1'+E+' '+O+'-'+E+' '+N+'1'+E+'   '+O+'='+E+'   '+N+'0'},
+        {say:'Top one take away bottom one. Always that way round, and it is worth writing which is which.',
+         eq: N+'18'+E+' '+O+'-'+E+' '+N+'0'+E+'   '+O+'='+E+'   '+N+'18'}
+      ]
+    },
+
+    w4: {
+      eyebrow:'worked example, four of six', title:'Solving a quadratic.',
+      q: N+'2'+E+X+'x'+E+pw('2')+' '+O+'-'+E+' '+N+'7'+E+X+'x'+E+' '+O+'+'+E+' '+N+'3'+E+' '+O+'='+E+' '+N+'0'+E+'   &#183;   '+O+'solve'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'The formula is printed on your sheet. The only real work is putting the right number in the right slot, so do that part slowly.'},
+        {say:'Name them first. Watch the b: the minus sign belongs to it and travels with it.',
+         eq: X+'a'+E+' '+O+'='+E+' '+N+'2'+E+'     '+X+'b'+E+' '+O+'='+E+' '+O+'-'+E+N+'7'+E+'     '+X+'c'+E+' '+O+'='+E+' '+N+'3'},
+        {aha:['from the sheet','x  =  <strong>( -b '+'&#177;'+' '+'&#8730;'+'(b'+pw('2')+' - 4ac) )  /  2a</strong>']},
+        {say:'Do the inside of the square root on its own first, as a separate little sum. This is where most of the lost marks in this topic live.',
+         eq: X+'b'+E+pw('2')+' '+O+'-'+E+' '+N+'4'+E+X+'ac'+E+'   '+O+'='+E+'   '+N+'49'+E+' '+O+'-'+E+' '+N+'24'+E+'   '+O+'='+E+'   '+N+'25'},
+        {say:'The root of 25 is a whole number. That is usually a sign you have it right, because these questions are built to come out tidy.',
+         eq: '&#8730;'+N+'25'+E+'   '+O+'='+E+'   '+N+'5'},
+        {say:'Now the outside. Minus b turns the -7 into +7, and 2a is 4.',
+         eq: X+'x'+E+'   '+O+'='+E+'   '+O+'('+E+N+'7'+E+' '+'&#177;'+' '+N+'5'+E+O+')'+E+O+' / '+E+N+'4'},
+        {say:'The plus-or-minus is an instruction. It means do it twice, once each way.',
+         eq: X+'x'+E+' '+O+'='+E+' '+N+'12'+E+O+'/'+E+N+'4'+E+' '+O+'='+E+' '+N+'3'+E+'       '+O+'or'+E+'       '+X+'x'+E+' '+O+'='+E+' '+N+'2'+E+O+'/'+E+N+'4'+E+' '+O+'='+E+' '+N+'0.5'},
+        {say:'Two answers. If you wrote only one down, you left a mark sitting on the table.'}
+      ]
+    },
+
+    w5: {
+      eyebrow:'worked example, five of six', title:'An inequality.',
+      q: O+'-'+E+N+'3'+E+X+'x'+E+' '+O+'+'+E+' '+N+'2'+E+'   '+'&#8805;'+'   '+N+'11'+E+'   &#183;   '+O+'solve'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'Treat it exactly like an equation. There is one place it can bite you and it is right at the end.'},
+        {say:'Move the 2 across. It was being added, so it arrives on the other side as a take away.',
+         eq: O+'-'+E+N+'3'+E+X+'x'+E+'   '+'&#8805;'+'   '+N+'11'+E+' '+O+'-'+E+' '+N+'2'+E+'   '+O+'='+E+'   '+N+'9'},
+        {say:'Now divide both sides by -3 to get x on its own. This is the bit.',
+         eq: X+'x'+E+'   '+'&#8805;'+'   '+N+'9'+E+O+' / '+E+O+'-'+E+N+'3'},
+        {aha:['the one rule in this topic','Multiply or divide by a <strong>negative</strong> and the sign turns round. Greater than becomes less than.']},
+        {say:'So the answer flips, and 9 over -3 is -3.',
+         eq: X+'x'+E+'   '+'&#8804;'+'   '+O+'-'+E+N+'3'},
+        {say:'And here is a check you can actually do in your head. Try x = -4. Three times -4 is -12, but the minus in front makes it +12, and plus 2 is 14. Is 14 greater than or equal to 11? Yes. So the answer holds.'}
+      ]
+    },
+
+    w6: {
+      eyebrow:'worked example, six of six', title:'Finding an angle.',
+      q: O+'ramp:'+E+' '+N+'5'+E+O+' m long, rises'+E+' '+N+'0.8'+E+O+' m'+E+'   &#183;   '+O+'find the angle, 1 d.p.'+E,
+      auto:null, options:null,
+      steps:[
+        {say:'Label what you have been given before you choose anything at all. Two sides, and the angle is the thing missing.'},
+        {say:'The 0.8 is the side across from the angle, so that is the opposite. The 5 is the long sloping one, and that is always the hypotenuse.'},
+        {aha:['SOH CAH TOA','Opposite and Hypotenuse together, with nothing else, is the <strong>S</strong>. So this is a sine question.']},
+        {say:'Write the sentence out before you put any numbers into it.',
+         eq: 'sin '+'&#952;'+'   '+O+'='+E+'   '+O+'opposite / hypotenuse'+E},
+        {say:'Now the numbers go in.',
+         eq: 'sin '+'&#952;'+'   '+O+'='+E+'   '+N+'0.8'+E+O+' / '+E+N+'5'+E+'   '+O+'='+E+'   '+N+'0.16'},
+        {say:'That gives you the sine of the angle, not the angle itself. To get the angle back out you undo the sine, which on your calculator is shift and then sin.',
+         eq: '&#952;'+'   '+O+'='+E+'   sin'+pw('-1')+O+'('+E+N+'0.16'+E+O+')'+E},
+        {say:'And that is the answer.',
+         eq: '&#952;'+'   '+O+'='+E+'   '+N+'9.2'+E+'&#176;'+'    '+O+'(1 d.p.)'+E},
+        {say:'What eats marks in this topic is not the maths. It is the calculator being in the wrong mode. Check it says DEG before you start, and check it again if an answer ever looks strange.'}
+      ]
+    },
 
     a: {
       eyebrow:'watch me do one', title:'Find <span class="x">x</span>.',
