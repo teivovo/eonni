@@ -943,6 +943,25 @@
   <section class="card deck" data-id="d:cg2" data-mcq="cg2" data-easy="Use y - y1 = m(x - x1), put the point and the gradient into their slots, then tidy. Check by putting the x back in."></section>
   <section class="card deck" data-id="d:cg3" data-mcq="cg3" data-easy="Work out the gradient first, then use y - y1 = m(x - x1) with either point. Check your answer using the point you did not use."></section>
   <section class="card deck" data-id="d:cg4" data-mcq="cg4" data-easy="Divide everything by 3 to get y = 2x + 8. The gradient and the y-intercept can then be read straight off. For the x-intercept, set y to zero and solve."></section>
+  <section class="card" data-id="p:int-intro">
+    <div class="in">
+      <div class="eyebrow rise">the other half of calculus</div>
+      <h2 class="rise">Every one of these is on your sheet.</h2>
+      <p class="rise">There is not a single integral in this topic that you have to remember.
+        They are all printed, and the whole skill is spotting which line you need.</p>
+      <p class="rise sub">Which means the marks are not lost in the integrating. They are lost
+        in the rewriting beforehand, and in one subtraction at the end.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:i1" data-mcq="i1" data-easy="Add one to the power, then divide by the new power, then plus c. A plain number like 50 becomes 50x."></section>
+  <section class="card deck" data-id="d:i2" data-mcq="i2" data-easy="Rewrite 1 over x cubed as x to the power -3 first. Then add one to the power and divide by the new power, which is -2."></section>
+  <section class="card deck" data-id="d:i3" data-mcq="i3" data-easy="An x on the bottom with no power means the answer is a log. Divide by whatever multiplies the x, which here is -4."></section>
+  <section class="card deck" data-id="d:i4" data-mcq="i4" data-easy="Use 2 sin x cos x = sin 2x to rewrite it first. Then it is an ordinary sine integral off your sheet."></section>
+  <section class="card deck" data-id="d:i5" data-mcq="i5" data-easy="Do each term separately off the sheet. Sine goes to minus cosine, e stays e, and both get divided by the number multiplying x."></section>
+  <section class="card deck" data-id="d:i6" data-mcq="i6" data-easy="Integrate first to get y with a c in it. Then put the given x and y in to find c, and write out the full equation."></section>
+  <section class="card deck" data-id="d:i7" data-mcq="i7" data-easy="Integrate first and ignore the limits. Then put the top number in, put the bottom number in, and subtract bottom from top."></section>
+  <section class="card deck" data-id="d:i8" data-mcq="i8" data-easy="Area means integrate between the two x values. Integrate, put the top number in, put the bottom in, subtract. The answer cannot be negative."></section>
+  <section class="card deck" data-id="d:i9" data-mcq="i9" data-easy="Top number take away bottom number. If your area comes out negative, you have almost certainly done it the other way round."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1601,6 +1620,172 @@
   });
 
   var DECKS = {
+
+    /* ---- integration, off the L21-L22 and L23 practice sheets ----
+       Formula sheet first throughout: every standard form is printed on it,
+       and the marks are lost in the rewriting rather than the integrating.
+       All answers verified by differentiating them back. ---- */
+
+    i1: {
+      eyebrow:'integration', title:'The rule, backwards.',
+      q: '&#8747; <span class="o">&#8722;</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Integrating is differentiating run in reverse. Where you used to bring the power down, now you push it up. It is printed on your sheet, so read it before you start.'},
+        {say:'Add one to the power first. Two becomes three.',
+         eq: '<span class="x">x</span><sup class="p"><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="n">3</span></sup>'},
+        {say:'Then divide by the number you have just made. Not by the old one.',
+         eq: '<span class="o">&#8722;</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup><span class="o">/</span><span class="n">3</span>'},
+        {say:'And a plus c on the end, because there was no number on the integral sign to tell you where it started.',
+         eq: '&#8747; <span class="o">&#8722;</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup><span class="o">/</span><span class="n">3</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'One that trips people up on the same sheet: a lonely number like 50 integrates to 50x. It is really 50 times x to the power nothing, so the power goes up to one.',
+         eq: '&#8747; <span class="n">50</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">50</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'}
+      ]
+    },
+    i2: {
+      eyebrow:'integration', title:'The one that has to be rewritten.',
+      q: '&#8747; <span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This is the same trap as in differentiating, and it costs the same marks. The rule cannot see a fraction. It only takes x to a power.'},
+        {say:'So move the x upstairs first. Bottom of a fraction means the power turns negative.',
+         eq: '<span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>'},
+        {say:'Now add one to the power. Careful: minus three add one is minus two, not minus four.',
+         eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
+        {say:'And divide by that new power, which is minus two.',
+         eq: '<span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
+        {say:'Tidy the double negative and send the x back downstairs, which is how the answer is usually written.',
+         eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'}
+      ]
+    },
+    i3: {
+      eyebrow:'integration', title:'When the answer is a log.',
+      q: '&#8747; <span class="n">7</span><span class="o">/</span><span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This one looks like the last one and is not. The bottom has an x with something added to it, and that changes which line of the sheet you need.'},
+        {say:'Try the old way and watch it fail. Adding one to the power of the bracket gives you a power of nothing, and dividing by nothing is not allowed. So there has to be another rule, and there is.'},
+        {say:'Your sheet has it: one over something linear integrates to a log of that something.',
+         eq: '&#8747; <span class="n">1</span><span class="o">/</span><span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="x">a</span><span class="o">)</span>ln<span class="o">(</span><span class="x">a</span><span class="x">x</span> <span class="o">+</span> <span class="x">b</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'Here the number multiplying the x is minus four. That is the a.',
+         eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">4</span>'},
+        {say:'So it is the log, divided by minus four, with the seven still out in front.',
+         eq: '&#8747; <span class="n">7</span><span class="o">/</span><span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="o">(</span><span class="n">7</span><span class="o">/</span><span class="n">4</span><span class="o">)</span>ln<span class="o">(</span><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'The tell for this whole family is an x on the bottom with nothing squared or cubed about it. Power on the bottom means rewrite. Plain x on the bottom means log.'}
+      ]
+    },
+    i4: {
+      eyebrow:'integration', title:'Tidy the trig before you touch it.',
+      q: '&#8747; <span class="n">4</span>sin<span class="x">x</span>cos<span class="x">x</span> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'There is no line on your sheet for sine times cosine. So this is not an integration question yet. It is a trig question wearing an integral sign.'},
+        {say:'The identity you need is that two sine cosine makes the sine of double the angle.',
+         eq: '<span class="n">2</span>sin<span class="x">x</span>cos<span class="x">x</span> <span class="o">=</span> sin<span class="n">2</span><span class="x">x</span>'},
+        {say:'So four of them is two of those.',
+         eq: '<span class="n">4</span>sin<span class="x">x</span>cos<span class="x">x</span> <span class="o">=</span> <span class="n">2</span>sin<span class="n">2</span><span class="x">x</span>'},
+        {say:'And that shape IS on your sheet. Sine integrates to minus cosine, and you divide by whatever multiplies the x.',
+         eq: '&#8747; <span class="n">2</span>sin<span class="n">2</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>cos<span class="n">2</span><span class="x">x</span><span class="o">/</span><span class="n">2</span>'},
+        {say:'Which tidies.',
+         eq: '&#8747; <span class="n">4</span>sin<span class="x">x</span>cos<span class="x">x</span> <span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span>cos<span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'If a trig integral does not match anything on your sheet, it is asking you to rewrite it into something that does. It is never asking you to invent a rule.'}
+      ]
+    },
+    i5: {
+      eyebrow:'integration', title:'Two terms, two sheet lines.',
+      q: '&#8747; <span class="o">(</span>sin<span class="n">5</span><span class="x">x</span> <span class="o">+</span> <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">)</span> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two separate terms added together, so integrate them separately and put them back. Nothing interacts across a plus sign.'},
+        {say:'First term. Sine becomes minus cosine, then divide by the 5 that is multiplying the x.',
+         eq: 'sin<span class="n">5</span><span class="x">x</span>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="o">&#8722;</span>cos<span class="n">5</span><span class="x">x</span><span class="o">/</span><span class="n">5</span>'},
+        {say:'Second term. e stays e, and you divide by whatever multiplies the x, which here is minus four.',
+         eq: '<span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">/</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>'},
+        {say:'Put them together and tidy the second minus.',
+         eq: '&#8747; <span class="o">=</span> <span class="o">&#8722;</span>cos<span class="n">5</span><span class="x">x</span><span class="o">/</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="x">e</span><sup class="p"><span class="n">3</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'Both of those divisions are the same instruction as each other, and the same one as in the log question. Divide by the number in front of the x. It is the single most reused move in this topic.'}
+      ]
+    },
+    i6: {
+      eyebrow:'integration', title:'Finding the c.',
+      q: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup> <span class="o">+</span> <span class="n">3.5</span>   <span class="o">and</span>   <span class="x">y</span> <span class="o">=</span> <span class="n">7</span> <span class="o">when</span> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two jobs. Integrate to get the family of curves, then use the point they gave you to work out which one it is.'},
+        {say:'Integrate term by term. First one is ordinary.',
+         eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span>'},
+        {say:'Second one. Minus two add one is minus one, and you divide by that minus one, so the two minuses cancel.',
+         eq: '<span class="o">&#8722;</span><span class="n">0.5</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">0.5</span><span class="o">/</span><span class="x">x</span>'},
+        {say:'Third one is a plain number.',
+         eq: '<span class="n">3.5</span>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">3.5</span><span class="x">x</span>'},
+        {say:'So the family of curves is this, with c still unknown.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="n">0.5</span><span class="o">/</span><span class="x">x</span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'Now use the point. Put x = 2 and y = 7 in, and be careful doing it in your head.',
+         eq: '<span class="n">7</span> <span class="o">=</span> <span class="n">8</span> <span class="o">+</span> <span class="n">0.25</span> <span class="o">+</span> <span class="n">7</span> <span class="o">+</span> <span class="x">c</span>'},
+        {say:'Which gives c.',
+         eq: '<span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8.25</span>'},
+        {say:'And the full answer. The question asked for y, not for c, so this line is the answer and c on its own is not.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">+</span> <span class="n">0.5</span><span class="o">/</span><span class="x">x</span> <span class="o">+</span> <span class="n">3.5</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">8.25</span>'}
+      ]
+    },
+    i7: {
+      eyebrow:'integration', title:'Numbers on the sign.',
+      q: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Numbers on the integral sign mean two things. You do not need a plus c, and there is a subtraction waiting at the end.'},
+        {say:'Integrate as normal first, ignoring the numbers entirely. Divide by the 2 that multiplies the x.',
+         eq: '<span class="n">6</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>   <span class="o">goes</span> <span class="x">t</span><span class="x">o</span>   <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup>'},
+        {say:'Write it in the square brackets with its two numbers, which is a way of saying you are about to do it twice.',
+         eq: '<span class="o">[</span> <span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span></sup> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>'},
+        {say:'Top number in first.',
+         eq: '<span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">6</span></sup> <span class="o">=</span> <span class="n">1210.29</span>'},
+        {say:'Then the bottom number.',
+         eq: '<span class="n">3</span><span class="x">e</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">22.17</span>'},
+        {say:'Top take away bottom. Always that way round.',
+         eq: '<span class="n">1210.29</span> <span class="o">&#8722;</span> <span class="n">22.17</span> <span class="o">=</span> <span class="n">1188.12</span>'},
+        {say:'A number this large is not a sign that you are wrong. e to the six is over four hundred on its own, so big answers are normal here.'}
+      ]
+    },
+    i8: {
+      eyebrow:'integration', title:'Area under a curve.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">area</span> <span class="o">between</span> <span class="x">x</span> <span class="o">=</span> <span class="n">1</span> <span class="o">and</span> <span class="x">x</span> <span class="o">=</span> <span class="n">3</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The word area is what tells you to integrate. Under a curve, between two x values, is exactly what a definite integral measures.'},
+        {say:'So write it as one. The two x values become the numbers on the sign.',
+         eq: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="o">(</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>'},
+        {say:'Integrate the three terms. Add one to each power, divide by the new power.',
+         eq: '<span class="o">[</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">]</span>'},
+        {say:'Top number in. Three to the fourth is 81.',
+         eq: '<span class="n">101.25</span> <span class="o">&#8722;</span> <span class="n">9</span> <span class="o">+</span> <span class="n">24</span> <span class="o">=</span> <span class="n">116.25</span>'},
+        {say:'Bottom number in.',
+         eq: '<span class="n">1.25</span> <span class="o">&#8722;</span> <span class="n">1</span> <span class="o">+</span> <span class="n">8</span> <span class="o">=</span> <span class="n">8.25</span>'},
+        {say:'And subtract.',
+         eq: '<span class="o">area</span> <span class="o">=</span> <span class="n">116.25</span> <span class="o">&#8722;</span> <span class="n">8.25</span> <span class="o">=</span> <span class="n">108</span>'},
+        {say:'One sense check worth doing. An area cannot come out negative. If yours does, you have almost certainly subtracted the wrong way round, and the next card is exactly that.'}
+      ]
+    },
+    i9: {
+      eyebrow:'integration', title:'The one that costs a whole question.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This working is right the whole way down except for one line. It is the most common mistake in the topic and it is worth a mark every time.'},
+        {say:'Tap the line where it goes wrong.',
+         art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="n">3</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">3</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
+        {say:'If your area ever comes out negative, this is almost always why. The size is right and the sign is wrong, which is a very cheap thing to check and to fix.'}
+      ]
+    },
 
     /* ---- FOD and straight lines. The first two use the matching device and
        the third uses select-all, because those are the shapes the exam
