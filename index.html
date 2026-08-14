@@ -52,7 +52,7 @@
     display:flex; align-items:center; justify-content:center;
     padding:72px 22px 96px; position:relative;
   }
-  .in{width:100%; max-width:520px; display:flex; flex-direction:column; gap:20px}
+  .in{width:100%; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:20px}
 
   .card .rise{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1)}
   .card.on .rise{opacity:1; transform:none}
@@ -106,7 +106,10 @@
   }
   .track::-webkit-scrollbar{display:none}
   .slide{
-    flex:0 0 100%; scroll-snap-align:start; scroll-snap-stop:always;
+    /* min-width:0 is load bearing. A flex item defaults to min-width:auto, so a
+       single long .eq inside will stretch the slide past the viewport, break the
+       horizontal snap and clip every other line on it. */
+    flex:0 0 100%; min-width:0; scroll-snap-align:start; scroll-snap-stop:always;
     display:flex; align-items:center; justify-content:center;
     padding:56px 20px 146px;
   }
@@ -127,8 +130,11 @@
 
   .eq{
     font-family:var(--num); font-variant-numeric:tabular-nums;
-    font-size:clamp(24px,7.4vw,34px); line-height:1.6; letter-spacing:.01em;
-    white-space:nowrap; overflow-x:auto; min-width:0; padding:4px 0;
+    font-size:clamp(22px,6.6vw,32px); line-height:1.55; letter-spacing:.01em;
+    /* Wraps rather than scrolls. These sit inside a deck that snaps horizontally,
+       so dragging an equation sideways to read the end advances the card instead:
+       the overflowed part was unreachable, not merely awkward. */
+    white-space:normal; overflow-wrap:break-word; min-width:0; padding:4px 0;
   }
   .eq.small{font-size:clamp(19px,5.4vw,24px)}
 
@@ -842,6 +848,35 @@
   <section class="card deck" data-id="d:w4" data-mcq="w4" data-easy="Name a, b and c. Do the inside of the root on its own first. The plus-or-minus means two answers."></section>
   <section class="card deck" data-id="d:w5" data-mcq="w5" data-easy="Solve it like an equation. If you divide by a negative, the sign turns round."></section>
   <section class="card deck" data-id="d:w6" data-mcq="w6" data-easy="Opposite and hypotenuse means sine. Then shift-sin turns the number back into an angle. Calculator in degrees."></section>
+  <section class="card" data-id="p:drills-intro">
+    <div class="in">
+      <div class="eyebrow rise">now the real ones</div>
+      <h2 class="rise">These are off your own practice sheets.</h2>
+      <p class="rise">Not made up by me. The actual questions, worked all the way through.</p>
+      <p class="rise sub">Four of them are the ones your lecturer highlighted in yellow. Those
+        are marked, and they are worth doing twice.</p>
+      <p class="rise sub">Each one asks you to try it before it shows you anything. A wrong
+        start is worth more than reading mine, and nothing is counting.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:q1" data-mcq="q1" data-easy="Rewrite 6/x as 6x to the power -1. Then bring each power down to the front and take one off it."></section>
+  <section class="card deck" data-id="d:q2" data-mcq="q2" data-easy="A root is a fraction power: root x is x to the power a half. Then use the usual rule. A plain number differentiates to zero."></section>
+  <section class="card deck" data-id="d:q3" data-mcq="q3" data-easy="There is no bracket rule on your sheet. Multiply the brackets out first, then differentiate the ordinary way."></section>
+  <section class="card deck" data-id="d:q4" data-mcq="q4" data-easy="Do each term on its own. x squared uses the usual rule, and sine becomes cosine with the number unchanged."></section>
+  <section class="card deck" data-id="d:q5" data-mcq="q5" data-easy="Cosine differentiates to MINUS sine. The bracket stays as it is."></section>
+  <section class="card deck" data-id="d:q6" data-mcq="q6" data-easy="Both are on your sheet. For e, the number multiplying x comes to the front. For cos, it becomes minus sin and the number comes to the front."></section>
+  <section class="card deck" data-id="d:q7" data-mcq="q7" data-easy="Sine becomes cosine. The number in front stays exactly as it is."></section>
+  <section class="card deck" data-id="d:q8" data-mcq="q8" data-easy="The 9 goes to zero. cos5x becomes -5sin5x, and the minus already in the question flips it to plus."></section>
+  <section class="card deck" data-id="d:q9" data-mcq="q9" data-easy="Find what multiplies the x in the power. Here it is a half. Bring it to the front and multiply. The power stays put."></section>
+  <section class="card deck" data-id="d:q10" data-mcq="q10" data-easy="Four separate terms. Do each one on its own, then write them back in order. Nothing interacts."></section>
+  <section class="card deck" data-id="d:q11" data-mcq="q11" data-easy="Differentiate the inside of the bracket, and put it over the inside of the bracket unchanged."></section>
+  <section class="card deck" data-id="d:q12" data-mcq="q12" data-easy="Same as the previous one. Differentiate the inside, then put it over the inside unchanged."></section>
+  <section class="card deck" data-id="d:q13" data-mcq="q13" data-easy="Multiply the two brackets out first, then multiply by the x outside. Then differentiate the three terms normally."></section>
+  <section class="card deck" data-id="d:q14" data-mcq="q14" data-easy="Differentiate, set it to zero to find x, then put that x back into the ORIGINAL equation for y. Differentiate twice to get the nature: negative means maximum."></section>
+  <section class="card deck" data-id="d:q15" data-mcq="q15" data-easy="Same routine: differentiate, set to zero, put x back in the ORIGINAL for y. Second derivative positive means minimum."></section>
+  <section class="card deck" data-id="d:q16" data-mcq="q16" data-easy="Work out v sin 30 first: it is 50. Then it is an ordinary turning point. Differentiate, set to zero, solve for t."></section>
+  <section class="card deck" data-id="d:q17" data-mcq="q17" data-easy="Differentiate first, substitute t = 3 afterwards. The -0.4 comes to the front. The answer is negative because the level is falling."></section>
+  <section class="card deck" data-id="d:q18" data-mcq="q18" data-easy="Write the area as A = x(20 - 2x) first. Then differentiate, set to zero to get x = 5, and put x back in to get the area itself."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1432,6 +1467,308 @@
   }
 
   var DECKS = {
+
+    /* ---- retrieval decks, built from her own A115 practice questions ----
+       Slide 0 asks her to attempt it before anything is revealed, because
+       retrieval beats review. The question is pinned on every slide. The
+       four marked below are the ones her lecturer highlighted. ---- */
+
+    q1: {
+      eyebrow:'from your practice sheet &#183; highlighted', title:'Rewrite, then one rule.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">5</span></sup> <span class="o">+</span> <span class="n">7</span><span class="x">x</span> <span class="o">+</span> <span class="n">6</span><span class="o">/</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The rule only accepts a number, an x and a power. Two of these are ready. The last one is not.'},
+        {say:'Send the x upstairs. Bottom of a fraction means the power goes negative.',
+         eq: '<span class="n">6</span><span class="o">/</span><span class="x">x</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup>'},
+        {say:'Now go term by term. Power down to the front, then take one off it.',
+         eq: '<span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">5</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">20</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup>'},
+        {say:'7x is 7x to the power one. 7 times 1 is 7, and x to the power nought is 1.',
+         eq: '<span class="n">7</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">7</span>'},
+        {say:'And the negative one. 6 times -1 is -6, and -1 take one is -2.',
+         eq: '<span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span></sup>'},
+        {say:'That is the answer. Either line gets the mark.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">20</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">7</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="o">/</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'}
+      ]
+    },
+    q2: {
+      eyebrow:'from your practice sheet &#183; highlighted', title:'Roots are powers too.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8730;</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">3</span></sup> <span class="o">+</span> <span class="n">98</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Same job as the last one. Nothing here is in the right shape yet, so nothing can be differentiated yet.'},
+        {say:'A root is a fraction power. The root number goes on the bottom of the fraction.',
+         eq: '<span class="o">&#8730;</span><span class="x">x</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>'},
+        {say:'First term. Bring the half down, then a half take one is minus a half.',
+         eq: '<span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup>'},
+        {say:'Second term the same way. A third take one is minus two thirds.',
+         eq: '<span class="x">x</span><sup class="p"><span class="n">1</span><span class="o">/</span><span class="n">3</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">3</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span><span class="o">/</span><span class="n">3</span></sup>'},
+        {say:'And 98 on its own differentiates to nothing at all. A flat number has no steepness.',
+         eq: '<span class="n">98</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">0</span>'},
+        {say:'So, remembering the minus in front of the second term:',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">1</span><span class="o">/</span><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">3</span><span class="o">)</span><span class="x">x</span><sup class="p"><span class="o">&#8722;</span><span class="n">2</span><span class="o">/</span><span class="n">3</span></sup>'}
+      ]
+    },
+    q3: {
+      eyebrow:'from your practice sheet', title:'Open the brackets first.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">1</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'There is no rule on your sheet for differentiating two brackets multiplied together. So do not try.'},
+        {say:'Multiply it out instead. Every term in the first bracket times every term in the second.',
+         eq: '<span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">5</span>'},
+        {say:'Tidy the middle two, since they are both x squared.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">5</span>'},
+        {say:'Now it is in the shape the rule takes, so turn the handle.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">12</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">+</span> <span class="n">16</span><span class="x">x</span>'}
+      ]
+    },
+    q4: {
+      eyebrow:'from your practice sheet', title:'A number and a sine.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">12</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two separate terms, so do them separately and put them back together. Nothing interacts.'},
+        {say:'The algebra one is the usual rule.',
+         eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">4</span><span class="x">x</span>'},
+        {say:'And your sheet prints the trig one. Sine goes to cosine, and the number in front just stays.',
+         eq: '<span class="n">12</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">12</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'},
+        {say:'Put them together.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">12</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'}
+      ]
+    },
+    q5: {
+      eyebrow:'from your practice sheet', title:'Cosine, and a sign to watch.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">12</span>cos<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'One term, straight off the sheet. The only thing to be careful about is the sign.'},
+        {say:'Cosine differentiates to minus sine. The minus is the whole trap in this question.',
+         eq: 'cos  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span>sin'},
+        {say:'The bracket is unchanged, because the x inside it has nothing multiplying it.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">12</span>sin<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span>'}
+      ]
+    },
+    q6: {
+      eyebrow:'from your practice sheet', title:'An e and a cosine.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">e</span><sup class="p"><span class="n">7</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span></sup> <span class="o">+</span> <span class="n">3</span>cos<span class="n">4</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two terms again, and both of them are printed on your formula sheet. Look there before doing anything clever.'},
+        {say:'For e, the sheet says: whatever is multiplying the x comes out to the front. Here that is 7.',
+         eq: '<span class="x">e</span><sup class="p"><span class="n">7</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">7</span><span class="x">e</span><sup class="p"><span class="n">7</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span></sup>'},
+        {say:'For the cosine, two things happen at once: it becomes minus sine, and the 4 comes out front.',
+         eq: '<span class="n">3</span>cos<span class="n">4</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">12</span>sin<span class="n">4</span><span class="x">x</span>'},
+        {say:'Together.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">7</span><span class="x">e</span><sup class="p"><span class="n">7</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span></sup> <span class="o">&#8722;</span> <span class="n">12</span>sin<span class="n">4</span><span class="x">x</span>'}
+      ]
+    },
+    q7: {
+      eyebrow:'from your practice sheet &#183; highlighted', title:'The short one.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This one is a single line, and it is on your sheet. Do not overthink it.'},
+        {say:'Sine becomes cosine. The 3 does not move, does not double, does not go anywhere.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'}
+      ]
+    },
+    q8: {
+      eyebrow:'from your practice sheet &#183; highlighted', title:'Two minuses.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">9</span> <span class="o">&#8722;</span> cos<span class="n">5</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Short, and there is one place people lose it. Take the two terms separately.'},
+        {say:'The 9 is a flat number, so it differentiates to nothing.',
+         eq: '<span class="n">9</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">0</span>'},
+        {say:'Now cos5x. It becomes minus sine, and the 5 comes to the front, so cos5x goes to -5sin5x.',
+         eq: 'cos<span class="n">5</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">5</span>sin<span class="n">5</span><span class="x">x</span>'},
+        {say:'But there is already a minus in front of it in the question. Minus a minus is a plus.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">5</span>sin<span class="n">5</span><span class="x">x</span>'}
+      ]
+    },
+    q9: {
+      eyebrow:'from your practice sheet', title:'A fraction in the power.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'It looks worse than it is. Only one thing matters: what is multiplying the x.'},
+        {say:'Open the bracket in the power just enough to see it. The x is being multiplied by a half.',
+         eq: '<span class="o">power</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span>'},
+        {say:'The sheet says that number comes to the front. So -2 times a half.',
+         eq: '<span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#215;</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+        {say:'The power itself is unchanged. It never changes.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">e</span><sup class="p"><span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="o">)</span></sup>'}
+      ]
+    },
+    q10: {
+      eyebrow:'from your practice sheet', title:'Four terms, one at a time.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Long, not hard. Four terms, and you already know how to do all four. Take them one at a time and do not hold them all in your head.'},
+        {say:'First. The 2 from the power comes to the front: a half times 2 is 1.',
+         eq: '<span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup>'},
+        {say:'Second.',
+         eq: '<span class="o">&#8722;</span><span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span>'},
+        {say:'Third.',
+         eq: '<span class="o">&#8722;</span><span class="n">4</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="o">&#8722;</span><span class="n">4</span>'},
+        {say:'Fourth. A flat number goes to nothing.',
+         eq: '<span class="n">5</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">0</span>'},
+        {say:'Line them back up.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="x">e</span><sup class="p"><span class="n">2</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span></sup> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">4</span>'}
+      ]
+    },
+    q11: {
+      eyebrow:'from your practice sheet', title:'Differentiating a log.',
+      q: '<span class="x">y</span> <span class="o">=</span> ln<span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'There is a pattern for this and it is worth learning as one shape, because both of your ln questions use it.'},
+        {say:'Differentiate the inside of the bracket, on its own, first.',
+         eq: '<span class="o">inside</span><span class="o">:</span> <span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">+</span> <span class="n">4</span>'},
+        {say:'Then the answer is that, sitting on top of the original inside, untouched.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">+</span> <span class="n">4</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span>'},
+        {say:'That is the whole shape: ln of something differentiates to the something-differentiated, over the something.'}
+      ]
+    },
+    q12: {
+      eyebrow:'from your practice sheet', title:'The same shape again.',
+      q: '<span class="x">y</span> <span class="o">=</span> ln<span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Same shape as the last one. If you got that one, this is the same move with different numbers.'},
+        {say:'Differentiate the inside first.',
+         eq: '<span class="o">inside</span><span class="o">:</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'And put it over the inside, unchanged.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup><span class="o">)</span>'}
+      ]
+    },
+    q13: {
+      eyebrow:'from your practice sheet', title:'The cardboard box.',
+      q: '<span class="x">V</span> <span class="o">=</span> <span class="x">x</span><span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span><span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">V</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'A word problem, but the maths is question three again: brackets have to come out before anything can be differentiated.'},
+        {say:'Do the two identical brackets first, on their own. This is the step worth writing down.',
+         eq: '<span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span><span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">484</span> <span class="o">&#8722;</span> <span class="n">88</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'Now multiply all of that by the x outside.',
+         eq: '<span class="x">V</span> <span class="o">=</span> <span class="n">484</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">88</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>'},
+        {say:'And it is just three ordinary terms now.',
+         eq: '<span class="x">d</span><span class="x">V</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">484</span> <span class="o">&#8722;</span> <span class="n">176</span><span class="x">x</span> <span class="o">+</span> <span class="n">12</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'Note it says dV/dx, not dy/dx. Same operation. They only renamed the thing being measured.'}
+      ]
+    },
+    q14: {
+      eyebrow:'turning points', title:'Find it, then name it.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">5</span> <span class="o">+</span> <span class="n">6</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>   <span class="o">&#183;</span>   <span class="o">turning</span> <span class="o">point</span> <span class="o">and</span> <span class="o">its</span> <span class="o">nature</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two jobs in one question: where the flat bit is, and whether it is a hilltop or a valley.'},
+        {say:'Differentiate, because the turning point is where the steepness is zero.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">6</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span>'},
+        {say:'Set that to nothing and solve. This is the x of the turning point.',
+         eq: '<span class="n">6</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">1</span>'},
+        {say:'Now put that x back into the ORIGINAL equation to get the y. Not into the differentiated one.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">5</span> <span class="o">+</span> <span class="n">6</span> <span class="o">&#8722;</span> <span class="n">3</span> <span class="o">=</span> <span class="n">8</span>'},
+        {say:'So the point is:',
+         eq: '<span class="o">(</span><span class="n">1</span> <span class="o">,</span> <span class="n">8</span><span class="o">)</span>'},
+        {say:'And its nature. Differentiate a second time and look at the sign.',
+         eq: '<span class="x">d</span><sup class="p"><span class="n">2</span></sup><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span>'},
+        {say:'Negative, so it is a maximum. A hilltop. You can also see it from the -3x^2 in the question: negative in front means the arc opens downward.'}
+      ]
+    },
+    q15: {
+      eyebrow:'turning points', title:'The same routine again.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">7</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">14</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">12</span>   <span class="o">&#183;</span>   <span class="o">turning</span> <span class="o">point</span> <span class="o">and</span> <span class="o">its</span> <span class="o">nature</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Exactly the same four moves as the one before. If you can do this one without looking back, that topic is finished.'},
+        {say:'Differentiate.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">14</span><span class="x">x</span> <span class="o">+</span> <span class="n">14</span>'},
+        {say:'Set to zero.',
+         eq: '<span class="n">14</span><span class="x">x</span> <span class="o">+</span> <span class="n">14</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+        {say:'Back into the original for y. Watch the signs.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">7</span> <span class="o">&#8722;</span> <span class="n">14</span> <span class="o">&#8722;</span> <span class="n">12</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">19</span>'},
+        {say:'The point:',
+         eq: '<span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span> <span class="o">,</span> <span class="o">&#8722;</span><span class="n">19</span><span class="o">)</span>'},
+        {say:'Second derivative is 14, which is positive, so it is a minimum. A valley.',
+         eq: '<span class="x">d</span><sup class="p"><span class="n">2</span></sup><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">14</span>'}
+      ]
+    },
+    q16: {
+      eyebrow:'differentiation in words', title:'The mortar bomb.',
+      q: '<span class="x">h</span><span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="x">v</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">&#952;</span><span class="o">)</span><span class="x">t</span>   <span class="o">&#183;</span>   <span class="x">v</span> <span class="o">=</span> <span class="n">100</span><span class="o">,</span> <span class="x">&#952;</span> <span class="o">=</span> <span class="n">30</span><span class="o">&#176;</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">t</span> <span class="o">at</span> <span class="o">maximum</span> <span class="o">height</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The wording makes it look like a physics question. It is a turning point question with different letters.'},
+        {say:'Deal with the messy bracket first, before any calculus. Work out what that number actually is.',
+         eq: '<span class="x">v</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">&#952;</span> <span class="o">=</span> <span class="n">100</span> <span class="o">&#215;</span> sin<span class="n">30</span><span class="o">&#176;</span> <span class="o">=</span> <span class="n">50</span>'},
+        {say:'So the equation is just this, and now it looks familiar.',
+         eq: '<span class="x">h</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">50</span><span class="x">t</span>'},
+        {say:'Maximum height means the top of the arc, which means the steepness is zero. So differentiate.',
+         eq: '<span class="x">d</span><span class="x">h</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span><span class="x">t</span> <span class="o">+</span> <span class="n">50</span>'},
+        {say:'Set it to nothing and solve.',
+         eq: '<span class="o">&#8722;</span><span class="n">10</span><span class="x">t</span> <span class="o">+</span> <span class="n">50</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">t</span> <span class="o">=</span> <span class="n">5</span>'},
+        {say:'Five seconds. And read the question again before you stop: it asked for the time, not the height. Do not do extra work and do not give the wrong quantity.'}
+      ]
+    },
+    q17: {
+      eyebrow:'differentiation in words', title:'The blood alcohol one.',
+      q: '<span class="x">A</span><span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="n">0.25</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="n">0.4</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span></sup>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">rate</span> <span class="o">of</span> <span class="o">change</span> <span class="o">at</span> <span class="x">t</span> <span class="o">=</span> <span class="n">3</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Rate of change means differentiate. That is the only thing that phrase ever means.'},
+        {say:'It is the e rule from your sheet. Find what is multiplying the t inside the power.',
+         eq: '<span class="o">the</span> <span class="x">t</span> <span class="o">is</span> <span class="o">multiplied</span> <span class="o">by</span> <span class="o">&#8722;</span><span class="n">0.4</span>'},
+        {say:'That number comes to the front and multiplies what is already there.',
+         eq: '<span class="n">0.25</span> <span class="o">&#215;</span> <span class="o">&#8722;</span><span class="n">0.4</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.1</span>'},
+        {say:'So the rate function is this. The power is unchanged, as always.',
+         eq: '<span class="x">A</span><span class="o">&#8242;</span><span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.1</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="n">0.4</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span></sup>'},
+        {say:'Only now do you put the 3 in. Differentiate first, substitute second, never the other way round.',
+         eq: '<span class="x">A</span><span class="o">&#8242;</span><span class="o">(</span><span class="n">3</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.1</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="n">1.6</span></sup>'},
+        {say:'Into the calculator.',
+         eq: '<span class="x">A</span><span class="o">&#8242;</span><span class="o">(</span><span class="n">3</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.02</span>'},
+        {say:'It is negative, and that is the answer being sensible: the alcohol level is going down. If you had got a positive number, something would be wrong.'}
+      ]
+    },
+    q18: {
+      eyebrow:'differentiation in words', title:'The fenced field.',
+      q: '<span class="o">fence</span> <span class="o">against</span> <span class="x">a</span> <span class="o">wall</span>   <span class="o">&#183;</span>   <span class="o">sides</span> <span class="x">x</span><span class="o">,</span> <span class="x">x</span> <span class="o">and</span> <span class="o">(</span><span class="n">20</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">maximum</span> <span class="o">area</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The hard part of this question is not the calculus. It is writing down the area in the first place, in terms of one letter only.'},
+        {say:'Area of a rectangle is the two sides multiplied. One side is x, the other is what the picture calls 20 - 2x.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="x">x</span><span class="o">(</span><span class="n">20</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>'},
+        {say:'Open the bracket so it is in a shape you can differentiate.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">20</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'Maximum means the top of the arc, so the steepness there is zero.',
+         eq: '<span class="x">d</span><span class="x">A</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">20</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span>'},
+        {say:'Set it to nothing.',
+         eq: '<span class="n">20</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">5</span>'},
+        {say:'And now the bit people forget. It asked for the AREA, not for x. So put the 5 back in.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">5</span><span class="o">(</span><span class="n">20</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="o">)</span> <span class="o">=</span> <span class="n">50</span>'},
+        {say:'Fifty square metres. Always check which quantity the question actually asked for.'}
+      ]
+    },
 
     /* ---------------- worked examples ----------------
        She asked for these directly. Every one keeps the question pinned at the
