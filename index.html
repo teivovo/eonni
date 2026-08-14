@@ -1675,7 +1675,7 @@
         {say:'Do the inside of the square root on its own. Watch the double negative: four times six times minus twelve is minus 288, and subtracting that adds it.',
          eq: '<span class="x">b</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">a</span><span class="x">c</span> <span class="o">=</span> <span class="n">196</span> <span class="o">+</span> <span class="n">288</span> <span class="o">=</span> <span class="n">484</span>'},
         {say:'The root of 484 is a whole number, which is a good sign these questions are built to come out tidy.',
-         eq: 'sqrt<span class="o">(</span><span class="n">484</span><span class="o">)</span> <span class="o">=</span> <span class="n">22</span>'},
+         eq: '&#8730;<span class="o">(</span><span class="n">484</span><span class="o">)</span> <span class="o">=</span> <span class="n">22</span>'},
         {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">+</span><span class="o">&#8722;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
         {say:'The plus-or-minus means do it twice.',
@@ -1792,21 +1792,21 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'There are six log laws on your sheet and you do not have to remember any of them. What you do have to do is recognise which one a question is an instance of, and that is what these three are.'},
         {say:'Tap a question, then the law it is an instance of.',
-         art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log_2 5^4','log m^n = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5^x = 8 from impossible into one line.']], [1,2,0]); }},
+         art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log<sub class="p">2</sub> 5<sup class="p">4</sup>','log m<sup class="p">n</sup> = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5<sup class="p">x</sup> = 8 from impossible into one line.']], [1,2,0]); }},
         {say:'Every log question on your paper is one of those three wearing different letters. Adding, subtracting, or a power coming out to the front.'}
       ]
     },
     el3: {
       eyebrow:'exponentials and logs', title:'A log inside a log.',
-      q: 'log<span class="o">_</span><span class="n">2</span><span class="o">(</span>log<span class="o">_</span><span class="n">3</span> <span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">1</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
+      q: 'log<sub class="p">2</sub><span class="o">(</span>log<sub class="p">3</sub> <span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">1</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This looks like the worst question on the sheet and it is two easy ones stacked. Work from the outside inwards and do not try to see the whole thing at once.'},
         {say:'A log is a question: what power do I raise the base to. So log base 2 of something equals 1 asks what power of 2 gives that something. The answer is 2 to the power 1.',
-         eq: 'log<span class="o">_</span><span class="n">3</span> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span><sup class="p"><span class="n">1</span></sup> <span class="o">=</span> <span class="n">2</span>'},
+         eq: 'log<sub class="p">3</sub> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span><sup class="p"><span class="n">1</span></sup> <span class="o">=</span> <span class="n">2</span>'},
         {say:'Now you have an ordinary log equation, and the outer one is gone for good.',
-         eq: 'log<span class="o">_</span><span class="n">3</span> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>'},
+         eq: 'log<sub class="p">3</sub> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>'},
         {say:'Same move again. What is 3 to the power 2.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">3</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">9</span>'},
         {say:'Check it backwards, which takes seconds. Log base 3 of 9 is 2, and log base 2 of 2 is 1. It fits.'},
@@ -1828,7 +1828,7 @@
          eq: '<span class="x">x</span> <span class="o">=</span> lg<span class="n">8</span><span class="o">/</span>lg<span class="n">5</span>'},
         {say:'Into the calculator.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">1.29</span>'},
-        {say:'Same routine every time: log both sides, bring the power down, divide. The one on your sheet with 3^(x+1) = 12 works identically, and the answer to that one is 1.26.'}
+        {say:'Same routine every time: log both sides, bring the power down, divide. The one on your sheet with 3<sup class="p">x+1</sup> = 12 works identically, and the answer to that one is 1.26.'}
       ]
     },
 
@@ -2125,7 +2125,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two separate jobs in one question. Length first, because that one has no traps in it.'},
         {say:'Magnitude is Pythagoras. Square both, add, square root. The minus signs disappear when you square them, which is the point.',
-         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">170</span><span class="o">)</span>'},
+         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">170</span><span class="o">)</span>'},
         {say:'So the length is:',
          eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> <span class="n">13.04</span>'},
         {say:'Now direction, and this is where the marks go. First get the basic angle, using the numbers WITHOUT their minus signs.',
@@ -2201,7 +2201,7 @@
         {say:'Position by position.',
          eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">6</span><span class="o">+</span><span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">,</span> <span class="n">11</span><span class="o">)</span>'},
         {say:'The question asked for the magnitude, not the vector. So one more step. Pythagoras.',
-         eq: '<span class="o">|</span><span class="x">B</span><span class="x">C</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">11</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">122</span><span class="o">)</span>'},
+         eq: '<span class="o">|</span><span class="x">B</span><span class="x">C</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">11</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">122</span><span class="o">)</span>'},
         {say:'And that is the answer.',
          eq: '<span class="o">|</span><span class="x">B</span><span class="x">C</span><span class="o">|</span> <span class="o">=</span> <span class="n">11.05</span>'},
         {say:'If the letters had not joined up in the middle, you could not have added them. That is the thing being tested here, not the arithmetic.'}
@@ -2218,9 +2218,9 @@
          eq: '<span class="x">a</span><span class="o">.</span><span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">18</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span>'},
         {say:'It is negative. Do not panic and do not assume you have made a mistake. A negative dot product just means the angle is going to be more than 90 degrees.'},
         {say:'Piece two, the two lengths, one at a time.',
-         eq: '<span class="o">|</span><span class="x">a</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">34</span><span class="o">)</span> <span class="o">=</span> <span class="n">5.83</span>'},
+         eq: '<span class="o">|</span><span class="x">a</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">34</span><span class="o">)</span> <span class="o">=</span> <span class="n">5.83</span>'},
         {say:'And the other.',
-         eq: '<span class="o">|</span><span class="x">b</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">40</span><span class="o">)</span> <span class="o">=</span> <span class="n">6.32</span>'},
+         eq: '<span class="o">|</span><span class="x">b</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">40</span><span class="o">)</span> <span class="o">=</span> <span class="n">6.32</span>'},
         {say:'Now put the three pieces into the formula. Only now, not before.',
          eq: 'cos <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span> <span class="o">/</span> <span class="o">(</span><span class="n">5.83</span> <span class="x">x</span> <span class="n">6.32</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.7593</span>'},
         {say:'And undo the cosine to get the angle back.',
@@ -2468,7 +2468,7 @@
          eq: '<span class="o">(</span><span class="n">1</span> <span class="o">,</span> <span class="n">8</span><span class="o">)</span>'},
         {say:'And its nature. Differentiate a second time and look at the sign.',
          eq: '<span class="x">d</span><sup class="p"><span class="n">2</span></sup><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span>'},
-        {say:'Negative, so it is a maximum. A hilltop. You can also see it from the -3x^2 in the question: negative in front means the arc opens downward.'}
+        {say:'Negative, so it is a maximum. A hilltop. You can also see it from the &#8722;3x<sup class="p">2</sup> in the question: negative in front means the arc opens downward.'}
       ]
     },
     q15: {
