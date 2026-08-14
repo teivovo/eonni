@@ -673,6 +673,18 @@
   /* A sentence was being cut mid-word rather than wrapping. */
   .linkline{white-space:normal; overflow-wrap:break-word}
 
+  
+  /* Subject switcher, top of the menu on every page. */
+  .subjsw{display:flex; gap:8px; margin:0 0 4px}
+  .subjsw a{
+    flex:1 1 0; text-align:center; text-decoration:none;
+    font-family:var(--num); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--soft); background:var(--raise2); border:1px solid var(--edge);
+    border-radius:999px; padding:11px 4px; -webkit-tap-highlight-color:transparent;
+  }
+  .subjsw a.here{background:var(--peach); border-color:var(--peach); color:#fff}
+  .subjsw .ic{font-size:15px; display:block; line-height:1.5}
+
   </style>
 </head>
 <body>
@@ -1108,51 +1120,6 @@
       <p class="rise sub" style="color:var(--peach)">Serene <span class="kr">&#50616;&#45768;</span> &#129382;</p>
     </div>
   </section>
-  <section class="card" data-sub="biology" data-id="p:bio-open">
-    <div class="in">
-      <div class="eyebrow rise">different subject, different game</div>
-      <h1 class="rise">Biology.</h1>
-      <p class="rise">Maths wanted you to run a routine and land on a number. This one wants
-        sentences, and the sentences are marked on their shape as much as their content.</p>
-      <p class="rise sub">Which is good news, because the shape is the same nearly every time
-        and you can learn it in one card. That is the next one.</p>
-    </div>
-  </section>
-  <section class="card deck" data-sub="biology" data-id="d:b0" data-mcq="b0" data-easy="Long biology answers are worth about one mark for the fact and two for the explanation. If your sentence has no because or so that in it, it is not finished."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b1" data-mcq="b1" data-easy="Oxidative phosphorylation makes ATP and water. ATP synthase is turned by protons. One Krebs turn gives 2 CO2, 3 NADH, 1 FADH2, 1 ATP."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b2" data-mcq="b2" data-easy="Lipids are nonpolar. Built in the cytosol, broken down in the mitochondria. Triglycerides store, phospholipids build membranes."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b3" data-mcq="b3" data-easy="A pairs with T using 2 hydrogen bonds, G pairs with C using 3. More bonds means more energy to separate, so G to C holds tighter."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b4" data-mcq="b4" data-easy="Semi-conservative. Helicase breaks the hydrogen bonds to unwind it. Doubling means times 2 per round. The lagging strand needs many RNA primers because it is built in fragments."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b5" data-mcq="b5" data-easy="lacI codes the repressor. One promoter over several genes gives one polycistronic mRNA. No lactose normally means the repressor blocks transcription, so ask which part the mutation has broken."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b6" data-mcq="b6" data-easy="Three sodium out, two potassium in, both against their gradients, so it needs ATP. Two things in opposite directions makes it an antiporter."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules slip through the membrane on their own and use receptors inside the cell. Hydrophilic ones cannot cross by themselves, so they either need a transport protein or they work on a receptor at the surface. Ovary to bloodstream to a distant tissue is endocrine."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b8" data-mcq="b8" data-easy="Glycolysis is in the cytosol, the citric acid cycle in the mitochondrial matrix, the electron transport chain on the inner membrane. Per glucose, glycolysis nets 2 ATP and 2 NADH."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b9" data-mcq="b9" data-easy="Km is the substrate concentration that gives half the maximum rate. Low Km means high affinity, which is what the comparison question is asking about."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b10" data-mcq="b10" data-easy="Competitive raises Km and leaves Vmax alone. Non-competitive lowers Vmax and leaves Km alone. If more substrate reduces the inhibition, it is competitive."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b11" data-mcq="b11" data-easy="Damage: superoxide, hydrogen peroxide, hydroxyl radical, though hydrogen peroxide is not itself a radical. Defence: superoxide dismutase, catalase, glutathione peroxidase, vitamin C. If an enzyme is broken, its substrate builds up."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b12" data-mcq="b12" data-easy="DNA is negatively charged because of its phosphate backbone, so it moves towards the positive electrode. Small fragments travel further. A stronger gel slows everything and separates the small ones better."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b13" data-mcq="b13" data-easy="It recognises a specific sequence and breaks the phosphodiester bonds. Staggered cuts give sticky ends. Heat denatures it, so the active site loses its shape and can no longer bind."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b14" data-mcq="b14" data-easy="High blood sugar means insulin and storage. Low means glucagon and release. Empty stores and still low means gluconeogenesis, building glucose from scratch."></section>
-  <section class="card" data-sub="chemistry" data-id="p:chem-open">
-    <div class="in">
-      <div class="eyebrow rise">third one</div>
-      <h1 class="rise">Chemistry.</h1>
-      <p class="rise">This one sits between the other two. It has routines to run like the maths
-        paper, and explain marks like the biology one.</p>
-      <p class="rise sub">Nearly every calculation in it goes through moles, so that is where
-        this starts. Get that one relationship solid and a surprising amount of the paper opens up.</p>
-    </div>
-  </section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c1" data-mcq="c1" data-easy="Moles is mass divided by molar mass. Count the atoms carefully, and remember a number outside a bracket multiplies everything inside it."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c2" data-mcq="c2" data-easy="Concentration is moles per litre. Work out the moles, convert millilitres to litres, then divide. The unit conversion is where the marks go."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c3" data-mcq="c3" data-easy="Balance carbon first, then hydrogen, and leave oxygen until last because it appears in two places on the right."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c4" data-mcq="c4" data-easy="Work out what each reactant could produce on its own using the ratio, then take the smaller answer. Never compare the raw amounts."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c5" data-mcq="c5" data-easy="Count the bonds and the lone pairs around the central atom. Those two numbers decide the shape. Lone pairs take up space even though you cannot see them."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c6" data-mcq="c6" data-easy="Metal with non-metal is ionic. Two identical atoms is non-polar covalent. Two different non-metals is polar covalent."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c7" data-mcq="c7" data-easy="Hydrogen bonding needs H attached directly to N, O or F. It is the strongest force BETWEEN MOLECULES, so among molecular compounds it gives the highest boiling point. Ionic solids are a different case and boil higher still."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c8" data-mcq="c8" data-easy="Add the given reactions so the unwanted things cancel, then add their energies the same way. Reverse a reaction and you flip the sign of its energy."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c9" data-mcq="c9" data-easy="An element on its own is zero. Oxygen is usually -2 and hydrogen +1. Everything must add up to the overall charge, so treat it as a small equation."></section>
-  <section class="card deck" data-sub="chemistry" data-id="d:c10" data-mcq="c10" data-easy="The more positive reduction potential is reduced, and that is the cathode. The other one reverses and is the anode. Cell voltage is cathode minus anode."></section>
 
 </div>
 
@@ -1178,7 +1145,7 @@
     <span class="label" style="margin:0">where to?</span>
     <button class="mclose" id="menuClose" type="button">close</button>
   </div>
-  <div class="mlist" id="mlist"></div>
+  <div class="subjsw"><a href="index.html" class="here"><span class="ic">&#128290;</span>Maths</a><a href="bio.html"><span class="ic">&#129440;</span>Biology</a><a href="chem.html"><span class="ic">&#129514;</span>Chemistry</a></div><div class="mlist" id="mlist"></div>
 </div>
 
 <div class="toast" id="toast"><span>you came back &#128155;</span><button id="restartBtn" type="button">from the top</button></div>
@@ -2089,6 +2056,35 @@
      the ampersand would double-encode them. */
   function attr(v){ return String(v).replace(/"/g, '&quot;'); }
 
+
+  /* Her own worksheet's analogy for equilibrium, drawn. Two tanks, fish
+     crossing both ways, and the case where the numbers stop changing while
+     the fish keep swimming. */
+  function sceneTanks(l2r, r2l, cap){
+    function tank(x, n){
+      var g = '<rect x="' + x + '" y="34" width="104" height="72" rx="7" class="stroke" fill="var(--raise2)"/>';
+      for(var i = 0; i < n; i++){
+        var fx = x + 18 + (i % 3) * 30, fy = 54 + Math.floor(i / 3) * 26;
+        g += '<path d="M' + fx + ' ' + fy + ' q10 -7 20 0 q-10 7 -20 0 z" fill="var(--peach)" opacity=".75"/>' +
+             '<path d="M' + (fx - 1) + ' ' + fy + ' l-7 -5 v10 z" fill="var(--peach)" opacity=".75"/>';
+      }
+      return g;
+    }
+    function arrow(y, n, dir){
+      var x1 = dir > 0 ? 118 : 182, x2 = dir > 0 ? 182 : 118;
+      return '<line x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y +
+             '" class="stroke" stroke-width="1.6"/>' +
+             '<polygon points="' + x2 + ',' + y + ' ' + (x2 - dir * 8) + ',' + (y - 4) +
+             ' ' + (x2 - dir * 8) + ',' + (y + 4) + '" fill="currentColor"/>' +
+             '<text x="150" y="' + (y - 7) + '" text-anchor="middle" font-size="10">' + n + ' a minute</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 132" role="img" aria-label="Two tanks with fish crossing in both directions">' +
+        tank(6, 5) + tank(190, 5) +
+        arrow(52, l2r, 1) + arrow(92, r2l, -1) +
+      '</svg>', cap);
+  }
+
   function fig(svg, cap){
     return '<figure>' + svg + '<figcaption>' + cap + '</figcaption></figure>';
   }
@@ -2675,415 +2671,6 @@
   });
 
   var DECKS = {
-
-    /* ---- A105 chemistry. Paper on 20 August. ---- */
-
-    c1: {
-      eyebrow:'chemistry', title:'Moles, in one sentence.',
-      q: '<span class="o">how</span> <span class="o">many</span> <span class="o">moles</span> <span class="o">are</span> <span class="o">in</span> <span class="n">6.84</span> <span class="x">g</span> <span class="o">of</span> <span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Nearly every calculation in this module goes through moles, and there is one relationship underneath all of them.'},
-        {say:'Moles is mass divided by molar mass. If you know two of the three you can always get the third.',
-         eq: '<span class="o">moles</span> <span class="o">=</span> <span class="o">mass</span> <span class="o">/</span> <span class="o">molar</span> <span class="o">mass</span>'},
-        {say:'So the work is the molar mass, and that is counting atoms carefully. Watch the bracket: the 3 outside multiplies everything inside it.',
-         eq: '<span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub> <span class="o">=</span> <span class="n">2</span> <span class="x">A</span><span class="x">l</span> <span class="o">+</span> <span class="n">3</span> <span class="x">S</span> <span class="o">+</span> <span class="n">12</span> <span class="x">O</span>'},
-        {say:'Add them up.',
-         eq: '<span class="n">2</span><span class="o">(</span><span class="n">26.98</span><span class="o">)</span> <span class="o">+</span> <span class="n">3</span><span class="o">(</span><span class="n">32.07</span><span class="o">)</span> <span class="o">+</span> <span class="n">12</span><span class="o">(</span><span class="n">16.00</span><span class="o">)</span> <span class="o">=</span> <span class="n">342.17</span>'},
-        {say:'Then divide.',
-         eq: '<span class="n">6.84</span> <span class="o">/</span> <span class="n">342.17</span> <span class="o">=</span> <span class="n">0.0200</span> <span class="o">mol</span>'},
-        {say:'The bracket is where the marks go in this topic. Twelve oxygens, not four, because the 3 outside multiplies the 4 inside.'}
-      ]
-    },
-    c2: {
-      eyebrow:'chemistry', title:'Concentration.',
-      q: '<span class="n">18.02</span> <span class="x">g</span> <span class="o">of</span> <span class="x">C</span><sub class="p">6</sub><span class="x">H</span><sub class="p">12</sub><span class="x">O</span><sub class="p">6</sub> <span class="o">in</span> <span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">of</span> <span class="o">solution</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">molarity</span>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Concentration is moles per litre, so this is the mole calculation with one extra step and one unit trap.'},
-        {say:'Moles first, exactly as before. Glucose is 180.16 g per mole.',
-         eq: '<span class="n">18.02</span> <span class="o">/</span> <span class="n">180.16</span> <span class="o">=</span> <span class="n">0.10</span> <span class="o">mol</span>'},
-        {say:'Now the trap, and it costs more marks than anything else here. Molarity is per LITRE, and the question gave you millilitres.',
-         eq: '<span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">=</span> <span class="n">0.250</span> <span class="x">L</span>'},
-        {say:'Then divide.',
-         eq: '<span class="n">0.10</span> <span class="o">/</span> <span class="n">0.250</span> <span class="o">=</span> <span class="n">0.40</span> <span class="o">mol</span><span class="o">/</span><span class="x">L</span>'},
-        {say:'The same relationship runs backwards for the other kind of question. To make 750 mL of 0.40 mol/L sodium hydroxide, you need 0.40 times 0.750, which is 0.30 mol, and 0.30 times 40.00 gives 12.0 g.'},
-        {say:'Whenever you see millilitres in a concentration question, convert before anything else. Do it as the first line of working, every time.'}
-      ]
-    },
-    c3: {
-      eyebrow:'chemistry', title:'Balancing without guessing.',
-      q: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Balancing feels like trial and error and it does not have to be. There is an order that works nearly every time.'},
-        {say:'Leave oxygen until last, because it appears in two places on the right and will keep changing while you fix the others.'},
-        {say:'Carbon first. Five on the left, so five carbon dioxide.',
-         eq: '<span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub>'},
-        {say:'Then hydrogen. Twelve on the left, and water carries two each, so six waters.',
-         eq: '<span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
-        {say:'Now count the oxygen on the right, which is finally safe to do. Ten in the carbon dioxide plus six in the water.',
-         eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>',
-         art:function(){ return sceneBalance2(); }},
-        {say:'Oxygen comes in twos, so you need eight of them.',
-         eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
-        {say:'Carbon, then hydrogen, then oxygen last. That order turns a puzzle into a routine, and this topic is worth easy marks once it is a routine.'}
-      ]
-    },
-    c4: {
-      eyebrow:'chemistry', title:'Which one runs out first.',
-      q: '<span class="n">0.3</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">C</span> <span class="o">reacts</span> <span class="o">with</span> <span class="n">0.5</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">O</span><sub class="p">2</sub>   <span class="o">&#183;</span>   <span class="n">2</span><span class="x">C</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">C</span><span class="x">O</span>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Limiting reagent questions look like they need judgement and they need arithmetic. Work out what each reactant could make on its own, then take the smaller answer.'},
-        {say:'Read the ratio off the balanced equation first. Two carbons to one oxygen molecule to two carbon monoxides.',
-         eq: '<span class="x">C</span> <span class="o">:</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">:</span> <span class="x">C</span><span class="x">O</span> <span class="o">=</span> <span class="n">2</span> <span class="o">:</span> <span class="n">1</span> <span class="o">:</span> <span class="n">2</span>'},
-        {say:'What could the carbon make. The ratio of C to CO is 2 to 2, so one for one.',
-         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span> <span class="o">could</span> <span class="o">make</span> <span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
-        {say:'What could the oxygen make. The ratio of O2 to CO is 1 to 2, so double it.',
-         eq: '<span class="n">0.5</span> <span class="o">mol</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">could</span> <span class="o">make</span> <span class="n">1.0</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>',
-         art:function(){ return sceneLimit(); }},
-        {say:'The carbon runs out first, so the carbon decides. You get the smaller of the two.',
-         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
-        {say:'And that is the whole method. Never compare the raw amounts, because the ratio is doing the work. Here there is more oxygen than carbon and the carbon is still the one that runs out.'}
-      ]
-    },
-    c5: {
-      eyebrow:'chemistry', title:'Shapes, by counting.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'VSEPR sounds like theory and it is counting. Everything around the central atom pushes everything else as far away as it can get, and lone pairs push hardest.'},
-        {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
-        {say:'Everything here is decided by two numbers. Pick what is around the centre, and see which shape it forces.',
-         art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,3,1], 'Not that one. Count the bonds and the lone pairs again, and remember the lone pairs take up room.'); }},
-        {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.',
-         art:function(){ return sceneShapes(); }}
-      ]
-    },
-    c6: {
-      eyebrow:'chemistry', title:'Which kind of bond.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Three kinds, and telling them apart is one question: are the atoms sharing, and if so, are they sharing fairly.'},
-        {say:'Three kinds of bond, three pairs of atoms. See if you can match them up before reading anything.',
-         art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1], 'Not that one. Ask whether they are sharing at all, and if so whether they share fairly.'); }},
-        {say:'The quickest route through a bonding question: metal with non-metal is ionic, two identical atoms is non-polar, and two different non-metals is polar.'}
-      ]
-    },
-    c7: {
-      eyebrow:'chemistry', title:'What makes a hydrogen bond.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Hydrogen bonding gets asked about constantly because it explains boiling points, and it has the narrowest rule in the module.'},
-        {say:'The rule: hydrogen attached DIRECTLY to nitrogen, oxygen or fluorine. Those three. Not merely present in the molecule, attached to the hydrogen.',
-         eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="o">or</span> <span class="x">F</span>'},
-        {say:'Only some of these can hydrogen bond. Have a guess at which, then check yourself against each one.',
-         art:function(){ return pickall([['HF',true,'Yes. Hydrogen bonding needs H attached directly to N, O or F, and this is H attached to F. Those three and nothing else.'],['HBr',false,'No. Bromine is not on the list. It is a bigger atom and does not pull hard enough, so this gets ordinary dipole attraction rather than hydrogen bonding.'],['CH4',false,'No. Carbon is not on the list either, and there is nothing here for a hydrogen bond to reach towards.'],['KCl',false,'No, and for a different reason: this is ionic, so there are no molecules to attract one another in the first place.']], true); }},
-        {say:'And the reason it matters. Among MOLECULES, hydrogen bonding is the strongest of the forces between them, so a molecular compound that has it needs the most energy to pull apart and boils highest. Keep the comparison to molecules: an ionic solid like potassium chloride is held by full charges rather than by forces between molecules, and it beats all of them.'}
-      ]
-    },
-    c8: {
-      eyebrow:'chemistry', title:'Adding reactions together.',
-      q: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'You are given two reactions and asked about a third. The trick is that reactions add up like ordinary sums, and so do their energies.'},
-        {say:'Write down what you have.',
-         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
-        {say:'And the second.',
-         eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
-        {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.',
-         art:function(){ return sceneEnergy(); }},
-        {say:'What survives is nitrogen and two oxygens on the left, and two nitrogen dioxides on the right, which is exactly the reaction you were asked about.',
-         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
-        {say:'So add the two energies the same way.',
-         eq: '<span class="n">180</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">112</span><span class="o">)</span> <span class="o">=</span> <span class="n">68</span> <span class="x">k</span><span class="x">J</span>'},
-        {say:'If a reaction has to be reversed to make things cancel, flip the sign of its energy too. And if it has to be doubled, double the energy. That is all of it.'}
-      ]
-    },
-    c9: {
-      eyebrow:'chemistry', title:'Oxidation states.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Oxidation states look arbitrary and they follow a short list of rules applied in order. Working through the list beats guessing every time.'},
-        {say:'An element on its own is always nothing. So in octasulfur, sulfur is zero, however many atoms are stuck together.',
-         eq: '<span class="x">S</span><sub class="p">8</sub>   <span class="o">so</span>   <span class="x">S</span> <span class="o">is</span> <span class="n">0</span>'},
-        {say:'Oxygen is almost always minus two, and hydrogen is almost always plus one. Those two are what let you find everything else.'},
-        {say:'And the whole thing must add to the overall charge, which for a neutral compound is nothing at all.'},
-        {say:'So for carbon dioxide: two oxygens at minus two make minus four, and the total has to be zero.',
-         eq: '<span class="x">C</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">C</span> <span class="o">is</span> <span class="o">+</span><span class="n">4</span>'},
-        {say:'Same list every time: elements are zero, oxygen is minus two, hydrogen is plus one, everything adds to the charge. Work it as a small equation rather than trying to remember the answer.'}
-      ]
-    },
-    c10: {
-      eyebrow:'chemistry', title:'Which way the electrons go.',
-      q: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.28</span> <span class="x">V</span>      <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.74</span> <span class="x">V</span>',
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first. Then swipe.'},
-        {say:'Electrochemistry questions come down to one comparison, and it is the same comparison every time.'},
-        {say:'The more POSITIVE the reduction potential, the more that ion wants to be reduced. Minus 0.28 is more positive than minus 0.74, even though both are negative.',
-         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">is</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>',
-         art:function(){ return sceneGalv(); }},
-        {say:'So nickel takes the electrons, which means nickel is the cathode. Reduction always happens at the cathode.',
-         eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>'},
-        {say:'Which leaves chromium to give the electrons up, so chromium is the anode and its half reaction runs backwards from how it was printed.',
-         eq: '<span class="o">anode</span><span class="o">:</span> <span class="x">C</span><span class="x">r</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span>'},
-        {say:'And the voltage of the cell is the difference between them, cathode take away anode.',
-         eq: '<span class="o">&#8722;</span><span class="n">0.28</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">0.74</span><span class="o">)</span> <span class="o">=</span> <span class="n">0.46</span> <span class="x">V</span>'},
-        {say:'Two things to hold: reduction happens at the cathode, and a cell voltage that comes out positive means the reaction runs by itself. A negative one would mean it needs pushing.'}
-      ]
-    },
-
-    /* ---- A110 biology, second wave: L04, L09, L12, L13. ---- */
-
-    b8: {
-      eyebrow:'biology', title:'Glycolysis and where things happen.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'This topic is mostly numbers and addresses. There is nothing to reason out, so it is worth finding out now which ones are actually in your head.'},
-        {say:'Have a go at each one. Right or wrong, every single one tells you why.',
-         art:function(){ return pickall([['Two glucose through glycolysis gives 4 ATP and 4 NADH',true,'Correct, and the trap is the word TWO. Per glucose it is 2 and 2, so read the number in the question before answering from memory.'],['The citric acid cycle happens in the mitochondrial matrix',true,'Correct. Glycolysis is in the cytosol, the citric acid cycle is in the matrix, and the electron transport chain is on the inner membrane. Three processes, three addresses.'],['ATP is produced when pyruvate is converted to lactate',false,'No. That step makes no ATP at all. Its only purpose is to reoxidise NADH back to NAD+ so that glycolysis can keep running, and glycolysis is where the ATP came from.'],['Lactate fermentation produces no carbon dioxide',true,'Correct, and it is the clean difference from alcohol fermentation, which does. That is what the comparison question is after.'],['Fermentation happens in the absence of oxygen',true,'Correct. And the reason it exists at all is to regenerate NAD+, without which glycolysis stops after a few seconds.']], true); }},
-        {say:'Three addresses to keep: glycolysis in the cytosol, citric acid cycle in the matrix, electron transport chain on the inner membrane. A surprising number of questions are only asking which room.'}
-      ]
-    },
-    b9: {
-      eyebrow:'biology', title:'Km, and what it actually measures.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Km gets treated as a definition to memorise and it is really a description of how eager an enzyme is. Once you have that, the questions answer themselves.'},
-        {say:'The definition first, because it is a mark on its own.',
-         eq: 'Km = the substrate concentration that gives half of Vmax',
-         art:function(){ return sceneKm(); }},
-        {say:'So a LOW Km means the enzyme reaches half speed with barely any substrate around, which means it grabs substrate readily. High affinity.'},
-        {say:'And a high Km means it needs a lot of substrate before it gets going. Low affinity.'},
-        {say:'Which is why Km, and not size or optimum pH, is the fair way to compare how readily two enzymes grab their substrate. It is not a complete measure of how good an enzyme is, because how fast it works once it has hold is a separate question, but affinity is what this comparison is about.'},
-        {say:'One more that is worth having ready, because it is four true-or-false marks in one question. Enzymes DO change shape while working, that is induced fit. They CAN form bonds with reactants. They ARE affected by temperature and pH. And they are NOT used up.'}
-      ]
-    },
-    b10: {
-      eyebrow:'biology', title:'Which inhibitor is it.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.',
-         art:function(){ return sceneInhib(); }},
-        {say:'Two graph signatures, two inhibitors. This one is pure recognition, so it is worth doing until it is instant.',
-         art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0], 'Not that one. Ask which of Km and Vmax has moved, and which has stayed put.'); }},
-        {say:'And the shortcut for a worded question with no graph at all. If adding more substrate REDUCES the inhibition, it is competitive, because the two are fighting over the same seat and substrate can win by weight of numbers.'},
-        {say:'That is exactly the sulfanilamide question on your sheet. More PABA reduces the inhibition, therefore competitive, and the explanation is that sulfanilamide resembles PABA closely enough to occupy the same active site.'}
-      ]
-    },
-    b11: {
-      eyebrow:'biology', title:'Free radicals and the defence against them.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'This topic is a small cast of characters and knowing which side each one is on answers most of the questions.'},
-        {say:'Have a go at each one. Right or wrong, every single one tells you why.',
-         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three reactive oxygen species to know are superoxide, hydrogen peroxide and the hydroxyl radical. Note that only two of those are free RADICALS: hydrogen peroxide has no unpaired electron, so it is a reactive oxygen species without being a radical, and that distinction is exactly what a not-a-free-radical question is testing. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['Every redox reaction needs an enzyme',false,'No. Iron rusting is a redox reaction and there is no enzyme anywhere near it. The true statement runs the other way round: if a redox reaction IS being catalysed, the enzyme doing it is an oxidoreductase. Read the name in pieces, oxido-reduct-ase, and it tells you what it does.']], true); }},
-        {say:'Sort them into two lists and the questions become easy. Doing damage: superoxide, hydrogen peroxide, hydroxyl radical, and radiation which makes more of them. Cleaning up: superoxide dismutase, catalase, glutathione peroxidase, vitamin C.'},
-        {say:'And the mutation question. If catalase is broken, hydrogen peroxide is not broken down, so it builds up, so it damages proteins, lipids and DNA. Broken enzyme, so its substrate accumulates, so damage follows. That chain shape is the answer to every question of this kind.'}
-      ]
-    },
-    b12: {
-      eyebrow:'biology', title:'Why the DNA moves that way.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Gel electrophoresis questions look like lab trivia and they are answerable from one property of DNA that you already know.'},
-        {say:'DNA has a phosphate backbone, and phosphates carry a negative charge. So every piece of DNA is negative, all along its length.',
-         art:function(){ return sceneGel(); }},
-        {say:'Opposite charges attract, so DNA moves towards the POSITIVE electrode. If the question shows you which way the DNA travelled, it has told you which electrode is positive.'},
-        {say:'Then the size part. The gel is a mesh, and small fragments slip through it faster than big ones, so the small ones end up furthest along.'},
-        {say:'So if the agarose is made stronger, from 1% to 5%, the mesh gets tighter. Everything moves less far, and the small fragments separate out more clearly from each other.'},
-        {say:'Two facts doing all the work: DNA is negative, and small things move faster. Almost every question here is one of those two.'}
-      ]
-    },
-    b13: {
-      eyebrow:'biology', title:'Cutting DNA, and why heat stops it.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Restriction enzymes come up as three short questions and they are all answerable from what an enzyme is.'},
-        {say:'What it does: it recognises a specific short sequence, then cuts by breaking the phosphodiester bonds in the backbone. Recognises, then cuts. Both halves are marks.'},
-        {say:'Straight across both strands at the same point gives blunt ends. A staggered cut leaves short single-stranded overhangs, and those are cohesive ends, also called sticky.',
-         art:function(){ return sceneSticky(); }},
-        {say:'Sticky ends matter because the overhang can base pair with any other fragment cut by the same enzyme, which is what makes joining DNA from two sources possible at all.'},
-        {say:'And the temperature question, which is not really about restriction enzymes. At 80 degrees the enzyme denatures: the bonds holding its shape break, so the active site loses its shape, so it can no longer bind the recognition sequence.'},
-        {say:'Note that shape is the whole answer. Enzymes work by fitting, so anything that ruins the fit stops the enzyme, whether that is heat, pH or a mutation.'}
-      ]
-    },
-    b14: {
-      eyebrow:'biology', title:'Which hormone, and which direction.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Everything in this topic is one question: is there too much sugar in the blood, or too little. Get the direction right and the details follow.'},
-        {say:'Three situations, three responses. The whole topic is deciding which one you are looking at.',
-         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It is what the body turns to once the store is already empty, which is exactly what that exam option is testing.']], [1,2,0], 'Not that one. Ask first whether there is too much sugar in the blood or too little.'); }},
-        {say:'The naming trap worth knowing. Glycogen synthase is ACTIVE when it is dephosphorylated, not when it is phosphorylated. That comes up as a false-statement question and it catches people out because phosphorylation usually means switching on.'},
-        {say:'And gluconeogenesis is not the same as glycogenolysis. Genesis means building new glucose from non-carbohydrate. Lysis means splitting existing glycogen. One letter apart on the page, opposite processes.'}
-      ]
-    },
-
-    /* ---- A110 biology, first wave. Paper on 18 August.
-       Shaped around answer structure rather than recall, because every
-       long question on her sheets is state-and-explain with the marks
-       split one for the fact and two for the because. ---- */
-
-    b0: {
-      eyebrow:'biology', title:'How this paper actually pays.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Biology is not marked the way maths is. There is no working to show and no right number to land on. There is a sentence, and the sentence either earns the marks or it does not.'},
-        {say:'Look at the mark counts on your practice questions. They are almost all in the same shape.',
-         eq: 'state and explain   (3 marks)'},
-        {say:'That split is nearly always the same underneath: one mark for the thing, two marks for the because.',
-         eq: 'name it = 1      why it matters = 2'},
-        {say:'So an answer that stops at the fact has thrown away two thirds of the question. This is the single most expensive habit in the module and it has nothing to do with how much you remember.'},
-        {say:'Here are four answers to the same three-mark question about the Golgi apparatus. Tap each one.',
-         art:function(){ return sceneSecrete(); }},
-        {art:function(){ return pickall([['Golgi apparatus modifies and packages the protein',false,'One mark out of three. It is TRUE, and it is not the answer. It names the structure and says what it does, and then stops before the part that carries the other two marks. Marked here as incomplete rather than wrong, because that is what it is.'],['Golgi apparatus modifies and packages casein into vesicles, so that it can be transported to the membrane and secreted',true,'Three marks. Structure, what it does, AND what that means for the casein. The words \'so that\' are doing the work. Almost every explain mark in this module is hiding behind a \'so that\' or a \'because\'.'],['Golgi apparatus is important for the cell',false,'No marks. True, and it says nothing. If your sentence would still be true with a different organelle swapped in, it has not earned anything.'],['The Golgi is stacked and flattened in appearance',false,'No marks here, because the question asked for its ROLE. Describing what it looks like answers a question you were not asked, and costs you the time you needed for the one you were.']], true); }},
-        {say:'The pattern to carry into every long question: name it, say what it does, then say <b>so that</b> and finish the sentence. If your answer has no because and no so that in it, it is not finished yet.'}
-      ]
-    },
-    b1: {
-      eyebrow:'biology', title:'Respiration, quickly.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Some of your paper is multiple choice and fill in the blanks, where the whole thing is recall and there is nothing to work out. Fastest marks on the paper if you have them, so they are worth checking first.'},
-        {say:'Have a go at each one. Right or wrong, every single one tells you why.'},
-        {art:function(){ return pickall([['Oxidative phosphorylation produces ATP and water',true,'Correct. Oxygen is the final electron acceptor and it ends up as water, with ATP made by ATP synthase alongside. Oxygen is consumed here, not produced, which rules out the oxygen option.'],['ATP synthase is driven by the movement of protons',true,'Correct. Protons build up in the intermembrane space and flow back through ATP synthase, which turns like a waterwheel. Electrons drive the pumping, but protons drive the synthase itself.'],['Anaerobic respiration produces more ATP than aerobic',false,'The wrong way round. Aerobic gets roughly thirty-something ATP per glucose, anaerobic gets two. Anaerobic is faster to start, not richer.'],['Glycolysis only happens when oxygen is present',false,'No. Glycolysis is in the cytoplasm and runs with or without oxygen, which is exactly why anaerobic respiration is possible at all.'],['One turn of the Krebs cycle produces two molecules of carbon dioxide',true,'Correct, and worth memorising with its companions: one turn gives 2 CO2, 3 NADH, 1 FADH2 and 1 ATP.']], true); }},
-        {say:'The one worth carrying: 2 carbon dioxide, 3 NADH, 1 FADH2 and 1 ATP per turn of the Krebs cycle. Those four numbers answer a surprising number of questions.'}
-      ]
-    },
-    b2: {
-      eyebrow:'biology', title:'Lipids, quickly.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Same again. Recall rather than reasoning, so it is either there or it is not, and finding out which is the point of doing this now rather than on Tuesday.'},
-        {art:function(){ return pickall([['Lipids are different from the other macromolecules because they are nonpolar',true,'Correct. That single property explains nearly everything else about them: why they store well, why they form membranes, and why they need carrying in the blood.'],['Fatty acid synthesis happens in the cytosol',true,'Correct, and worth pairing with its opposite: synthesis is in the cytosol, breakdown by beta-oxidation is in the mitochondria. Building and breaking happen in different rooms.'],['The major storage form of lipid in adipose tissue is cholesterol',false,'No, that is triglycerides. Cholesterol is a membrane component and a hormone precursor, and it is not the storage form.'],['Beta-oxidation enzymes are in the nucleus',false,'No, the mitochondria. Beta-oxidation feeds acetyl CoA straight into the Krebs cycle, so it happens where the Krebs cycle is.'],['Phospholipids are the primary component of biological membranes',true,'Correct. Two tails that hate water and a head that likes it, which is the whole reason a bilayer forms at all.']], true); }},
-        {say:'The pairing to hold on to: fats are BUILT in the cytosol and BROKEN in the mitochondria. Two different rooms, and questions like to ask which.'}
-      ]
-    },
-    b3: {
-      eyebrow:'biology', title:'Why G to C holds on tighter.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'A favourite question, and it is answerable from one fact you already have. Which pair takes more energy to pull apart, A with T or G with C.'},
-        {say:'The fact: the two pairs are not held by the same number of hydrogen bonds.',
-         eq: 'A=T has 2      G=C has 3',
-         art:function(){ return sceneBases(); }},
-        {say:'So G to C takes more energy to separate. That is the answer, and on its own it is one mark out of three.'},
-        {say:'The other two marks are the because. More hydrogen bonds means more energy needed to break them, so a region rich in G and C is harder to pull apart and melts at a higher temperature.'},
-        {say:'And that is why it matters, which is where explain questions usually want you to land. Regions that have to open often, like the start of a gene, tend to be A and T rich, because they are cheaper to open.'}
-      ]
-    },
-    b4: {
-      eyebrow:'biology', title:'Replication, four short answers.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Four things get asked about replication over and over, and all four are short. None of them needs a diagram.'},
-        {say:'The model, which is one mark and one word.',
-         eq: 'semi-conservative'},
-        {say:'Meaning each new molecule keeps one old strand and one new one. That sentence is the second mark if they ask you to explain the word.'},
-        {say:'Helicase. It unwinds the double helix by breaking the hydrogen bonds between the base pairs. Name plus action plus what it achieves, which is the usual three-part shape.'},
-        {say:'The counting one. Ten cells, five rounds, and each round doubles.',
-         eq: '<span class="n">10</span> <span class="o">&#215;</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">320</span>'},
-        {say:'And the strand question. RNA primers are needed to start each new piece, and the lagging strand is built in many short fragments rather than one long run, so it needs many primers where the leading strand needs one.',
-         eq: 'lagging strand',
-         art:function(){ return sceneStrands(); }},
-        {say:'That is why RNA shows up more against the lagging strand. Every fragment starts with its own primer.'}
-      ]
-    },
-    b5: {
-      eyebrow:'biology', title:'The lac operon.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'Operons look intimidating and they are a switch. One switch, a few parts, and the exam asks what happens when a part is broken.'},
-        {say:'The repressor protein is coded by its own gene, sitting apart from the three genes the operon controls. That gene is lacI.',
-         eq: 'lacI codes for the repressor'},
-        {say:'When the operon is transcribed you get ONE mRNA carrying several genes, one after another. The word for that is polycistronic.',
-         eq: 'polycistronic',
-         art:function(){ return sceneOperon(); }},
-        {say:'And the explain marks: it is one promoter controlling several genes, so they are transcribed together onto a single mRNA and are switched on and off as a set. That is the whole point of an operon.'},
-        {say:'Then the mutant question. Normally, no lactose means the repressor sits on the operator and blocks transcription. So ask what the mutation has broken.'},
-        {say:'If the mutation stops the repressor binding, or damages the operator it binds to, then nothing blocks transcription and the genes are expressed even with no lactose present. Work out which part is broken, then say what that part normally stops.'}
-      ]
-    },
-    b6: {
-      eyebrow:'biology', title:'The sodium-potassium pump.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'One pump, and almost every question about it comes back to the same two words: against and gradient.'},
-        {say:'It moves three sodium out and two potassium in, and both are moving from where they are scarce to where they are already plentiful.',
-         eq: '3 Na out, 2 K in',
-         art:function(){ return scenePump(); }},
-        {say:'Which answers the energy question in one line. Moving anything against its concentration gradient does not happen by itself, so it needs ATP. That is active transport, and it is the definition rather than a fact to memorise.'},
-        {say:'Is it an antiporter. Yes, and the reason is the whole word: it carries two different things in OPPOSITE directions at the same time. Same direction would be a symporter.',
-         eq: 'antiporter'},
-        {say:'And the broken pump question. If the pump fails, the gradients run down, so the neuron cannot hold itself steady at rest and becomes far too easy to set off. It fires when it should not, and a seizure is that happening across a great many neurons at once.'},
-        {say:'Notice the shape of that answer: pump fails, so the gradient goes, so the cell cannot stay at rest, so it fires when it should not. A chain of so-thats, and that structure is what the three marks are for.'}
-      ]
-    },
-    b7: {
-      eyebrow:'biology', title:'Getting into the cell, or not.',
-      q: null,
-      auto:null, options:null,
-      steps:[
-        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
-        {say:'This one comes up in several disguises and it always turns on one property: can the molecule cross a membrane by itself.'},
-        {say:'The membrane is oily in the middle. So anything oily goes straight through, and anything that likes water does not.',
-         eq: 'hydrophobic crosses, hydrophilic does not',
-         art:function(){ return sceneMembrane(); }},
-        {say:'Estrogen is a steroid, so it is hydrophobic and it crosses. That is why its receptor is INSIDE the cell rather than on the surface.'},
-        {say:'So when the question asks whether a hydrophilic version of estrogen would work as a drug, the answer is no, and the reason is not about the receptor at all.'},
-        {say:'It cannot cross the membrane by itself, and there is no transporter for it, so it never reaches a receptor that sits inside the cell, so it cannot activate it however well it would have fitted. Three steps, three marks.'},
-        {say:'And the signalling type. Made in the ovary, carried in the blood, acting on breast tissue somewhere else entirely. Distant target through the bloodstream is endocrine.',
-         eq: 'endocrine'},
-        {say:'Testosterone will not activate an estrogen receptor either. Both are steroids and both get in, but a receptor binds a shape, and the two are not the same shape.'}
-      ]
-    },
-
-    /* ---- matrices, partial fractions and trigonometry: the last of A115. ---- */
-
     mx1: {
       eyebrow:'matrices', title:'Can these two even be multiplied.',
       q: null,
@@ -5054,7 +4641,7 @@
   /* Remember where she stopped. Five minute bursts on a phone means she must
      never have to re-swipe her way back to where she was. Nothing leaves the
      device: no account, no server, just one line in localStorage. */
-  var STORE = "eonni.pos.v2";
+  var STORE = "eonni.pos.maths.v1";
   var restoring = false;
 
   /* Keyed on a stable card id, never on its position. Adding a lesson used to
@@ -5375,7 +4962,7 @@
   });
 
   /* ---------------- stars and the jump list ---------------- */
-  var STARS = "eonni.stars.v2";
+  var STARS = "eonni.stars.maths.v1";
 
   function getStarIds(){
     try{ return JSON.parse(window.localStorage.getItem(STARS) || "[]"); }

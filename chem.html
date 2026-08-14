@@ -1,0 +1,3010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17131C">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AB%A7%3C/text%3E%3C/svg%3E">
+<title>Maths, one bit at a time</title>
+<style>
+  :root{
+    --ground:#FCF7F3; --raise:#FFFFFF; --raise2:#F6EEE8; --edge:#E9DCD2;
+    --ink:#2A1F2E; --soft:#6E5F75; --faint:#9C8DA3;
+    --peach:#C1502A; --mint:#14705C; --butter:#8A5A0B;
+    --glow:rgba(193,80,42,.10); --shade:rgba(42,31,46,.07);
+    --voice:Georgia,'Iowan Old Style','Times New Roman',serif;
+    --ui:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+    --num:ui-monospace,'SF Mono','Cascadia Code',Consolas,'Roboto Mono',monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#17131C; --raise:#211B28; --raise2:#2A2233; --edge:#372E42;
+      --ink:#F3ECF2; --soft:#AA9DB3; --faint:#7E7188;
+      --peach:#FF9E76; --mint:#7ED9BF; --butter:#FFD98E;
+      --glow:rgba(255,158,118,.14); --shade:rgba(0,0,0,.30);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#17131C; --raise:#211B28; --raise2:#2A2233; --edge:#372E42;
+    --ink:#F3ECF2; --soft:#AA9DB3; --faint:#7E7188;
+    --peach:#FF9E76; --mint:#7ED9BF; --butter:#FFD98E;
+    --glow:rgba(255,158,118,.14); --shade:rgba(0,0,0,.30);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--ui); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .feed{
+    height:100vh; height:100dvh; overflow-y:scroll; overflow-x:hidden;
+    scroll-snap-type:y mandatory; scrollbar-width:none;
+    overscroll-behavior-y:contain;
+  }
+  .feed::-webkit-scrollbar{display:none}
+
+  .card{
+    min-height:100vh; min-height:100dvh; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; align-items:center; justify-content:center;
+    padding:72px 22px 96px; position:relative;
+  }
+  .in{width:100%; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:20px}
+
+  .card .rise{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1)}
+  .card.on .rise{opacity:1; transform:none}
+  .card.on .rise:nth-child(2){transition-delay:.08s}
+  .card.on .rise:nth-child(3){transition-delay:.16s}
+  .card.on .rise:nth-child(4){transition-delay:.24s}
+  .card.on .rise:nth-child(5){transition-delay:.32s}
+
+  .eyebrow{
+    font-family:var(--num); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--peach);
+  }
+  h1{
+    font-family:var(--voice); font-weight:400; font-size:clamp(46px,15vw,72px);
+    line-height:.95; letter-spacing:-.02em; text-wrap:balance;
+  }
+  h2{
+    font-family:var(--voice); font-weight:400; font-size:clamp(28px,7.5vw,38px);
+    line-height:1.12; letter-spacing:-.015em; text-wrap:balance;
+  }
+  p{font-family:var(--voice); font-size:19px; line-height:1.62; color:var(--ink)}
+  p.sub{color:var(--soft); font-size:17.5px}
+  b{font-weight:400; color:var(--peach)}
+  .kr{font-family:var(--ui); font-weight:600; white-space:nowrap; word-break:keep-all}
+
+  ul.deal{list-style:none; display:flex; flex-direction:column; gap:14px}
+  ul.deal li{
+    font-family:var(--voice); font-size:18px; line-height:1.5;
+    padding-left:26px; position:relative; color:var(--ink);
+  }
+  ul.deal li::before{
+    content:''; position:absolute; left:2px; top:12px;
+    width:9px; height:9px; border-radius:50%; background:var(--peach);
+  }
+  .panel{
+    background:var(--raise); border:1px solid var(--edge); border-radius:18px;
+    padding:20px 18px; box-shadow:0 1px 0 var(--shade);
+  }
+  .label{
+    font-family:var(--num); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--faint); margin-bottom:14px;
+  }
+
+  /* ---------- decks: one step per screen, swipe sideways ---------- */
+  .card.deck{padding:0; display:block; overflow:hidden}
+  .track{
+    height:100vh; height:100dvh; display:flex;
+    overflow-x:scroll; overflow-y:hidden;
+    scroll-snap-type:x mandatory; scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .track::-webkit-scrollbar{display:none}
+  .slide{
+    /* min-width:0 is load bearing. A flex item defaults to min-width:auto, so a
+       single long .eq inside will stretch the slide past the viewport, break the
+       horizontal snap and clip every other line on it. */
+    flex:0 0 100%; min-width:0; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; align-items:center; justify-content:center;
+    padding:56px 20px 146px;
+  }
+  .slide .in{gap:15px}
+
+  .qhead{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(15px,4.1vw,17px); color:var(--faint);
+    padding:11px 14px; border:1px solid var(--edge); border-radius:12px;
+    background:var(--raise); min-width:0;
+    /* The pinned question WRAPS rather than scrolls. It is there so she never has
+       to remember what she is solving, and a reminder you have to drag sideways to
+       read is not a reminder. .eq below still scrolls, because breaking an
+       expression across lines mid-term is worse than scrolling it. */
+    white-space:normal; overflow-wrap:break-word;
+  }
+  .qhead .x,.qhead .n,.qhead .p{opacity:.85}
+
+  .eq{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(22px,6.6vw,32px); line-height:1.55; letter-spacing:.01em;
+    /* Wraps rather than scrolls. These sit inside a deck that snaps horizontally,
+       so dragging an equation sideways to read the end advances the card instead:
+       the overflowed part was unreachable, not merely awkward. */
+    white-space:normal; overflow-wrap:break-word; min-width:0; padding:4px 0;
+  }
+  .eq.small{font-size:clamp(19px,5.4vw,24px)}
+
+  .say{font-family:var(--voice); font-size:clamp(19px,5.2vw,22px); line-height:1.5; color:var(--ink)}
+  .say.quietly{color:var(--soft); font-size:clamp(17px,4.6vw,19px)}
+
+  .aha{border-left:2px solid var(--butter); padding:4px 0 4px 16px}
+  .aha em{
+    display:block; margin-bottom:7px; font-style:normal;
+    font-family:var(--num); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--butter);
+  }
+  .aha span.body{font-family:var(--voice); font-size:clamp(18px,4.9vw,20px); line-height:1.5; color:var(--ink); display:block}
+  .aha strong{font-weight:400; color:var(--peach)}
+
+  .work{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(17px,4.8vw,21px); line-height:1.6; color:var(--ink);
+  }
+  .work b{color:var(--peach); font-weight:700}
+  .verdict{font-family:var(--voice); font-size:clamp(19px,5.2vw,21px); line-height:1.5; color:var(--soft)}
+  .verdict.yes{color:var(--mint)}
+
+  /* ---- line art. a picture where a picture explains it better ---- */
+  figure{margin:0; display:flex; flex-direction:column; gap:11px; align-items:center; width:100%}
+  figure svg{width:100%; max-width:318px; margin:0 auto; height:auto; color:var(--soft); display:block}
+  figcaption{
+    font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--faint); text-align:center;
+  }
+  svg text{fill:currentColor; font-family:var(--num)}
+  /* A bare element rule beats a presentation attribute, so every fill="..."
+     on an SVG label was being discarded. This restores it for labels that
+     sit ON a solid coloured shape, where the inherited grey measures 1.33:1.
+     Deliberately NOT applied by lifting the whole rule: the pale tinted
+     discs elsewhere read WORSE in white, which was proved by trying it. */
+  svg text[fill="#fff"]{fill:#fff}
+  .stroke{fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+  .curve{fill:none; stroke:var(--soft); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+  .tan{fill:none; stroke:var(--peach); stroke-width:2.4; stroke-linecap:round}
+  .tan.flat{stroke:var(--mint)}
+  .axis{fill:none; stroke:currentColor; stroke-width:1; opacity:.34}
+  .dot{fill:var(--raise); stroke:var(--soft); stroke-width:2.2}
+  .dot.pick{fill:var(--peach); stroke:var(--peach)}
+  .dot.pick.yes{fill:var(--mint); stroke:var(--mint)}
+  .drop{stroke:var(--peach); stroke-width:1.4; stroke-dasharray:3 3; opacity:.65}
+  .drop.yes{stroke:var(--mint)}
+
+  /* ---- experiments: she drags it, the maths answers back ---- */
+  .lab{
+    width:100%; display:flex; flex-direction:column; gap:10px;
+    border:1px solid var(--edge); border-radius:16px; padding:13px 14px 15px;
+    background:var(--raise);
+  }
+  .labhead{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+  .labk{
+    font-family:var(--num); font-size:10px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .labv{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:21px; color:var(--peach);
+  }
+  .lab input[type=range]{
+    -webkit-appearance:none; appearance:none; width:100%; height:30px;
+    background:transparent; cursor:grab; touch-action:none;
+  }
+  .lab input[type=range]:active{cursor:grabbing}
+  .lab input[type=range]::-webkit-slider-runnable-track{
+    height:5px; border-radius:3px; background:var(--edge);
+  }
+  .lab input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:26px; height:26px; margin-top:-11px;
+    border-radius:50%; background:var(--peach); border:3px solid var(--ground);
+    box-shadow:0 2px 8px var(--shade);
+  }
+  .lab input[type=range]::-moz-range-track{height:5px; border-radius:3px; background:var(--edge)}
+  .lab input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:var(--peach);
+    border:3px solid var(--ground);
+  }
+  .lab input[type=range]:focus-visible{outline:2px solid var(--peach); outline-offset:4px}
+  .lab svg{width:100%; max-width:292px; margin:0 auto; height:auto; display:block; color:var(--soft)}
+  .labout{
+    display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;
+    font-family:var(--num); font-size:12px; color:var(--faint);
+  }
+  .labout b{
+    font-size:20px; color:var(--mint); font-weight:400;
+    font-variant-numeric:tabular-nums;
+  }
+  .labnote{
+    font-family:var(--voice); font-size:16.5px; line-height:1.4;
+    color:var(--soft); min-height:2em;
+  }
+  .labnote.aha{color:var(--mint)}
+
+  /* ---- breathers: cards with no maths in them at all ---- */
+  .card.rest .in{gap:22px}
+  .rest .say{font-size:clamp(21px,5.8vw,25px); line-height:1.45}
+  .rest .eyebrow{color:var(--butter)}
+  .quiet-note{
+    font-family:var(--voice); font-size:clamp(17px,4.6vw,19px);
+    line-height:1.5; color:var(--soft);
+  }
+
+  /* a small look ahead, so a topic never arrives cold */
+  .tease{
+    align-self:flex-start;
+    font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--butter); border:1px dashed var(--edge); border-radius:999px;
+    padding:9px 15px;
+  }
+  .card.setup .eyebrow{color:var(--peach)}
+
+  /* a genuine check in. she answers, and gets answered back. */
+  .checkin{display:flex; flex-direction:column; gap:14px; width:100%}
+  .chips{display:flex; flex-wrap:wrap; gap:9px}
+  .chip{
+    font-family:var(--ui); font-size:15px;
+    background:var(--raise2); color:var(--ink);
+    border:1px solid var(--edge); border-radius:999px;
+    padding:12px 17px; cursor:pointer;
+    transition:border-color .18s ease, background .18s ease, transform .14s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .chip:hover{border-color:var(--peach)}
+  .chip:active{transform:scale(.96)}
+  .chip:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .chip.picked{border-color:var(--peach); background:var(--glow)}
+  .creply{
+    font-family:var(--voice); font-size:clamp(18px,4.9vw,20px); line-height:1.5;
+    color:var(--mint); min-height:3.4em;
+  }
+
+  /* spot the mistake: she is the one who catches it */
+  .spot{display:flex; flex-direction:column; gap:7px; width:100%}
+  .sline{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(15px,4.2vw,18px); text-align:left;
+    background:var(--raise2); color:var(--ink);
+    border:1px solid var(--edge); border-radius:11px;
+    padding:13px 14px; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .sline:hover{border-color:var(--peach)}
+  .sline:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
+  .sline.caught{border-color:var(--mint); background:var(--glow)}
+  /* a tapped line that is NOT the mistake still needs marking, otherwise the
+     note underneath is not anchored to anything she can see. */
+  .sline.touched{border-color:var(--faint); background:var(--raise)}
+
+  /* Slicing animation: the one picture that explains what integrating IS.
+     Four densities cross-fading, so you watch the slices get thin. */
+  .slice{fill:var(--peach); fill-opacity:.20; stroke:var(--peach); stroke-width:.7; stroke-opacity:.55}
+  .sl1,.sl2,.sl3,.sl4{animation-duration:10s; animation-iteration-count:infinite; animation-timing-function:ease-in-out}
+  .sl1{animation-name:slA} .sl2{animation-name:slB} .sl3{animation-name:slC} .sl4{animation-name:slD}
+  @keyframes slA{0%,17%{opacity:1} 25%,100%{opacity:0}}
+  @keyframes slB{0%,17%{opacity:0} 25%,42%{opacity:1} 50%,100%{opacity:0}}
+  @keyframes slC{0%,42%{opacity:0} 50%,67%{opacity:1} 75%,100%{opacity:0}}
+  @keyframes slD{0%,67%{opacity:0} 75%,100%{opacity:1}}
+  .slcount{font-size:10px; fill:var(--peach)}
+  @media (prefers-reduced-motion:reduce){
+    .sl1,.sl2,.sl3{display:none}
+    .sl4{animation:none; opacity:1}
+  }
+
+  /* "it is printed on your sheet" -- the single most useful habit in the module */
+  .fsheet{
+    border:1px dashed var(--edge); border-radius:12px; padding:15px 16px;
+    background:var(--raise2); display:flex; flex-direction:column; gap:11px; width:100%;
+  }
+  .fsheet .tag{
+    font-family:var(--num); font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--faint);
+  }
+  .fsheet .ln{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14px,3.9vw,17px); color:var(--faint); line-height:1.5;
+  }
+  .fsheet .ln.hot{
+    color:var(--ink); background:var(--glow); border-radius:7px;
+    padding:9px 10px; margin:-3px -4px;
+  }
+
+  /* Tap a box, the matching part of the formula lights up. Makes the mapping
+     something she does with her thumb rather than something I assert. */
+  .linkwrap{display:flex; flex-direction:column; gap:14px; width:100%}
+  .linkline{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(19px,5.4vw,24px); line-height:1.9;
+    white-space:nowrap; overflow-x:auto; min-width:0;
+  }
+  .linkline.faded{font-size:clamp(16px,4.6vw,20px); color:var(--faint)}
+  .linktag{
+    font-family:var(--num); font-size:9.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint); display:block; margin-bottom:2px;
+  }
+  .tok{
+    display:inline-block; padding:7px 8px; margin:0 1px; min-width:30px; text-align:center;
+    border-radius:8px; cursor:pointer; background:var(--raise2);
+    border-bottom:2px dotted var(--faint);
+    transition:background .22s ease, box-shadow .22s ease, color .22s ease, transform .14s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tok:active{transform:scale(.94)}
+  .tok.lit{background:var(--glow); box-shadow:0 0 0 1.6px var(--peach); color:var(--ink)}
+  .tok:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
+  .linknote{
+    font-family:var(--voice); font-size:clamp(16px,4.4vw,18px); line-height:1.45;
+    color:var(--soft); min-height:2.2em;
+  }
+  .linknote.hint{color:var(--faint); font-family:var(--num); font-size:12px; letter-spacing:.1em; text-transform:uppercase}
+
+  /* park every given number in a labelled box before touching a formula */
+  .boxes{display:flex; gap:9px; flex-wrap:wrap}
+  .box{
+    border:1px solid var(--edge); border-radius:11px; padding:9px 14px;
+    background:var(--raise2); text-align:center; min-width:64px;
+    cursor:pointer; font:inherit;
+    transition:border-color .2s ease, background .2s ease, transform .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .box:active{transform:scale(.97)}
+  .box.lit{border-color:var(--peach); background:var(--glow)}
+  .box:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .box .k{
+    display:block; font-family:var(--num); font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .box .v{
+    display:block; font-family:var(--num); font-size:22px; color:var(--butter);
+    margin-top:3px; font-variant-numeric:tabular-nums;
+  }
+
+  sup{font-size:.64em; vertical-align:super; line-height:0}
+  .x{color:var(--peach); font-weight:700}
+  .n{color:var(--butter)}
+  .p{color:var(--mint)}
+  .o{color:var(--faint)}
+  .key{
+    display:flex; gap:18px; flex-wrap:wrap;
+    font-family:var(--num); font-size:12px; letter-spacing:.04em; color:var(--faint);
+  }
+  .key i{font-style:normal}
+
+  .opts{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+  .opt{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14.5px,3.95vw,17px); white-space:nowrap;
+    background:var(--raise2); color:var(--ink);
+    border:1px solid var(--edge); border-radius:14px;
+    padding:16px 8px; cursor:pointer; text-align:center;
+    transition:transform .16s ease, border-color .16s ease, background .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .opt:hover{border-color:var(--peach)}
+  .opt:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .opt:active{transform:scale(.97)}
+  .opt.picked{border-color:var(--peach); background:var(--glow)}
+  .opt.isit{border-color:var(--mint); box-shadow:inset 0 0 0 1px var(--mint)}
+
+  .deckbar{
+    position:absolute; left:0; right:0; bottom:62px; z-index:20;
+    display:flex; flex-direction:column; align-items:center; gap:15px;
+    padding:0 22px env(safe-area-inset-bottom,0px); pointer-events:none;
+  }
+  .deckbar > *{pointer-events:auto}
+  .dots{display:flex; gap:7px; align-items:center}
+  .dots i{
+    width:6px; height:6px; border-radius:50%; background:var(--edge);
+    transition:all .3s ease;
+  }
+  .dots i.on{background:var(--peach); width:20px; border-radius:3px}
+  .go{
+    width:100%; max-width:520px;
+    background:var(--peach); color:var(--ground); border:0; border-radius:14px;
+    font-family:var(--ui); font-weight:600; font-size:15.5px;
+    padding:16px 18px; cursor:pointer;
+    transition:transform .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .go:active{transform:scale(.985)}
+  .go:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
+  .go.quiet{
+    background:transparent; color:var(--faint);
+    border:1px dashed var(--edge); font-weight:400;
+    font-family:var(--num); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    padding:14px 18px; cursor:default;
+  }
+  .go.quiet:active{transform:none}
+
+  .rail{
+    position:fixed; right:9px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:6px; z-index:40; pointer-events:none;
+  }
+  .rail i{width:4px; height:4px; border-radius:50%; background:var(--edge); transition:all .3s ease}
+  .rail i.on{background:var(--peach); height:16px; border-radius:3px}
+
+  .next{
+    position:fixed; left:14px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:50;
+    width:46px; height:46px; border-radius:50%;
+    background:var(--raise); border:1px solid var(--edge); color:var(--soft);
+    display:grid; place-items:center; cursor:pointer;
+    box-shadow:0 6px 22px var(--shade); transition:color .2s ease, border-color .2s ease;
+  }
+  .next:hover{color:var(--peach); border-color:var(--peach)}
+  .next:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .next[hidden]{display:none}
+  .next svg{width:19px; height:19px; display:block}
+
+  .hard{
+    position:fixed; right:14px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:50;
+    background:var(--raise); color:var(--soft);
+    border:1px solid var(--edge); border-radius:999px;
+    font-family:var(--ui); font-size:13px; padding:11px 16px; cursor:pointer;
+    box-shadow:0 6px 22px var(--shade);
+  }
+  .hard:hover{color:var(--peach); border-color:var(--peach)}
+  .hard:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+
+  .sheet{
+    position:fixed; inset:auto 0 0 0; z-index:60;
+    background:var(--raise); border-top:1px solid var(--edge);
+    border-radius:22px 22px 0 0; padding:26px 22px calc(30px + env(safe-area-inset-bottom,0px));
+    transform:translateY(101%); transition:transform .34s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 -10px 40px var(--shade);
+  }
+  .sheet.up{transform:none}
+  .sheet .wrap{max-width:520px; margin:0 auto; display:flex; flex-direction:column; gap:14px}
+  .sheet p{font-size:18px}
+  .sheet button{
+    align-self:flex-start; background:var(--peach); color:var(--ground);
+    border:0; border-radius:999px; font-family:var(--ui); font-weight:600; font-size:15px;
+    padding:12px 22px; cursor:pointer;
+  }
+  .sheet button:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
+
+  /* Two quiet buttons in the top corners. No labels: a star is a star and a
+     list is a list, and she will tap what looks tappable. */
+  .topbtn{
+    position:fixed; top:13px; z-index:55;
+    width:41px; height:41px; border-radius:50%;
+    background:var(--raise); border:1px solid var(--edge); color:var(--faint);
+    display:grid; place-items:center; cursor:pointer;
+    box-shadow:0 4px 16px var(--shade);
+    transition:color .2s ease, border-color .2s ease, transform .16s ease;
+  }
+  .topbtn:hover{color:var(--peach); border-color:var(--peach)}
+  .topbtn:active{transform:scale(.94)}
+  .topbtn:focus-visible{outline:2px solid var(--peach); outline-offset:3px}
+  .topbtn svg{width:18px; height:18px; display:block}
+  #menuBtn{left:13px}
+  #starBtn{right:13px}
+  #starBtn.on{color:var(--butter); border-color:var(--butter)}
+  #starBtn.on svg{fill:var(--butter)}
+
+  .scrim{
+    position:fixed; inset:0; z-index:59; background:rgba(0,0,0,.45);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .scrim.on{opacity:1; pointer-events:auto}
+
+  .menu{
+    position:fixed; inset:auto 0 0 0; z-index:66;
+    background:var(--raise); border-top:1px solid var(--edge);
+    border-radius:22px 22px 0 0; padding:16px 0 calc(20px + env(safe-area-inset-bottom,0px));
+    transform:translateY(101%); transition:transform .34s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 -10px 40px var(--shade);
+    max-height:78vh; max-height:78dvh; display:flex; flex-direction:column;
+  }
+  .menu.up{transform:none}
+  .mhead{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 12px; flex:0 0 auto;
+  }
+  .mlist{overflow-y:auto; padding:0 12px 4px; display:flex; flex-direction:column; gap:3px}
+  .mgroup{
+    font-family:var(--num); font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--faint); padding:12px 14px 5px;
+  }
+  .mitem{
+    display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+    background:none; border:0; border-radius:12px; padding:12px;
+    color:var(--soft); font-family:var(--voice); font-size:16px; line-height:1.35;
+    cursor:pointer;
+  }
+  .mitem:hover{background:var(--raise2); color:var(--ink)}
+  .mitem.now{background:var(--glow); color:var(--ink)}
+  .mitem:focus-visible{outline:2px solid var(--peach); outline-offset:-2px}
+  .mitem .mnum{
+    font-family:var(--num); font-size:11px; color:var(--faint);
+    min-width:18px; text-align:right; flex:0 0 auto;
+  }
+  .mitem .mtxt{flex:1 1 auto}
+  .mitem .mstar{color:var(--butter); flex:0 0 auto; font-size:13px}
+  .mclose{
+    background:none; border:1px solid var(--edge); border-radius:999px;
+    color:var(--soft); font-family:var(--ui); font-size:13px;
+    padding:7px 15px; cursor:pointer;
+  }
+
+  .toast{
+    position:fixed; top:14px; left:50%; z-index:70;
+    transform:translateX(-50%) translateY(-160%);
+    display:flex; align-items:center; gap:11px;
+    background:var(--raise); border:1px solid var(--edge); border-radius:999px;
+    padding:8px 9px 8px 17px; box-shadow:0 8px 28px var(--shade);
+    font-family:var(--ui); font-size:13px; color:var(--soft);
+    max-width:calc(100% - 26px);
+    transition:transform .45s cubic-bezier(.2,.8,.3,1);
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast button{
+    background:var(--peach); color:var(--ground); border:0; border-radius:999px;
+    font:inherit; font-weight:600; padding:7px 15px; cursor:pointer; white-space:nowrap;
+  }
+  .toast button:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+
+  .hint{
+    position:absolute; left:0; right:0; bottom:34px; text-align:center;
+    font-family:var(--num); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--faint); animation:bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:1}}
+  .t-touch{display:none}
+  @media (pointer:coarse){ .t-mouse{display:none} .t-touch{display:inline} }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s !important; transition-duration:.001s !important}
+    .card .rise{opacity:1; transform:none}
+    .track{scroll-behavior:auto}
+  }
+
+  /* ---- matching device ---- */
+  .matchwrap{display:flex; flex-direction:column; gap:9px}
+  .mrow{display:flex; gap:8px; align-items:stretch}
+  .mcol{display:flex; flex-direction:column; gap:8px; flex:1 1 0; min-width:0}
+  .mL,.mR{
+    font-family:var(--ui); font-size:clamp(13px,3.5vw,15px); text-align:left;
+    background:var(--raise2); color:var(--ink); border:1px solid var(--edge);
+    border-radius:11px; padding:11px 12px; cursor:pointer; min-height:44px;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mR{font-family:var(--num); font-variant-numeric:tabular-nums}
+  .mL.sel{border-color:var(--peach); background:var(--glow)}
+  .mL.done,.mR.done{border-color:var(--mint); background:var(--raise); color:var(--faint)}
+  .mL:disabled,.mR:disabled{cursor:default}
+
+  /* ---- select-all device ---- */
+  .pickall{display:flex; flex-direction:column; gap:8px}
+  .pk{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14px,3.9vw,16px); text-align:left;
+    background:var(--raise2); color:var(--ink); border:1px solid var(--edge);
+    border-radius:11px; padding:12px 13px; cursor:pointer; min-height:46px;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .pk:hover{border-color:var(--peach)}
+  .pk.on{border-color:var(--mint); background:var(--glow)}
+  /* biology options are English sentences rather than equations, so they get
+     the reading font instead of the tabular one. */
+  .pk.prose{font-family:var(--ui); font-size:clamp(13px,3.6vw,15px); line-height:1.45}
+  .pk.off{border-color:var(--faint); background:var(--raise)}
+
+  
+  /* ---- real fractions ---- */
+  .frac{
+    display:inline-flex; flex-direction:column; align-items:center;
+    vertical-align:middle; margin:0 .18em; line-height:1.08;
+    font-size:.86em;
+  }
+  .frac > span:first-child{border-bottom:1.6px solid currentColor; padding:0 .3em 1px}
+  .frac > span:last-child{padding:1px .3em 0}
+  .frac sup, .frac sub{font-size:.72em}
+
+  
+  /* ---- scenes: the analogies, drawn ---- */
+  .scene{position:relative}
+  .playbtn{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:62px; height:62px; border-radius:50%; border:none; cursor:pointer;
+    background:var(--peach); color:#fff; display:flex; align-items:center;
+    justify-content:center; box-shadow:0 6px 20px rgba(42,31,46,.22);
+    -webkit-tap-highlight-color:transparent; z-index:2;
+  }
+  .playbtn svg{width:26px; height:26px; margin-left:3px}
+  .playbtn.gone{display:none}
+  .scene .anim{animation-play-state:paused !important}
+  .scene.playing .anim{animation-play-state:running !important}
+  .replay{
+    display:none; margin:2px auto 0; border:1px solid var(--edge); background:var(--raise);
+    color:var(--soft); font-family:var(--num); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; cursor:pointer; padding:7px 16px; border-radius:999px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .scene.playing .replay{display:block}
+  .scene{display:flex; flex-direction:column}
+
+  @keyframes drive   {from{transform:translateX(0)}      to{transform:translateX(150px)}}
+  @keyframes needle  {0%{transform:rotate(-62deg)} 45%{transform:rotate(38deg)}
+                      70%{transform:rotate(-10deg)} 100%{transform:rotate(52deg)}}
+  @keyframes slide   {from{transform:translateX(0)}      to{transform:translateX(196px)}}
+  @keyframes fadein  {from{opacity:0}                    to{opacity:1}}
+  @keyframes grow    {from{transform:scaleY(0)}          to{transform:scaleY(1)}}
+
+  
+  /* subject headings in the menu: unmissable, not a small word */
+  .mgroup.subj{
+    display:flex; align-items:center; gap:9px;
+    font-size:13px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--peach); border-top:1px solid var(--edge);
+    margin-top:14px; padding-top:15px;
+  }
+  .mgroup.subj:first-child{border-top:none; margin-top:0}
+  .mico{font-size:19px; line-height:1}
+
+  
+  /* The toast was 195px wide with a 105px button inside it, so the greeting
+     wrapped to three lines. It is the first thing she sees on every return. */
+  .toast{max-width:calc(100vw - 28px); flex-wrap:wrap; row-gap:6px}
+  .toast > span{white-space:nowrap}
+  #restartBtn{flex:0 0 auto}
+
+  
+  /* The opening hint sat underneath the escape button in the bottom-right. */
+  /* The hint sat under the down-arrow and the escape button at every width
+     tested. It moves above them instead of trying to share the row. */
+  .hint{padding-right:0; bottom:auto; top:auto}
+  .card > .hint{position:absolute; left:0; right:0; bottom:184px; text-align:center}
+
+  
+  /* A sentence was being cut mid-word rather than wrapping. */
+  .linkline{white-space:normal; overflow-wrap:break-word}
+
+  
+  /* Subject switcher, top of the menu on every page. */
+  .subjsw{display:flex; gap:8px; margin:0 0 4px}
+  .subjsw a{
+    flex:1 1 0; text-align:center; text-decoration:none;
+    font-family:var(--num); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--soft); background:var(--raise2); border:1px solid var(--edge);
+    border-radius:999px; padding:11px 4px; -webkit-tap-highlight-color:transparent;
+  }
+  .subjsw a.here{background:var(--peach); border-color:var(--peach); color:#fff}
+  .subjsw .ic{font-size:15px; display:block; line-height:1.5}
+
+  </style>
+</head>
+<body>
+
+
+<div class="feed" id="feed">
+
+  <section class="card" data-sub="chemistry" data-id="p:chem-open">
+    <div class="in">
+      <div class="eyebrow rise">third one</div>
+      <h1 class="rise">Chemistry.</h1>
+      <p class="rise">This one sits between the other two. It has routines to run like the maths
+        paper, and explain marks like the biology one.</p>
+      <p class="rise sub">Nearly every calculation in it goes through moles, so that is where
+        this starts. Get that one relationship solid and a surprising amount of the paper opens up.</p>
+    </div>
+  </section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c1" data-mcq="c1" data-easy="Moles is mass divided by molar mass. Count the atoms carefully, and remember a number outside a bracket multiplies everything inside it."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c2" data-mcq="c2" data-easy="Concentration is moles per litre. Work out the moles, convert millilitres to litres, then divide. The unit conversion is where the marks go."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c3" data-mcq="c3" data-easy="Balance carbon first, then hydrogen, and leave oxygen until last because it appears in two places on the right."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c4" data-mcq="c4" data-easy="Work out what each reactant could produce on its own using the ratio, then take the smaller answer. Never compare the raw amounts."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c5" data-mcq="c5" data-easy="Count the bonds and the lone pairs around the central atom. Those two numbers decide the shape. Lone pairs take up space even though you cannot see them."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c6" data-mcq="c6" data-easy="Metal with non-metal is ionic. Two identical atoms is non-polar covalent. Two different non-metals is polar covalent."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c7" data-mcq="c7" data-easy="Hydrogen bonding needs H attached directly to N, O or F. It is the strongest force BETWEEN MOLECULES, so among molecular compounds it gives the highest boiling point. Ionic solids are a different case and boil higher still."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c8" data-mcq="c8" data-easy="Add the given reactions so the unwanted things cancel, then add their energies the same way. Reverse a reaction and you flip the sign of its energy."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c9" data-mcq="c9" data-easy="An element on its own is zero. Oxygen is usually -2 and hydrogen +1. Everything must add up to the overall charge, so treat it as a small equation."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c10" data-mcq="c10" data-easy="The more positive reduction potential is reduced, and that is the cathode. The other one reverses and is the anode. Cell voltage is cathode minus anode."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c11" data-mcq="c11" data-easy="Equilibrium is when the forward and backward rates become equal, so the amounts stop changing. The reaction has not stopped. Both directions are still running."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c12" data-mcq="c12" data-easy="An acid gives a proton, a base takes one. A conjugate pair differs by exactly one H and one charge. Water can be either, depending on its partner."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c13" data-mcq="c13" data-easy="Entropy goes solid, liquid, gas. Count the gas molecules on each side: more gas means a positive change, less gas means negative."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c14" data-mcq="c14" data-easy="A reaction can have a negative entropy change and still be spontaneous, if it gives out enough heat. You need both terms, which is what free energy is."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c15" data-mcq="c15" data-easy="A collision only works if it has enough energy AND the right orientation. Heat, concentration and surface area change how often or how hard. A catalyst lowers the barrier instead."></section>
+
+</div>
+
+<div class="rail" id="rail" aria-hidden="true"></div>
+<button class="next" id="nextBtn" aria-label="Next topic">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<button class="hard" id="hardBtn">&#45320;&#47924; &#50612;&#47140;&#50892;</button>
+
+<button class="topbtn" id="menuBtn" type="button" aria-label="Jump to a card">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <path d="M4 7h16M4 12h16M4 17h10"></path></svg>
+</button>
+<button class="topbtn" id="starBtn" type="button" aria-label="Save this card">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 3.6l2.6 5.3 5.8.85-4.2 4.1 1 5.75L12 16.9l-5.2 2.7 1-5.75-4.2-4.1 5.8-.85z"></path></svg>
+</button>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="menu" id="menu" role="dialog" aria-label="Jump to a card">
+  <div class="mhead">
+    <span class="label" style="margin:0">where to?</span>
+    <button class="mclose" id="menuClose" type="button">close</button>
+  </div>
+  <div class="subjsw"><a href="index.html"><span class="ic">&#128290;</span>Maths</a><a href="bio.html"><span class="ic">&#129440;</span>Biology</a><a href="chem.html" class="here"><span class="ic">&#129514;</span>Chemistry</a></div><div class="mlist" id="mlist"></div>
+</div>
+
+<div class="toast" id="toast"><span>you came back &#128155;</span><button id="restartBtn" type="button">from the top</button></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-label="A gentler version">
+  <div class="wrap">
+    <div class="label">the shorter version</div>
+    <p id="sheetText"></p>
+    <button id="sheetClose">okay</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var X='<span class="x">', N='<span class="n">', O='<span class="o">', E='</span>';
+  function pw(p){ return '<sup class="p">'+p+'</sup>'; }
+
+  /* ---------------- illustrations ----------------
+     An equation is a see-saw. A turning point is the flat bit of a curve.
+     Both are pictures, and neither survives being turned into a paragraph. */
+
+
+  /* A fraction you can read at a glance rather than decode. */
+  function fr(a, b){
+    return '<span class="frac"><span>' + a + '</span><span>' + b + '</span></span>';
+  }
+
+
+  /* ---------------- scenes ----------------
+     Every analogy in the text gets a picture. A metaphor she has to imagine is
+     a metaphor doing half its job. ---------------- */
+
+  var PLAY = '<button type="button" class="playbtn" aria-label="play">' +
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+    '<path d="M8 5v14l11-7z"/></svg></button>';
+
+  function scene(svg, cap, animated){
+    return '<figure><div class="scene' + (animated ? ' canplay' : '') + '">' + svg +
+      (animated ? PLAY + '<button type="button" class="replay">again</button>' : '') +
+      '</div><figcaption>' + cap + '</figcaption></figure>';
+  }
+
+  document.addEventListener("click", function(e){
+    var p = e.target.closest && e.target.closest(".playbtn");
+    if(p){
+      var sc = p.closest(".scene");
+      sc.classList.add("playing");
+      p.classList.add("gone");
+      return;
+    }
+    var r = e.target.closest && e.target.closest(".replay");
+    if(r){
+      var sc2 = r.closest(".scene");
+      sc2.classList.remove("playing");
+      /* force the animations to restart from the beginning */
+      void sc2.offsetWidth;
+      sc2.classList.add("playing");
+    }
+  });
+
+  function person(x, y, k){
+    k = k || 1;
+    return '<g class="stroke" transform="translate(' + x + ' ' + y + ') scale(' + k + ')">' +
+      '<circle cx="0" cy="-11" r="4.2" fill="var(--raise)"/>' +
+      '<line x1="0" y1="-6.6" x2="0" y2="4"/>' +
+      '<line x1="0" y1="-3" x2="-5" y2="1"/><line x1="0" y1="-3" x2="5" y2="1"/>' +
+      '<line x1="0" y1="4" x2="-4.4" y2="11"/><line x1="0" y1="4" x2="4.4" y2="11"/>' +
+      '</g>';
+  }
+
+  /* the Grab: a car with two people in it and a speedometer underneath */
+  function sceneGrab(){
+    var car =
+      '<g class="anim" style="animation:drive 4.2s ease-in-out forwards">' +
+        '<path d="M40 62 L52 44 H92 L104 62 Z" class="stroke" fill="var(--raise)"/>' +
+        '<rect x="30" y="62" width="86" height="20" rx="7" class="stroke" fill="var(--raise2)"/>' +
+        '<circle cx="48" cy="84" r="7.5" class="stroke" fill="var(--raise)"/>' +
+        '<circle cx="98" cy="84" r="7.5" class="stroke" fill="var(--raise)"/>' +
+        person(62, 46, .62) + person(82, 46, .62) +
+      '</g>';
+    return scene(
+      '<svg viewBox="0 0 300 190" role="img" aria-label="A car driving along a road with a speedometer below it">' +
+        '<line x1="8" y1="93" x2="292" y2="93" class="axis"/>' +
+        '<text x="8" y="20" font-size="10" opacity=".55">TWENTY MINUTES ACROSS TOWN</text>' +
+        car +
+        '<g transform="translate(150 152)">' +
+          '<path d="M-46 0 A46 46 0 0 1 46 0" class="stroke"/>' +
+          '<line x1="-46" y1="0" x2="46" y2="0" class="axis"/>' +
+          '<g class="anim" style="animation:needle 4.2s ease-in-out forwards; transform-origin:0 0">' +
+            '<line x1="0" y1="0" x2="0" y2="-38" class="tan"/>' +
+          '</g>' +
+          '<circle cx="0" cy="0" r="4" class="dot pick"/>' +
+          '<text x="0" y="20" text-anchor="middle" font-size="11">km/h</text>' +
+        '</g>' +
+      '</svg>',
+      'the whole trip, and this second', true);
+  }
+
+  /* powers as floors of a lift */
+  function sceneLift(){
+    var rows = [['x' + pw('3'), 'x times x times x', 34],
+                ['x' + pw('2'), 'x times x', 62],
+                ['x' + pw('1'), 'x', 90],
+                ['x' + pw('0'), '1', 118],
+                ['x' + pw('-1'), '1 over x', 146]];
+    var g = '';
+    rows.forEach(function(r, i){
+      var base = (i === 3), down = (i === 4);
+      g += '<line x1="46" y1="' + (r[2] + 8) + '" x2="266" y2="' + (r[2] + 8) + '" class="axis"/>' +
+           '<text x="58" y="' + r[2] + '" font-size="15" fill="' +
+             (down ? 'var(--peach)' : base ? 'var(--mint)' : 'currentColor') + '">' + r[0] + '</text>' +
+           '<text x="140" y="' + r[2] + '" font-size="12" opacity=".65">' + r[1] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 172" role="img" aria-label="A lift shaft with the powers of x on each floor">' +
+        '<rect x="34" y="16" width="244" height="142" rx="10" class="stroke" fill="none"/>' +
+        g +
+        '<text x="42" y="' + 168 + '" font-size="10" opacity=".5">BASEMENT</text>' +
+      '</svg>',
+      'the little number is the floor');
+  }
+
+  /* the three shapes every FOD question is asking you to tell apart */
+  function sceneFOD(){
+    function panel(dx, path, title, sub, col){
+      return '<g transform="translate(' + dx + ' 0)">' +
+        '<line x1="6" y1="86" x2="86" y2="86" class="axis"/>' +
+        '<line x1="6" y1="16" x2="6" y2="86" class="axis"/>' +
+        '<path d="' + path + '" fill="none" stroke="' + col + '" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<text x="46" y="104" text-anchor="middle" font-size="11">' + title + '</text>' +
+        '<text x="46" y="118" text-anchor="middle" font-size="9.5" opacity=".6">' + sub + '</text>' +
+        '</g>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 128" role="img" aria-label="Three graphs: decay falling to nothing, growth climbing forever, and cooling levelling off above zero">' +
+        panel(2,   'M8 22 C30 66, 52 82, 84 84', 'decay', 'falls to nothing', 'var(--peach)') +
+        panel(104, 'M8 84 C40 82, 62 60, 84 20', 'growth', 'climbs forever', 'var(--butter)') +
+        panel(206, 'M8 22 C30 58, 46 64, 84 65', 'cooling', 'levels off', 'var(--mint)') +
+        '<line x1="212" y1="65" x2="292" y2="65" stroke="var(--mint)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>' +
+      '</svg>',
+      'where does it end up');
+  }
+
+  /* competitive against non-competitive inhibition */
+  function sceneInhib(){
+    function ax(dx, ttl){
+      return '<g transform="translate(' + dx + ' 0)">' +
+        '<line x1="14" y1="92" x2="126" y2="92" class="axis"/>' +
+        '<line x1="14" y1="14" x2="14" y2="92" class="axis"/>' +
+        '<text x="70" y="112" text-anchor="middle" font-size="11">' + ttl + '</text>' +
+        '<text x="70" y="125" text-anchor="middle" font-size="9" opacity=".55">substrate along the bottom</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 132" role="img" aria-label="Two graphs comparing competitive and non-competitive inhibition">' +
+        ax(0, 'competitive') +
+          '<path d="M14 92 C46 34, 78 26, 126 24" class="curve"/>' +
+          '<path d="M14 92 C60 56, 92 32, 126 26" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="4 3"/>' +
+          '<line x1="14" y1="24" x2="126" y2="24" class="axis"/>' +
+          '<text x="122" y="20" text-anchor="end" font-size="9" fill="var(--mint)">same Vmax</text>' +
+        '</g>' +
+        ax(158, 'non-competitive') +
+          '<path d="M14 92 C46 34, 78 26, 126 24" class="curve"/>' +
+          '<path d="M14 92 C46 58, 78 52, 126 51" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="4 3"/>' +
+          '<line x1="14" y1="51" x2="126" y2="51" class="axis"/>' +
+          '<text x="122" y="47" text-anchor="end" font-size="9" fill="var(--peach)">Vmax drops</text>' +
+        '</g>' +
+      '</svg>',
+      'dashed line is with the inhibitor');
+  }
+
+  /* gel electrophoresis */
+  function sceneGel(){
+    var bands = '';
+    [[0, 30], [1, 62], [2, 104], [3, 150]].forEach(function(b){
+      bands += '<rect x="86" y="' + (34 + b[0] * 22) + '" width="' + (54 - b[0] * 4) +
+               '" height="7" rx="3" fill="var(--soft)" opacity="' + (0.9 - b[0] * 0.13) + '"/>' +
+               '<text x="152" y="' + (41 + b[0] * 22) + '" font-size="9.5" opacity=".6">' +
+                 (b[0] === 0 ? 'biggest, barely moved' : b[0] === 3 ? 'smallest, went furthest' : '') +
+               '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 140" role="img" aria-label="A gel with DNA bands, small fragments travelling further towards the positive electrode">' +
+        '<rect x="70" y="14" width="180" height="112" rx="8" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="82" y="18" width="60" height="9" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<text x="112" y="12" text-anchor="middle" font-size="9" opacity=".6">WELL</text>' +
+        bands +
+        '<text x="34" y="24" font-size="15" fill="var(--soft)">&#8722;</text>' +
+        '<text x="34" y="126" font-size="17" fill="var(--peach)">+</text>' +
+        '<line x1="38" y1="34" x2="38" y2="108" class="axis"/>' +
+        '<polygon points="38,116 34,106 42,106" fill="var(--peach)"/>' +
+        '<text x="18" y="136" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
+      '</svg>',
+      'small ones slip through faster');
+  }
+
+  /* a galvanic cell */
+  function sceneGalv(){
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A galvanic cell with chromium as the anode and nickel as the cathode">' +
+        '<path d="M40 54 H120 V126 H40 Z" class="stroke" fill="var(--raise2)"/>' +
+        '<path d="M180 54 H260 V126 H180 Z" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="74" y="34" width="12" height="74" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<rect x="214" y="34" width="12" height="74" rx="3" class="stroke" fill="var(--raise)"/>' +
+        '<path d="M80 34 V16 H220 V34" class="stroke"/>' +
+        '<rect x="120" y="60" width="60" height="14" rx="6" class="stroke" fill="var(--raise)"/>' +
+        '<text x="150" y="71" text-anchor="middle" font-size="9" opacity=".65">SALT BRIDGE</text>' +
+        '<text x="80" y="124" text-anchor="middle" font-size="11" fill="var(--peach)">Cr</text>' +
+        '<text x="220" y="124" text-anchor="middle" font-size="11" fill="var(--mint)">Ni</text>' +
+        '<text x="80" y="142" text-anchor="middle" font-size="9.5" opacity=".7">anode, gives</text>' +
+        '<text x="220" y="142" text-anchor="middle" font-size="9.5" opacity=".7">cathode, takes</text>' +
+        '<polygon points="166,10 176,17 166,24" fill="var(--peach)"/>' +
+        '<text x="150" y="38" text-anchor="middle" font-size="9.5" fill="var(--peach)">electrons, Cr to Ni</text>' +
+      '</svg>',
+      'they leave the chromium and arrive at the nickel');
+  }
+
+  /* the secretion pathway */
+  function sceneSecrete(){
+    var steps = [['nucleus', 34], ['rough ER', 100], ['Golgi', 166], ['vesicle', 232]];
+    var g = '';
+    steps.forEach(function(st, i){
+      var x = st[1];
+      g += '<circle cx="' + x + '" cy="52" r="21" class="stroke" fill="var(--raise)"/>' +
+           '<text x="' + x + '" y="90" text-anchor="middle" font-size="10">' + st[0] + '</text>';
+      if(i < 3){
+        g += '<line x1="' + (x + 24) + '" y1="52" x2="' + (x + 40) + '" y2="52" class="stroke"/>' +
+             '<polygon points="' + (x + 44) + ',52 ' + (x + 37) + ',48 ' + (x + 37) + ',56 " fill="currentColor"/>';
+      }
+    });
+    return scene(
+      '<svg viewBox="0 0 300 112" role="img" aria-label="The gene read in the nucleus, the protein built and folded at the rough ER, packaged by the Golgi and carried out in a vesicle">' +
+        g +
+        '<line x1="256" y1="18" x2="256" y2="86" class="stroke" stroke-dasharray="4 3"/>' +
+        '<text x="272" y="56" font-size="9.5" opacity=".65" transform="rotate(90 272 56)">OUT</text>' +
+        '<text x="34" y="24" text-anchor="middle" font-size="9" opacity=".55">GENE</text>' +
+      '</svg>',
+      'one road, four stops');
+  }
+
+  /* A=T against G=C */
+  function sceneBases(){
+    function pair(dx, a, b, n, col){
+      var lines = '';
+      for(var i = 0; i < n; i++){
+        lines += '<line x1="' + (dx + 44) + '" y1="' + (40 + i * 9) + '" x2="' + (dx + 84) + '" y2="' + (40 + i * 9) + '" stroke="' + col + '" stroke-width="2.4" stroke-linecap="round"/>';
+      }
+      return '<g>' +
+        '<rect x="' + dx + '" y="30" width="44" height="' + (10 + n * 9) + '" rx="6" class="stroke" fill="var(--raise2)"/>' +
+        '<rect x="' + (dx + 84) + '" y="30" width="44" height="' + (10 + n * 9) + '" rx="6" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="' + (dx + 22) + '" y="' + (44 + n * 4) + '" text-anchor="middle" font-size="14">' + a + '</text>' +
+        '<text x="' + (dx + 106) + '" y="' + (44 + n * 4) + '" text-anchor="middle" font-size="14">' + b + '</text>' +
+        lines +
+        '<text x="' + (dx + 64) + '" y="' + (34 + n * 9 + 24) + '" text-anchor="middle" font-size="10" fill="' + col + '">' + n + ' bonds</text>' +
+        '</g>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="A and T held by two hydrogen bonds, G and C held by three">' +
+        pair(10, 'A', 'T', 2, 'var(--butter)') +
+        pair(162, 'G', 'C', 3, 'var(--peach)') +
+      '</svg>',
+      'three is harder to pull apart than two');
+  }
+
+  /* sodium potassium pump */
+  function scenePump(){
+    var na = '', k = '';
+    for(var i = 0; i < 3; i++){
+      na += '<circle cx="' + (40 + i * 20) + '" cy="30" r="8" fill="var(--peach)" opacity=".85"/>' +
+            '<text x="' + (40 + i * 20) + '" y="34" text-anchor="middle" font-size="8" fill="#fff">Na</text>';
+    }
+    for(var j = 0; j < 2; j++){
+      k += '<circle cx="' + (210 + j * 20) + '" cy="122" r="8" fill="var(--mint)" opacity=".85"/>' +
+           '<text x="' + (210 + j * 20) + '" y="126" text-anchor="middle" font-size="8" fill="#fff">K</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 152" role="img" aria-label="The pump moving three sodium out and two potassium in, using ATP">' +
+        '<rect x="8" y="62" width="284" height="28" rx="5" fill="var(--raise2)" class="stroke"/>' +
+        '<text x="16" y="20" font-size="10" opacity=".55">OUTSIDE</text>' +
+        '<text x="16" y="146" font-size="10" opacity=".55">INSIDE</text>' +
+        '<rect x="120" y="54" width="60" height="44" rx="9" class="stroke" fill="var(--raise)"/>' +
+        '<text x="150" y="80" text-anchor="middle" font-size="10">pump</text>' +
+        na + k +
+        '<polygon points="100,44 92,56 108,56" fill="var(--peach)"/>' +
+        '<polygon points="200,108 192,96 208,96" fill="var(--mint)"/>' +
+        '<text x="150" y="118" text-anchor="middle" font-size="10" fill="var(--butter)">ATP</text>' +
+        '<text x="60" y="52" font-size="9.5" opacity=".7">3 out</text>' +
+        '<text x="212" y="106" font-size="9.5" opacity=".7">2 in</text>' +
+      '</svg>',
+      'both uphill, so it costs energy');
+  }
+
+  /* VSEPR shapes */
+  function sceneShapes(){
+    function centre(dx, dy){ return '<circle cx="' + dx + '" cy="' + dy + '" r="7" class="dot pick"/>'; }
+    function arm(x1, y1, x2, y2){ return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" class="stroke"/><circle cx="' + x2 + '" cy="' + y2 + '" r="5.4" class="dot"/>'; }
+    function lone(x, y){ return '<circle cx="' + x + '" cy="' + y + '" r="7" fill="var(--faint)" opacity=".45"/>'; }
+    var a = '<g transform="translate(38 46)">' + arm(0,0,0,-26) + arm(0,0,-25,9) + arm(0,0,25,9) + arm(0,0,0,20) + centre(0,0) + '</g>' +
+            '<text x="38" y="98" text-anchor="middle" font-size="8.6">tetrahedral</text>';
+    var b = '<g transform="translate(118 46)">' + arm(0,0,-22,16) + arm(0,0,22,16) + lone(0,-20) + centre(0,0) + '</g>' +
+            '<text x="118" y="98" text-anchor="middle" font-size="8.6">bent</text>';
+    var c = '<g transform="translate(198 46)">' + arm(0,0,-24,0) + arm(0,0,24,0) + arm(0,0,0,-24) + arm(0,0,0,24) + lone(-15,-16) + lone(15,16) + centre(0,0) + '</g>' +
+            '<text x="198" y="98" text-anchor="middle" font-size="8.6">square planar</text>';
+    var d = '<g transform="translate(268 46)">' + arm(0,0,0,-24) + arm(0,0,22,0) + arm(0,0,0,24) + lone(-16,-12) + lone(-16,12) + centre(0,0) + '</g>' +
+            '<text x="268" y="98" text-anchor="middle" font-size="8.6">T-shaped</text>';
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="Four molecular shapes: tetrahedral, bent, square planar and T-shaped">' +
+        a + b + c + d +
+        
+      '</svg>',
+      'grey blobs are lone pairs, and they take up room');
+  }
+
+  /* slices under a curve, animated */
+  function sceneSlices(){
+    var bars = '';
+    for(var i = 0; i < 14; i++){
+      var x = 24 + i * 18, h = 18 + 52 * Math.sin((i + 1) / 15 * Math.PI);
+      bars += '<rect class="anim" style="animation:grow .5s ease-out ' + (i * 0.09) + 's forwards; transform-origin:' + (x + 8) + 'px 104px" x="' + x + '" y="' + (104 - h) + '" width="15" height="' + h + '" rx="2" fill="var(--peach)" opacity=".26"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 126" role="img" aria-label="Thin rectangles filling the area under a curve">' +
+        '<line x1="16" y1="104" x2="286" y2="104" class="axis"/>' +
+        bars +
+        '<path d="M24 86 C90 34, 170 26, 276 62" class="curve"/>' +
+        '<text x="16" y="20" font-size="10" opacity=".55">SPEED</text>' +
+        '<text x="252" y="122" font-size="10" opacity=".55">TIME</text>' +
+      '</svg>',
+      'chop it, add the pieces up', true);
+  }
+
+
+  /* ---------------- parameterised scenes ---------------- */
+
+  /* Vectors drawn as arrows on a pair of axes.
+     v = [[x, y, label, colour], ...]; tail-to-head chains when chain is true. */
+  function sceneVec(v, cap, chain){
+    var W = 300, H = 176, pad = 26;
+
+    /* every point the drawing has to contain, so it can be scaled to fit */
+    var pts = [[0, 0]], ox = 0, oy = 0, i;
+    for(i = 0; i < v.length; i++){
+      if(chain){ ox += v[i][0]; oy += v[i][1]; pts.push([ox, oy]); }
+      else { pts.push([v[i][0], v[i][1]]); }
+    }
+    var xs = pts.map(function(p){ return p[0]; }), ys = pts.map(function(p){ return p[1]; });
+    var minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs);
+    var miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
+    var u = Math.min((W - pad * 2) / Math.max(1, maxx - minx),
+                     (H - pad * 2 - 16) / Math.max(1, maxy - miny));
+    u = Math.min(u, 17);
+    var cx = pad + (0 - minx) * u, cy = H - 30 - (0 - miny) * u;
+    function sx(x){ return cx + x * u; }
+    function sy(y){ return cy - y * u; }
+
+    var g = '<line x1="8" y1="' + sy(0) + '" x2="292" y2="' + sy(0) + '" class="axis"/>' +
+            '<line x1="' + sx(0) + '" y1="8" x2="' + sx(0) + '" y2="' + (H - 16) + '" class="axis"/>';
+
+    function arrow(x0, y0, x1, y1, col, lbl, dash){
+      var dx = x1 - x0, dy = y1 - y0, L = Math.sqrt(dx * dx + dy * dy) || 1;
+      var hx = x1 - dx / L * 10, hy = y1 - dy / L * 10;
+      var px = -dy / L * 5, py = dx / L * 5;
+      var out = '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + hx + '" y2="' + hy +
+        '" stroke="' + col + '" stroke-width="2.6" stroke-linecap="round"' +
+        (dash ? ' stroke-dasharray="5 4"' : '') + '/>' +
+        '<polygon points="' + x1 + ',' + y1 + ' ' + (hx + px) + ',' + (hy + py) + ' ' +
+        (hx - px) + ',' + (hy - py) + '" fill="' + col + '"/>';
+      if(lbl){
+        /* Offset the label along the perpendicular of the arrow, not always to
+           the right. A vertical arrow put its label straight onto the axis. */
+        var ux = -dy / L, uy = dx / L;
+        if(ux < 0){ ux = -ux; uy = -uy; }
+        out += '<text x="' + ((x0 + x1) / 2 + ux * 14 + 4) + '" y="' + ((y0 + y1) / 2 + uy * 14) +
+               '" font-size="12" fill="' + col + '">' + lbl + '</text>';
+      }
+      return out;
+    }
+
+    ox = 0; oy = 0;
+    for(i = 0; i < v.length; i++){
+      var a = v[i];
+      var fx = chain ? ox : 0, fy = chain ? oy : 0;
+      g += arrow(sx(fx), sy(fy), sx(fx + a[0]), sy(fy + a[1]), a[3] || 'var(--peach)', a[2]);
+      if(chain){ ox += a[0]; oy += a[1]; }
+    }
+    /* the resultant: the whole reason a chain is drawn as a chain */
+    if(chain && v.length > 1){
+      g += arrow(sx(0), sy(0), sx(ox), sy(oy), 'var(--butter)', 'the answer', true);
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cap + '">' +
+      g + '</svg>', cap);
+  }
+
+  /* A parabola, optionally with its roots, turning point and a shaded strip. */
+  function scenePara(o){
+    var a = o.a, b = o.b, c = o.c;
+    var W = 300, H = 176, cx = o.cx || 150, cy = o.cy || 118, u = o.u || 15;
+    function sx(x){ return cx + x * u; }
+    function sy(y){ return cy - y * (o.uy || u); }
+    var pts = [], x;
+    for(x = -9; x <= 9; x += 0.25){
+      var px = sx(x), py = sy(a * x * x + b * x + c);
+      if(px >= 8 && px <= 292 && py >= 8 && py <= H - 12) pts.push(px.toFixed(1) + ',' + py.toFixed(1));
+    }
+    var g = '<line x1="10" y1="' + cy + '" x2="290" y2="' + cy + '" class="axis"/>' +
+            '<line x1="' + cx + '" y1="10" x2="' + cx + '" y2="' + (H - 14) + '" class="axis"/>' +
+            '<polyline points="' + pts.join(' ') + '" class="curve"/>';
+    if(o.shade){
+      var band = [];
+      for(x = o.shade[0]; x <= o.shade[1]; x += 0.2) band.push(sx(x).toFixed(1) + ',' + sy(a*x*x+b*x+c).toFixed(1));
+      g += '<polygon points="' + sx(o.shade[0]) + ',' + cy + ' ' + band.join(' ') + ' ' +
+           sx(o.shade[1]) + ',' + cy + '" fill="var(--peach)" opacity=".17"/>';
+    }
+    (o.roots || []).forEach(function(r){
+      g += '<circle cx="' + sx(r) + '" cy="' + cy + '" r="5" class="dot pick"/>';
+    });
+    if(o.tp){
+      g += '<line x1="' + sx(o.tp[0]) + '" y1="' + sy(o.tp[1]) + '" x2="' + sx(o.tp[0]) +
+           '" y2="' + cy + '" class="drop yes"/>' +
+           '<circle cx="' + sx(o.tp[0]) + '" cy="' + sy(o.tp[1]) + '" r="5.6" class="dot pick yes"/>' +
+           '<line x1="' + (sx(o.tp[0]) - 26) + '" y1="' + sy(o.tp[1]) + '" x2="' + (sx(o.tp[0]) + 26) +
+           '" y2="' + sy(o.tp[1]) + '" class="tan flat"/>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* A straight line through two marked points. */
+  function sceneLine(p1, p2, cap){
+    var W = 300, H = 172, pad = 34;
+    var xs = [0, p1[0], p2[0]], ys = [0, p1[1], p2[1]];
+    var lox = Math.min.apply(null, xs) - 1, hix = Math.max.apply(null, xs) + 1;
+    var loy = Math.min.apply(null, ys) - 2, hiy = Math.max.apply(null, ys) + 2;
+    var ux = (W - pad * 2) / (hix - lox), uy = (H - pad - 26) / (hiy - loy);
+    function sx(x){ return pad + (x - lox) * ux; }
+    function sy(y){ return H - 26 - (y - loy) * uy; }
+    var g = '<line x1="8" y1="' + sy(0) + '" x2="292" y2="' + sy(0) + '" class="axis"/>' +
+            '<line x1="' + sx(0) + '" y1="8" x2="' + sx(0) + '" y2="' + (H - 14) + '" class="axis"/>';
+    var m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    /* clip the line to the visible box in BOTH directions. Clipping only in x
+       let a steep line run straight out of the bottom of the frame. */
+    function yAt(x){ return p1[1] + m * (x - p1[0]); }
+    function xAt(y){ return p1[0] + (y - p1[1]) / m; }
+    var ax = lox, ay = yAt(ax);
+    if(ay > hiy){ ay = hiy; ax = xAt(hiy); }
+    if(ay < loy){ ay = loy; ax = xAt(loy); }
+    var bx = hix, by = yAt(bx);
+    if(by > hiy){ by = hiy; bx = xAt(hiy); }
+    if(by < loy){ by = loy; bx = xAt(loy); }
+    g += '<line x1="' + sx(ax) + '" y1="' + sy(ay) +
+         '" x2="' + sx(bx) + '" y2="' + sy(by) + '" class="curve"/>';
+    /* the rise and the run */
+    g += '<line x1="' + sx(p1[0]) + '" y1="' + sy(p1[1]) + '" x2="' + sx(p2[0]) + '" y2="' + sy(p1[1]) + '" class="drop"/>' +
+         '<line x1="' + sx(p2[0]) + '" y1="' + sy(p1[1]) + '" x2="' + sx(p2[0]) + '" y2="' + sy(p2[1]) + '" class="drop"/>' +
+         '<text x="' + ((sx(p1[0]) + sx(p2[0])) / 2) + '" y="' + (sy(p1[1]) + 14) +
+         '" text-anchor="middle" font-size="10" fill="var(--peach)">along</text>' +
+         '<text x="' + (sx(p2[0]) + 6) + '" y="' + ((sy(p1[1]) + sy(p2[1])) / 2) +
+         '" font-size="10" fill="var(--peach)">up</text>';
+    [p1, p2].forEach(function(p){
+      var tx = Math.min(sx(p[0]) + 8, 218);
+      g += '<circle cx="' + sx(p[0]) + '" cy="' + sy(p[1]) + '" r="5.4" class="dot pick"/>' +
+           '<text x="' + tx + '" y="' + (sy(p[1]) - 8) + '" font-size="11">(' + p[0] + ', ' + p[1] + ')</text>';
+    });
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cap + '">' +
+      g + '</svg>', cap);
+  }
+
+  /* A right-angled triangle with two sides and an angle labelled. */
+  function sceneTri(o){
+    var W = 300, H = 150;
+    var x0 = 52, y0 = 118, w = o.w || 176, h = o.h || 74;
+    var g = '<polygon points="' + x0 + ',' + y0 + ' ' + (x0 + w) + ',' + y0 + ' ' +
+            (x0 + w) + ',' + (y0 - h) + '" class="stroke" fill="var(--raise2)"/>' +
+            '<rect x="' + (x0 + w - 13) + '" y="' + (y0 - 13) + '" width="13" height="13" class="axis" fill="none"/>';
+    if(o.hyp) g += '<text x="' + (x0 + w / 2 - 14) + '" y="' + (y0 - h / 2 - 6) +
+                   '" font-size="12" fill="var(--peach)">' + o.hyp + '</text>';
+    if(o.opp) g += '<text x="' + (x0 + w + 8) + '" y="' + (y0 - h / 2 + 4) +
+                   '" font-size="12" fill="var(--mint)">' + o.opp + '</text>';
+    if(o.adj) g += '<text x="' + (x0 + w / 2) + '" y="' + (y0 + 17) +
+                   '" text-anchor="middle" font-size="12">' + o.adj + '</text>';
+    if(o.ang){
+      g += '<path d="M' + (x0 + 26) + ' ' + y0 + ' A26 26 0 0 0 ' +
+           (x0 + 26 * Math.cos(Math.atan(h / w))) + ' ' + (y0 - 26 * Math.sin(Math.atan(h / w))) +
+           '" class="stroke" stroke-width="1.3"/>' +
+           '<text x="' + (x0 + 32) + '" y="' + (y0 - 8) + '" font-size="12" fill="var(--butter)">' + o.ang + '</text>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* A sine or cosine wave. line draws a horizontal cut so the two solutions show. */
+  function sceneWave(o){
+    var W = 300, H = 168, top = 20, bot = 40;
+    var A = Math.abs(o.A === undefined ? 1 : o.A), B = o.B || 1, D = o.D || 0;
+    /* include zero so the axis is always on screen */
+    var lo = Math.min(0, D - A, o.line !== undefined ? o.line : 0);
+    var hi = Math.max(0, D + A, o.line !== undefined ? o.line : 0);
+    var u = Math.min((H - top - bot) / Math.max(0.5, hi - lo), 34);
+    function sy(v){ return top + (hi - v) * u; }
+    var pts = [], t;
+    for(t = 0; t <= 360; t += 3){
+      var f = o.cos ? Math.cos : Math.sin;
+      pts.push((20 + t / 360 * 258).toFixed(1) + ',' +
+               sy((o.A === undefined ? 1 : o.A) * f(B * t * Math.PI / 180) + D).toFixed(1));
+    }
+    var axis = sy(0);
+    var g = '<line x1="14" y1="' + axis + '" x2="290" y2="' + axis + '" class="axis"/>' +
+            '<polyline points="' + pts.join(' ') + '" class="curve"/>';
+    /* if a cut line sits just below the axis, the degree labels would land on
+       top of it, so they go above instead */
+    var tickY = (o.line !== undefined && o.line < 0) ? axis - 8 : axis + 16;
+    ['0', '90', '180', '270', '360'].forEach(function(lbl, i){
+      var x = 20 + i / 4 * 258;
+      g += '<line x1="' + x + '" y1="' + (axis - 3) + '" x2="' + x + '" y2="' + (axis + 3) + '" class="axis"/>' +
+           '<text x="' + x + '" y="' + tickY + '" text-anchor="middle" font-size="9.5" opacity=".6">' + lbl + '</text>';
+    });
+    if(o.line !== undefined){
+      var ly = sy(o.line);
+      g += '<line x1="14" y1="' + ly + '" x2="290" y2="' + ly + '" stroke="var(--peach)" stroke-width="1.6" stroke-dasharray="4 3"/>';
+      (o.hits || []).forEach(function(t2){
+        var hx = 20 + t2 / 360 * 258;
+        g += '<circle cx="' + hx + '" cy="' + ly + '" r="5.4" class="dot pick"/>' +
+             '<text x="' + hx + '" y="' + (ly + 20) + '" text-anchor="middle" font-size="10.5" fill="var(--peach)">' + t2 + '</text>';
+      });
+    }
+    if(o.maxmin){
+      g += '<line x1="14" y1="' + sy(D + A) + '" x2="290" y2="' + sy(D + A) + '" class="axis"/>' +
+           '<text x="288" y="' + (sy(D + A) - 4) + '" text-anchor="end" font-size="10" fill="var(--mint)">max</text>' +
+           '<line x1="14" y1="' + sy(D - A) + '" x2="290" y2="' + sy(D - A) + '" class="axis"/>' +
+           '<text x="288" y="' + (sy(D - A) + 12) + '" text-anchor="end" font-size="10" fill="var(--peach)">min</text>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* The fenced field: a wall along the top and three sides of fence. */
+  function sceneFence(){
+    var x0 = 66, y0 = 40, w = 168, h = 74;
+    return scene(
+      '<svg viewBox="0 0 300 152" role="img" aria-label="A rectangle fenced on three sides against a wall">' +
+        '<line x1="' + (x0 - 14) + '" y1="' + y0 + '" x2="' + (x0 + w + 14) + '" y2="' + y0 + '" stroke="var(--soft)" stroke-width="5" stroke-linecap="round"/>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 - 11) + '" text-anchor="middle" font-size="10" opacity=".6">WALL, NO FENCE NEEDED</text>' +
+        '<path d="M' + x0 + ' ' + y0 + ' V' + (y0 + h) + ' H' + (x0 + w) + ' V' + y0 + '" class="stroke" stroke-width="2.2" stroke-dasharray="6 4"/>' +
+        '<rect x="' + x0 + '" y="' + y0 + '" width="' + w + '" height="' + h + '" fill="var(--peach)" opacity=".13"/>' +
+        '<text x="' + (x0 - 9) + '" y="' + (y0 + h / 2) + '" text-anchor="end" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="' + (x0 + w + 9) + '" y="' + (y0 + h / 2) + '" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 + h + 19) + '" text-anchor="middle" font-size="13" fill="var(--peach)">20 &#8722; 2x</text>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 + h / 2 + 5) + '" text-anchor="middle" font-size="11" opacity=".7">area</text>' +
+      '</svg>',
+      'only three sides need fencing');
+  }
+
+  /* Which row meets which column. */
+  function sceneRowCol(){
+    function cell(x, y, t, cls){
+      return '<rect x="' + x + '" y="' + y + '" width="30" height="26" rx="4" class="stroke" fill="' +
+        (cls || 'var(--raise2)') + '"/><text x="' + (x + 15) + '" y="' + (y + 18) +
+        '" text-anchor="middle" font-size="12">' + t + '</text>';
+    }
+    var g = '';
+    g += cell(20, 34, '3', 'var(--glow)') + cell(52, 34, '4', 'var(--glow)');
+    g += cell(20, 64, '1') + cell(52, 64, '7');
+    g += '<text x="98" y="56" font-size="15">&#215;</text>';
+    g += cell(120, 34, '3', 'var(--raise)') + cell(152, 34, '&#8722;1');
+    g += cell(120, 64, '5', 'var(--raise)') + cell(152, 64, '0');
+    g += '<text x="198" y="56" font-size="15">=</text>';
+    g += cell(222, 34, '29', 'var(--glow)') + cell(254, 34, '?');
+    g += cell(222, 64, '?') + cell(254, 64, '?');
+    g += '<rect x="16" y="30" width="70" height="34" rx="7" fill="none" stroke="var(--peach)" stroke-width="2"/>';
+    g += '<rect x="116" y="30" width="34" height="64" rx="7" fill="none" stroke="var(--mint)" stroke-width="2"/>';
+    g += '<text x="150" y="120" text-anchor="middle" font-size="10.5" opacity=".72">first row meets first column</text>';
+    g += '<text x="150" y="134" text-anchor="middle" font-size="10.5" fill="var(--peach)">3&#215;3 + 4&#215;5 = 29</text>';
+    return scene('<svg viewBox="0 0 300 144" role="img" aria-label="The first row of the left matrix multiplied by the first column of the right">' +
+      g + '</svg>', 'row from the left, column from the right');
+  }
+
+  /* Energy levels for adding two reactions together. */
+  function sceneEnergy(){
+    return scene(
+      '<svg viewBox="0 0 300 156" role="img" aria-label="Energy levels showing 180 up then 112 down giving 68 up overall">' +
+        '<line x1="26" y1="118" x2="98" y2="118" class="stroke" stroke-width="2.4"/>' +
+        '<line x1="114" y1="30" x2="186" y2="30" class="stroke" stroke-width="2.4"/>' +
+        '<line x1="202" y1="84" x2="274" y2="84" class="stroke" stroke-width="2.4"/>' +
+        '<text x="62" y="134" text-anchor="middle" font-size="11">N&#8322; + 2O&#8322;</text>' +
+        '<text x="150" y="22" text-anchor="middle" font-size="11">2NO + O&#8322;</text>' +
+        '<text x="238" y="100" text-anchor="middle" font-size="11">2NO&#8322;</text>' +
+        '<line x1="106" y1="112" x2="106" y2="38" stroke="var(--peach)" stroke-width="2"/>' +
+        '<polygon points="106,30 101,42 111,42" fill="var(--peach)"/>' +
+        '<text x="66" y="64" text-anchor="end" font-size="11" fill="var(--peach)">+180</text>' +
+        '<line x1="194" y1="36" x2="194" y2="76" stroke="var(--mint)" stroke-width="2"/>' +
+        '<polygon points="194,84 189,72 199,72" fill="var(--mint)"/>' +
+        '<text x="200" y="56" font-size="11" fill="var(--mint)">&#8722;112</text>' +
+        '<line x1="26" y1="118" x2="26" y2="84" stroke="var(--butter)" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<line x1="26" y1="84" x2="202" y2="84" stroke="var(--butter)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="30" y="104" font-size="12" fill="var(--butter)">net +68</text>' +
+      '</svg>',
+      'up 180, back down 112');
+  }
+
+  /* Limiting reagent: two stacks, one runs out. */
+  function sceneLimit(){
+    /* 2C + O2 -> 2CO. Three carbons need one and a half oxygens, so three and a
+       half of the five are left over. The first version drew one for one, which
+       contradicted the ratio stated three slides earlier in the same deck. */
+    var g = '';
+    for(var i = 0; i < 3; i++){
+      g += '<circle cx="' + (56 + i * 32) + '" cy="52" r="13" fill="var(--peach)" opacity=".85"/>' +
+           '<text x="' + (56 + i * 32) + '" y="57" text-anchor="middle" font-size="11">C</text>';
+    }
+    for(var j = 0; j < 5; j++){
+      g += '<circle cx="' + (56 + j * 32) + '" cy="106" r="13" fill="var(--mint)" opacity="' +
+           (j < 1 ? '.85' : j < 2 ? '.45' : '.18') + '"/>' +
+           '<text x="' + (56 + j * 32) + '" y="111" text-anchor="middle" font-size="10">O&#8322;</text>';
+    }
+    g += '<text x="28" y="57" text-anchor="end" font-size="11">0.3</text>' +
+         '<text x="28" y="111" text-anchor="end" font-size="11">0.5</text>' +
+         '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">' +
+         '0.3 mol of carbon only needs 0.15 mol of oxygen</text>' +
+         '<rect x="104" y="88" width="148" height="36" rx="9" fill="none" stroke="var(--faint)" ' +
+         'stroke-width="1.4" stroke-dasharray="4 3"/>' +
+         '<text x="170" y="140" text-anchor="middle" font-size="10" opacity=".65">' +
+         '0.35 mol left over, and the carbon is gone</text>';
+    return scene('<svg viewBox="0 0 300 150" role="img" aria-label="0.3 mol of carbon uses 0.15 mol of the 0.5 mol of oxygen, so 0.35 mol is left unused">' +
+      g + '</svg>', 'more of it does not mean enough of it');
+  }
+
+
+  /* A matrix drawn with brackets, because a list separated by commas and a
+     slash is not a matrix and three decks were asking her to work on one that
+     was never shown. */
+  function mat(rows, hi){
+    var cw = 34, ch = 27, w = rows[0].length * cw, h = rows.length * ch;
+    var x0 = 150 - w / 2, y0 = 14;
+    var g = '<path d="M' + (x0 - 7) + ' ' + y0 + ' H' + (x0 - 13) + ' V' + (y0 + h) +
+            ' H' + (x0 - 7) + '" class="stroke"/>' +
+            '<path d="M' + (x0 + w + 7) + ' ' + y0 + ' H' + (x0 + w + 13) + ' V' + (y0 + h) +
+            ' H' + (x0 + w + 7) + '" class="stroke"/>';
+    rows.forEach(function(r, i){
+      r.forEach(function(v, j){
+        var on = hi && hi[0] === i && hi[1] === j;
+        g += '<text x="' + (x0 + j * cw + cw / 2) + '" y="' + (y0 + i * ch + 19) +
+             '" text-anchor="middle" font-size="15" fill="' +
+             (on ? 'var(--peach)' : 'currentColor') + '">' + v + '</text>';
+      });
+    });
+    return '<svg viewBox="0 0 300 ' + (h + 26) + '" role="img" aria-label="a matrix">' + g + '</svg>';
+  }
+  function matPair(a, b, op, cap){
+    var A = mat(a).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+    return scene('<svg viewBox="0 0 300 ' + (a.length * 27 + 30) + '" role="img" aria-label="' + cap + '">' +
+      '<g transform="translate(-72 0)">' + A + '</g>' +
+      '<text x="150" y="' + (a.length * 27 / 2 + 20) + '" text-anchor="middle" font-size="16">' + op + '</text>' +
+      '<g transform="translate(74 0)">' + mat(b).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '') + '</g>' +
+      '</svg>', cap);
+  }
+
+
+  /* The area question is a cubic, so it gets a cubic. */
+  function sceneCubic(){
+    var pts = [], x;
+    function sx(v){ return 40 + v * 62; }
+    function sy(v){ return 132 - v * 0.85; }
+    for(x = 0; x <= 3.05; x += 0.06){
+      pts.push(sx(x).toFixed(1) + ',' + sy(5 * x * x * x - 2 * x + 8).toFixed(1));
+    }
+    var band = [];
+    for(x = 1; x <= 3; x += 0.06) band.push(sx(x).toFixed(1) + ',' + sy(5 * x * x * x - 2 * x + 8).toFixed(1));
+    return scene(
+      '<svg viewBox="0 0 300 160" role="img" aria-label="The area under the cubic between x equals 1 and x equals 3">' +
+        '<line x1="14" y1="132" x2="288" y2="132" class="axis"/>' +
+        '<line x1="' + sx(0) + '" y1="10" x2="' + sx(0) + '" y2="146" class="axis"/>' +
+        '<polygon points="' + sx(1) + ',132 ' + band.join(' ') + ' ' + sx(3) + ',132" fill="var(--peach)" opacity=".17"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '<line x1="' + sx(1) + '" y1="132" x2="' + sx(1) + '" y2="' + sy(11) + '" class="drop"/>' +
+        '<line x1="' + sx(3) + '" y1="132" x2="' + sx(3) + '" y2="' + sy(137) + '" class="drop"/>' +
+        '<text x="' + sx(1) + '" y="148" text-anchor="middle" font-size="11">1</text>' +
+        '<text x="' + sx(3) + '" y="148" text-anchor="middle" font-size="11">3</text>' +
+      '</svg>',
+      'the shaded strip is what you are measuring');
+  }
+
+
+  /* Michaelis-Menten: Vmax, and the substrate concentration that gives half of it. */
+  function sceneKm(){
+    var pts = [], x;
+    for(x = 0; x <= 100; x += 2){
+      var v = 70 * x / (18 + x);
+      pts.push((30 + x * 2.5).toFixed(1) + ',' + (116 - v).toFixed(1));
+    }
+    return scene(
+      '<svg viewBox="0 0 300 156" role="img" aria-label="A rate curve levelling off at Vmax, with Km marked where the rate is half of Vmax">' +
+        '<line x1="30" y1="116" x2="288" y2="116" class="axis"/>' +
+        '<line x1="30" y1="14" x2="30" y2="116" class="axis"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '<line x1="30" y1="46" x2="288" y2="46" stroke="var(--mint)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="286" y="42" text-anchor="end" font-size="10" fill="var(--mint)">Vmax</text>' +
+        '<line x1="30" y1="81" x2="75" y2="81" stroke="var(--peach)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<line x1="75" y1="81" x2="75" y2="116" stroke="var(--peach)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="24" y="85" text-anchor="end" font-size="10" fill="var(--peach)">half</text>' +
+        '<circle cx="75" cy="81" r="5" class="dot pick"/>' +
+        '<text x="75" y="132" text-anchor="middle" font-size="11" fill="var(--peach)">Km</text>' +
+        '<text x="180" y="150" text-anchor="middle" font-size="9.5" opacity=".6">how much substrate is around</text>' +
+      '</svg>',
+      'Km is a position along the bottom, not a height');
+  }
+
+  /* Leading strand in one run, lagging strand in pieces. */
+  function sceneStrands(){
+    var frag = '';
+    for(var i = 0; i < 4; i++){
+      var x = 46 + i * 54;
+      frag += '<line x1="' + x + '" y1="104" x2="' + (x + 42) + '" y2="104" stroke="var(--peach)" stroke-width="4" stroke-linecap="round"/>' +
+              '<circle cx="' + x + '" cy="104" r="5" fill="var(--butter)"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 142" role="img" aria-label="The leading strand made in one continuous run, the lagging strand made in fragments each with its own primer">' +
+        '<path d="M20 20 H280" class="stroke" stroke-dasharray="3 3"/>' +
+        '<line x1="46" y1="46" x2="264" y2="46" stroke="var(--mint)" stroke-width="4" stroke-linecap="round"/>' +
+        '<circle cx="46" cy="46" r="5" fill="var(--butter)"/>' +
+        '<text x="20" y="36" font-size="10" opacity=".65">leading</text>' +
+        '<text x="20" y="94" font-size="10" opacity=".65">lagging</text>' +
+        '<path d="M20 128 H280" class="stroke" stroke-dasharray="3 3"/>' +
+        frag +
+        '<circle cx="240" cy="130" r="5" fill="var(--butter)"/>' +
+        '<text x="252" y="134" font-size="9.5" fill="var(--butter)">= primer</text>' +
+        '<text x="150" y="66" text-anchor="middle" font-size="9.5" opacity=".6">one primer, one long run</text>' +
+      '</svg>',
+      'four pieces means four primers');
+  }
+
+  /* The lac operon, laid out along the DNA. */
+  function sceneOperon(){
+    function box(x, w, t, col){
+      return '<rect x="' + x + '" y="46" width="' + w + '" height="26" rx="4" class="stroke" fill="' + (col || 'var(--raise2)') + '"/>' +
+             '<text x="' + (x + w / 2) + '" y="64" text-anchor="middle" font-size="10">' + t + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 130" role="img" aria-label="The lac operon: the repressor gene, then promoter, operator and three genes read as one message">' +
+        '<line x1="10" y1="59" x2="292" y2="59" class="axis"/>' +
+        box(14, 40, 'lacI', 'var(--glow)') +
+        box(70, 34, 'P') + box(108, 34, 'O', 'var(--raise)') +
+        box(146, 42, 'lacZ') + box(192, 42, 'lacY') + box(238, 42, 'lacA') +
+        '<text x="14" y="38" font-size="9" fill="var(--peach)">makes the repressor</text>' +
+        '<text x="92" y="116" text-anchor="middle" font-size="9" opacity=".62">the repressor sits here</text>' +
+        '<line x1="146" y1="86" x2="280" y2="86" stroke="var(--mint)" stroke-width="2.4"/>' +
+        '<text x="213" y="102" text-anchor="middle" font-size="9.5" fill="var(--mint)">one mRNA, three genes</text>' +
+      '</svg>',
+      'one promoter switches all three at once');
+  }
+
+  /* The membrane: oily middle, so only oily things cross. */
+  function sceneMembrane(){
+    var heads = '';
+    for(var i = 0; i < 19; i++){
+      var x = 18 + i * 15;
+      heads += '<circle cx="' + x + '" cy="52" r="6" fill="var(--soft)" opacity=".55"/>' +
+               '<line x1="' + x + '" y1="58" x2="' + x + '" y2="74" class="stroke" stroke-width="1.2"/>' +
+               '<circle cx="' + x + '" cy="98" r="6" fill="var(--soft)" opacity=".55"/>' +
+               '<line x1="' + x + '" y1="92" x2="' + x + '" y2="76" class="stroke" stroke-width="1.2"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A lipid bilayer, with an oily molecule passing through and a water-loving one bouncing off">' +
+        heads +
+        '<text x="10" y="26" font-size="10" opacity=".55">OUTSIDE</text>' +
+        '<circle cx="76" cy="26" r="9" fill="var(--mint)"/>' +
+        '<line x1="76" y1="36" x2="76" y2="118" stroke="var(--mint)" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<polygon points="76,126 71,114 81,114" fill="var(--mint)"/>' +
+        '<text x="90" y="30" font-size="9.5" fill="var(--mint)">oily, goes through</text>' +
+        '<circle cx="232" cy="26" r="9" fill="var(--peach)"/>' +
+        '<line x1="232" y1="36" x2="232" y2="44" stroke="var(--peach)" stroke-width="2"/>' +
+        '<path d="M222 44 L242 44" stroke="var(--peach)" stroke-width="2.6" stroke-linecap="round"/>' +
+        '<text x="214" y="142" text-anchor="middle" font-size="9.5" fill="var(--peach)">water-loving, stopped</text>' +
+      '</svg>',
+      'the middle is oily, and that decides everything');
+  }
+
+  /* A straight cut against a staggered one. */
+  function sceneSticky(){
+    function strand(x, y, seq, col){
+      var g = '';
+      for(var i = 0; i < seq.length; i++){
+        g += '<text x="' + (x + i * 15) + '" y="' + y + '" font-size="12" fill="' + (col || 'currentColor') + '">' + seq[i] + '</text>';
+      }
+      return g;
+    }
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="A blunt cut straight through both strands, and a staggered cut leaving single-stranded overhangs">' +
+        '<text x="12" y="20" font-size="9.5" opacity=".6">STRAIGHT ACROSS</text>' +
+        strand(14, 42, ['G','A','A','T','T','C']) +
+        strand(14, 60, ['C','T','T','A','A','G']) +
+        '<line x1="55" y1="28" x2="55" y2="68" stroke="var(--peach)" stroke-width="2"/>' +
+        '<text x="112" y="56" font-size="10" fill="var(--peach)">blunt ends</text>' +
+        '<text x="12" y="94" font-size="9.5" opacity=".6">STAGGERED</text>' +
+        strand(14, 116, ['G','A','A','T','T','C']) +
+        strand(14, 134, ['C','T','T','A','A','G']) +
+        '<path d="M22 102 V122 H82 V142" stroke="var(--mint)" stroke-width="2" fill="none"/>' +
+        '<text x="112" y="126" font-size="9.5" fill="var(--mint)">sticky ends</text>' + '<text x="112" y="140" font-size="9.5" fill="var(--mint)">they can pair up again</text>' +
+      '</svg>',
+      'a staggered cut leaves something to hold on to');
+  }
+
+  /* The two diagonals of a 2x2. */
+  function sceneDet(){
+    function cell(x, y, t){
+      return '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="19">' + t + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 138" role="img" aria-label="The leading diagonal multiplied, minus the other diagonal multiplied">' +
+        '<path d="M64 26 H56 V96 H64" class="stroke"/><path d="M156 26 H164 V96 H156" class="stroke"/>' +
+        cell(88, 52, '&#8722;2') + cell(132, 52, '2') +
+        cell(88, 88, '3') + cell(132, 88, '&#8722;4') +
+        '<line x1="78" y1="42" x2="142" y2="82" stroke="var(--mint)" stroke-width="2.2"/>' +
+        '<line x1="142" y1="42" x2="78" y2="82" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="5 3"/>' +
+        '<text x="186" y="50" font-size="11" fill="var(--mint)">(&#8722;2)(&#8722;4) = 8</text>' +
+        '<text x="186" y="74" font-size="11" fill="var(--peach)">(2)(3) = 6</text>' +
+        '<text x="186" y="100" font-size="12">8 &#8722; 6 = 2</text>' +
+        '<text x="150" y="128" text-anchor="middle" font-size="9.5" opacity=".6">solid one first, then take the dashed one away</text>' +
+      '</svg>',
+      'one diagonal minus the other');
+  }
+
+  /* Completing the square, as an actual square. */
+  function sceneCompSq(){
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="x squared plus 10x drawn as a square and two strips, with the missing corner added and then taken away">' +
+        '<rect x="42" y="30" width="66" height="66" class="stroke" fill="var(--glow)"/>' +
+        '<text x="75" y="68" text-anchor="middle" font-size="13">x&#178;</text>' +
+        '<rect x="108" y="30" width="30" height="66" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="123" y="68" text-anchor="middle" font-size="11">5x</text>' +
+        '<rect x="42" y="96" width="66" height="30" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="75" y="116" text-anchor="middle" font-size="11">5x</text>' +
+        '<rect x="108" y="96" width="30" height="30" class="stroke" fill="none" stroke-dasharray="4 3"/>' +
+        '<text x="123" y="116" text-anchor="middle" font-size="11" fill="var(--peach)">25</text>' +
+        '<text x="160" y="52" font-size="11">the square wants</text>' +
+        '<text x="160" y="70" font-size="11">that corner filled</text>' +
+        '<text x="160" y="96" font-size="11" fill="var(--peach)">so add 25,</text>' +
+        '<text x="160" y="114" font-size="11" fill="var(--peach)">then take 25 away</text>' +
+      '</svg>',
+      'half of 10 is 5, and the corner is 5 squared');
+  }
+
+  /* Same number of atoms on both sides. */
+  function sceneBalance2(){
+    function stack(x, n, col, lbl){
+      var g = '';
+      for(var i = 0; i < n; i++){
+        g += '<circle cx="' + (x + (i % 4) * 15) + '" cy="' + (96 - Math.floor(i / 4) * 15) + '" r="6" fill="' + col + '" opacity=".8"/>';
+      }
+      return g + '<text x="' + (x + 22) + '" y="122" text-anchor="middle" font-size="10">' + lbl + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 140" role="img" aria-label="Five carbons, twelve hydrogens and sixteen oxygens on each side of the equation">' +
+        '<text x="70" y="24" text-anchor="middle" font-size="11" opacity=".7">LEFT</text>' +
+        '<text x="228" y="24" text-anchor="middle" font-size="11" opacity=".7">RIGHT</text>' +
+        '<line x1="150" y1="30" x2="150" y2="112" class="axis"/>' +
+        stack(20, 5, 'var(--peach)', 'C 5') +
+        stack(86, 12, 'var(--mint)', 'H 12') +
+        stack(178, 5, 'var(--peach)', 'C 5') +
+        stack(244, 12, 'var(--mint)', 'H 12') +
+      '</svg>',
+      'balanced means the same count on both sides');
+  }
+
+  /* An exponential curve through the table points. */
+  function sceneExp(){
+    var pts = [], t;
+    for(t = 0; t <= 8; t += 0.2){
+      pts.push((36 + t * 28).toFixed(1) + ',' + (116 - 3 * Math.pow(4, t / 2) * 0.13).toFixed(1));
+    }
+    var dots = '';
+    [[0, 3], [2, 12], [4, 48], [6, 192]].forEach(function(p){
+      dots += '<circle cx="' + (36 + p[0] * 28) + '" cy="' + (116 - p[1] * 0.13) + '" r="5" class="dot pick"/>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="Points that quadruple every two seconds, on a curve that keeps getting steeper">' +
+        '<line x1="30" y1="116" x2="288" y2="116" class="axis"/>' +
+        '<line x1="30" y1="14" x2="30" y2="116" class="axis"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' + dots +
+        '<text x="92" y="110" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="148" y="94" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="204" y="60" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="180" y="140" text-anchor="middle" font-size="9.5" opacity=".6">same multiplier every step</text>' +
+      '</svg>',
+      'gaps grow, but the multiplier does not');
+  }
+
+  /* The cardboard box. */
+  function sceneBox(){
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="An open box with height x and a square base of side 22 minus 2x">' +
+        '<polygon points="70,58 190,58 234,34 114,34" class="stroke" fill="var(--raise2)"/>' +
+        '<polygon points="70,58 190,58 190,112 70,112" class="stroke" fill="var(--raise)"/>' +
+        '<polygon points="190,58 234,34 234,88 190,112" class="stroke" fill="var(--raise2)"/>' +
+        '<line x1="58" y1="58" x2="58" y2="112" stroke="var(--peach)" stroke-width="2"/>' +
+        '<text x="48" y="90" text-anchor="end" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="130" y="132" text-anchor="middle" font-size="12">22 &#8722; 2x</text>' +
+        '<text x="150" y="22" text-anchor="middle" font-size="9.5" opacity=".6">CUT A SQUARE FROM EACH CORNER, FOLD UP</text>' +
+      '</svg>',
+      'the height is what you cut off');
+  }
+
+
+  /* Anything going into an HTML attribute has to have its quotes escaped first.
+     Explanations contain markup, and a double quote inside data-why="..." ends
+     the attribute and paints the rest of the sentence at her as text. Only the
+     quote is escaped: the strings already hold numeric entities, and escaping
+     the ampersand would double-encode them. */
+  function attr(v){ return String(v).replace(/"/g, '&quot;'); }
+
+
+  /* Her own worksheet's analogy for equilibrium, drawn. Two tanks, fish
+     crossing both ways, and the case where the numbers stop changing while
+     the fish keep swimming. */
+  function sceneTanks(l2r, r2l, cap){
+    function tank(x, n){
+      var g = '<rect x="' + x + '" y="34" width="104" height="72" rx="7" class="stroke" fill="var(--raise2)"/>';
+      for(var i = 0; i < n; i++){
+        var fx = x + 18 + (i % 3) * 30, fy = 54 + Math.floor(i / 3) * 26;
+        g += '<path d="M' + fx + ' ' + fy + ' q10 -7 20 0 q-10 7 -20 0 z" fill="var(--peach)" opacity=".75"/>' +
+             '<path d="M' + (fx - 1) + ' ' + fy + ' l-7 -5 v10 z" fill="var(--peach)" opacity=".75"/>';
+      }
+      return g;
+    }
+    function arrow(y, n, dir){
+      var x1 = dir > 0 ? 118 : 182, x2 = dir > 0 ? 182 : 118;
+      return '<line x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y +
+             '" class="stroke" stroke-width="1.6"/>' +
+             '<polygon points="' + x2 + ',' + y + ' ' + (x2 - dir * 8) + ',' + (y - 4) +
+             ' ' + (x2 - dir * 8) + ',' + (y + 4) + '" fill="currentColor"/>' +
+             '<text x="150" y="' + (y - 7) + '" text-anchor="middle" font-size="10">' + n + ' a minute</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 132" role="img" aria-label="Two tanks with fish crossing in both directions">' +
+        tank(6, 5) + tank(190, 5) +
+        arrow(52, l2r, 1) + arrow(92, r2l, -1) +
+      '</svg>', cap);
+  }
+
+  function fig(svg, cap){
+    return '<figure>' + svg + '<figcaption>' + cap + '</figcaption></figure>';
+  }
+
+  function artBalance(L, R){
+    var level = (L === R);
+    var a = Math.max(-13, Math.min(13, (R - L) * 1.15));
+    var col = level ? 'var(--mint)' : 'var(--peach)';
+    return fig(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A see-saw weighing ' + L + ' against ' + R + '">' +
+        '<g transform="rotate(' + a.toFixed(1) + ' 150 66)">' +
+          '<text x="84" y="26" text-anchor="middle" font-size="10" opacity=".55">LEFT SIDE</text>' +
+          '<text x="216" y="26" text-anchor="middle" font-size="10" opacity=".55">RIGHT SIDE</text>' +
+          '<text x="84" y="50" text-anchor="middle" font-size="21" fill="' + col + '">' + L + '</text>' +
+          '<text x="216" y="50" text-anchor="middle" font-size="21" fill="' + col + '">' + R + '</text>' +
+          '<rect x="46" y="61" width="208" height="9" rx="4.5" fill="currentColor" opacity=".5"/>' +
+        '</g>' +
+        '<polygon points="150,71 133,124 167,124" class="stroke"/>' +
+        '<line x1="110" y1="124" x2="190" y2="124" class="stroke" stroke-width="2.6"/>' +
+      '</svg>',
+      level ? 'level. the key turns.' : 'it tips. not this key.'
+    );
+  }
+
+  /* y = x^2 + 7x + 12, plotted from x = -7 to x = 0 */
+  var CURVE = '30,40 47,71 64,98 81,119 99,136 116,148 133,156 150,158 167,156 184,148 201,136 219,119 236,98 253,71 270,40';
+  var CPTS = [
+    {x:-4,   sx:133, sy:156, g:-1},
+    {x:-3.5, sx:150, sy:158, g:0},
+    {x:-3,   sx:167, sy:156, g:1},
+    {x:-2,   sx:201, sy:136, g:3}
+  ];
+
+  function artCurve(sel){
+    var s = '<svg viewBox="0 0 300 185" role="img" aria-label="The curve y equals x squared plus 7x plus 12, with its lowest point marked">' +
+      '<line x1="20" y1="158" x2="284" y2="158" class="axis"/>' +
+      '<polyline points="' + CURVE + '" class="curve"/>';
+    if(sel !== null && sel !== undefined){
+      var p2 = CPTS[sel], yes = (p2.g === 0);
+      s += '<line x1="' + p2.sx + '" y1="' + p2.sy + '" x2="' + p2.sx + '" y2="176" class="drop' +
+           (yes ? ' yes' : '') + '"/>';
+      var m = -0.282 * p2.g, dx = 46;
+      s += '<line x1="' + (p2.sx - dx) + '" y1="' + (p2.sy - m * dx).toFixed(1) +
+           '" x2="' + (p2.sx + dx) + '" y2="' + (p2.sy + m * dx).toFixed(1) +
+           '" class="tan' + (yes ? ' flat' : '') + '"/>';
+    }
+    CPTS.forEach(function(p, i){
+      var on = (sel === i);
+      s += '<circle cx="' + p.sx + '" cy="' + p.sy + '" r="' + (on ? 7 : 5) + '" class="dot' +
+           (on ? (p.g === 0 ? ' pick yes' : ' pick') : '') + '"/>';
+    });
+    s += '</svg>';
+    var cap;
+    if(sel === null || sel === undefined) cap = 'four points, all bunched near the bottom';
+    else cap = (CPTS[sel].g === 0) ? 'flat. this is the bottom of the dip.' : 'still tilting. keep looking.';
+    return fig(s, cap);
+  }
+
+  /* The formula sheet, quoted back at her. Half the questions in this module
+     are answered by a line she already has on the desk in front of her. */
+  function fsheet(lines, hot){
+    var s = '<div class="fsheet"><div class="tag">on your formula sheet</div>';
+    lines.forEach(function(l, i){
+      s += '<div class="ln' + (i === hot ? ' hot' : '') + '">' + l + '</div>';
+    });
+    return s + '</div>';
+  }
+
+  function boxes(pairs){
+    var s = '<div class="boxes">';
+    pairs.forEach(function(p){
+      s += '<div class="box"><span class="k">' + p[0] + '</span><span class="v">' + p[1] + '</span></div>';
+    });
+    return s + '</div>';
+  }
+
+  /* ---- the WHY pictures ---- */
+
+  function speedY(t){ return 150 - (0.35 + 0.5 * Math.sin(Math.PI * t)) * 100; }
+
+  function speedCurve(){
+    var p = [];
+    for(var i = 0; i <= 24; i++){
+      var t = i / 24;
+      p.push((30 + t * 240).toFixed(1) + ',' + speedY(t).toFixed(1));
+    }
+    return p.join(' ');
+  }
+
+  function sliceGroup(n, cls){
+    var w = 240 / n, s = '';
+    for(var i = 0; i < n; i++){
+      var y = speedY((i + 0.5) / n);
+      s += '<rect x="' + (30 + i * w).toFixed(1) + '" y="' + y.toFixed(1) +
+           '" width="' + Math.max(w - 0.8, 0.8).toFixed(1) + '" height="' + (150 - y).toFixed(1) +
+           '" class="slice"/>';
+    }
+    return '<g class="' + cls + '">' + s + '<text x="270" y="26" text-anchor="end" class="slcount">' +
+           n + ' slices</text></g>';
+  }
+
+
+  /* The general formula sitting directly above her actual numbers. */
+
+  /* Why +c exists: identical curves at different heights. */
+
+  /* Integration and differentiation as mirror images of one move. */
+  function artMirror(){
+    return fig(
+      '<svg viewBox="0 0 300 168" role="img" aria-label="Integrating 3x to the 4 gives three fifths x to the 5; differentiating it gives 3x to the 4 back">' +
+        '<defs><marker id="mi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--peach)"/></marker>' +
+          '<marker id="md" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">' +
+          '<path d="M0,1 L9,5 L0,9 z" fill="var(--mint)"/></marker></defs>' +
+
+        '<text x="16" y="46" font-size="18" fill="var(--soft)">3x</text>' +
+        '<text x="38" y="38" font-size="12" fill="var(--mint)">4</text>' +
+        '<line x1="60" y1="40" x2="190" y2="40" stroke="var(--peach)" stroke-width="1.8" marker-end="url(#mi)"/>' +
+        '<text x="125" y="30" text-anchor="middle" font-size="11" fill="var(--peach)">integrate</text>' +
+        '<text x="125" y="58" text-anchor="middle" font-size="9.5" opacity=".75">up one, then divide by it</text>' +
+        '<text x="200" y="46" font-size="18" fill="var(--soft)">(3/5)x</text>' +
+        '<text x="268" y="38" font-size="12" fill="var(--mint)">5</text>' +
+
+        '<line x1="20" y1="86" x2="280" y2="86" class="axis"/>' +
+
+        '<text x="16" y="132" font-size="18" fill="var(--soft)">(3/5)x</text>' +
+        '<text x="84" y="124" font-size="12" fill="var(--mint)">5</text>' +
+        '<line x1="92" y1="126" x2="212" y2="126" stroke="var(--mint)" stroke-width="1.8" marker-end="url(#md)"/>' +
+        '<text x="152" y="116" text-anchor="middle" font-size="11" fill="var(--mint)">differentiate</text>' +
+        '<text x="152" y="144" text-anchor="middle" font-size="9.5" opacity=".75">down one, times the old power</text>' +
+        '<text x="222" y="132" font-size="18" fill="var(--soft)">3x</text>' +
+        '<text x="244" y="124" font-size="12" fill="var(--mint)">4</text>' +
+      '</svg>',
+      'each one undoes the other'
+    );
+  }
+
+
+
+  /* One step per screen. Swipe sideways through a question, swipe up to leave it.
+     A deck can never outgrow the phone, because no step ever stacks on another. */
+  /* ================= hands-on bits =================
+     She drags, the maths answers back. No instructions printed anywhere:
+     things that can be touched are shaped like things that can be touched. */
+
+  function speedAt(t){ return 20 + 40 * Math.sin(Math.PI * t); }   // km/h
+  function speedSY(s){ return 150 - (s / 60) * 105; }
+  var TRUE_KM = (1 / 3) * (20 + 40 * 2 / Math.PI);                  // about 15.15
+
+  var LABS = {
+
+    slices: function(root){
+      var range = root.querySelector("input");
+      var out   = root.querySelector("[data-out]");
+      var total = root.querySelector("[data-total]");
+      var note  = root.querySelector("[data-note]");
+      var svg   = root.querySelector("svg");
+      var best  = 0;
+
+      function draw(){
+        var n = +range.value, s = "", sum = 0, w = 240 / n;
+        for(var i = 0; i < n; i++){
+          var sp = speedAt((i + 0.5) / n), y = speedSY(sp);
+          sum += sp * (1 / 3) / n;
+          s += '<rect x="' + (30 + i * w).toFixed(1) + '" y="' + y.toFixed(1) +
+               '" width="' + Math.max(w - 0.7, 0.7).toFixed(1) + '" height="' + (150 - y).toFixed(1) +
+               '" class="slice"/>';
+        }
+        var p = [];
+        for(var k = 0; k <= 40; k++){
+          var t = k / 40;
+          p.push((30 + t * 240).toFixed(1) + "," + speedSY(speedAt(t)).toFixed(1));
+        }
+        svg.innerHTML = s +
+          '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+          '<line x1="24" y1="150" x2="276" y2="150" class="axis"/>' +
+          '<text x="24" y="44" font-size="10" opacity=".6">speed</text>' +
+          '<text x="276" y="166" text-anchor="end" font-size="10" opacity=".6">20 min later</text>';
+        out.textContent = n;
+        total.textContent = sum.toFixed(2);
+        best = Math.max(best, n);
+        if(best >= 30){
+          note.textContent = "It stopped moving. However thin you slice it now, it settles on the same number. That number is the answer, and finding it is what integrating does.";
+          note.className = "labnote aha";
+        } else if(best >= 10){
+          note.textContent = "Keep going. Watch what the total does.";
+          note.className = "labnote";
+        } else {
+          note.textContent = "Fat slices poke out over the curve, so the total is a guess.";
+          note.className = "labnote";
+        }
+      }
+      range.addEventListener("input", draw);
+      draw();
+    },
+
+    shift: function(root){
+      var range = root.querySelector("input");
+      var out   = root.querySelector("[data-out]");
+      var slope = root.querySelector("[data-total]");
+      var note  = root.querySelector("[data-note]");
+      var svg   = root.querySelector("svg");
+      var moves = 0;
+
+      function sx(x){ return 150 + x * 40; }
+      function sy(y){ return 155 - (y + 3) * 8.333; }
+
+      function draw(){
+        var c = +range.value / 10, p = [];
+        for(var i = -30; i <= 30; i++){
+          var x = i / 10;
+          p.push(sx(x).toFixed(1) + "," + sy(x * x + c).toFixed(1));
+        }
+        var tx = 1.5, ty = tx * tx + c, m = 2 * tx;
+        var x1 = sx(tx - 1), y1 = sy(ty - m), x2 = sx(tx + 1), y2 = sy(ty + m);
+        svg.innerHTML =
+          '<line x1="30" y1="' + sy(0).toFixed(1) + '" x2="270" y2="' + sy(0).toFixed(1) + '" class="axis"/>' +
+          '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+          '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) +
+          '" y2="' + y2.toFixed(1) + '" class="tan flat"/>' +
+          '<circle cx="' + sx(tx).toFixed(1) + '" cy="' + sy(ty).toFixed(1) + '" r="5.5" class="dot pick yes"/>';
+        out.textContent = (c > 0 ? "+" : "") + c.toFixed(1);
+        slope.textContent = m.toFixed(2);
+        moves++;
+        if(moves > 1){
+          note.textContent = "The whole curve slides up and down. The green line never changes its angle. That is the point: c moves the height and nothing else, which is exactly why it goes missing when you differentiate.";
+          note.className = "labnote aha";
+        }
+      }
+      range.addEventListener("input", draw);
+      draw();
+    }
+  };
+
+  /* Distance on top, speed underneath, one draggable point driving both.
+     The steepness up there IS the height down here. That is differentiation. */
+  LABS.tangent = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var sawZero = false, sawTop = false;
+
+    function dist(t){ return 3*t*t - 0.2*t*t*t; }
+    function spd(t){ return 6*t - 0.6*t*t; }
+    function sx(t){ return 30 + t * 24; }
+    function syD(d){ return 112 - d * 0.88; }
+    function syV(v){ return 212 - v * 4.2; }
+
+    function draw(){
+      var t = +range.value / 10, d = dist(t), v = spd(t);
+      var p1 = [], p2 = [];
+      for(var k = 0; k <= 40; k++){
+        var tt = k / 4;
+        p1.push(sx(tt).toFixed(1) + "," + syD(dist(tt)).toFixed(1));
+        p2.push(sx(tt).toFixed(1) + "," + syV(spd(tt)).toFixed(1));
+      }
+      var m = -v * 0.88 / 24, dx = 32;
+      svg.innerHTML =
+        '<text x="28" y="14" font-size="9.5" opacity=".6">HOW FAR YOU HAVE GONE</text>' +
+        '<line x1="24" y1="112" x2="278" y2="112" class="axis"/>' +
+        '<polyline points="' + p1.join(" ") + '" class="curve"/>' +
+        '<line x1="' + (sx(t)-dx) + '" y1="' + (syD(d)-m*dx).toFixed(1) +
+          '" x2="' + (sx(t)+dx) + '" y2="' + (syD(d)+m*dx).toFixed(1) +
+          '" class="tan' + (v < 0.4 ? " flat" : "") + '"/>' +
+        '<circle cx="' + sx(t).toFixed(1) + '" cy="' + syD(d).toFixed(1) + '" r="6" class="dot pick"/>' +
+        '<text x="28" y="136" font-size="9.5" opacity=".6">HOW FAST YOU ARE GOING</text>' +
+        '<line x1="24" y1="212" x2="278" y2="212" class="axis"/>' +
+        '<polyline points="' + p2.join(" ") + '" class="curve"/>' +
+        '<line x1="' + sx(t).toFixed(1) + '" y1="' + syV(v).toFixed(1) +
+          '" x2="' + sx(t).toFixed(1) + '" y2="212" class="drop"/>' +
+        '<circle cx="' + sx(t).toFixed(1) + '" cy="' + syV(v).toFixed(1) + '" r="6" class="dot pick' +
+          (v < 0.4 ? " yes" : "") + '"/>';
+      out.textContent = t.toFixed(1) + "s";
+      total.textContent = v.toFixed(1);
+      if(v < 0.4){ sawZero = true; }
+      if(v > 14.5){ sawTop = true; }
+      if(sawZero && sawTop){
+        note.innerHTML = "Steepest on top, biggest below. Flat on top, nothing below. <strong>The steepness up there is the number down here.</strong>";
+        note.className = "labnote aha";
+      } else if(sawZero){
+        note.textContent = "Flat on top, nothing below. Now find the steepest part.";
+        note.className = "labnote";
+      } else {
+        note.textContent = "Find the flattest bit up top. Watch the number below.";
+        note.className = "labnote";
+      }
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* One slider, one discovery: a negative a turns the whole arc upside down. */
+  LABS.quad = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var flipped = false;
+
+    function draw(){
+      var a = +range.value / 10;
+      if(a === 0) a = 0.05;
+      var b = 2, c = 1, p = [];
+      for(var i = -34; i <= 34; i++){
+        var x = i / 8, y = a*x*x + b*x + c;
+        var sx = 150 + x * 26, sy = 130 - y * 9;
+        if(sy > -20 && sy < 210) p.push(sx.toFixed(1) + "," + sy.toFixed(1));
+      }
+      var tx = -b / (2*a), ty = c - b*b/(4*a);
+      var tsx = 150 + tx * 26, tsy = 130 - ty * 9;
+      var onScreen = tsx > 20 && tsx < 280 && tsy > 6 && tsy < 200;
+      svg.innerHTML =
+        '<line x1="20" y1="130" x2="280" y2="130" class="axis"/>' +
+        '<line x1="150" y1="8" x2="150" y2="200" class="axis"/>' +
+        '<polyline points="' + p.join(" ") + '" class="curve"/>' +
+        (onScreen ? '<circle cx="' + tsx.toFixed(1) + '" cy="' + tsy.toFixed(1) +
+          '" r="6" class="dot pick' + (a < 0 ? " yes" : "") + '"/>' : "");
+      out.textContent = (a > 0 ? "+" : "") + a.toFixed(2);
+      total.textContent = a < 0 ? "a frown" : "a smile";
+      if(a < 0) flipped = true;
+      note.innerHTML = flipped
+        ? "There it is. <strong>A minus a turns the whole thing upside down</strong>, so the dot becomes the highest point instead of the lowest. That is how the fireworks and the football questions on your paper work: they are all upside-down ones, and the dot is the answer."
+        : "Take a below zero and watch what happens to the shape.";
+      note.className = "labnote" + (flipped ? " aha" : "");
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* The vending machine. She picks the number that goes in. */
+  LABS.machine = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+    var found = false;
+
+    function draw(){
+      var x = +range.value, y = 2 * x - 8;
+      var hit = (y === 0);
+      if(hit) found = true;
+      svg.innerHTML =
+        '<rect x="70" y="24" width="160" height="96" rx="14" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+        '<text x="150" y="60" text-anchor="middle" font-size="12" opacity=".6">THE MACHINE</text>' +
+        '<text x="150" y="92" text-anchor="middle" font-size="20" fill="var(--soft)">2x - 8</text>' +
+        '<text x="150" y="18" text-anchor="middle" font-size="13" fill="var(--butter)">you put in ' + x + '</text>' +
+        '<line x1="150" y1="120" x2="150" y2="140" stroke="currentColor" stroke-width="1.4"/>' +
+        '<text x="150" y="164" text-anchor="middle" font-size="26" fill="' +
+          (hit ? "var(--mint)" : "var(--peach)") + '">' + y + '</text>';
+      out.textContent = x;
+      total.textContent = y;
+      if(hit){
+        note.textContent = "Zero. You just solved 2x - 8 = 0 without being told that is what you were doing.";
+        note.className = "labnote aha";
+      } else if(found){
+        note.textContent = "Move it back to find it again if you like.";
+        note.className = "labnote";
+      } else {
+        note.textContent = "Try to make the bottom number land on nothing at all.";
+        note.className = "labnote";
+      }
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* The lift. The only drag in the module that changes the SHAPE of the symbol. */
+  var FLOORS = [
+    {p:"-1",  plain:"1 / x",       floor:"basement",     say:"Down in the basement. A minus power means it lives underneath, on the bottom of a fraction."},
+    {p:"0",   plain:"1",           floor:"ground",       say:"Ground floor. Anything to the power nothing is just 1. Every single time."},
+    {p:"1/2", plain:"&#8730;x",    floor:"half landing", say:"Half a floor up. Half a power is a square root."},
+    {p:"1",   plain:"x",           floor:"first",        say:"First floor. A lonely x has a quiet 1 up there that nobody writes."},
+    {p:"2",   plain:"x &#215; x",  floor:"second",       say:"Second floor. Two of them multiplied together."}
+  ];
+
+  LABS.dial = function(root){
+    var range = root.querySelector("input");
+    var out   = root.querySelector("[data-out]");
+    var total = root.querySelector("[data-total]");
+    var note  = root.querySelector("[data-note]");
+    var svg   = root.querySelector("svg");
+
+    function draw(){
+      var i = +range.value, f = FLOORS[i], s = "";
+      for(var k = FLOORS.length - 1; k >= 0; k--){
+        var y = 26 + (FLOORS.length - 1 - k) * 30, on = (k === i);
+        s += '<line x1="78" y1="' + y + '" x2="196" y2="' + y + '" stroke="currentColor" stroke-width="1" opacity="' + (on ? ".5" : ".16") + '"/>' +
+             '<text x="4" y="' + (y - 5) + '" font-size="10" opacity="' + (on ? ".85" : ".3") + '">' + FLOORS[k].floor + '</text>';
+        if(on){
+          s += '<circle cx="126" cy="' + (y - 9) + '" r="12" fill="var(--glow)" stroke="var(--peach)" stroke-width="1.6"/>' +
+               '<text x="126" y="' + (y - 5) + '" text-anchor="middle" font-size="13" fill="var(--peach)">x</text>' +
+               '<text x="142" y="' + (y - 12) + '" font-size="9" fill="var(--mint)">' + f.p + '</text>';
+        }
+      }
+      s += '<text x="206" y="' + (26 + (FLOORS.length - 1 - i) * 30 - 4) + '" font-size="16" fill="var(--soft)">= ' + f.plain + '</text>';
+      svg.innerHTML = s;
+      out.innerHTML = "x<sup class='p'>" + f.p + "</sup>";
+      total.innerHTML = f.plain;
+      note.innerHTML = f.say;
+      note.className = "labnote" + (i === 0 || i === 2 ? " aha" : "");
+    }
+    range.addEventListener("input", draw);
+    draw();
+  };
+
+  /* Spot the mistake. She catches it. Nothing buzzes, nothing is marked. */
+  /* fine[] carries a real reason for each line that is NOT the mistake. Saying
+     only "that line is fine" is correctness-only feedback, which measures at
+     about g=0.05; saying why it is fine measures at about 0.49. Cheap to write,
+     so it gets written. */
+  function spot(lines, badIndex, why, fine){
+    var s = '<div class="spot" data-spot="' + badIndex + '">';
+    lines.forEach(function(l, i){
+      var f = (fine && fine[i]) ? ' data-fine="' + attr(fine[i]) + '"' : '';
+      s += '<button type="button" class="sline" data-i="' + i + '"' + f + '>' + l + '</button>';
+    });
+    return s + '<div class="labnote" data-note>' + "" + '</div>' +
+           '<span hidden data-why="' + attr(why) + '"></span></div>';
+  }
+
+  /* She answers, and gets a real answer back. Never a score, never a nudge to
+     carry on: some of these replies actively tell her to stop. */
+  document.addEventListener("click", function(e){
+    var chip = e.target.closest && e.target.closest(".chip");
+    if(chip){
+      var wrap = chip.closest(".checkin");
+      Array.prototype.forEach.call(wrap.querySelectorAll(".chip"), function(n){
+        n.classList.remove("picked");
+      });
+      chip.classList.add("picked");
+      wrap.querySelector("[data-reply]").innerHTML = chip.getAttribute("data-r");
+      return;
+    }
+    var b = e.target.closest && e.target.closest(".sline");
+    if(!b) return;
+    var wrap = b.closest(".spot");
+    var bad = +wrap.getAttribute("data-spot");
+    var i = +b.getAttribute("data-i");
+    var note = wrap.querySelector("[data-note]");
+    Array.prototype.forEach.call(wrap.querySelectorAll(".sline"), function(n){
+      n.classList.remove("caught"); n.classList.remove("touched");
+    });
+    if(i === bad){
+      b.classList.add("caught");
+      note.innerHTML = wrap.querySelector("[data-why]").getAttribute("data-why");
+      note.className = "labnote aha";
+    } else {
+      b.classList.add("touched");
+      note.innerHTML = b.getAttribute("data-fine") || "That line is fine. Keep looking.";
+      note.className = "labnote";
+    }
+  });
+
+  function lab(kind, label, min, max, val, outLabel, unit){
+    return '<div class="lab" data-lab="' + kind + '">' +
+      '<div class="labhead"><span class="labk">' + label + '</span>' +
+      '<span class="labv" data-out>' + val + '</span></div>' +
+      '<input type="range" aria-label="' + label + '" min="' + min + '" max="' + max + '" value="' + val + '">' +
+      '<svg viewBox="0 0 300 ' + (kind === "tangent" ? 222 : 172) + '" role="img" aria-label="' + label + ' experiment"></svg>' +
+      '<div class="labout"><span>' + outLabel + '</span><b data-total>0</b><span>' + unit + '</span></div>' +
+      '<div class="labnote" data-note></div>' +
+    '</div>';
+  }
+
+  /* Tap a piece, its twin lights up and explains itself. */
+  function linked(rows, boxRow){
+    var s = '<div class="linkwrap">';
+    rows.forEach(function(r){
+      s += '<div>' + (r.tag ? '<span class="linktag">' + r.tag + '</span>' : "") +
+           '<div class="linkline' + (r.faded ? " faded" : "") + '">' + r.html + '</div></div>';
+    });
+    if(boxRow){
+      s += '<div class="boxes">';
+      boxRow.forEach(function(b){
+        s += '<button type="button" class="box" data-link="' + b[0] + '"' +
+             (b[3] ? ' data-note-text="' + b[3] + '"' : "") + '>' +
+             '<span class="k">' + b[1] + '</span><span class="v">' + b[2] + '</span></button>';
+      });
+      s += '</div>';
+    }
+    return s + '<div class="linknote" data-note></div></div>';
+  }
+
+  function tok(key, html, note){
+    return '<span class="tok" data-link="' + key + '" tabindex="0"' +
+           (note ? ' data-note-text="' + note + '"' : "") + '>' + html + '</span>';
+  }
+
+  document.addEventListener("click", function(e){
+    var t = e.target.closest && e.target.closest("[data-link]");
+    if(!t) return;
+    var wrap = t.closest(".linkwrap");
+    if(!wrap) return;
+    var key = t.getAttribute("data-link");
+    Array.prototype.forEach.call(wrap.querySelectorAll("[data-link]"), function(n){
+      n.classList.toggle("lit", n.getAttribute("data-link") === key);
+    });
+    var note = wrap.querySelector("[data-note]");
+    var src = wrap.querySelector("[data-link='" + key + "'][data-note-text]");
+    if(note && src) note.innerHTML = src.getAttribute("data-note-text");
+  });
+
+  function initInteractive(root){
+    Array.prototype.forEach.call(root.querySelectorAll("[data-lab]"), function(el){
+      if(el._ready) return;
+      el._ready = true;
+      var fn = LABS[el.getAttribute("data-lab")];
+      if(fn) fn(el);
+    });
+  }
+
+
+  /* Matching. rows = [[left, right, why], ...]; order = the order the right
+     column is shown in, fixed rather than random so it is testable. */
+  function match(rows, order, miss){
+    var L = '<div class="mcol">';
+    rows.forEach(function(r, i){
+      L += '<button type="button" class="mL" data-i="' + i + '">' + r[0] + '</button>';
+    });
+    L += '</div><div class="mcol">';
+    order.forEach(function(i){
+      L += '<button type="button" class="mR" data-i="' + i + '" data-why="' + attr(rows[i][2]) + '">' +
+           rows[i][1] + '</button>';
+    });
+    L += '</div>';
+    return '<div class="matchwrap" data-miss="' + attr(miss || '') + '"><div class="mrow">' + L + '</div>' +
+           '<div class="labnote" data-note></div></div>';
+  }
+
+  /* Select-all. opts = [[label, isRight, why], ...]. Every option explains
+     itself on tap, including the ones that do not belong, so a wrong tap
+     still teaches. Nothing is scored and there is nothing to submit. */
+  function pickall(opts, prose){
+    var s = '<div class="pickall">';
+    opts.forEach(function(o, i){
+      s += '<button type="button" class="pk' + (prose ? ' prose' : '') +
+           '" data-i="' + i + '" data-ok="' + (o[1] ? 1 : 0) +
+           '" data-why="' + attr(o[2]) + '">' + o[0] + '</button>';
+    });
+    return s + '<div class="labnote" data-note></div></div>';
+  }
+
+  document.addEventListener("click", function(e){
+    var L = e.target.closest && e.target.closest(".mL");
+    if(L && !L.disabled){
+      var w = L.closest(".matchwrap");
+      Array.prototype.forEach.call(w.querySelectorAll(".mL"), function(n){ n.classList.remove("sel"); });
+      L.classList.add("sel");
+      w.querySelector("[data-note]").innerHTML = "";
+      return;
+    }
+    var R = e.target.closest && e.target.closest(".mR");
+    if(R && !R.disabled){
+      var w2 = R.closest(".matchwrap");
+      var sel = w2.querySelector(".mL.sel");
+      var note = w2.querySelector("[data-note]");
+      if(!sel){ return; }
+      if(sel.getAttribute("data-i") === R.getAttribute("data-i")){
+        sel.classList.remove("sel"); sel.classList.add("done"); sel.disabled = true;
+        R.classList.add("done"); R.disabled = true;
+        note.innerHTML = R.getAttribute("data-why");
+        note.className = "labnote aha";
+      } else {
+        note.innerHTML = w2.getAttribute("data-miss") ||
+          "Not that pair. Have another look at what each one is doing.";
+        note.className = "labnote";
+      }
+      return;
+    }
+    var K = e.target.closest && e.target.closest(".pk");
+    if(K){
+      var wrap = K.closest(".pickall");
+      var ok = K.getAttribute("data-ok") === "1";
+      K.classList.remove("on"); K.classList.remove("off");
+      K.classList.add(ok ? "on" : "off");
+      var n2 = wrap.querySelector("[data-note]");
+      n2.innerHTML = K.getAttribute("data-why");
+      n2.className = "labnote" + (ok ? " aha" : "");
+    }
+  });
+
+  var DECKS = {
+    c11: {
+      eyebrow:'chemistry', title:'When the numbers stop changing.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Your worksheet explains this with fish in two tanks, which is the best analogy in the module, so start there and the chemistry follows.'},
+        {say:'Two go one way for every one that comes back.',
+         art:function(){ return sceneTanks(2, 1, 'two across, one back, so the left tank empties'); }},
+        {say:'Two go right for every one that comes back, so the left tank empties and the right tank fills. That is a reaction running forwards.'},
+        {say:'Now the same number crosses each way.',
+         art:function(){ return sceneTanks(1, 1, 'one each way, so the numbers hold while the fish keep swimming'); }},
+        {say:'Now one each way. The number in each tank stops changing.'},
+        {say:'But look at what is still happening: the fish are still swimming, both ways, the whole time. Nothing has stopped. The two rates have become equal.'},
+        {say:'That is dynamic equilibrium, and the word dynamic is doing the work. It does not mean the reaction has finished. It means the forward and backward rates are the same, so the amounts hold steady while both directions keep going.'},
+        {say:'Which is why a question saying "the reaction has stopped" is always wrong, and why adding more of something shifts the balance rather than restarting anything.'}
+      ]
+    },
+    c12: {
+      eyebrow:'chemistry', title:'Acid and base, one proton apart.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'A whole table on your worksheet, and it is filled in by one rule applied four times. There is nothing to memorise.'},
+        {say:'The rule: an acid GIVES a proton away, a base TAKES one. Whatever each becomes afterwards is its conjugate.',
+         eq: 'acid gives, base takes'},
+        {say:'Match each one to what it is doing.',
+         art:function(){ return match([['CH&#8323;COOH gives away an H&#8314;','it is the acid, and CH&#8323;COO&#8315; is its conjugate base','An acid gives a proton away. What is left behind, one proton lighter, is its conjugate base. Ethanoic acid to ethanoate. The pair always differs by exactly one H.'],['H&#8322;O takes an H&#8314; in that same reaction','it is the base, and H&#8323;O&#8314; is its conjugate acid','A base takes a proton. What it becomes, one proton heavier, is its conjugate acid. Water to hydronium. Water appears on both sides of this topic because it does both jobs depending on what it meets.'],['NH&#8323; takes an H&#8314; from water','it is the base, and NH&#8324;&#8314; is its conjugate acid','Ammonia takes a proton and becomes ammonium. Water gave one away here, so in this reaction water is the acid and hydroxide is its conjugate base. Same molecule, opposite role, decided by its partner.']], [2,0,1], 'Not that one. Ask whether it is GIVING a proton away or TAKING one.'); }},
+        {say:'The check that catches every mistake: a conjugate pair differs by exactly one H, and by one unit of charge. If your pair differs by two, or by an oxygen, it is not a pair.'},
+        {say:'And the thing the table is really testing. Water appears as the acid in some rows and the base in others. It is not being inconsistent. Which role it plays is decided by what it is reacting with.'}
+      ]
+    },
+    c13: {
+      eyebrow:'chemistry', title:'Predicting the sign of the entropy change.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Entropy questions look like they need a calculation and most of them need one glance at the state symbols.'},
+        {say:'Entropy is how spread out the energy and the particles are. A gas is the most spread out, then liquid, then solid, which is the most ordered.',
+         eq: 'solid, then liquid, then gas'},
+        {say:'So there are two things to look at, in this order. First: does the number of particles go up or down. Second: is a gas made or used up.'},
+        {say:'Making a gas from a solid is the big one, and it wins over almost anything else. So calcium carbonate breaking into calcium oxide and carbon dioxide has a POSITIVE entropy change.',
+         eq: 'CaCO&#8323; gives CaO + CO&#8322;, so positive'},
+        {say:'Four gas molecules becoming two is fewer particles and less gas, so nitrogen plus hydrogen making ammonia is NEGATIVE.',
+         eq: 'N&#8322; + 3H&#8322; gives 2NH&#8323;, so negative'},
+        {say:'And two gases making two gases barely moves at all, so hydrogen plus chlorine to hydrogen chloride is close to zero.',
+         eq: 'H&#8322; + Cl&#8322; gives 2HCl, so near zero'},
+        {say:'Count the gas molecules on each side before anything else. That single habit answers most of this section.'}
+      ]
+    },
+    c14: {
+      eyebrow:'chemistry', title:'Why entropy on its own is not enough.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Your worksheet asks whether entropy alone can tell you if a reaction happens by itself, and gives you a reaction designed to prove it cannot.'},
+        {say:'Ammonia gas plus hydrochloric acid makes solid ammonium chloride. Gas to solid, so the entropy change is clearly NEGATIVE.',
+         eq: 'gas becomes solid, so negative'},
+        {say:'And yet the worksheet tells you it happens spontaneously. So a negative entropy change cannot be a blocker on its own, and the answer to the question is no.'},
+        {say:'What is missing is the heat. That reaction is strongly exothermic, and giving out heat spreads energy into the surroundings, which more than makes up for the tidying up inside the reaction.'},
+        {say:'So the honest test needs both, and that is what the free energy expression is for. Both terms, and the temperature deciding how much the entropy half matters.',
+         eq: '&#8710;G = &#8710;H &#8722; T&#8710;S'},
+        {say:'Negative free energy means it goes by itself. Which is why the same reaction can be spontaneous when it is cold and not when it is hot, and why the question asks about temperature at all.'}
+      ]
+    },
+    c15: {
+      eyebrow:'chemistry', title:'Why some collisions do nothing.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Rate questions come down to a simple picture: particles have to hit each other, hard enough, and the right way round.'},
+        {say:'Two conditions, and a collision needs BOTH. Enough energy to get over the activation barrier, and the correct orientation when they meet.',
+         eq: 'enough energy AND the right way round'},
+        {say:'Which is what the two-diagram question is testing. When you are asked which arrangement leads to products, look at which atoms are facing each other, not at how fast they are going.'},
+        {say:'Ozone reacting with nitrogen monoxide needs the oxygen being transferred to be facing the nitrogen. Turned the other way, they bounce off unchanged however hard they hit.'},
+        {say:'And the factors follow from the same picture. Heat gives more particles enough energy. Concentration and pressure make collisions more frequent. Surface area exposes more places to collide.'},
+        {say:'A catalyst is the odd one out: it does not make anything collide more, it lowers the barrier, so a larger share of the collisions already happening are now hard enough to work.'}
+      ]
+    },
+
+    /* ---- A110 biology, third wave: the questions on her sheets that had
+       no deck of their own. Biology had 1.4 decks per practice topic
+       against maths at 7.5, which was an artefact of when each module
+       was started rather than a judgement about the subject. ---- */
+
+    c1: {
+      eyebrow:'chemistry', title:'Moles, in one sentence.',
+      q: '<span class="o">how</span> <span class="o">many</span> <span class="o">moles</span> <span class="o">are</span> <span class="o">in</span> <span class="n">6.84</span> <span class="x">g</span> <span class="o">of</span> <span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Nearly every calculation in this module goes through moles, and there is one relationship underneath all of them.'},
+        {say:'Moles is mass divided by molar mass. If you know two of the three you can always get the third.',
+         eq: '<span class="o">moles</span> <span class="o">=</span> <span class="o">mass</span> <span class="o">/</span> <span class="o">molar</span> <span class="o">mass</span>'},
+        {say:'So the work is the molar mass, and that is counting atoms carefully. Watch the bracket: the 3 outside multiplies everything inside it.',
+         eq: '<span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub> <span class="o">=</span> <span class="n">2</span> <span class="x">A</span><span class="x">l</span> <span class="o">+</span> <span class="n">3</span> <span class="x">S</span> <span class="o">+</span> <span class="n">12</span> <span class="x">O</span>'},
+        {say:'Add them up.',
+         eq: '<span class="n">2</span><span class="o">(</span><span class="n">26.98</span><span class="o">)</span> <span class="o">+</span> <span class="n">3</span><span class="o">(</span><span class="n">32.07</span><span class="o">)</span> <span class="o">+</span> <span class="n">12</span><span class="o">(</span><span class="n">16.00</span><span class="o">)</span> <span class="o">=</span> <span class="n">342.17</span>'},
+        {say:'Then divide.',
+         eq: '<span class="n">6.84</span> <span class="o">/</span> <span class="n">342.17</span> <span class="o">=</span> <span class="n">0.0200</span> <span class="o">mol</span>'},
+        {say:'The bracket is where the marks go in this topic. Twelve oxygens, not four, because the 3 outside multiplies the 4 inside.'}
+      ]
+    },
+    c2: {
+      eyebrow:'chemistry', title:'Concentration.',
+      q: '<span class="n">18.02</span> <span class="x">g</span> <span class="o">of</span> <span class="x">C</span><sub class="p">6</sub><span class="x">H</span><sub class="p">12</sub><span class="x">O</span><sub class="p">6</sub> <span class="o">in</span> <span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">of</span> <span class="o">solution</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">molarity</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Concentration is moles per litre, so this is the mole calculation with one extra step and one unit trap.'},
+        {say:'Moles first, exactly as before. Glucose is 180.16 g per mole.',
+         eq: '<span class="n">18.02</span> <span class="o">/</span> <span class="n">180.16</span> <span class="o">=</span> <span class="n">0.10</span> <span class="o">mol</span>'},
+        {say:'Now the trap, and it costs more marks than anything else here. Molarity is per LITRE, and the question gave you millilitres.',
+         eq: '<span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">=</span> <span class="n">0.250</span> <span class="x">L</span>'},
+        {say:'Then divide.',
+         eq: '<span class="n">0.10</span> <span class="o">/</span> <span class="n">0.250</span> <span class="o">=</span> <span class="n">0.40</span> <span class="o">mol</span><span class="o">/</span><span class="x">L</span>'},
+        {say:'The same relationship runs backwards for the other kind of question. To make 750 mL of 0.40 mol/L sodium hydroxide, you need 0.40 times 0.750, which is 0.30 mol, and 0.30 times 40.00 gives 12.0 g.'},
+        {say:'Whenever you see millilitres in a concentration question, convert before anything else. Do it as the first line of working, every time.'}
+      ]
+    },
+    c3: {
+      eyebrow:'chemistry', title:'Balancing without guessing.',
+      q: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Balancing feels like trial and error and it does not have to be. There is an order that works nearly every time.'},
+        {say:'Leave oxygen until last, because it appears in two places on the right and will keep changing while you fix the others.'},
+        {say:'Carbon first. Five on the left, so five carbon dioxide.',
+         eq: '<span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub>'},
+        {say:'Then hydrogen. Twelve on the left, and water carries two each, so six waters.',
+         eq: '<span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
+        {say:'Now count the oxygen on the right, which is finally safe to do. Ten in the carbon dioxide plus six in the water.',
+         eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>',
+         art:function(){ return sceneBalance2(); }},
+        {say:'Oxygen comes in twos, so you need eight of them.',
+         eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
+        {say:'Carbon, then hydrogen, then oxygen last. That order turns a puzzle into a routine, and this topic is worth easy marks once it is a routine.'}
+      ]
+    },
+    c4: {
+      eyebrow:'chemistry', title:'Which one runs out first.',
+      q: '<span class="n">0.3</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">C</span> <span class="o">reacts</span> <span class="o">with</span> <span class="n">0.5</span> <span class="o">mol</span> <span class="o">of</span> <span class="x">O</span><sub class="p">2</sub>   <span class="o">&#183;</span>   <span class="n">2</span><span class="x">C</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">C</span><span class="x">O</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Limiting reagent questions look like they need judgement and they need arithmetic. Work out what each reactant could make on its own, then take the smaller answer.'},
+        {say:'Read the ratio off the balanced equation first. Two carbons to one oxygen molecule to two carbon monoxides.',
+         eq: '<span class="x">C</span> <span class="o">:</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">:</span> <span class="x">C</span><span class="x">O</span> <span class="o">=</span> <span class="n">2</span> <span class="o">:</span> <span class="n">1</span> <span class="o">:</span> <span class="n">2</span>'},
+        {say:'What could the carbon make. The ratio of C to CO is 2 to 2, so one for one.',
+         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span> <span class="o">could</span> <span class="o">make</span> <span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+        {say:'What could the oxygen make. The ratio of O2 to CO is 1 to 2, so double it.',
+         eq: '<span class="n">0.5</span> <span class="o">mol</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">could</span> <span class="o">make</span> <span class="n">1.0</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>',
+         art:function(){ return sceneLimit(); }},
+        {say:'The carbon runs out first, so the carbon decides. You get the smaller of the two.',
+         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+        {say:'And that is the whole method. Never compare the raw amounts, because the ratio is doing the work. Here there is more oxygen than carbon and the carbon is still the one that runs out.'}
+      ]
+    },
+    c5: {
+      eyebrow:'chemistry', title:'Shapes, by counting.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'VSEPR sounds like theory and it is counting. Everything around the central atom pushes everything else as far away as it can get, and lone pairs push hardest.'},
+        {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
+        {say:'Everything here is decided by two numbers. Pick what is around the centre, and see which shape it forces.',
+         art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,3,1], 'Not that one. Count the bonds and the lone pairs again, and remember the lone pairs take up room.'); }},
+        {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.',
+         art:function(){ return sceneShapes(); }}
+      ]
+    },
+    c6: {
+      eyebrow:'chemistry', title:'Which kind of bond.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Three kinds, and telling them apart is one question: are the atoms sharing, and if so, are they sharing fairly.'},
+        {say:'Three kinds of bond, three pairs of atoms. See if you can match them up before reading anything.',
+         art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1], 'Not that one. Ask whether they are sharing at all, and if so whether they share fairly.'); }},
+        {say:'The quickest route through a bonding question: metal with non-metal is ionic, two identical atoms is non-polar, and two different non-metals is polar.'}
+      ]
+    },
+    c7: {
+      eyebrow:'chemistry', title:'What makes a hydrogen bond.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Hydrogen bonding gets asked about constantly because it explains boiling points, and it has the narrowest rule in the module.'},
+        {say:'The rule: hydrogen attached DIRECTLY to nitrogen, oxygen or fluorine. Those three. Not merely present in the molecule, attached to the hydrogen.',
+         eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="o">or</span> <span class="x">F</span>'},
+        {say:'Only some of these can hydrogen bond. Have a guess at which, then check yourself against each one.',
+         art:function(){ return pickall([['HF',true,'Yes. Hydrogen bonding needs H attached directly to N, O or F, and this is H attached to F. Those three and nothing else.'],['HBr',false,'No. Bromine is not on the list. It is a bigger atom and does not pull hard enough, so this gets ordinary dipole attraction rather than hydrogen bonding.'],['CH4',false,'No. Carbon is not on the list either, and there is nothing here for a hydrogen bond to reach towards.'],['KCl',false,'No, and for a different reason: this is ionic, so there are no molecules to attract one another in the first place.']], true); }},
+        {say:'And the reason it matters. Among MOLECULES, hydrogen bonding is the strongest of the forces between them, so a molecular compound that has it needs the most energy to pull apart and boils highest. Keep the comparison to molecules: an ionic solid like potassium chloride is held by full charges rather than by forces between molecules, and it beats all of them.'}
+      ]
+    },
+    c8: {
+      eyebrow:'chemistry', title:'Adding reactions together.',
+      q: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'You are given two reactions and asked about a third. The trick is that reactions add up like ordinary sums, and so do their energies.'},
+        {say:'Write down what you have.',
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'And the second.',
+         eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.',
+         art:function(){ return sceneEnergy(); }},
+        {say:'What survives is nitrogen and two oxygens on the left, and two nitrogen dioxides on the right, which is exactly the reaction you were asked about.',
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="o">to</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
+        {say:'So add the two energies the same way.',
+         eq: '<span class="n">180</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">112</span><span class="o">)</span> <span class="o">=</span> <span class="n">68</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'If a reaction has to be reversed to make things cancel, flip the sign of its energy too. And if it has to be doubled, double the energy. That is all of it.'}
+      ]
+    },
+    c9: {
+      eyebrow:'chemistry', title:'Oxidation states.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Oxidation states look arbitrary and they follow a short list of rules applied in order. Working through the list beats guessing every time.'},
+        {say:'An element on its own is always nothing. So in octasulfur, sulfur is zero, however many atoms are stuck together.',
+         eq: '<span class="x">S</span><sub class="p">8</sub>   <span class="o">so</span>   <span class="x">S</span> <span class="o">is</span> <span class="n">0</span>'},
+        {say:'Oxygen is almost always minus two, and hydrogen is almost always plus one. Those two are what let you find everything else.'},
+        {say:'And the whole thing must add to the overall charge, which for a neutral compound is nothing at all.'},
+        {say:'So for carbon dioxide: two oxygens at minus two make minus four, and the total has to be zero.',
+         eq: '<span class="x">C</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">C</span> <span class="o">is</span> <span class="o">+</span><span class="n">4</span>'},
+        {say:'Same list every time: elements are zero, oxygen is minus two, hydrogen is plus one, everything adds to the charge. Work it as a small equation rather than trying to remember the answer.'}
+      ]
+    },
+    c10: {
+      eyebrow:'chemistry', title:'Which way the electrons go.',
+      q: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.28</span> <span class="x">V</span>      <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span>   <span class="o">is</span> <span class="o">&#8722;</span><span class="n">0.74</span> <span class="x">V</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Electrochemistry questions come down to one comparison, and it is the same comparison every time.'},
+        {say:'The more POSITIVE the reduction potential, the more that ion wants to be reduced. Minus 0.28 is more positive than minus 0.74, even though both are negative.',
+         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">is</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>',
+         art:function(){ return sceneGalv(); }},
+        {say:'So nickel takes the electrons, which means nickel is the cathode. Reduction always happens at the cathode.',
+         eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">N</span><span class="x">i</span>'},
+        {say:'Which leaves chromium to give the electrons up, so chromium is the anode and its half reaction runs backwards from how it was printed.',
+         eq: '<span class="o">anode</span><span class="o">:</span> <span class="x">C</span><span class="x">r</span> <span class="o">goes</span> <span class="o">to</span> <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span>'},
+        {say:'And the voltage of the cell is the difference between them, cathode take away anode.',
+         eq: '<span class="o">&#8722;</span><span class="n">0.28</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">0.74</span><span class="o">)</span> <span class="o">=</span> <span class="n">0.46</span> <span class="x">V</span>'},
+        {say:'Two things to hold: reduction happens at the cathode, and a cell voltage that comes out positive means the reaction runs by itself. A negative one would mean it needs pushing.'}
+      ]
+    },
+
+    /* ---- A110 biology, second wave: L04, L09, L12, L13. ---- */
+
+  };
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+  var feed = document.getElementById("feed");
+  var rail = document.getElementById("rail");
+  var nextBtn = document.getElementById("nextBtn");
+  var sheet = document.getElementById("sheet");
+  var sheetText = document.getElementById("sheetText");
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var current = 0, target = 0, locked = false, settleT, safetyT;
+
+  /* Remember where she stopped. Five minute bursts on a phone means she must
+     never have to re-swipe her way back to where she was. Nothing leaves the
+     device: no account, no server, just one line in localStorage. */
+  var STORE = "eonni.pos.chemistry.v1";
+  var restoring = false;
+
+  /* Keyed on a stable card id, never on its position. Adding a lesson used to
+     silently repoint every saved star at whatever moved into that slot. */
+  function cardId(i){
+    var c = cards[i];
+    return (c && c.getAttribute("data-id")) || ("i:" + i);
+  }
+  function indexOfId(id){
+    for(var i = 0; i < cards.length; i++){ if(cardId(i) === id) return i; }
+    return -1;
+  }
+
+  function saveSpot(){
+    if(restoring) return;
+    try{
+      if(current === 0){ window.localStorage.removeItem(STORE); return; }  // back at the top: nothing to resume
+      var d = cards[current] && cards[current]._deck;
+      window.localStorage.setItem(STORE, JSON.stringify({
+        id: cardId(current), s: d ? d.at() : 0
+      }));
+    }catch(e){ /* private mode: carry on without memory */ }
+  }
+
+  function loadSpot(){
+    try{
+      var v = JSON.parse(window.localStorage.getItem(STORE) || "null");
+      if(!v || !v.id) return null;
+      var i = indexOfId(v.id);
+      return i > 0 ? {c: i, s: v.s || 0} : null;
+    }catch(e){ return null; }
+  }
+
+  function forgetSpot(){
+    try{ window.localStorage.removeItem(STORE); }catch(e){}
+  }
+
+  /* ---------------- deck building ---------------- */
+  function buildDeck(card){
+    var key = card.getAttribute("data-mcq");
+    if(!key) return;
+    var cfg = DECKS[key];
+
+    var track = document.createElement("div");
+    track.className = "track";
+    var bar = document.createElement("div");
+    bar.className = "deckbar";
+    var dots = document.createElement("div");
+    dots.className = "dots";
+    var go = document.createElement("button");
+    go.className = "go"; go.type = "button"; go.textContent = "next";
+    bar.appendChild(dots); bar.appendChild(go);
+    card.appendChild(track); card.appendChild(bar);
+
+    var fixedCount = 0;      // slides that belong to the question itself
+    var here = 0;            // slide index in view
+    var autoT = null;
+    var pending = null;      // the check being walked through
+    var optButtons = [];
+
+    function slide(parts){
+      var s = document.createElement("div"); s.className = "slide";
+      var i = document.createElement("div"); i.className = "in";
+      parts.filter(Boolean).forEach(function(p){ i.appendChild(p); });
+      s.appendChild(i); track.appendChild(s);
+      initInteractive(s);
+      return s;
+    }
+    function el(cls, html){ var d=document.createElement("div"); d.className=cls; d.innerHTML=html; return d; }
+
+    /* A slider she just drags is observation. A slider she has committed a guess
+       to first is generation, and generation is where the effect lives. Every
+       option returns the SAME reply on purpose: this asks her to commit, it
+       does not mark her. The slider itself is the answer. */
+    function predictBox(pr){
+      var w = el("checkin", "");
+      w.appendChild(el("say", pr[0]));
+      var c = el("chips", "");
+      pr[1].forEach(function(o){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "chip";
+        b.setAttribute("data-r", pr[2]); b.innerHTML = o;
+        c.appendChild(b);
+      });
+      w.appendChild(c);
+      var r = el("creply", ""); r.setAttribute("data-reply", "");
+      w.appendChild(r);
+      return w;
+    }
+    function qhead(){ return cfg.q ? el("qhead", cfg.q) : null; }
+
+    function makeOpts(){
+      var box = document.createElement("div"); box.className = "opts";
+      optButtons = [];
+      cfg.options.forEach(function(html, n){
+        var b = document.createElement("button");
+        b.type="button"; b.className="opt"; b.innerHTML = html;
+        b.addEventListener("click", function(){ pick(n, b); });
+        box.appendChild(b); optButtons.push(b);
+      });
+      return box;
+    }
+
+    // opening slide: the question, big, with its picture if it has one
+    var open = [ el("eyebrow", cfg.eyebrow) ];
+    if(cfg.title) open.push(el("say", cfg.title));
+    open.push(el("say" + (cfg.q ? " quietly" : ""), cfg.steps[0].say));
+    if(cfg.q) open.push(el("eq", cfg.q));
+    if(cfg.steps[0].art) open.push(el("art", cfg.steps[0].art()));
+    slide(open);
+
+    // one slide per remaining step
+    cfg.steps.slice(1).forEach(function(st){
+      if(st.predict) slide([ qhead(), predictBox(st.predict) ]);
+      var parts = [ qhead() ];
+      if(st.aha){
+        var a = document.createElement("div"); a.className = "aha";
+        a.innerHTML = "<em>" + st.aha[0] + "</em><span class='body'>" + st.aha[1] + "</span>";
+        parts.push(a);
+      }
+      if(st.say) parts.push(el("say" + (st.opts ? " quietly" : ""), st.say));
+      if(st.eq)  parts.push(el("eq small", st.eq));
+      if(st.art) parts.push(el("art", st.art()));
+      if(st.opts) parts.push(makeOpts());
+      slide(parts);
+    });
+    fixedCount = track.children.length;
+
+    function clearCheck(){
+      while(track.children.length > fixedCount){
+        track.removeChild(track.lastChild);
+      }
+    }
+
+    function pick(n, btn, move){
+      stopAuto();
+      clearCheck();
+      optButtons.forEach(function(b){ b.classList.remove("picked"); b.classList.remove("isit"); });
+      btn.classList.add("picked");
+
+      pending = cfg.check(n);
+      pending.btn = btn;
+      pending.steps.forEach(function(st){
+        var parts = [ qhead(), el("work", st.work) ];
+        if(st.art) parts.push(el("art", st.art));
+        slide(parts);
+      });
+      var vparts = [ qhead() ];
+      if(pending.art) vparts.push(el("art", pending.art));
+      vparts.push(el("verdict" + (pending.ok ? " yes" : ""), pending.verdict));
+      slide(vparts);
+      if(pending.ok) btn.classList.add("isit");
+
+      drawDots();
+      if(move === false){ syncLabel(); }               // she arrived, do not shove her
+      else { window.setTimeout(function(){ goSlide(fixedCount); }, 220); }
+    }
+
+    function drawDots(){
+      dots.innerHTML = "";
+      for(var k = 0; k < track.children.length; k++){
+        var d = document.createElement("i");
+        if(k === here) d.className = "on";
+        dots.appendChild(d);
+      }
+    }
+
+    function goSlide(i){
+      if(i < 0) i = 0;
+      if(i > track.children.length - 1) i = track.children.length - 1;
+      track.scrollTo({ left: track.children[i].offsetLeft, behavior: calm ? "auto" : "smooth" });
+    }
+
+    /* At the end of a deck the button should just take her onward, not tell
+       her to do it herself. The only time it does nothing is when it is
+       genuinely her turn to tap an answer. */
+    function syncLabel(){
+      var last = track.children.length - 1;
+      var onOpts = !!track.children[here].querySelector(".opts");
+      go.hidden = false;                  // reset first, or it stays hidden forever
+      go.classList.remove("quiet");
+      go.classList.remove("done");
+      if(onOpts && !pending){
+        go.hidden = true;                 // the options are obviously tappable
+        return;
+      }
+      if(here < last){ go.textContent = "next"; return; }
+      go.textContent = "okay, what\'s next";
+      go.classList.add("done");
+    }
+
+    track.addEventListener("scroll", function(){
+      var w = track.clientWidth || 1;
+      var i = Math.round(track.scrollLeft / w);
+      if(i !== here){ here = i; drawDots(); syncLabel(); maybeAutoPick(); saveSpot(); }
+    }, {passive:true});
+
+    go.addEventListener("click", function(){
+      stopAuto();
+      if(go.classList.contains("done")){ goTo(target + 1); return; }   // end of deck: take her onward
+      if(go.classList.contains("quiet")) return;                       // her turn to tap an answer
+      goSlide(here + 1);
+    });
+
+    function stopAuto(){ window.clearTimeout(autoT); autoT = null; }
+
+    /* Nothing advances on its own. Sliding the screen out from under her while
+       she is still reading is worse than any passivity it buys. On the watch-me
+       decks the answer picks itself once she ARRIVES at the options, so she
+       never has to choose, but the viewport only ever moves when she moves it. */
+    function maybeAutoPick(){
+      stopAuto();
+      if(cfg.auto === null || pending) return;
+      var slide = track.children[here];
+      if(!slide || !slide.querySelector(".opts")) return;
+      autoT = window.setTimeout(function(){
+        if(cards[current] !== card || pending) return;
+        pick(cfg.auto, optButtons[cfg.auto], false);
+      }, 1300);
+    }
+
+    card._deck = { goSlide:function(d){ stopAuto(); goSlide(here + d); },
+                   at: function(){ return here; },
+                   jump: function(i){ stopAuto(); here = Math.min(i, track.children.length - 1);
+                                      track.scrollLeft = track.children[here].offsetLeft;
+                                      drawDots(); syncLabel(); },
+                   stop: stopAuto };
+    card._begin = maybeAutoPick;
+    card._label = (cfg.title || cfg.eyebrow || "").replace(/<[^>]+>/g, "");
+
+    drawDots(); syncLabel();
+  }
+
+  cards.forEach(buildDeck);
+  cards.forEach(function(){ rail.appendChild(document.createElement("i")); });
+
+  /* ---------------- vertical navigation ---------------- */
+  function release(){ window.clearTimeout(safetyT); locked = false; target = current; }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > cards.length - 1) i = cards.length - 1;
+    if(i === target && locked) return;
+    target = i; locked = true;
+    window.clearTimeout(safetyT);
+    safetyT = window.setTimeout(release, 2000);
+    feed.scrollTo({ top: cards[i].offsetTop, behavior: calm ? "auto" : "smooth" });
+    if(calm){ current = i; release(); }
+  }
+
+  feed.addEventListener("scroll", function(){
+    window.clearTimeout(settleT);
+    settleT = window.setTimeout(release, 140);
+  }, {passive:true});
+
+  feed.addEventListener("wheel", function(e){
+    if(sheet.classList.contains("up") || menu.classList.contains("up")) return;
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;     // let sideways wheels through
+    e.preventDefault();
+    if(locked) return;
+    if(Math.abs(e.deltaY) < 3) return;
+    goTo(target + (e.deltaY > 0 ? 1 : -1));
+  }, {passive:false});
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      sheet.classList.remove("up");
+      menu.classList.remove("up");
+      syncScrim();
+      return;
+    }
+    if(sheet.classList.contains("up")) return;
+    if(document.getElementById("menu").classList.contains("up")) return;
+    var deck = cards[current]._deck;
+    if(e.key === "ArrowRight"){ if(deck){ e.preventDefault(); deck.goSlide(1); } return; }
+    if(e.key === "ArrowLeft"){ if(deck){ e.preventDefault(); deck.goSlide(-1); } return; }
+    if(e.key === "ArrowDown" || e.key === "PageDown" || e.key === " "){
+      if(e.key === " " && e.target && e.target.tagName === "BUTTON") return;
+      e.preventDefault(); goTo(target + 1);
+    } else if(e.key === "ArrowUp" || e.key === "PageUp"){
+      e.preventDefault(); goTo(target - 1);
+    } else if(e.key === "Home"){ e.preventDefault(); goTo(0); }
+    else if(e.key === "End"){ e.preventDefault(); goTo(cards.length - 1); }
+  });
+
+  nextBtn.addEventListener("click", function(){ goTo(target + 1); });
+
+  var begun = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.intersectionRatio < 0.55) return;
+      var card = e.target, idx = cards.indexOf(card);
+      card.classList.add("on");
+      current = idx;
+      if(!locked) target = idx;
+      nextBtn.hidden = (idx === cards.length - 1) || !!card._deck;   // decks have their own button
+      Array.prototype.forEach.call(rail.children, function(d,k){ d.classList.toggle("on", k === idx); });
+      cards.forEach(function(c,k){ if(k !== idx && c._deck) c._deck.stop(); });
+      if(card._begin && !begun[idx]){ begun[idx] = true; card._begin(); }
+      saveSpot();
+      if(typeof syncStar === "function") syncStar();
+    });
+  }, {threshold:[0.55]});
+
+  cards.forEach(function(c){ io.observe(c); });
+
+  /* ---------------- the "too much" sheet ---------------- */
+  var FALLBACK = "Nothing on this card matters enough to get stuck on. Swipe past it. You can always come back, and honestly you might not need to. \uad1c\ucc2e\uc544.";
+  document.getElementById("hardBtn").addEventListener("click", function(){
+    var c = cards[current];
+    sheetText.textContent = (c && c.getAttribute("data-easy")) || FALLBACK;
+    sheet.classList.add("up");
+    syncScrim();
+  });
+  document.getElementById("sheetClose").addEventListener("click", function(){
+    sheet.classList.remove("up");
+    syncScrim();
+  });
+
+  /* ---------------- stars and the jump list ---------------- */
+  var STARS = "eonni.stars.chemistry.v1";
+
+  function getStarIds(){
+    try{ return JSON.parse(window.localStorage.getItem(STARS) || "[]"); }
+    catch(e){ return []; }
+  }
+  function setStarIds(a){
+    try{ window.localStorage.setItem(STARS, JSON.stringify(a)); }catch(e){}
+  }
+  function getStars(){                       // as indices, for drawing
+    return getStarIds().map(indexOfId).filter(function(i){ return i >= 0; });
+  }
+
+  var SUBICON = {
+    maths:     '&#128290;',   /* input numbers */
+    biology:   '&#129440;',   /* microbe */
+    chemistry: '&#129514;'    /* test tube */
+  };
+  var LABELS = cards.map(function(c, i){
+    if(c._label) return c._label;
+    var explicit = c.getAttribute("data-label");
+    if(explicit) return explicit;
+    var h = c.querySelector("h1, h2");
+    return h ? h.textContent.trim() : "Card " + (i + 1);
+  });
+
+  var starBtn = document.getElementById("starBtn");
+  var menu = document.getElementById("menu");
+  var mlist = document.getElementById("mlist");
+
+  function syncStar(){
+    starBtn.classList.toggle("on", getStars().indexOf(current) !== -1);
+  }
+
+  starBtn.addEventListener("click", function(){
+    var a = getStarIds(), id = cardId(current), i = a.indexOf(id);
+    if(i === -1) a.push(id); else a.splice(i, 1);
+    setStarIds(a);
+    syncStar();
+  });
+
+  function row(i, stars){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "mitem" + (i === current ? " now" : "");
+    b.innerHTML = '<span class="mnum">' + (i + 1) + '</span>' +
+                  '<span class="mtxt">' + LABELS[i] + '</span>' +
+                  (stars.indexOf(i) !== -1 ? '<span class="mstar">&#9733;</span>' : "");
+    b.addEventListener("click", function(){
+      closeMenu();
+      goTo(i);
+    });
+    return b;
+  }
+
+  function buildMenu(){
+    var stars = getStars();
+    mlist.innerHTML = "";
+    if(stars.length){
+      var g = document.createElement("div");
+      g.className = "mgroup"; g.textContent = "saved";
+      mlist.appendChild(g);
+      stars.slice().sort(function(a, b){ return a - b; }).forEach(function(i){
+        mlist.appendChild(row(i, stars));
+      });
+      var g2 = document.createElement("div");
+      g2.className = "mgroup"; g2.textContent = "everything";
+      mlist.appendChild(g2);
+    }
+    var sub = null;
+    cards.forEach(function(c, i){
+      var t = c.getAttribute("data-sub") || "maths";
+      if(t !== sub){
+        sub = t;
+        var h = document.createElement("div");
+        h.className = "mgroup subj";
+        h.innerHTML = '<span class="mico">' + SUBICON[t] + '</span>' + t;
+        mlist.appendChild(h);
+      }
+      mlist.appendChild(row(i, stars));
+    });
+  }
+
+  var scrim = document.getElementById("scrim");
+  function anyPanelOpen(){
+    return sheet.classList.contains("up") || menu.classList.contains("up");
+  }
+  function syncScrim(){ scrim.classList.toggle("on", anyPanelOpen()); }
+  scrim.addEventListener("click", function(){
+    sheet.classList.remove("up");
+    menu.classList.remove("up");
+    syncScrim();
+  });
+
+  function openMenu(){
+    sheet.classList.remove("up");
+    document.getElementById("toast").classList.remove("show");
+    buildMenu();
+    menu.classList.add("up");
+    syncScrim();
+    var now = mlist.querySelector(".mitem.now");
+    if(now) now.scrollIntoView({block:"center"});
+  }
+  function closeMenu(){ menu.classList.remove("up"); syncScrim(); }
+
+  document.getElementById("menuBtn").addEventListener("click", openMenu);
+  document.getElementById("menuClose").addEventListener("click", closeMenu);
+
+  cards[0].classList.add("on");
+  syncStar();
+
+  /* Put her back where she was, silently, then quietly offer a way to restart. */
+  (function resume(){
+    var spot = loadSpot();
+    if(!spot || !spot.c) return;
+    if(spot.c >= cards.length - 1){ forgetSpot(); return; }   // she finished it: start fresh
+
+    restoring = true;
+    var toast = document.getElementById("toast");
+
+    window.requestAnimationFrame(function(){
+      feed.scrollTop = cards[spot.c].offsetTop;
+      current = target = spot.c;
+      cards[spot.c].classList.add("on");
+      var d = cards[spot.c]._deck;
+      if(d && spot.s) d.jump(spot.s);
+      window.setTimeout(function(){
+        restoring = false;
+        toast.classList.add("show");
+        window.setTimeout(function(){ toast.classList.remove("show"); }, 6000);
+      }, 350);
+    });
+
+    document.getElementById("restartBtn").addEventListener("click", function(){
+      forgetSpot();
+      window.location.reload();
+    });
+  })();
+})();
+</script>
+
+</body>
+</html>
