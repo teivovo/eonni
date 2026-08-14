@@ -592,6 +592,9 @@
   }
   .pk:hover{border-color:var(--peach)}
   .pk.on{border-color:var(--mint); background:var(--glow)}
+  /* biology options are English sentences rather than equations, so they get
+     the reading font instead of the tabular one. */
+  .pk.prose{font-family:var(--ui); font-size:clamp(13px,3.6vw,15px); line-height:1.45}
   .pk.off{border-color:var(--faint); background:var(--raise)}
 
   </style>
@@ -1028,6 +1031,24 @@
       <p class="rise sub" style="color:var(--peach)">Serene <span class="kr">&#50616;&#45768;</span> &#129382;</p>
     </div>
   </section>
+  <section class="card" data-sub="biology" data-id="p:bio-open">
+    <div class="in">
+      <div class="eyebrow rise">different subject, different game</div>
+      <h1 class="rise">Biology.</h1>
+      <p class="rise">Maths wanted you to run a routine and land on a number. This one wants
+        sentences, and the sentences are marked on their shape as much as their content.</p>
+      <p class="rise sub">Which is good news, because the shape is the same nearly every time
+        and you can learn it in one card. That is the next one.</p>
+    </div>
+  </section>
+  <section class="card deck" data-sub="biology" data-id="d:b0" data-mcq="b0" data-easy="Long biology answers are worth about one mark for the fact and two for the explanation. If your sentence has no because or so that in it, it is not finished."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b1" data-mcq="b1" data-easy="Oxidative phosphorylation makes ATP and water. ATP synthase is turned by protons. One Krebs turn gives 2 CO2, 3 NADH, 1 FADH2, 1 ATP."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b2" data-mcq="b2" data-easy="Lipids are nonpolar. Built in the cytosol, broken down in the mitochondria. Triglycerides store, phospholipids build membranes."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b3" data-mcq="b3" data-easy="A pairs with T using 2 hydrogen bonds, G pairs with C using 3. More bonds means more energy to separate, so G to C holds tighter."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b4" data-mcq="b4" data-easy="Semi-conservative. Helicase breaks the hydrogen bonds to unwind it. Doubling means times 2 per round. The lagging strand needs many RNA primers because it is built in fragments."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b5" data-mcq="b5" data-easy="lacI codes the repressor. One promoter over several genes gives one polycistronic mRNA. No lactose normally means the repressor blocks transcription, so ask which part the mutation has broken."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b6" data-mcq="b6" data-easy="Three sodium out, two potassium in, both against their gradients, so it needs ATP. Two things in opposite directions makes it an antiporter."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules cross the membrane and use receptors inside the cell. Hydrophilic ones cannot get in at all, whatever their shape. Ovary to bloodstream to a distant tissue is endocrine."></section>
 
 </div>
 
@@ -1616,10 +1637,11 @@
   /* Select-all. opts = [[label, isRight, why], ...]. Every option explains
      itself on tap, including the ones that do not belong, so a wrong tap
      still teaches. Nothing is scored and there is nothing to submit. */
-  function pickall(opts){
+  function pickall(opts, prose){
     var s = '<div class="pickall">';
     opts.forEach(function(o, i){
-      s += '<button type="button" class="pk" data-i="' + i + '" data-ok="' + (o[1] ? 1 : 0) +
+      s += '<button type="button" class="pk' + (prose ? ' prose' : '') +
+           '" data-i="' + i + '" data-ok="' + (o[1] ? 1 : 0) +
            '" data-why="' + o[2] + '">' + o[0] + '</button>';
     });
     return s + '<div class="labnote" data-note></div></div>';
@@ -1664,6 +1686,133 @@
   });
 
   var DECKS = {
+
+    /* ---- A110 biology, first wave. Paper on 18 August.
+       Shaped around answer structure rather than recall, because every
+       long question on her sheets is state-and-explain with the marks
+       split one for the fact and two for the because. ---- */
+
+    b0: {
+      eyebrow:'biology', title:'How this paper actually pays.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Biology is not marked the way maths is. There is no working to show and no right number to land on. There is a sentence, and the sentence either earns the marks or it does not.'},
+        {say:'Look at the mark counts on your practice questions. They are almost all in the same shape.',
+         eq: 'state and explain   (3 marks)'},
+        {say:'That split is nearly always the same underneath: one mark for the thing, two marks for the because.',
+         eq: 'name it = 1      why it matters = 2'},
+        {say:'So an answer that stops at the fact has thrown away two thirds of the question. This is the single most expensive habit in the module and it has nothing to do with how much you remember.'},
+        {say:'Here are four answers to the same three-mark question about the Golgi apparatus. Tap each one.'},
+        {art:function(){ return pickall([['Golgi apparatus modifies and packages the protein',true,'One mark. It names the structure and says what it does. But on its own this is a third of a three-mark answer, not the whole thing.'],['Golgi apparatus modifies and packages casein into vesicles, so that it can be transported to the membrane and secreted',true,'Three marks. Structure, what it does, AND what that means for the casein. The words \'so that\' are doing the work. Almost every explain mark in this module is hiding behind a \'so that\' or a \'because\'.'],['Golgi apparatus is important for the cell',false,'No marks. True, and it says nothing. If your sentence would still be true with a different organelle swapped in, it has not earned anything.'],['The Golgi is stacked and flattened in appearance',false,'No marks here, because the question asked for its ROLE. Describing what it looks like answers a question you were not asked, and costs you the time you needed for the one you were.']], true); }},
+        {say:'The pattern to carry into every long question: name it, say what it does, then say <b>so that</b> and finish the sentence. If your answer has no because and no so that in it, it is not finished yet.'}
+      ]
+    },
+    b1: {
+      eyebrow:'biology', title:'Respiration, quickly.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Some of your paper is multiple choice and fill in the blanks, where the whole thing is recall and there is nothing to work out. Fastest marks on the paper if you have them, so they are worth checking first.'},
+        {say:'Tap any of these. Right or wrong, each one tells you why.'},
+        {art:function(){ return pickall([['Oxidative phosphorylation produces ATP and water',true,'Correct. Oxygen is the final electron acceptor and it ends up as water, with ATP made by ATP synthase alongside. Oxygen is consumed here, not produced, which rules out the oxygen option.'],['ATP synthase is driven by the movement of protons',true,'Correct. Protons build up in the intermembrane space and flow back through ATP synthase, which turns like a waterwheel. Electrons drive the pumping, but protons drive the synthase itself.'],['Anaerobic respiration produces more ATP than aerobic',false,'The wrong way round. Aerobic gets roughly thirty-something ATP per glucose, anaerobic gets two. Anaerobic is faster to start, not richer.'],['Glycolysis only happens when oxygen is present',false,'No. Glycolysis is in the cytoplasm and runs with or without oxygen, which is exactly why anaerobic respiration is possible at all.'],['One turn of the Krebs cycle produces two molecules of carbon dioxide',true,'Correct, and worth memorising with its companions: one turn gives 2 CO2, 3 NADH, 1 FADH2 and 1 ATP.']], true); }},
+        {say:'The one worth carrying: 2 carbon dioxide, 3 NADH, 1 FADH2 and 1 ATP per turn of the Krebs cycle. Those four numbers answer a surprising number of questions.'}
+      ]
+    },
+    b2: {
+      eyebrow:'biology', title:'Lipids, quickly.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Same again. Recall rather than reasoning, so it is either there or it is not, and finding out which is the point of doing this now rather than on Tuesday.'},
+        {art:function(){ return pickall([['Lipids are different from the other macromolecules because they are nonpolar',true,'Correct. That single property explains nearly everything else about them: why they store well, why they form membranes, and why they need carrying in the blood.'],['Fatty acid synthesis happens in the cytosol',true,'Correct, and worth pairing with its opposite: synthesis is in the cytosol, breakdown by beta-oxidation is in the mitochondria. Building and breaking happen in different rooms.'],['The major storage form of lipid in adipose tissue is cholesterol',false,'No, that is triglycerides. Cholesterol is a membrane component and a hormone precursor, and it is not the storage form.'],['Beta-oxidation enzymes are in the nucleus',false,'No, the mitochondria. Beta-oxidation feeds acetyl CoA straight into the Krebs cycle, so it happens where the Krebs cycle is.'],['Phospholipids are the primary component of biological membranes',true,'Correct. Two tails that hate water and a head that likes it, which is the whole reason a bilayer forms at all.']], true); }},
+        {say:'The pairing to hold on to: fats are BUILT in the cytosol and BROKEN in the mitochondria. Two different rooms, and questions like to ask which.'}
+      ]
+    },
+    b3: {
+      eyebrow:'biology', title:'Why G to C holds on tighter.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'A favourite question, and it is answerable from one fact you already have. Which pair takes more energy to pull apart, A with T or G with C.'},
+        {say:'The fact: the two pairs are not held by the same number of hydrogen bonds.',
+         eq: 'A=T has 2      G=C has 3'},
+        {say:'So G to C takes more energy to separate. That is the answer, and on its own it is one mark out of three.'},
+        {say:'The other two marks are the because. More hydrogen bonds means more energy needed to break them, so a region rich in G and C is harder to pull apart and melts at a higher temperature.'},
+        {say:'And that is why it matters, which is where explain questions usually want you to land. Regions that have to open often, like the start of a gene, tend to be A and T rich, because they are cheaper to open.'}
+      ]
+    },
+    b4: {
+      eyebrow:'biology', title:'Replication, four short answers.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Four things get asked about replication over and over, and all four are short. None of them needs a diagram.'},
+        {say:'The model, which is one mark and one word.',
+         eq: 'semi-conservative'},
+        {say:'Meaning each new molecule keeps one old strand and one new one. That sentence is the second mark if they ask you to explain the word.'},
+        {say:'Helicase. It unwinds the double helix by breaking the hydrogen bonds between the base pairs. Name plus action plus what it achieves, which is the usual three-part shape.'},
+        {say:'The counting one. Ten cells, five rounds, and each round doubles.',
+         eq: '<span class="n">10</span> <span class="x">x</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">320</span>'},
+        {say:'And the strand question. RNA primers are needed to start each new piece, and the lagging strand is built in many short fragments rather than one long run, so it needs many primers where the leading strand needs one.',
+         eq: 'lagging strand'},
+        {say:'That is why RNA shows up more against the lagging strand. Every fragment starts with its own primer.'}
+      ]
+    },
+    b5: {
+      eyebrow:'biology', title:'The lac operon.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Operons look intimidating and they are a switch. One switch, a few parts, and the exam asks what happens when a part is broken.'},
+        {say:'The repressor protein is coded by its own gene, sitting apart from the three genes the operon controls. That gene is lacI.',
+         eq: 'lacI codes for the repressor'},
+        {say:'When the operon is transcribed you get ONE mRNA carrying several genes, one after another. The word for that is polycistronic.',
+         eq: 'polycistronic'},
+        {say:'And the explain marks: it is one promoter controlling several genes, so they are transcribed together onto a single mRNA and are switched on and off as a set. That is the whole point of an operon.'},
+        {say:'Then the mutant question. Normally, no lactose means the repressor sits on the operator and blocks transcription. So ask what the mutation has broken.'},
+        {say:'If the mutation stops the repressor binding, or damages the operator it binds to, then nothing blocks transcription and the genes are expressed even with no lactose present. Work out which part is broken, then say what that part normally stops.'}
+      ]
+    },
+    b6: {
+      eyebrow:'biology', title:'The sodium-potassium pump.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'One pump, and almost every question about it comes back to the same two words: against and gradient.'},
+        {say:'It moves three sodium out and two potassium in, and both are moving from where they are scarce to where they are already plentiful.',
+         eq: '3 Na out, 2 K in'},
+        {say:'Which answers the energy question in one line. Moving anything against its concentration gradient does not happen by itself, so it needs ATP. That is active transport, and it is the definition rather than a fact to memorise.'},
+        {say:'Is it an antiporter. Yes, and the reason is the whole word: it carries two different things in OPPOSITE directions at the same time. Same direction would be a symporter.',
+         eq: 'antiporter'},
+        {say:'And the broken pump question. If the pump fails the gradients run down, so the neuron cannot reset itself after firing and cannot fire properly again. Signalling fails, and that is what a seizure looks like at the cell level.'},
+        {say:'Notice the shape of that answer: pump fails, so gradient goes, so no reset, so no signal. A chain of so-thats. That structure is what the three marks are for.'}
+      ]
+    },
+    b7: {
+      eyebrow:'biology', title:'Getting into the cell, or not.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'This one comes up in several disguises and it always turns on one property: can the molecule cross a membrane by itself.'},
+        {say:'The membrane is oily in the middle. So anything oily goes straight through, and anything that likes water does not.',
+         eq: 'hydrophobic crosses, hydrophilic does not'},
+        {say:'Estrogen is a steroid, so it is hydrophobic and it crosses. That is why its receptor is INSIDE the cell rather than on the surface.'},
+        {say:'So when the question asks whether a hydrophilic version of estrogen would work as a drug, the answer is no, and the reason is not about the receptor at all.'},
+        {say:'It cannot cross the membrane, so it never reaches the receptor, so it cannot activate it, however well it would have fitted. Three steps, three marks.'},
+        {say:'And the signalling type. Made in the ovary, carried in the blood, acting on breast tissue somewhere else entirely. Distant target through the bloodstream is endocrine.',
+         eq: 'endocrine'},
+        {say:'Testosterone will not activate an estrogen receptor either. Both are steroids and both get in, but a receptor binds a shape, and the two are not the same shape.'}
+      ]
+    },
 
     /* ---- matrices, partial fractions and trigonometry: the last of A115. ---- */
 
@@ -3980,7 +4129,17 @@
       g2.className = "mgroup"; g2.textContent = "everything";
       mlist.appendChild(g2);
     }
-    cards.forEach(function(c, i){ mlist.appendChild(row(i, stars)); });
+    var sub = null;
+    cards.forEach(function(c, i){
+      var t = c.getAttribute("data-sub") || "maths";
+      if(t !== sub){
+        sub = t;
+        var h = document.createElement("div");
+        h.className = "mgroup"; h.textContent = t;
+        mlist.appendChild(h);
+      }
+      mlist.appendChild(row(i, stars));
+    });
   }
 
   var scrim = document.getElementById("scrim");
