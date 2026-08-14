@@ -1056,6 +1056,26 @@
   <section class="card deck" data-sub="biology" data-id="d:b12" data-mcq="b12" data-easy="DNA is negatively charged because of its phosphate backbone, so it moves towards the positive electrode. Small fragments travel further. A stronger gel slows everything and separates the small ones better."></section>
   <section class="card deck" data-sub="biology" data-id="d:b13" data-mcq="b13" data-easy="It recognises a specific sequence and breaks the phosphodiester bonds. Staggered cuts give sticky ends. Heat denatures it, so the active site loses its shape and can no longer bind."></section>
   <section class="card deck" data-sub="biology" data-id="d:b14" data-mcq="b14" data-easy="High blood sugar means insulin and storage. Low means glucagon and release. Empty stores and still low means gluconeogenesis, building glucose from scratch."></section>
+  <section class="card" data-sub="chemistry" data-id="p:chem-open">
+    <div class="in">
+      <div class="eyebrow rise">third one</div>
+      <h1 class="rise">Chemistry.</h1>
+      <p class="rise">This one sits between the other two. It has routines to run like the maths
+        paper, and explain marks like the biology one.</p>
+      <p class="rise sub">Nearly every calculation in it goes through moles, so that is where
+        this starts. Get that one relationship solid and a surprising amount of the paper opens up.</p>
+    </div>
+  </section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c1" data-mcq="c1" data-easy="Moles is mass divided by molar mass. Count the atoms carefully, and remember a number outside a bracket multiplies everything inside it."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c2" data-mcq="c2" data-easy="Concentration is moles per litre. Work out the moles, convert millilitres to litres, then divide. The unit conversion is where the marks go."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c3" data-mcq="c3" data-easy="Balance carbon first, then hydrogen, and leave oxygen until last because it appears in two places on the right."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c4" data-mcq="c4" data-easy="Work out what each reactant could produce on its own using the ratio, then take the smaller answer. Never compare the raw amounts."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c5" data-mcq="c5" data-easy="Count the bonds and the lone pairs around the central atom. Those two numbers decide the shape. Lone pairs take up space even though you cannot see them."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c6" data-mcq="c6" data-easy="Metal with non-metal is ionic. Two identical atoms is non-polar covalent. Two different non-metals is polar covalent."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c7" data-mcq="c7" data-easy="Hydrogen bonding needs H attached directly to N, O or F. It is the strongest intermolecular force, so it gives the highest boiling point."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c8" data-mcq="c8" data-easy="Add the given reactions so the unwanted things cancel, then add their energies the same way. Reverse a reaction and you flip the sign of its energy."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c9" data-mcq="c9" data-easy="An element on its own is zero. Oxygen is usually -2 and hydrogen +1. Everything must add up to the overall charge, so treat it as a small equation."></section>
+  <section class="card deck" data-sub="chemistry" data-id="d:c10" data-mcq="c10" data-easy="The more positive reduction potential is reduced, and that is the cathode. The other one reverses and is the anode. Cell voltage is cathode minus anode."></section>
 
 </div>
 
@@ -1694,6 +1714,173 @@
 
   var DECKS = {
 
+    /* ---- A105 chemistry. Paper on 20 August. ---- */
+
+    c1: {
+      eyebrow:'chemistry', title:'Moles, in one sentence.',
+      q: '<span class="o">how</span> <span class="o">many</span> <span class="o">moles</span> <span class="o">are</span> <span class="x">i</span><span class="x">n</span> <span class="n">6.84</span> <span class="x">g</span> <span class="x">o</span><span class="x">f</span> <span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Nearly every calculation in this module goes through moles, and there is one relationship underneath all of them.'},
+        {say:'Moles is mass divided by molar mass. If you know two of the three you can always get the third.',
+         eq: '<span class="o">moles</span> <span class="o">=</span> <span class="o">mass</span> <span class="o">/</span> <span class="o">molar</span> <span class="o">mass</span>'},
+        {say:'So the work is the molar mass, and that is counting atoms carefully. Watch the bracket: the 3 outside multiplies everything inside it.',
+         eq: '<span class="x">A</span><span class="x">l</span><sub class="p">2</sub><span class="o">(</span><span class="x">S</span><span class="x">O</span><sub class="p">4</sub><span class="o">)</span><sub class="p">3</sub> <span class="o">=</span> <span class="n">2</span> <span class="x">A</span><span class="x">l</span> <span class="o">+</span> <span class="n">3</span> <span class="x">S</span> <span class="o">+</span> <span class="n">12</span> <span class="x">O</span>'},
+        {say:'Add them up.',
+         eq: '<span class="n">2</span><span class="o">(</span><span class="n">26.98</span><span class="o">)</span> <span class="o">+</span> <span class="n">3</span><span class="o">(</span><span class="n">32.07</span><span class="o">)</span> <span class="o">+</span> <span class="n">12</span><span class="o">(</span><span class="n">16.00</span><span class="o">)</span> <span class="o">=</span> <span class="n">342.17</span>'},
+        {say:'Then divide.',
+         eq: '<span class="n">6.84</span> <span class="o">/</span> <span class="n">342.17</span> <span class="o">=</span> <span class="n">0.02</span> <span class="o">mol</span>'},
+        {say:'The bracket is where the marks go in this topic. Twelve oxygens, not four, because the 3 outside multiplies the 4 inside.'}
+      ]
+    },
+    c2: {
+      eyebrow:'chemistry', title:'Concentration.',
+      q: '<span class="n">18.02</span> <span class="x">g</span> <span class="x">o</span><span class="x">f</span> <span class="x">C</span><sub class="p">6</sub><span class="x">H</span><sub class="p">12</sub><span class="x">O</span><sub class="p">6</sub> <span class="x">i</span><span class="x">n</span> <span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="x">o</span><span class="x">f</span> <span class="o">solution</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">molarity</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Concentration is moles per litre, so this is the mole calculation with one extra step and one unit trap.'},
+        {say:'Moles first, exactly as before. Glucose is 180.16 g per mole.',
+         eq: '<span class="n">18.02</span> <span class="o">/</span> <span class="n">180.16</span> <span class="o">=</span> <span class="n">0.10</span> <span class="o">mol</span>'},
+        {say:'Now the trap, and it costs more marks than anything else here. Molarity is per LITRE, and the question gave you millilitres.',
+         eq: '<span class="n">250</span> <span class="x">m</span><span class="x">L</span> <span class="o">=</span> <span class="n">0.250</span> <span class="x">L</span>'},
+        {say:'Then divide.',
+         eq: '<span class="n">0.10</span> <span class="o">/</span> <span class="n">0.250</span> <span class="o">=</span> <span class="n">0.40</span> <span class="o">mol</span><span class="o">/</span><span class="x">L</span>'},
+        {say:'The same relationship runs backwards for the other kind of question. To make 750 mL of 0.40 mol/L sodium hydroxide, you need 0.40 times 0.750, which is 0.30 mol, and 0.30 times 40.00 gives 12.0 g.'},
+        {say:'Whenever you see millilitres in a concentration question, convert before anything else. Do it as the first line of working, every time.'}
+      ]
+    },
+    c3: {
+      eyebrow:'chemistry', title:'Balancing without guessing.',
+      q: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Balancing feels like trial and error and it does not have to be. There is an order that works nearly every time.'},
+        {say:'Leave oxygen until last, because it appears in two places on the right and will keep changing while you fix the others.'},
+        {say:'Carbon first. Five on the left, so five carbon dioxide.',
+         eq: '<span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub>'},
+        {say:'Then hydrogen. Twelve on the left, and water carries two each, so six waters.',
+         eq: '<span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
+        {say:'Now count the oxygen on the right, which is finally safe to do. Ten in the carbon dioxide plus six in the water.',
+         eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>'},
+        {say:'Oxygen comes in twos, so you need eight of them.',
+         eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
+        {say:'Carbon, then hydrogen, then oxygen last. That order turns a puzzle into a routine, and this topic is worth easy marks once it is a routine.'}
+      ]
+    },
+    c4: {
+      eyebrow:'chemistry', title:'Which one runs out first.',
+      q: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">o</span><span class="x">f</span> <span class="x">C</span> <span class="o">reacts</span> <span class="o">with</span> <span class="n">0.5</span> <span class="o">mol</span> <span class="x">o</span><span class="x">f</span> <span class="x">O</span><sub class="p">2</sub>   <span class="o">&#183;</span>   <span class="n">2</span><span class="x">C</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">C</span><span class="x">O</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Limiting reagent questions look like they need judgement and they need arithmetic. Work out what each reactant could make on its own, then take the smaller answer.'},
+        {say:'Read the ratio off the balanced equation first. Two carbons to one oxygen molecule to two carbon monoxides.',
+         eq: '<span class="x">C</span> <span class="o">:</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">:</span> <span class="x">C</span><span class="x">O</span> <span class="o">=</span> <span class="n">2</span> <span class="o">:</span> <span class="n">1</span> <span class="o">:</span> <span class="n">2</span>'},
+        {say:'What could the carbon make. The ratio of C to CO is 2 to 2, so one for one.',
+         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span> <span class="o">could</span> <span class="o">make</span> <span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+        {say:'What could the oxygen make. The ratio of O2 to CO is 1 to 2, so double it.',
+         eq: '<span class="n">0.5</span> <span class="o">mol</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">could</span> <span class="o">make</span> <span class="n">1.0</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+        {say:'The carbon runs out first, so the carbon decides. You get the smaller of the two.',
+         eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+        {say:'And that is the whole method. Never compare the raw amounts, because the ratio is doing the work. Here there is more oxygen than carbon and the carbon is still the one that runs out.'}
+      ]
+    },
+    c5: {
+      eyebrow:'chemistry', title:'Shapes, by counting.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'VSEPR sounds like theory and it is counting. Everything around the central atom pushes everything else as far away as it can get, and lone pairs push hardest.'},
+        {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
+        {say:'Tap what is around the centre, then tap the shape it makes.',
+         art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,1]); }},
+        {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.'}
+      ]
+    },
+    c6: {
+      eyebrow:'chemistry', title:'Which kind of bond.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Three kinds, and telling them apart is one question: are the atoms sharing, and if so, are they sharing fairly.'},
+        {say:'Tap a pair, then tap what holds it together.',
+         art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1]); }},
+        {say:'The quickest route through a bonding question: metal with non-metal is ionic, two identical atoms is non-polar, and two different non-metals is polar.'}
+      ]
+    },
+    c7: {
+      eyebrow:'chemistry', title:'What makes a hydrogen bond.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Hydrogen bonding gets asked about constantly because it explains boiling points, and it has the narrowest rule in the module.'},
+        {say:'The rule: hydrogen attached DIRECTLY to nitrogen, oxygen or fluorine. Those three. Not merely present in the molecule, attached to the hydrogen.',
+         eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="x">o</span><span class="x">r</span> <span class="x">F</span>'},
+        {say:'Tap each one and see which can.',
+         art:function(){ return pickall([['HF',true,'Yes. Hydrogen bonding needs H attached directly to N, O or F, and this is H attached to F. Those three and nothing else.'],['HBr',false,'No. Bromine is not on the list. It is a bigger atom and does not pull hard enough, so this gets ordinary dipole attraction rather than hydrogen bonding.'],['CH4',false,'No. Carbon is not on the list either, and there is nothing here for a hydrogen bond to reach towards.'],['KCl',false,'No, and for a different reason: this is ionic, so there are no molecules to attract one another in the first place.']], true); }},
+        {say:'And the reason it matters. Hydrogen bonds are the strongest of the intermolecular forces, so the compound that has them needs the most energy to pull apart, and therefore has the highest boiling point. That is the standard three-mark answer.'}
+      ]
+    },
+    c8: {
+      eyebrow:'chemistry', title:'Adding reactions together.',
+      q: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'You are given two reactions and asked about a third. The trick is that reactions add up like ordinary sums, and so do their energies.'},
+        {say:'Write down what you have.',
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'And the second.',
+         eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.'},
+        {say:'What survives is nitrogen and two oxygens on the left, and two nitrogen dioxides on the right, which is exactly the reaction you were asked about.',
+         eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
+        {say:'So add the two energies the same way.',
+         eq: '<span class="n">180</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">112</span><span class="o">)</span> <span class="o">=</span> <span class="n">68</span> <span class="x">k</span><span class="x">J</span>'},
+        {say:'If a reaction has to be reversed to make things cancel, flip the sign of its energy too. And if it has to be doubled, double the energy. That is all of it.'}
+      ]
+    },
+    c9: {
+      eyebrow:'chemistry', title:'Oxidation states.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Oxidation states look arbitrary and they follow a short list of rules applied in order. Working through the list beats guessing every time.'},
+        {say:'An element on its own is always nothing. So in octasulfur, sulfur is zero, however many atoms are stuck together.',
+         eq: '<span class="x">S</span><sub class="p">8</sub>   <span class="x">s</span><span class="x">o</span>   <span class="x">S</span> <span class="x">i</span><span class="x">s</span> <span class="n">0</span>'},
+        {say:'Oxygen is almost always minus two, and hydrogen is almost always plus one. Those two are what let you find everything else.'},
+        {say:'And the whole thing must add to the overall charge, which for a neutral compound is nothing at all.'},
+        {say:'So for carbon dioxide: two oxygens at minus two make minus four, and the total has to be zero.',
+         eq: '<span class="x">C</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">C</span> <span class="x">i</span><span class="x">s</span> <span class="o">+</span><span class="n">4</span>'},
+        {say:'Same list every time: elements are zero, oxygen is minus two, hydrogen is plus one, everything adds to the charge. Work it as a small equation rather than trying to remember the answer.'}
+      ]
+    },
+    c10: {
+      eyebrow:'chemistry', title:'Which way the electrons go.',
+      q: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">N</span><span class="x">i</span>   <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">0.28</span> <span class="x">V</span>      <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">r</span>   <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">0.74</span> <span class="x">V</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Then swipe.'},
+        {say:'Electrochemistry questions come down to one comparison, and it is the same comparison every time.'},
+        {say:'The more POSITIVE the reduction potential, the more that ion wants to be reduced. Minus 0.28 is more positive than minus 0.74, even though both are negative.',
+         eq: '<span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="x">i</span><span class="x">s</span> <span class="o">reduced</span> <span class="o">more</span> <span class="o">readily</span>'},
+        {say:'So nickel takes the electrons, which means nickel is the cathode. Reduction always happens at the cathode.',
+         eq: '<span class="o">cathode</span><span class="o">:</span> <span class="x">N</span><span class="x">i</span><sup class="p">2+</sup> <span class="o">+</span> <span class="n">2</span><span class="x">e</span><span class="o">&#8722;</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">N</span><span class="x">i</span>'},
+        {say:'Which leaves chromium to give the electrons up, so chromium is the anode and its half reaction runs backwards from how it was printed.',
+         eq: '<span class="o">anode</span><span class="o">:</span> <span class="x">C</span><span class="x">r</span> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="x">C</span><span class="x">r</span><sup class="p">3+</sup> <span class="o">+</span> <span class="n">3</span><span class="x">e</span><span class="o">&#8722;</span>'},
+        {say:'And the voltage of the cell is the difference between them, cathode take away anode.',
+         eq: '<span class="o">&#8722;</span><span class="n">0.28</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">0.74</span><span class="o">)</span> <span class="o">=</span> <span class="n">0.46</span> <span class="x">V</span>'},
+        {say:'Two things to hold: reduction happens at the cathode, and a cell voltage that comes out positive means the reaction runs by itself. A negative one would mean it needs pushing.'}
+      ]
+    },
+
     /* ---- A110 biology, second wave: L04, L09, L12, L13. ---- */
 
     b8: {
@@ -1862,7 +2049,7 @@
         {say:'Meaning each new molecule keeps one old strand and one new one. That sentence is the second mark if they ask you to explain the word.'},
         {say:'Helicase. It unwinds the double helix by breaking the hydrogen bonds between the base pairs. Name plus action plus what it achieves, which is the usual three-part shape.'},
         {say:'The counting one. Ten cells, five rounds, and each round doubles.',
-         eq: '<span class="n">10</span> <span class="x">x</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">320</span>'},
+         eq: '<span class="n">10</span> <span class="o">&#215;</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">320</span>'},
         {say:'And the strand question. RNA primers are needed to start each new piece, and the lagging strand is built in many short fragments rather than one long run, so it needs many primers where the leading strand needs one.',
          eq: 'lagging strand'},
         {say:'That is why RNA shows up more against the lagging strand. Every fragment starts with its own primer.'}
@@ -1928,7 +2115,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Before any arithmetic, matrices have a gate: some pairs cannot be multiplied at all, and the exam asks you to say so. That is a mark for writing not possible.'},
         {say:'Write both orders down side by side, rows by columns. The two numbers on the INSIDE decide whether it works. The two on the OUTSIDE are the size of the answer.'},
-        {art:function(){ return pickall([['<span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">1</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">4</span><span class="o">)</span>',true,'Works. The inside numbers are 1 and 1, and they match, so the multiplication is allowed. The answer takes the two OUTSIDE numbers, so it is a 3 by 4.'],['<span class="o">(</span><span class="n">2</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside numbers 3 and 3 match. The answer is the outside pair, a 2 by 3.'],['<span class="o">(</span><span class="n">2</span> <span class="x">x</span> <span class="n">2</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',false,'Does not work. The inside numbers are 2 and 1 and they do not match, so there is nothing to write. Saying \'not possible\' IS the answer to this one, and it earns the mark.'],['<span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside 3 and 3. Answer is 1 by 3. A single row multiplied by a square block gives a single row.']]); }},
+        {art:function(){ return pickall([['<span class="o">(</span><span class="n">3</span> <span class="o">&#215;</span> <span class="n">1</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="o">&#215;</span> <span class="n">4</span><span class="o">)</span>',true,'Works. The inside numbers are 1 and 1, and they match, so the multiplication is allowed. The answer takes the two OUTSIDE numbers, so it is a 3 by 4.'],['<span class="o">(</span><span class="n">2</span> <span class="o">&#215;</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="o">&#215;</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside numbers 3 and 3 match. The answer is the outside pair, a 2 by 3.'],['<span class="o">(</span><span class="n">2</span> <span class="o">&#215;</span> <span class="n">2</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="o">&#215;</span> <span class="n">3</span><span class="o">)</span>',false,'Does not work. The inside numbers are 2 and 1 and they do not match, so there is nothing to write. Saying \'not possible\' IS the answer to this one, and it earns the mark.'],['<span class="o">(</span><span class="n">1</span> <span class="o">&#215;</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="o">&#215;</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside 3 and 3. Answer is 1 by 3. A single row multiplied by a square block gives a single row.']]); }},
         {say:'Inside numbers match, it works. Outside numbers are the answer. That one sentence is the whole of this question type.'}
       ]
     },
@@ -1942,13 +2129,13 @@
         {say:'Take a 2 by 2 times a 2 by 2. For the top-left entry of the answer, use the FIRST row of the left one and the FIRST column of the right one.',
          eq: '<span class="o">first</span> <span class="o">row</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span>   <span class="o">first</span> <span class="o">column</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>'},
         {say:'Multiply the pairs and add.',
-         eq: '<span class="n">3</span><span class="x">x</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>'},
+         eq: '<span class="n">3</span><span class="o">&#215;</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>'},
         {say:'Top-right uses the same first row, but the second column.',
-         eq: '<span class="n">3</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
+         eq: '<span class="n">3</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
         {say:'Bottom-left is the second row with the first column.',
-         eq: '<span class="n">1</span><span class="x">x</span><span class="n">3</span> <span class="o">+</span> <span class="n">7</span><span class="x">x</span><span class="n">5</span> <span class="o">=</span> <span class="n">38</span>'},
+         eq: '<span class="n">1</span><span class="o">&#215;</span><span class="n">3</span> <span class="o">+</span> <span class="n">7</span><span class="o">&#215;</span><span class="n">5</span> <span class="o">=</span> <span class="n">38</span>'},
         {say:'And bottom-right is second row, second column.',
-         eq: '<span class="n">1</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">7</span><span class="x">x</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+         eq: '<span class="n">1</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">7</span><span class="o">&#215;</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
         {say:'So the answer is those four in position. Row tells you which row of the answer, column tells you which column. That is the only bookkeeping there is.',
          eq: '<span class="o">(</span><span class="n">29</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span> <span class="o">/</span> <span class="n">38</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
       ]
@@ -1961,9 +2148,9 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This one hands you a free check and most people walk past it. It says the answer is (m, 1), which means it has already told you the bottom entry.'},
         {say:'Work out the top entry the usual way. First row against the column.',
-         eq: '<span class="n">4</span><span class="x">x</span><span class="n">8</span> <span class="o">+</span> <span class="n">2</span><span class="x">x</span><span class="n">9</span> <span class="o">=</span> <span class="n">32</span> <span class="o">+</span> <span class="n">18</span> <span class="o">=</span> <span class="n">50</span>'},
+         eq: '<span class="n">4</span><span class="o">&#215;</span><span class="n">8</span> <span class="o">+</span> <span class="n">2</span><span class="o">&#215;</span><span class="n">9</span> <span class="o">=</span> <span class="n">32</span> <span class="o">+</span> <span class="n">18</span> <span class="o">=</span> <span class="n">50</span>'},
         {say:'So m is 50. But do the bottom one as well even though it was not asked for.',
-         eq: '<span class="o">&#8722;</span><span class="n">1</span><span class="x">x</span><span class="n">8</span> <span class="o">+</span> <span class="n">1</span><span class="x">x</span><span class="n">9</span> <span class="o">=</span> <span class="n">1</span>'},
+         eq: '<span class="o">&#8722;</span><span class="n">1</span><span class="o">&#215;</span><span class="n">8</span> <span class="o">+</span> <span class="n">1</span><span class="o">&#215;</span><span class="n">9</span> <span class="o">=</span> <span class="n">1</span>'},
         {say:'It comes out as 1, which is exactly what the question said it should be. So the working is right and you can move on without doubting it.'},
         {say:'Any time a question gives you part of the answer, it is handing you a check for free. It costs one line to use.'}
       ]
@@ -2275,7 +2462,7 @@
         {say:'Divide any term by the one before it. Do it twice to check you get the same answer both times.',
          eq: '<span class="n">12</span><span class="o">/</span><span class="n">3</span> <span class="o">=</span> <span class="n">4</span>      <span class="n">48</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'So it multiplies by four each step. The next one is the last one times four.',
-         eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="x">x</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>'},
+         eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="o">&#215;</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>'},
         {say:'The check that tells growth from the other kind: differences here are 9, 36, 144, all different, but the ratios are 4, 4, 4, all the same. Same ratio means exponential.'}
       ]
     },
@@ -2556,7 +2743,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'You are given the two things a line needs: how steep it is and one place it definitely passes through.'},
         {say:'The sheet gives you this shape. The little one and the little two mean the point you were handed.',
-         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="x">y</span><span class="n">1</span> <span class="o">=</span> <span class="x">m</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><span class="n">1</span><span class="o">)</span>'},
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="x">y</span><sub class="p">1</sub> <span class="o">=</span> <span class="x">m</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sub class="p">1</sub><span class="o">)</span>'},
         {say:'Put the three numbers in their slots. Watch the double minus on the y.',
          eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">4</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="o">)</span>'},
         {say:'Which tidies to a plus.',
