@@ -563,7 +563,38 @@
     .card .rise{opacity:1; transform:none}
     .track{scroll-behavior:auto}
   }
-</style>
+
+  /* ---- matching device ---- */
+  .matchwrap{display:flex; flex-direction:column; gap:9px}
+  .mrow{display:flex; gap:8px; align-items:stretch}
+  .mcol{display:flex; flex-direction:column; gap:8px; flex:1 1 0; min-width:0}
+  .mL,.mR{
+    font-family:var(--ui); font-size:clamp(13px,3.5vw,15px); text-align:left;
+    background:var(--raise2); color:var(--ink); border:1px solid var(--edge);
+    border-radius:11px; padding:11px 12px; cursor:pointer; min-height:44px;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mR{font-family:var(--num); font-variant-numeric:tabular-nums}
+  .mL.sel{border-color:var(--peach); background:var(--glow)}
+  .mL.done,.mR.done{border-color:var(--mint); background:var(--raise); color:var(--faint)}
+  .mL:disabled,.mR:disabled{cursor:default}
+
+  /* ---- select-all device ---- */
+  .pickall{display:flex; flex-direction:column; gap:8px}
+  .pk{
+    font-family:var(--num); font-variant-numeric:tabular-nums;
+    font-size:clamp(14px,3.9vw,16px); text-align:left;
+    background:var(--raise2); color:var(--ink); border:1px solid var(--edge);
+    border-radius:11px; padding:12px 13px; cursor:pointer; min-height:46px;
+    transition:border-color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .pk:hover{border-color:var(--peach)}
+  .pk.on{border-color:var(--mint); background:var(--glow)}
+  .pk.off{border-color:var(--faint); background:var(--raise)}
+
+  </style>
 </head>
 <body>
 
@@ -894,6 +925,24 @@
   <section class="card deck" data-id="d:v5" data-mcq="v5" data-easy="The middle letter matching is what lets you add them: BX then XC is the same as BC. Then Pythagoras for the magnitude."></section>
   <section class="card deck" data-id="d:v6" data-mcq="v6" data-easy="Dot product is top times top plus bottom times bottom. Work out the two lengths separately, then put all three into the formula. A negative dot product means the angle is more than 90 degrees."></section>
   <section class="card deck" data-id="d:v7" data-mcq="v7" data-easy="Cover each row in turn and cross-multiply the other two. The middle one goes the other way round. If the question gives you one component already, work it out anyway and use it to check."></section>
+  <section class="card" data-id="p:fod-intro">
+    <div class="in">
+      <div class="eyebrow rise">the one that looks worst</div>
+      <h2 class="rise">You never have to solve one of these.</h2>
+      <p class="rise">Differential equations sound like the hardest thing on the paper. On your
+        paper they are three multiple choice questions, and not one of them asks you to solve
+        anything.</p>
+      <p class="rise sub">They give you a story and three or four combinations, and you pick the
+        one that fits. So this topic is recognising three shapes, and that is all it is.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:fodm" data-mcq="fodm" data-easy="Three shapes only. Minus means it falls. No minus means it climbs. A bracket means it falls to room temperature and stops instead of falling to nothing."></section>
+  <section class="card deck" data-id="d:fodg" data-mcq="fodg" data-easy="Ask where the graph ends up. Falls to nothing is decay. Climbs forever is growth. Falls then flattens above zero is cooling."></section>
+  <section class="card deck" data-id="d:cgpar" data-mcq="cgpar" data-easy="Get every line into y = mx + c form, then compare only the number in front of the x. Same gradient means parallel."></section>
+  <section class="card deck" data-id="d:cg1" data-mcq="cg1" data-easy="Gradient is up divided by along. Do both subtractions in the same order, second point take away first."></section>
+  <section class="card deck" data-id="d:cg2" data-mcq="cg2" data-easy="Use y - y1 = m(x - x1), put the point and the gradient into their slots, then tidy. Check by putting the x back in."></section>
+  <section class="card deck" data-id="d:cg3" data-mcq="cg3" data-easy="Work out the gradient first, then use y - y1 = m(x - x1) with either point. Check your answer using the point you did not use."></section>
+  <section class="card deck" data-id="d:cg4" data-mcq="cg4" data-easy="Divide everything by 3 to get y = 2x + 8. The gradient and the y-intercept can then be read straight off. For the x-intercept, set y to zero and solve."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1483,7 +1532,189 @@
     });
   }
 
+
+  /* Matching. rows = [[left, right, why], ...]; order = the order the right
+     column is shown in, fixed rather than random so it is testable. */
+  function match(rows, order){
+    var L = '<div class="mcol">';
+    rows.forEach(function(r, i){
+      L += '<button type="button" class="mL" data-i="' + i + '">' + r[0] + '</button>';
+    });
+    L += '</div><div class="mcol">';
+    order.forEach(function(i){
+      L += '<button type="button" class="mR" data-i="' + i + '" data-why="' + rows[i][2] + '">' +
+           rows[i][1] + '</button>';
+    });
+    L += '</div>';
+    return '<div class="matchwrap"><div class="mrow">' + L + '</div>' +
+           '<div class="labnote" data-note></div></div>';
+  }
+
+  /* Select-all. opts = [[label, isRight, why], ...]. Every option explains
+     itself on tap, including the ones that do not belong, so a wrong tap
+     still teaches. Nothing is scored and there is nothing to submit. */
+  function pickall(opts){
+    var s = '<div class="pickall">';
+    opts.forEach(function(o, i){
+      s += '<button type="button" class="pk" data-i="' + i + '" data-ok="' + (o[1] ? 1 : 0) +
+           '" data-why="' + o[2] + '">' + o[0] + '</button>';
+    });
+    return s + '<div class="labnote" data-note></div></div>';
+  }
+
+  document.addEventListener("click", function(e){
+    var L = e.target.closest && e.target.closest(".mL");
+    if(L && !L.disabled){
+      var w = L.closest(".matchwrap");
+      Array.prototype.forEach.call(w.querySelectorAll(".mL"), function(n){ n.classList.remove("sel"); });
+      L.classList.add("sel");
+      w.querySelector("[data-note]").innerHTML = "";
+      return;
+    }
+    var R = e.target.closest && e.target.closest(".mR");
+    if(R && !R.disabled){
+      var w2 = R.closest(".matchwrap");
+      var sel = w2.querySelector(".mL.sel");
+      var note = w2.querySelector("[data-note]");
+      if(!sel){ return; }
+      if(sel.getAttribute("data-i") === R.getAttribute("data-i")){
+        sel.classList.remove("sel"); sel.classList.add("done"); sel.disabled = true;
+        R.classList.add("done"); R.disabled = true;
+        note.innerHTML = R.getAttribute("data-why");
+        note.className = "labnote aha";
+      } else {
+        note.innerHTML = "Not that pair. Look at what happens as time goes on: does it climb, fall to nothing, or fall to somewhere and stop.";
+        note.className = "labnote";
+      }
+      return;
+    }
+    var K = e.target.closest && e.target.closest(".pk");
+    if(K){
+      var wrap = K.closest(".pickall");
+      var ok = K.getAttribute("data-ok") === "1";
+      K.classList.remove("on"); K.classList.remove("off");
+      K.classList.add(ok ? "on" : "off");
+      var n2 = wrap.querySelector("[data-note]");
+      n2.innerHTML = K.getAttribute("data-why");
+      n2.className = "labnote" + (ok ? " aha" : "");
+    }
+  });
+
   var DECKS = {
+
+    /* ---- FOD and straight lines. The first two use the matching device and
+       the third uses select-all, because those are the shapes the exam
+       asks these questions in. ---- */
+
+    fodm: {
+      eyebrow:'first order differential equations', title:'Three scenarios, three equations.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Nothing gets solved in this topic. Your paper gives you a story and asks which equation goes with it, so the whole job is telling three shapes apart.'},
+        {say:'There are only three, and they differ by two small things: whether there is a minus, and whether there is a bracket.'},
+        {say:'Tap a story, then tap the equation you think belongs to it.',
+         art:function(){ return match([['A radioactive lump, decaying','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="x">x</span>','Decay. The amount falls, and it falls fastest when there is most left, so the rate depends on x and carries a minus. Solution x = Ae^(-kt), and the graph starts high and slides down towards nothing.'],['Money in an account earning interest','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="x">k</span><span class="x">x</span>','Growth. Same shape, no minus. The more you have, the faster it grows, so it never flattens off. Solution x = Ae^(kt), and the graph climbs forever and gets steeper.'],['Hot kopi cooling in an air-conditioned room','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">c</span><span class="o">)</span>','Cooling. This is the one with the bracket, and the bracket is the whole difference: it cools according to how far ABOVE room temperature it is, not how hot it is. Solution x = c + Ae^(-kt), and the graph falls but stops at room temperature rather than at nothing.']], [2,0,1]); }},
+        {say:'The minus is the difference between going up and going down. The bracket is the difference between falling to nothing and falling to somewhere and stopping.'}
+      ]
+    },
+    fodg: {
+      eyebrow:'first order differential equations', title:'And the same three as graphs.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Same three, drawn instead of written. The exam gives you all three columns at once and asks which row is consistent, so being able to go straight from picture to equation is most of the mark.'},
+        {say:'Same again. Tap the shape, then the solution that draws it.',
+         art:function(){ return match([['Starts high, slides down towards nothing','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Decay. It heads for zero and never quite arrives. Nothing is left in the end.'],['Climbs forever, getting steeper','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="x">k</span><span class="x">t</span></sup>','Growth. No ceiling anywhere in it. If a graph flattens off, this is not the one.'],['Falls, then flattens out above the bottom','<span class="x">x</span> <span class="o">=</span> <span class="x">c</span> <span class="o">+</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Cooling. The c is the floor it settles onto. That is room temperature, and it is why this graph stops falling while the decay one does not.']], [1,2,0]); }},
+        {say:'One question to ask yourself every time: where does it end up. Nothing, forever upwards, or somewhere in between and then flat. Each answer belongs to exactly one of the three.'}
+      ]
+    },
+    cgpar: {
+      eyebrow:'straight lines', title:'Which ones are parallel.',
+      q: '<span class="o">line</span> <span class="x">A</span><span class="x">B</span> <span class="o">is</span> <span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span>   <span class="o">&#183;</span>   <span class="o">which</span> <span class="o">of</span> <span class="o">these</span> <span class="o">are</span> <span class="o">parallel</span> <span class="o">to</span> <span class="x">i</span><span class="x">t</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Parallel means the same steepness. Nothing else about the line matters, so this whole question is: get each one into the y = mx + c shape and look at the m.'},
+        {say:'Some of these are already in that shape and some are hiding. Tap any of them and I will tell you what it really is.'},
+        {art:function(){ return pickall([['<span class="n">3</span><span class="x">y</span> <span class="o">=</span> <span class="n">12</span><span class="x">x</span> <span class="o">+</span> <span class="n">6</span>',false,'Divide every term by 3 first: y = 4x + 2. Its gradient is 4, not 3. Not parallel.'],['<span class="n">4</span><span class="x">y</span> <span class="o">=</span> <span class="n">12</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span>',true,'Divide by 4: y = 3x + 1.25. Gradient 3. Parallel. The number on the end does not matter at all, only the gradient does.'],['<span class="x">y</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span>',false,'Already tidy, and its gradient is plainly 4. Not parallel.'],['<span class="x">y</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>',false,'Gradient 6. Not parallel. Being twice the gradient does not make it parallel, only equal does.'],['<span class="n">6</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">y</span> <span class="o">=</span> <span class="n">10</span>',true,'The messy one, and the reason it is on the paper. Rearrange it: 2y = 6x - 10, then y = 3x - 5. Gradient 3. Parallel.']]); }},
+        {say:'Two of them, B and E. And E is the one worth remembering, because it was the one that did not look like a straight line equation at all until it was rearranged.'}
+      ]
+    },
+    cg1: {
+      eyebrow:'straight lines', title:'The gradient between two points.',
+      q: '<span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">0</span><span class="o">)</span> <span class="o">and</span> <span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">10</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">gradient</span> <span class="o">of</span> <span class="o">the</span> <span class="o">line</span> <span class="o">joining</span> <span class="o">them</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'One formula, and it is on your sheet. The only thing that goes wrong is doing the subtractions in different orders on the top and the bottom.'},
+        {say:'Gradient is how much it climbs divided by how far it goes across. Up over along.',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">0</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
+        {say:'Both subtractions run the same way round: second point take away first, on the top and on the bottom.',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="n">10</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">5</span>'},
+        {say:'So it climbs 5 up for every 1 across. If you had done the top one way and the bottom the other, you would have got minus 5, which is a line sloping the other way entirely.'}
+      ]
+    },
+    cg2: {
+      eyebrow:'straight lines', title:'Building the equation from a point.',
+      q: '<span class="o">gradient</span> <span class="n">4</span><span class="o">,</span> <span class="o">through</span> <span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">equation</span> <span class="o">of</span> <span class="o">the</span> <span class="o">line</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'You are given the two things a line needs: how steep it is and one place it definitely passes through.'},
+        {say:'The sheet gives you this shape. The little one and the little two mean the point you were handed.',
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="x">y</span><span class="n">1</span> <span class="o">=</span> <span class="x">m</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><span class="n">1</span><span class="o">)</span>'},
+        {say:'Put the three numbers in their slots. Watch the double minus on the y.',
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">4</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="o">)</span>'},
+        {say:'Which tidies to a plus.',
+         eq: '<span class="x">y</span> <span class="o">+</span> <span class="n">2</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">24</span>'},
+        {say:'Move the 2 across.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">26</span>'},
+        {say:'Free check, and it takes five seconds. Put x = 6 back in: 24 take 26 is -2, which is the y you were given. It fits, so the line is right.'}
+      ]
+    },
+    cg3: {
+      eyebrow:'straight lines', title:'Two points, no gradient given.',
+      q: '<span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span> <span class="o">and</span> <span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">equation</span> <span class="o">of</span> <span class="o">the</span> <span class="o">line</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This is the two questions before it, stacked. You are not given the gradient, so you work it out first, and then you are back to the previous question.'},
+        {say:'Gradient first. Same order top and bottom.',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
+        {say:'Careful with the top: minus two take away four is minus six, not minus two.',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="o">/</span><span class="n">3</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>'},
+        {say:'Now pick either point, it does not matter which, and use the same shape as before.',
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="n">4</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
+        {say:'Open the bracket. Minus two times minus two is plus four.',
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="n">4</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span>'},
+        {say:'And tidy.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>'},
+        {say:'Check it with the OTHER point, the one you did not use. Put x = 5 in: -10 + 8 = -2. That is the second point, so both are on the line and the answer is right.'}
+      ]
+    },
+    cg4: {
+      eyebrow:'straight lines', title:'Reading a line that is not tidy yet.',
+      q: '<span class="n">3</span><span class="x">y</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span> <span class="o">+</span> <span class="n">24</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">gradient</span> <span class="o">and</span> <span class="o">both</span> <span class="o">intercepts</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Three things asked, and two of them are free once the line is in the right shape. So do that first and do not try to read anything off it before.'},
+        {say:'Divide every term by 3. Every term, including the 24.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>'},
+        {say:'Now the gradient is the number in front of the x. Nothing to work out.',
+         eq: '<span class="o">gradient</span> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'And the y-intercept is the lonely number on the end. Also nothing to work out. That is where it crosses the upright axis.',
+         eq: '<span class="x">y</span><span class="o">&#8722;</span><span class="o">intercept</span> <span class="o">=</span> <span class="n">8</span>'},
+        {say:'The x-intercept is the one that needs a line of working. It is where the line crosses the ground, and on the ground y is nothing.',
+         eq: '<span class="n">0</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>'},
+        {say:'Solve it.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">4</span>'},
+        {say:'Two of the three answers were sitting in the tidied equation waiting to be read. That is what tidying buys you.'}
+      ]
+    },
 
     /* ---- vectors, from the L03-L04 practice sheet ----
        Column vectors written inline, because her own sheet says they can be
@@ -1492,7 +1723,7 @@
 
     v1: {
       eyebrow:'vectors', title:'How long, and which way.',
-      q: '<span class="x">v</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">its</span> <span class="x">m</span><span class="x">a</span><span class="x">g</span><span class="x">n</span><span class="x">i</span><span class="x">t</span><span class="x">u</span><span class="x">d</span><span class="x">e</span> <span class="o">and</span> <span class="x">d</span><span class="x">i</span><span class="x">r</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">i</span><span class="x">o</span><span class="x">n</span>',
+      q: '<span class="x">v</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">its</span> <span class="o">magnitude</span> <span class="o">and</span> <span class="o">direction</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -1502,10 +1733,10 @@
         {say:'So the length is:',
          eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> <span class="n">13.04</span>'},
         {say:'Now direction, and this is where the marks go. First get the basic angle, using the numbers WITHOUT their minus signs.',
-         eq: '<span class="x">b</span><span class="x">a</span><span class="x">s</span><span class="x">i</span><span class="x">c</span> <span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="o">=</span> tan<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="n">11</span><span class="o">/</span><span class="n">7</span><span class="o">)</span> <span class="o">=</span> <span class="n">57.53</span>'},
+         eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> tan<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="n">11</span><span class="o">/</span><span class="n">7</span><span class="o">)</span> <span class="o">=</span> <span class="n">57.53</span>'},
         {say:'Now think about where the arrow actually points. Both numbers are negative, so it goes left and down. That is the bottom-left quarter.'},
         {say:'Measured anticlockwise from the positive x-axis, the bottom-left quarter starts at 180. So add.',
-         eq: '<span class="x">d</span><span class="x">i</span><span class="x">r</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">i</span><span class="x">o</span><span class="x">n</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">57.53</span> <span class="o">=</span> <span class="n">237.53</span>'},
+         eq: '<span class="o">direction</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">57.53</span> <span class="o">=</span> <span class="n">237.53</span>'},
         {say:'One thing to check against your own notes, because it is worth a mark either way. Some questions want the basic angle on its own, which is 57.53. This one asks for it measured anticlockwise from the positive horizontal axis, which is 237.53. Read which one is being asked for, every time.'}
       ]
     },
@@ -1548,7 +1779,7 @@
     },
     v4: {
       eyebrow:'vectors', title:'From two points to a vector.',
-      q: '<span class="x">A</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">7</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>   <span class="x">B</span> <span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">4</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">c</span><span class="x">o</span><span class="x">l</span><span class="x">u</span><span class="x">m</span><span class="x">n</span> <span class="x">v</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">o</span><span class="x">r</span> <span class="x">A</span><span class="x">B</span>',
+      q: '<span class="x">A</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">7</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>   <span class="x">B</span> <span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">4</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">column</span> <span class="o">vector</span> <span class="x">A</span><span class="x">B</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -1564,7 +1795,7 @@
     },
     v5: {
       eyebrow:'vectors', title:'Two hops, one distance.',
-      q: '<span class="x">B</span><span class="x">X</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="x">X</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">m</span><span class="x">a</span><span class="x">g</span><span class="x">n</span><span class="x">i</span><span class="x">t</span><span class="x">u</span><span class="x">d</span><span class="x">e</span> <span class="o">of</span> <span class="o">the</span> <span class="x">r</span><span class="x">e</span><span class="x">s</span><span class="x">u</span><span class="x">l</span><span class="x">t</span><span class="x">a</span><span class="x">n</span><span class="x">t</span> <span class="x">B</span><span class="x">C</span>',
+      q: '<span class="x">B</span><span class="x">X</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="x">X</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">magnitude</span> <span class="o">of</span> <span class="o">the</span> <span class="o">resultant</span> <span class="x">B</span><span class="x">C</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -1582,7 +1813,7 @@
     },
     v6: {
       eyebrow:'vectors', title:'When the answer comes out obtuse.',
-      q: '<span class="x">a</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span>   <span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="x">b</span><span class="x">e</span><span class="x">t</span><span class="x">w</span><span class="x">e</span><span class="x">e</span><span class="x">n</span> <span class="x">t</span><span class="x">h</span><span class="x">e</span><span class="x">m</span>',
+      q: '<span class="x">a</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span>   <span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">angle</span> <span class="o">between</span> <span class="o">them</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -1597,7 +1828,7 @@
         {say:'Now put the three pieces into the formula. Only now, not before.',
          eq: 'cos <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span> <span class="o">/</span> <span class="o">(</span><span class="n">5.83</span> <span class="x">x</span> <span class="n">6.32</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.7593</span>'},
         {say:'And undo the cosine to get the angle back.',
-         eq: '<span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="o">=</span> cos<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="o">&#8722;</span><span class="n">0.7593</span><span class="o">)</span> <span class="o">=</span> <span class="n">139.40</span>'},
+         eq: '<span class="o">angle</span> <span class="o">=</span> cos<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="o">&#8722;</span><span class="n">0.7593</span><span class="o">)</span> <span class="o">=</span> <span class="n">139.40</span>'},
         {say:'More than 90, exactly as the negative dot product promised. That is your own check, built in and free.'}
       ]
     },
@@ -1615,7 +1846,7 @@
         {say:'So the two answers are:',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="n">3</span>    <span class="x">n</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">36</span>'},
         {say:'And now the free part. Do the third number as well, even though it was not asked for. Cover the third row.',
-         eq: '<span class="x">t</span><span class="x">h</span><span class="x">i</span><span class="x">r</span><span class="x">d</span> <span class="o">=</span> <span class="o">(</span><span class="n">8</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>'},
+         eq: '<span class="o">third</span> <span class="o">=</span> <span class="o">(</span><span class="n">8</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>'},
         {say:'The question already told you the third number was 6. It matches, so your other two are almost certainly right. Whenever a question hands you one component for free, it is handing you a check. Use it.'}
       ]
     },
@@ -1680,7 +1911,7 @@
     },
     q4: {
       eyebrow:'from your practice sheet', title:'A number and a sine.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">12</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">12</span>sin<span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
@@ -1688,9 +1919,9 @@
         {say:'The algebra one is the usual rule.',
          eq: '<span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">4</span><span class="x">x</span>'},
         {say:'And your sheet prints the trig one. Sine goes to cosine, and the number in front just stays.',
-         eq: '<span class="n">12</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">12</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'},
+         eq: '<span class="n">12</span>sin<span class="x">x</span>  <span class="o">goes</span> <span class="o">to</span>  <span class="n">12</span>cos<span class="x">x</span>'},
         {say:'Put them together.',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">12</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'}
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">4</span><span class="x">x</span> <span class="o">+</span> <span class="n">12</span>cos<span class="x">x</span>'}
       ]
     },
     q5: {
@@ -1723,13 +1954,13 @@
     },
     q7: {
       eyebrow:'from your practice sheet &#183; highlighted', title:'The short one.',
-      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">3</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">3</span>sin<span class="x">x</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This one is a single line, and it is on your sheet. Do not overthink it.'},
         {say:'Sine becomes cosine. The 3 does not move, does not double, does not go anywhere.',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="x">c</span><span class="x">o</span><span class="x">s</span><span class="x">x</span>'}
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">3</span>cos<span class="x">x</span>'}
       ]
     },
     q8: {
@@ -1865,13 +2096,13 @@
     },
     q16: {
       eyebrow:'differentiation in words', title:'The mortar bomb.',
-      q: '<span class="x">h</span><span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="x">v</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">&#952;</span><span class="o">)</span><span class="x">t</span>   <span class="o">&#183;</span>   <span class="x">v</span> <span class="o">=</span> <span class="n">100</span><span class="o">,</span> <span class="x">&#952;</span> <span class="o">=</span> <span class="n">30</span><span class="o">&#176;</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">t</span> <span class="o">at</span> <span class="o">maximum</span> <span class="o">height</span>',
+      q: '<span class="x">h</span><span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="x">v</span>sin<span class="x">&#952;</span><span class="o">)</span><span class="x">t</span>   <span class="o">&#183;</span>   <span class="x">v</span> <span class="o">=</span> <span class="n">100</span><span class="o">,</span> <span class="x">&#952;</span> <span class="o">=</span> <span class="n">30</span><span class="o">&#176;</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">t</span> <span class="o">at</span> <span class="o">maximum</span> <span class="o">height</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The wording makes it look like a physics question. It is a turning point question with different letters.'},
         {say:'Deal with the messy bracket first, before any calculus. Work out what that number actually is.',
-         eq: '<span class="x">v</span><span class="x">s</span><span class="x">i</span><span class="x">n</span><span class="x">&#952;</span> <span class="o">=</span> <span class="n">100</span> <span class="o">&#215;</span> sin<span class="n">30</span><span class="o">&#176;</span> <span class="o">=</span> <span class="n">50</span>'},
+         eq: '<span class="x">v</span>sin<span class="x">&#952;</span> <span class="o">=</span> <span class="n">100</span> <span class="o">&#215;</span> sin<span class="n">30</span><span class="o">&#176;</span> <span class="o">=</span> <span class="n">50</span>'},
         {say:'So the equation is just this, and now it looks familiar.',
          eq: '<span class="x">h</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">50</span><span class="x">t</span>'},
         {say:'Maximum height means the top of the arc, which means the steepness is zero. So differentiate.',
