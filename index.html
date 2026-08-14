@@ -877,6 +877,23 @@
   <section class="card deck" data-id="d:q16" data-mcq="q16" data-easy="Work out v sin 30 first: it is 50. Then it is an ordinary turning point. Differentiate, set to zero, solve for t."></section>
   <section class="card deck" data-id="d:q17" data-mcq="q17" data-easy="Differentiate first, substitute t = 3 afterwards. The -0.4 comes to the front. The answer is negative because the level is falling."></section>
   <section class="card deck" data-id="d:q18" data-mcq="q18" data-easy="Write the area as A = x(20 - 2x) first. Then differentiate, set to zero to get x = 5, and put x back in to get the area itself."></section>
+  <section class="card" data-id="p:vec-intro">
+    <div class="in">
+      <div class="eyebrow rise">next topic</div>
+      <h2 class="rise">Vectors are just a pair of numbers that point somewhere.</h2>
+      <p class="rise">One says how far across, one says how far up. That is the whole idea, and
+        every question in this topic is doing something small to those numbers.</p>
+      <p class="rise sub">Some have two numbers and some have three. They never mix, and noticing
+        which one you are holding solves half the topic on its own.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:v1" data-mcq="v1" data-easy="Magnitude is Pythagoras on the two numbers. For direction, get the basic angle from tan inverse of the numbers without their signs, then adjust for which quarter the arrow points into."></section>
+  <section class="card deck" data-id="d:v2" data-mcq="v2" data-easy="Add and subtract position by position, top with top. Multiply a vector by a number by multiplying every position. Two-number and three-number vectors never mix."></section>
+  <section class="card deck" data-id="d:v3" data-mcq="v3" data-easy="Multiply out any number in front of a bracket first. Then split it into one small equation per position and solve each separately."></section>
+  <section class="card deck" data-id="d:v4" data-mcq="v4" data-easy="AB means B take away A. Where you are going, minus where you started. It is not on your formula sheet."></section>
+  <section class="card deck" data-id="d:v5" data-mcq="v5" data-easy="The middle letter matching is what lets you add them: BX then XC is the same as BC. Then Pythagoras for the magnitude."></section>
+  <section class="card deck" data-id="d:v6" data-mcq="v6" data-easy="Dot product is top times top plus bottom times bottom. Work out the two lengths separately, then put all three into the formula. A negative dot product means the angle is more than 90 degrees."></section>
+  <section class="card deck" data-id="d:v7" data-mcq="v7" data-easy="Cover each row in turn and cross-multiply the other two. The middle one goes the other way round. If the question gives you one component already, work it out anyway and use it to check."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1467,6 +1484,141 @@
   }
 
   var DECKS = {
+
+    /* ---- vectors, from the L03-L04 practice sheet ----
+       Column vectors written inline, because her own sheet says they can be
+       typed that way, which is how the online paper will take them.
+       Every answer checked with numpy before writing. ---- */
+
+    v1: {
+      eyebrow:'vectors', title:'How long, and which way.',
+      q: '<span class="x">v</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">its</span> <span class="x">m</span><span class="x">a</span><span class="x">g</span><span class="x">n</span><span class="x">i</span><span class="x">t</span><span class="x">u</span><span class="x">d</span><span class="x">e</span> <span class="o">and</span> <span class="x">d</span><span class="x">i</span><span class="x">r</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">i</span><span class="x">o</span><span class="x">n</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two separate jobs in one question. Length first, because that one has no traps in it.'},
+        {say:'Magnitude is Pythagoras. Square both, add, square root. The minus signs disappear when you square them, which is the point.',
+         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">170</span><span class="o">)</span>'},
+        {say:'So the length is:',
+         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> <span class="n">13.04</span>'},
+        {say:'Now direction, and this is where the marks go. First get the basic angle, using the numbers WITHOUT their minus signs.',
+         eq: '<span class="x">b</span><span class="x">a</span><span class="x">s</span><span class="x">i</span><span class="x">c</span> <span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="o">=</span> tan<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="n">11</span><span class="o">/</span><span class="n">7</span><span class="o">)</span> <span class="o">=</span> <span class="n">57.53</span>'},
+        {say:'Now think about where the arrow actually points. Both numbers are negative, so it goes left and down. That is the bottom-left quarter.'},
+        {say:'Measured anticlockwise from the positive x-axis, the bottom-left quarter starts at 180. So add.',
+         eq: '<span class="x">d</span><span class="x">i</span><span class="x">r</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">i</span><span class="x">o</span><span class="x">n</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">57.53</span> <span class="o">=</span> <span class="n">237.53</span>'},
+        {say:'One thing to check against your own notes, because it is worth a mark either way. Some questions want the basic angle on its own, which is 57.53. This one asks for it measured anticlockwise from the positive horizontal axis, which is 237.53. Read which one is being asked for, every time.'}
+      ]
+    },
+    v2: {
+      eyebrow:'vectors', title:'Adding and scaling.',
+      q: '<span class="x">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span><span class="o">,</span> <span class="n">12</span><span class="o">)</span>   <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>   <span class="x">r</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>   <span class="x">s</span> <span class="o">=</span> <span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">2</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">and</span> <span class="x">r</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">s</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Before anything else, notice that p and q have two numbers and r and s have three. Two-number and three-number vectors never mix. If you ever find yourself adding one to the other, something has gone wrong further back.'},
+        {say:'Adding is done position by position. Top with top, bottom with bottom. Nothing lines up diagonally and nothing cancels.',
+         eq: '<span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span><span class="o">+</span><span class="n">2</span><span class="o">,</span> <span class="n">12</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>'},
+        {say:'So:',
+         eq: '<span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="n">8</span><span class="o">)</span>'},
+        {say:'Now the second one. Do the multiplying before the subtracting, exactly like ordinary numbers.',
+         eq: '<span class="n">3</span><span class="x">s</span> <span class="o">=</span> <span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">6</span><span class="o">,</span> <span class="n">15</span><span class="o">)</span>'},
+        {say:'Then subtract position by position. Three positions this time.',
+         eq: '<span class="x">r</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">s</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">&#8722;</span><span class="n">0</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">&#8722;</span><span class="n">6</span><span class="o">,</span> <span class="n">2</span><span class="o">&#8722;</span><span class="n">15</span><span class="o">)</span>'},
+        {say:'Watch the middle one. Minus three take away six is minus nine, not minus three.',
+         eq: '<span class="x">r</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="x">s</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">9</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">13</span><span class="o">)</span>'}
+      ]
+    },
+    v3: {
+      eyebrow:'vectors', title:'Two unknowns, two positions.',
+      q: '<span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="x">y</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">7</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">3</span><span class="o">(</span><span class="n">2</span><span class="x">x</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span> <span class="o">and</span> <span class="x">y</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'It looks like one hard equation. It is actually two easy ones, and they do not talk to each other at all.'},
+        {say:'Do the right-hand side first. The 3 multiplies everything inside.',
+         eq: '<span class="n">3</span><span class="o">(</span><span class="n">2</span><span class="x">x</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">6</span><span class="x">x</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>'},
+        {say:'And add up the left-hand side, position by position.',
+         eq: '<span class="o">(</span><span class="n">5</span><span class="o">+</span><span class="n">7</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">12</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span>'},
+        {say:'Now split it into the two positions. Top equals top.',
+         eq: '<span class="n">12</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'And bottom equals bottom, which has nothing to do with the top.',
+         eq: '<span class="x">y</span> <span class="o">+</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>   <span class="o">so</span>   <span class="x">y</span> <span class="o">=</span> <span class="n">4</span>'},
+        {say:'That is the whole trick with these. One vector equation is really one small equation per position.'}
+      ]
+    },
+    v4: {
+      eyebrow:'vectors', title:'From two points to a vector.',
+      q: '<span class="x">A</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">7</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>   <span class="x">B</span> <span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">4</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">c</span><span class="x">o</span><span class="x">l</span><span class="x">u</span><span class="x">m</span><span class="x">n</span> <span class="x">v</span><span class="x">e</span><span class="x">c</span><span class="x">t</span><span class="x">o</span><span class="x">r</span> <span class="x">A</span><span class="x">B</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This one is a single subtraction, and the only thing that can go wrong is doing it the wrong way round.'},
+        {say:'The rule is: where you are going, take away where you started. So AB is B take away A.',
+         eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="x">B</span> <span class="o">&#8722;</span> <span class="x">A</span>'},
+        {say:'Position by position. Careful with the last two, they both go negative.',
+         eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="o">(</span><span class="n">8</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="n">4</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">,</span> <span class="n">1</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
+        {say:'So:',
+         eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'},
+        {say:'This one is NOT printed on your formula sheet, so it has to live in your head. If you do it the wrong way round you get every sign backwards, which is BA rather than AB.'}
+      ]
+    },
+    v5: {
+      eyebrow:'vectors', title:'Two hops, one distance.',
+      q: '<span class="x">B</span><span class="x">X</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="x">X</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">m</span><span class="x">a</span><span class="x">g</span><span class="x">n</span><span class="x">i</span><span class="x">t</span><span class="x">u</span><span class="x">d</span><span class="x">e</span> <span class="o">of</span> <span class="o">the</span> <span class="x">r</span><span class="x">e</span><span class="x">s</span><span class="x">u</span><span class="x">l</span><span class="x">t</span><span class="x">a</span><span class="x">n</span><span class="x">t</span> <span class="x">B</span><span class="x">C</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Read the letters before you touch the numbers. B to X, then X to C. The X is in the middle of both, so the two hops join up.'},
+        {say:'Because they join, going B to X and then X to C is the same as going straight from B to C. So add them.',
+         eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="x">B</span><span class="x">X</span> <span class="o">+</span> <span class="x">X</span><span class="x">C</span>'},
+        {say:'Position by position.',
+         eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">6</span><span class="o">+</span><span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">,</span> <span class="n">11</span><span class="o">)</span>'},
+        {say:'The question asked for the magnitude, not the vector. So one more step. Pythagoras.',
+         eq: '<span class="o">|</span><span class="x">B</span><span class="x">C</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">11</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">122</span><span class="o">)</span>'},
+        {say:'And that is the answer.',
+         eq: '<span class="o">|</span><span class="x">B</span><span class="x">C</span><span class="o">|</span> <span class="o">=</span> <span class="n">11.05</span>'},
+        {say:'If the letters had not joined up in the middle, you could not have added them. That is the thing being tested here, not the arithmetic.'}
+      ]
+    },
+    v6: {
+      eyebrow:'vectors', title:'When the answer comes out obtuse.',
+      q: '<span class="x">a</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span>   <span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="x">b</span><span class="x">e</span><span class="x">t</span><span class="x">w</span><span class="x">e</span><span class="x">e</span><span class="x">n</span> <span class="x">t</span><span class="x">h</span><span class="x">e</span><span class="x">m</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'There is a formula on your sheet for this. The work is doing its three pieces separately and not trying to hold them all at once.'},
+        {say:'Piece one, the dot product. Multiply the tops together, multiply the bottoms together, then add those two results.',
+         eq: '<span class="x">a</span><span class="o">.</span><span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">18</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span>'},
+        {say:'It is negative. Do not panic and do not assume you have made a mistake. A negative dot product just means the angle is going to be more than 90 degrees.'},
+        {say:'Piece two, the two lengths, one at a time.',
+         eq: '<span class="o">|</span><span class="x">a</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">34</span><span class="o">)</span> <span class="o">=</span> <span class="n">5.83</span>'},
+        {say:'And the other.',
+         eq: '<span class="o">|</span><span class="x">b</span><span class="o">|</span> <span class="o">=</span> sqrt<span class="o">(</span><span class="n">40</span><span class="o">)</span> <span class="o">=</span> <span class="n">6.32</span>'},
+        {say:'Now put the three pieces into the formula. Only now, not before.',
+         eq: 'cos <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span> <span class="o">/</span> <span class="o">(</span><span class="n">5.83</span> <span class="x">x</span> <span class="n">6.32</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.7593</span>'},
+        {say:'And undo the cosine to get the angle back.',
+         eq: '<span class="x">a</span><span class="x">n</span><span class="x">g</span><span class="x">l</span><span class="x">e</span> <span class="o">=</span> cos<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="o">&#8722;</span><span class="n">0.7593</span><span class="o">)</span> <span class="o">=</span> <span class="n">139.40</span>'},
+        {say:'More than 90, exactly as the negative dot product promised. That is your own check, built in and free.'}
+      ]
+    },
+    v7: {
+      eyebrow:'vectors', title:'The cross product, with its own answer check.',
+      q: '<span class="o">(</span><span class="n">8</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="x">m</span><span class="o">,</span> <span class="x">n</span><span class="o">,</span> <span class="n">6</span><span class="o">)</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">m</span> <span class="o">and</span> <span class="x">n</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Cross product is only ever for three-number vectors, and the answer is another three-number vector. It has a pattern, and the pattern is easier than it looks once you see it.'},
+        {say:'For the FIRST number, cover up the first row of both. You are left with the bottom two rows. Cross-multiply them and subtract.',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="n">5</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span> <span class="o">=</span> <span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span> <span class="o">=</span> <span class="n">3</span>'},
+        {say:'For the SECOND number, cover up the second row. Same cross-multiply, but this one goes the other way round. That reversal is the whole trap in this topic.',
+         eq: '<span class="x">n</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">2</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">8</span><span class="o">)</span><span class="o">(</span><span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="n">4</span> <span class="o">&#8722;</span> <span class="n">40</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">36</span>'},
+        {say:'So the two answers are:',
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="n">3</span>    <span class="x">n</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">36</span>'},
+        {say:'And now the free part. Do the third number as well, even though it was not asked for. Cover the third row.',
+         eq: '<span class="x">t</span><span class="x">h</span><span class="x">i</span><span class="x">r</span><span class="x">d</span> <span class="o">=</span> <span class="o">(</span><span class="n">8</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>'},
+        {say:'The question already told you the third number was 6. It matches, so your other two are almost certainly right. Whenever a question hands you one component for free, it is handing you a check. Use it.'}
+      ]
+    },
 
     /* ---- retrieval decks, built from her own A115 practice questions ----
        Slide 0 asks her to attempt it before anything is revealed, because
