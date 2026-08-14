@@ -962,6 +962,27 @@
   <section class="card deck" data-id="d:i7" data-mcq="i7" data-easy="Integrate first and ignore the limits. Then put the top number in, put the bottom number in, and subtract bottom from top."></section>
   <section class="card deck" data-id="d:i8" data-mcq="i8" data-easy="Area means integrate between the two x values. Integrate, put the top number in, put the bottom in, subtract. The answer cannot be negative."></section>
   <section class="card deck" data-id="d:i9" data-mcq="i9" data-easy="Top number take away bottom number. If your area comes out negative, you have almost certainly done it the other way round."></section>
+  <section class="card" data-id="p:qa-intro">
+    <div class="in">
+      <div class="eyebrow rise">two topics, one habit</div>
+      <h2 class="rise">Both of these reward tidying up first.</h2>
+      <p class="rise">Quadratics have to be multiplied out or rearranged before anything can be
+        read off them. Logs have to be recognised as one of three laws before anything can be
+        done to them.</p>
+      <p class="rise sub">In both, the marks are in the first line of working rather than the last.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:qa1" data-mcq="qa1" data-easy="Multiply the brackets out first. Then a, b and c can be read off, c is the y-intercept, and a negative a means a maximum."></section>
+  <section class="card deck" data-id="d:qa2" data-mcq="qa2" data-easy="Set y to zero and use the formula off your sheet. Do the inside of the root first, then remember the plus-or-minus gives two answers."></section>
+  <section class="card deck" data-id="d:qa3" data-mcq="qa3" data-easy="Rearrange to get y on its own first. Then factorise if you can spot it quickly, and use the formula if you cannot."></section>
+  <section class="card deck" data-id="d:qa4" data-mcq="qa4" data-easy="Find the roots, then the line of symmetry is halfway between them. Put that x back into the original equation to get y."></section>
+  <section class="card deck" data-id="d:qa5" data-mcq="qa5" data-easy="Halve the number in front of x, put it in a bracket and square it, then take away the square of that number. The turning point reads straight off."></section>
+  <section class="card deck" data-id="d:qa6" data-mcq="qa6" data-easy="Take the 2 out of the first two terms, complete the square inside, then make sure the 2 multiplies BOTH things in the bracket when you open it up again."></section>
+  <section class="card deck" data-id="d:qa7" data-mcq="qa7" data-easy="Height after a given time means substitute. Maximum height means differentiate, set to zero for the time, then substitute that back to get the height."></section>
+  <section class="card deck" data-id="d:el1" data-mcq="el1" data-easy="Divide each term by the one before. If you always get the same number, that is the multiplier, and the next term is the last one times it."></section>
+  <section class="card deck" data-id="d:el2" data-mcq="el2" data-easy="Logs added means insides multiply. Logs subtracted means insides divide. A power inside comes out to the front."></section>
+  <section class="card deck" data-id="d:el3" data-mcq="el3" data-easy="Work outwards in. Undo the outer log first to get an ordinary log equation, then undo that one. Never both at once."></section>
+  <section class="card deck" data-id="d:el4" data-mcq="el4" data-easy="Take lg of both sides, bring the power out to the front, then divide. It is the same three moves every time."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1620,6 +1641,196 @@
   });
 
   var DECKS = {
+
+    /* ---- quadratics and logs, from the L08-L09 and L13-L14 sheets. ---- */
+
+    qa1: {
+      eyebrow:'quadratics', title:'Open it up before you read it.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Three things get asked about this one and none of them can be answered while it is still in brackets. So that is the first move, every time.'},
+        {say:'Multiply every term in the first bracket by every term in the second. Four multiplications.',
+         eq: '<span class="n">12</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">8</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span>'},
+        {say:'Collect the two x terms and write it in the usual order, highest power first.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">16</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">8</span>'},
+        {say:'Now everything is readable. a is the number in front of x squared, b in front of x, and c is on its own.',
+         eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span>    <span class="x">b</span> <span class="o">=</span> <span class="n">16</span>    <span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
+        {say:'The y-intercept is c. It is where the curve crosses the upright axis, and it needs no working at all.',
+         eq: '<span class="x">y</span><span class="o">&#8722;</span><span class="o">intercept</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
+        {say:'And the shape. a is negative, so the arc opens downward, which makes the turning point a maximum. A hilltop.'},
+        {say:'That is the pattern for this whole topic. Negative a is a hill, positive a is a valley, and you can see it without drawing anything.'}
+      ]
+    },
+    qa2: {
+      eyebrow:'quadratics', title:'Where it crosses the ground.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">14</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">12</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> root<span class="x">s</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Roots means where the curve crosses the ground, and on the ground y is nothing. So set it to zero and solve.'},
+        {say:'Name the three numbers first, before you touch the formula on your sheet.',
+         eq: '<span class="x">a</span> <span class="o">=</span> <span class="n">6</span>    <span class="x">b</span> <span class="o">=</span> <span class="n">14</span>    <span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">12</span>'},
+        {say:'Do the inside of the square root on its own. Watch the double negative: four times six times minus twelve is minus 288, and subtracting that adds it.',
+         eq: '<span class="x">b</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="x">a</span><span class="x">c</span> <span class="o">=</span> <span class="n">196</span> <span class="o">+</span> <span class="n">288</span> <span class="o">=</span> <span class="n">484</span>'},
+        {say:'The root of 484 is a whole number, which is a good sign these questions are built to come out tidy.',
+         eq: 'sqrt<span class="o">(</span><span class="n">484</span><span class="o">)</span> <span class="o">=</span> <span class="n">22</span>'},
+        {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">+</span><span class="o">&#8722;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
+        {say:'The plus-or-minus means do it twice.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">8</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="n">2</span><span class="o">/</span><span class="n">3</span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">36</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
+        {say:'Two roots, and a is positive so this one is a valley. The y-intercept, free as always, is the -12 on the end.'}
+      ]
+    },
+    qa3: {
+      eyebrow:'quadratics', title:'Tidy it before you start.',
+      q: '<span class="x">y</span> <span class="o">+</span> <span class="n">19</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">10</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">10</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> root<span class="x">s</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This is the same question as the last one wearing a disguise. It is not in the usual shape yet, and nothing works until it is.'},
+        {say:'Get y on its own. Everything else moves across and changes sign as it goes.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">10</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">19</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">10</span>'},
+        {say:'Collect the two x terms. Ten take nineteen is minus nine.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">9</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">10</span>'},
+        {say:'Now it is ordinary. This one factorises, which is quicker than the formula when you can spot it: two numbers that multiply to -10 and add to -9.',
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>'},
+        {say:'So either bracket being zero makes the whole thing zero.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">10</span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+        {say:'If you cannot spot the factors in about ten seconds, stop looking and use the formula. It always works and it is never worth staring at.'}
+      ]
+    },
+    qa4: {
+      eyebrow:'quadratics', title:'The mirror line and the bottom.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">8</span><span class="x">x</span> <span class="o">+</span> <span class="n">15</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">line</span> <span class="x">o</span><span class="x">f</span> <span class="o">symmetry</span> <span class="o">and</span> <span class="o">the</span> <span class="o">turning</span> <span class="o">point</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'A parabola is symmetrical, so the turning point sits exactly halfway between the two roots. That gives you a route with no calculus in it at all.'},
+        {say:'Find the roots first. This one factorises: two numbers multiplying to 15 and adding to -8.',
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="o">,</span> <span class="n">5</span>'},
+        {say:'The line of symmetry is halfway between them. Add and halve.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">4</span>'},
+        {say:'That is the x of the turning point too, because the lowest point sits on the mirror line. So put it back into the original for the y.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">16</span> <span class="o">&#8722;</span> <span class="n">32</span> <span class="o">+</span> <span class="n">15</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+        {say:'And there it is.',
+         eq: '<span class="o">turning</span> <span class="o">point</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'},
+        {say:'a is positive, so it is a minimum. And the sheet formula would have given the same answer: -b over 2a is 8 over 2, which is 4. Either route is fine, so use whichever you trust.'}
+      ]
+    },
+    qa5: {
+      eyebrow:'quadratics', title:'Completing the square.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">+</span> <span class="n">3</span>   <span class="o">&#183;</span>   <span class="o">write</span> <span class="x">i</span><span class="x">t</span> <span class="x">a</span><span class="x">s</span> <span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="x">q</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="x">r</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This form is worth having because the turning point falls straight out of it with no work at all. That is the whole reason it is on the paper.'},
+        {say:'Take the number in front of the x and halve it. Minus ten halves to minus five, and that minus five is your q.',
+         eq: '<span class="o">half</span> <span class="x">o</span><span class="x">f</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="x">i</span><span class="x">s</span> <span class="o">&#8722;</span><span class="n">5</span>'},
+        {say:'Write the bracket with it, and square it.',
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'But that bracket is not equal to what you started with. Opening it gives x squared minus ten x plus 25, so it has 25 too many. Take them off again.',
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">25</span>'},
+        {say:'Then bring the +3 from the original back down.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">25</span> <span class="o">+</span> <span class="n">3</span>'},
+        {say:'And tidy.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">22</span>'},
+        {say:'So q is -5 and r is -22. And the free part: the turning point is (5, -22). Flip the sign of the number in the bracket, keep the sign of the one outside.'}
+      ]
+    },
+    qa6: {
+      eyebrow:'quadratics', title:'The one with a number in front.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Same move as the last one with one extra step, and that extra step is where nearly everyone loses the mark. Here is the working with the slip in it.'},
+        {say:'Tap the line where it goes wrong.',
+         art:function(){ return spot(['<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span> <span class="o">+</span> <span class="n">15</span>'], 3, 'The 2 outside has to multiply the -4 as well as the bracket. It should be <b>-8</b>, not -4, so the answer is 2(x + 2)<sup>2</sup> + 7 and not + 11. Everything above this line was right. This is the single most common slip in completing the square when there is a number in front.', ['That is the question as given. Nothing has been done to it.','Correct, and it is the right first move. Take the 2 out of the first two terms only, and leave the 15 outside where it is.','Correct. Half of 4 is 2, so the bracket is (x + 2) squared, and you take away 2 squared to cancel what you added. All inside the outer bracket so far.','']); }},
+        {say:'So the finished version is 2(x + 2) squared + 7, and the turning point is (-2, 7). Whenever there is a number in front of the x squared, check that it multiplied everything inside the outer bracket and not merely the first thing.'}
+      ]
+    },
+    qa7: {
+      eyebrow:'quadratics', title:'The fireworks.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">130</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>   <span class="o">&#183;</span>   <span class="o">height</span> <span class="o">after</span> <span class="n">2</span> <span class="o">seconds</span><span class="o">,</span> <span class="o">and</span> <span class="o">the</span> <span class="o">maximum</span> <span class="o">height</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Two questions, and they need two completely different methods. Read which is being asked before doing anything, because doing the wrong one wastes the time and gets no marks.'},
+        {say:'The first one just wants a number put in. Two seconds, so x is 2.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">260</span> <span class="o">&#8722;</span> <span class="n">20</span> <span class="o">=</span> <span class="n">246</span>'},
+        {say:'So 246 metres after two seconds. No calculus, no formula, nothing clever.'},
+        {say:'The second is different. Maximum height means the top of the arc, where the steepness is zero, so this one does need differentiating.',
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span>'},
+        {say:'Set it to nothing and solve for the time.',
+         eq: '<span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">13</span>'},
+        {say:'That is WHEN it peaks, not how high. The question asked how high, so put the 13 back into the original.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">1690</span> <span class="o">&#8722;</span> <span class="n">845</span> <span class="o">=</span> <span class="n">851</span>'},
+        {say:'851 metres. Watch for that last step, because stopping at x = 13 answers a question that was not asked.'}
+      ]
+    },
+    el1: {
+      eyebrow:'exponentials and logs', title:'Spotting the multiplier.',
+      q: '<span class="n">3</span><span class="o">,</span> <span class="n">12</span><span class="o">,</span> <span class="n">48</span><span class="o">,</span> <span class="n">192</span><span class="o">,</span> <span class="x">q</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">q</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Exponential growth means it multiplies by the same number every step, rather than adding the same number. Find that multiplier and the table finishes itself.'},
+        {say:'Divide any term by the one before it. Do it twice to check you get the same answer both times.',
+         eq: '<span class="n">12</span><span class="o">/</span><span class="n">3</span> <span class="o">=</span> <span class="n">4</span>      <span class="n">48</span><span class="o">/</span><span class="n">12</span> <span class="o">=</span> <span class="n">4</span>'},
+        {say:'So it multiplies by four each step. The next one is the last one times four.',
+         eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="x">x</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>'},
+        {say:'The check that tells growth from the other kind: differences here are 9, 36, 144, all different, but the ratios are 4, 4, 4, all the same. Same ratio means exponential.'}
+      ]
+    },
+    el2: {
+      eyebrow:'exponentials and logs', title:'What the laws are for.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'There are six log laws on your sheet and you do not have to remember any of them. What you do have to do is recognise which one a question is an instance of, and that is what these three are.'},
+        {say:'Tap a question, then the law it is an instance of.',
+         art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log_2 5^4','log m^n = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5^x = 8 from impossible into one line.']], [1,2,0]); }},
+        {say:'Every log question on your paper is one of those three wearing different letters. Adding, subtracting, or a power coming out to the front.'}
+      ]
+    },
+    el3: {
+      eyebrow:'exponentials and logs', title:'A log inside a log.',
+      q: 'log<span class="o">_</span><span class="n">2</span><span class="o">(</span>log<span class="o">_</span><span class="n">3</span> <span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">1</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This looks like the worst question on the sheet and it is two easy ones stacked. Work from the outside inwards and do not try to see the whole thing at once.'},
+        {say:'A log is a question: what power do I raise the base to. So log base 2 of something equals 1 asks what power of 2 gives that something. The answer is 2 to the power 1.',
+         eq: 'log<span class="o">_</span><span class="n">3</span> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span><sup class="p"><span class="n">1</span></sup> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'Now you have an ordinary log equation, and the outer one is gone for good.',
+         eq: 'log<span class="o">_</span><span class="n">3</span> <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'Same move again. What is 3 to the power 2.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">3</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">9</span>'},
+        {say:'Check it backwards, which takes seconds. Log base 3 of 9 is 2, and log base 2 of 2 is 1. It fits.'},
+        {say:'Nested logs are always this: peel the outside, get an ordinary one, peel again. Never two things at once.'}
+      ]
+    },
+    el4: {
+      eyebrow:'exponentials and logs', title:'When x is stuck in the power.',
+      q: '<span class="n">5</span><sup class="p"></sup><span class="x">x</span> <span class="o">=</span> <span class="n">8</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The x is up in the power, which means none of the ordinary moves reach it. You cannot divide it down or take it across. This is the exact problem logs were invented to solve.'},
+        {say:'Take a log of both sides. Any base, as long as it is the same on both, and your calculator has lg built in so use that.',
+         eq: 'lg<span class="o">(</span><span class="n">5</span><sup class="p"></sup><span class="x">x</span><span class="o">)</span> <span class="o">=</span> lg<span class="n">8</span>'},
+        {say:'Now use the third law: a power inside a log comes out to the front. That is the whole move, and it is why the x is now reachable.',
+         eq: '<span class="x">x</span> lg<span class="n">5</span> <span class="o">=</span> lg<span class="n">8</span>'},
+        {say:'It is an ordinary equation now. Divide.',
+         eq: '<span class="x">x</span> <span class="o">=</span> lg<span class="n">8</span><span class="o">/</span>lg<span class="n">5</span>'},
+        {say:'Into the calculator.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="n">1.29</span>'},
+        {say:'Same routine every time: log both sides, bring the power down, divide. The one on your sheet with 3^(x+1) = 12 works identically, and the answer to that one is 1.26.'}
+      ]
+    },
 
     /* ---- integration, off the L21-L22 and L23 practice sheets ----
        Formula sheet first throughout: every standard form is printed on it,
