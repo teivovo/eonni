@@ -267,6 +267,9 @@
   .sline:hover{border-color:var(--peach)}
   .sline:focus-visible{outline:2px solid var(--peach); outline-offset:2px}
   .sline.caught{border-color:var(--mint); background:var(--glow)}
+  /* a tapped line that is NOT the mistake still needs marking, otherwise the
+     note underneath is not anchored to anything she can see. */
+  .sline.touched{border-color:var(--faint); background:var(--raise)}
 
   /* Slicing animation: the one picture that explains what integrating IS.
      Four densities cross-fading, so you watch the slices get thin. */
@@ -1301,10 +1304,15 @@
   };
 
   /* Spot the mistake. She catches it. Nothing buzzes, nothing is marked. */
-  function spot(lines, badIndex, why){
+  /* fine[] carries a real reason for each line that is NOT the mistake. Saying
+     only "that line is fine" is correctness-only feedback, which measures at
+     about g=0.05; saying why it is fine measures at about 0.49. Cheap to write,
+     so it gets written. */
+  function spot(lines, badIndex, why, fine){
     var s = '<div class="spot" data-spot="' + badIndex + '">';
     lines.forEach(function(l, i){
-      s += '<button type="button" class="sline" data-i="' + i + '">' + l + '</button>';
+      var f = (fine && fine[i]) ? ' data-fine="' + fine[i] + '"' : '';
+      s += '<button type="button" class="sline" data-i="' + i + '"' + f + '>' + l + '</button>';
     });
     return s + '<div class="labnote" data-note>' + "" + '</div>' +
            '<span hidden data-why="' + why + '"></span></div>';
@@ -1330,14 +1338,15 @@
     var i = +b.getAttribute("data-i");
     var note = wrap.querySelector("[data-note]");
     Array.prototype.forEach.call(wrap.querySelectorAll(".sline"), function(n){
-      n.classList.remove("caught");
+      n.classList.remove("caught"); n.classList.remove("touched");
     });
     if(i === bad){
       b.classList.add("caught");
       note.innerHTML = wrap.querySelector("[data-why]").getAttribute("data-why");
       note.className = "labnote aha";
     } else {
-      note.textContent = "That line is fine. Keep looking.";
+      b.classList.add("touched");
+      note.innerHTML = b.getAttribute("data-fine") || "That line is fine. Keep looking.";
       note.className = "labnote";
     }
   });
@@ -1484,7 +1493,12 @@
             'divide both sides by -2',
             'x  &gt;  -4',
             'so x is anything above -4'
-          ], 2, 'Dividing by a negative turns the sign round, so it should be <b>x &lt; -4</b>. Everything else was right. This one line is the whole topic.'); }},
+          ], 2, 'Dividing by a negative turns the sign round, so it should be <b>x &lt; -4</b>. Everything else was right. This one line is the whole topic.', [
+            'That is the question exactly as it was handed to you. Nothing has been done to it yet, so there is nothing here to be wrong.',
+            'Right move. To get x on its own you have to undo the -2, and dividing is how you undo a multiply.',
+            '',
+            'This line only says the line above it in words, so it inherits whatever that line said. The damage happened before you got here.'
+          ]); }},
         {say:'Your paper asks it as shopping: clothes priced between $199 and $299, with $26 off. Two inequalities at once, same rules.'}
       ]
     },
@@ -1742,7 +1756,12 @@
             '6 x to the power 1',
             '&#8730;x  =  x to the power 1/2',
             '2/x&#178;  =  2 x to the power -2'
-          ], 1, 'The x went down to the basement, so the power should be <b>-1</b>, not 1. The other two are right. That one line is where most of the lost marks in this topic live.'); }},
+          ], 1, 'The x went down to the basement, so the power should be <b>-1</b>, not 1. The other two are right. That one line is where most of the lost marks in this topic live.', [
+            'That is the starting expression, straight off the question. Nothing has been rewritten yet.',
+            '',
+            'Correct. A root is a fraction power, and the root number goes on the bottom of the fraction. Square root, so 1/2.',
+            'Correct, and it is the same move as the line that went wrong. Down on the bottom means the power comes out negative.'
+          ]); }},
         {say:'You caught it. Nothing else in this topic is harder than that.'}
       ]
     },
@@ -1895,7 +1914,12 @@
             '2x - 6 = 10',
             '2x = 10 - 6',
             'x = 2'
-          ], 2, 'The 6 was being taken away, so it moves across as a plus. It should be 2x = 10 + 6, which makes x = 8. Everything else was right.'); }},
+          ], 2, 'The 6 was being taken away, so it moves across as a plus. It should be 2x = 10 + 6, which makes x = 8. Everything else was right.', [
+            'That is the question as given. Nothing has moved across yet.',
+            'Correct. The 2 has been multiplied through <i>both</i> things in the bracket: 2 times x, and 2 times -3.',
+            '',
+            'This line divides the line above it by 2, and it does that correctly. The damage was done one line earlier.'
+          ]); }},
         {say:'You caught it. That is the same thing markers are doing when they read your working.'},
         {say:'Six down. That is the whole toolkit, and everything after this is those six wearing different clothes.'}
       ]
