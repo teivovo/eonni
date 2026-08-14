@@ -983,6 +983,29 @@
   <section class="card deck" data-id="d:el2" data-mcq="el2" data-easy="Logs added means insides multiply. Logs subtracted means insides divide. A power inside comes out to the front."></section>
   <section class="card deck" data-id="d:el3" data-mcq="el3" data-easy="Work outwards in. Undo the outer log first to get an ordinary log equation, then undo that one. Never both at once."></section>
   <section class="card deck" data-id="d:el4" data-mcq="el4" data-easy="Take lg of both sides, bring the power out to the front, then divide. It is the same three moves every time."></section>
+  <section class="card" data-id="p:last-intro">
+    <div class="in">
+      <div class="eyebrow rise">the last three</div>
+      <h2 class="rise">These three are mostly bookkeeping.</h2>
+      <p class="rise">Matrices are counting rows and columns. Partial fractions are setting the
+        split up correctly and then doing two tiny sums. Trigonometry is knowing there is a
+        second answer.</p>
+      <p class="rise sub">Not one of them is conceptually hard, and all three are places where
+        marks go missing to carelessness rather than to difficulty.</p>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:mx1" data-mcq="mx1" data-easy="Write both orders side by side. If the two inside numbers match it can be multiplied, and the answer is the size of the two outside numbers."></section>
+  <section class="card deck" data-id="d:mx2" data-mcq="mx2" data-easy="Row from the left, column from the right. Multiply the pairs, add them, and that is one entry. Which row and which column tells you where it goes."></section>
+  <section class="card deck" data-id="d:mx3" data-mcq="mx3" data-easy="Work out m the usual row-by-column way. Then work out the entry they already gave you and see if it matches. If it does, your method is right."></section>
+  <section class="card deck" data-id="d:mx4" data-mcq="mx4" data-easy="Determinant first: leading diagonal multiplied minus the other diagonal multiplied. Then swap the leading pair, flip the signs of the other pair, and divide by the determinant."></section>
+  <section class="card deck" data-id="d:mx5" data-mcq="mx5" data-easy="Write it as a matrix times a column. Find the determinant, apply the inverse, and always check your answer back in the original equations."></section>
+  <section class="card deck" data-id="d:pf1" data-mcq="pf1" data-easy="Each bracket on the bottom gets its own fraction. Multiply through, then pick the x that makes one bracket zero to find each letter one at a time."></section>
+  <section class="card deck" data-id="d:pf2" data-mcq="pf2" data-easy="A squared bracket needs two fractions: the bracket, and the bracket squared. Find one letter by substituting, and the other by comparing how many x there are."></section>
+  <section class="card deck" data-id="d:pf3" data-mcq="pf3" data-easy="Same as the first one with t instead of x. Multiply through, then choose t = 5 and t = -1 to kill one letter at a time."></section>
+  <section class="card deck" data-id="d:tr1" data-mcq="tr1" data-easy="A is half the distance from min to max. D is the middle. B is 360 divided by the period. C is the sideways shift."></section>
+  <section class="card deck" data-id="d:tr2" data-mcq="tr2" data-easy="Sine and cosine always sit between -1 and 1. Multiply by the number in front, then add the number on the end. What is inside the bracket does not affect the height."></section>
+  <section class="card deck" data-id="d:tr3" data-mcq="tr3" data-easy="Get sin on its own, take the basic angle from the positive number, then use the quarters to find both answers. There are nearly always two."></section>
+  <section class="card deck" data-id="d:tr4" data-mcq="tr4" data-easy="Sine is positive in the first two quarters, cosine in the first and fourth, tangent in the first and third. Tangent repeats every 180, the other two every 360."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -1641,6 +1664,225 @@
   });
 
   var DECKS = {
+
+    /* ---- matrices, partial fractions and trigonometry: the last of A115. ---- */
+
+    mx1: {
+      eyebrow:'matrices', title:'Can these two even be multiplied.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Before any arithmetic, matrices have a gate: some pairs cannot be multiplied at all, and the exam asks you to say so. That is a mark for writing not possible.'},
+        {say:'Write both orders down side by side, rows by columns. The two numbers on the INSIDE decide whether it works. The two on the OUTSIDE are the size of the answer.'},
+        {art:function(){ return pickall([['<span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">1</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">4</span><span class="o">)</span>',true,'Works. The inside numbers are 1 and 1, and they match, so the multiplication is allowed. The answer takes the two OUTSIDE numbers, so it is a 3 by 4.'],['<span class="o">(</span><span class="n">2</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside numbers 3 and 3 match. The answer is the outside pair, a 2 by 3.'],['<span class="o">(</span><span class="n">2</span> <span class="x">x</span> <span class="n">2</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',false,'Does not work. The inside numbers are 2 and 1 and they do not match, so there is nothing to write. Saying \'not possible\' IS the answer to this one, and it earns the mark.'],['<span class="o">(</span><span class="n">1</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span> <span class="x">x</span> <span class="o">(</span><span class="n">3</span> <span class="x">x</span> <span class="n">3</span><span class="o">)</span>',true,'Works. Inside 3 and 3. Answer is 1 by 3. A single row multiplied by a square block gives a single row.']]); }},
+        {say:'Inside numbers match, it works. Outside numbers are the answer. That one sentence is the whole of this question type.'}
+      ]
+    },
+    mx2: {
+      eyebrow:'matrices', title:'Row into column.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Multiplying is row by column, and the trick that stops it going wrong is doing one entry at a time and saying it out loud as you go.'},
+        {say:'Take a 2 by 2 times a 2 by 2. For the top-left entry of the answer, use the FIRST row of the left one and the FIRST column of the right one.',
+         eq: '<span class="o">first</span> <span class="o">row</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span>   <span class="o">first</span> <span class="o">column</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>'},
+        {say:'Multiply the pairs and add.',
+         eq: '<span class="n">3</span><span class="x">x</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>'},
+        {say:'Top-right uses the same first row, but the second column.',
+         eq: '<span class="n">3</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
+        {say:'Bottom-left is the second row with the first column.',
+         eq: '<span class="n">1</span><span class="x">x</span><span class="n">3</span> <span class="o">+</span> <span class="n">7</span><span class="x">x</span><span class="n">5</span> <span class="o">=</span> <span class="n">38</span>'},
+        {say:'And bottom-right is second row, second column.',
+         eq: '<span class="n">1</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">7</span><span class="x">x</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
+        {say:'So the answer is those four in position. Row tells you which row of the answer, column tells you which column. That is the only bookkeeping there is.',
+         eq: '<span class="o">(</span><span class="n">29</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">3</span> <span class="o">/</span> <span class="n">38</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
+      ]
+    },
+    mx3: {
+      eyebrow:'matrices', title:'The question that checks itself.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This one hands you a free check and most people walk past it. It says the answer is (m, 1), which means it has already told you the bottom entry.'},
+        {say:'Work out the top entry the usual way. First row against the column.',
+         eq: '<span class="n">4</span><span class="x">x</span><span class="n">8</span> <span class="o">+</span> <span class="n">2</span><span class="x">x</span><span class="n">9</span> <span class="o">=</span> <span class="n">32</span> <span class="o">+</span> <span class="n">18</span> <span class="o">=</span> <span class="n">50</span>'},
+        {say:'So m is 50. But do the bottom one as well even though it was not asked for.',
+         eq: '<span class="o">&#8722;</span><span class="n">1</span><span class="x">x</span><span class="n">8</span> <span class="o">+</span> <span class="n">1</span><span class="x">x</span><span class="n">9</span> <span class="o">=</span> <span class="n">1</span>'},
+        {say:'It comes out as 1, which is exactly what the question said it should be. So the working is right and you can move on without doubting it.'},
+        {say:'Any time a question gives you part of the answer, it is handing you a check for free. It costs one line to use.'}
+      ]
+    },
+    mx4: {
+      eyebrow:'matrices', title:'Determinant, then inverse.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Both formulas are on your sheet, and the order matters: the determinant comes first, because the inverse is built on top of it.'},
+        {say:'For a 2 by 2, the determinant is the two on the leading diagonal multiplied, take away the other two multiplied.',
+         eq: '<span class="o">det</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">3</span><span class="o">)</span>'},
+        {say:'Careful with the first pair. Minus times minus is plus.',
+         eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">6</span> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'If that had come out as nothing, there would be no inverse at all, and saying so is the answer. Here it is 2, so carry on.'},
+        {say:'For the inverse: swap the two on the leading diagonal, flip the sign of the other two, and divide everything by the determinant.',
+         eq: '<span class="o">swap</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">flip</span> <span class="n">2</span> <span class="o">and</span> <span class="n">3</span>'},
+        {say:'So it is one over two, times that rearranged block.',
+         eq: '<span class="o">inverse</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">/</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
+        {say:'Which tidies to this.',
+         eq: '<span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">/</span> <span class="o">&#8722;</span><span class="n">1.5</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span>'}
+      ]
+    },
+    mx5: {
+      eyebrow:'matrices', title:'Solving two equations at once.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'A pair of simultaneous equations can be written as one matrix times a column of unknowns. Once it is in that shape, the inverse solves it in a single step.'},
+        {say:'The numbers in front of x and y become the matrix, the unknowns become a column, and the right-hand sides become another column.',
+         eq: '<span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span> <span class="o">/</span> <span class="n">5</span><span class="o">,</span> <span class="n">9</span><span class="o">)</span><span class="o">(</span><span class="x">x</span><span class="o">,</span> <span class="x">y</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">16</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">24</span><span class="o">)</span>'},
+        {say:'Determinant first, always.',
+         eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">27</span> <span class="o">&#8722;</span> <span class="n">35</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
+        {say:'Then multiply the inverse by the right-hand column. Your calculator will do this if it has a matrix mode, and it is worth knowing whether yours does.'},
+        {say:'The answers.',
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">39</span>      <span class="x">y</span> <span class="o">=</span> <span class="n">19</span>'},
+        {say:'And check them in the ORIGINAL equations, not in the matrix. Three times -39 plus seven times 19 is -117 plus 133, which is 16. That is the first line, so it is right.'}
+      ]
+    },
+    pf1: {
+      eyebrow:'partial fractions', title:'What the brackets tell you.',
+      q: '<span class="x">x</span> <span class="o">+</span> <span class="n">21</span> <span class="o">over</span> <span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Partial fractions is splitting one awkward fraction into two easy ones. Almost all of it is setting the split up correctly, and the arithmetic afterwards is short.'},
+        {say:'The rule for the setup is direct: each bracket on the bottom gets its own fraction, with an unknown on top.',
+         eq: '<span class="o">=</span> <span class="x">A</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span>'},
+        {say:'Multiply the whole line by the original bottom, which makes every fraction disappear.',
+         eq: '<span class="x">x</span> <span class="o">+</span> <span class="n">21</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span>'},
+        {say:'Now choose x to kill one letter at a time. Put x = 1, and the B bracket becomes nothing.',
+         eq: '<span class="n">22</span> <span class="o">=</span> <span class="n">9</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="n">22</span><span class="o">/</span><span class="n">9</span>'},
+        {say:'Then x = -8, and this time the A bracket vanishes.',
+         eq: '<span class="n">13</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">9</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">13</span><span class="o">/</span><span class="n">9</span>'},
+        {say:'So the split is done.',
+         eq: '<span class="o">=</span> <span class="n">22</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">1</span><span class="o">)</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="n">13</span><span class="o">/</span><span class="o">(</span><span class="n">9</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span><span class="o">)</span>'},
+        {say:'Choosing the x that makes a bracket zero is the whole method. Never multiply everything out and compare coefficients if you can kill a letter instead.'}
+      ]
+    },
+    pf2: {
+      eyebrow:'partial fractions', title:'When the bracket is squared.',
+      q: '<span class="n">3</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">11</span> <span class="o">over</span> <span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span> <span class="o">squared</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'This one looks like the last one and the setup is different. Getting the setup wrong here is worth more marks than any arithmetic slip.'},
+        {say:'A squared bracket needs TWO fractions, not one: the bracket on its own, and the bracket squared. Both.',
+         eq: '<span class="o">=</span> <span class="x">A</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'Multiply through by the squared bracket.',
+         eq: '<span class="n">3</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">11</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span>'},
+        {say:'Kill A first by putting x = -5.',
+         eq: '<span class="o">&#8722;</span><span class="n">26</span> <span class="o">=</span> <span class="x">B</span>'},
+        {say:'B is found, but no value of x kills B, so use a different move: compare how many x there are on each side. There are 3 on the left and A on the right.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">3</span>'},
+        {say:'Which gives the answer.',
+         eq: '<span class="o">=</span> <span class="n">3</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="n">26</span><span class="o">/</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>'},
+        {say:'The tell is the little 2 on the bottom. Squared bracket means two fractions from that one bracket. Miss it and the question cannot come out.'}
+      ]
+    },
+    pf3: {
+      eyebrow:'partial fractions', title:'The rocket.',
+      q: '<span class="n">34</span><span class="x">t</span> <span class="o">+</span> <span class="n">10</span> <span class="o">over</span> <span class="o">(</span><span class="x">t</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'A word problem, and the maths is the first partial fractions question again with t instead of x. The story changes nothing at all.'},
+        {say:'The question has already done the setup for you, which is a gift. It tells you the answer looks like this.',
+         eq: '<span class="o">=</span> <span class="x">A</span><span class="o">/</span><span class="o">(</span><span class="x">t</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">/</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span>'},
+        {say:'Multiply through.',
+         eq: '<span class="n">34</span><span class="x">t</span> <span class="o">+</span> <span class="n">10</span> <span class="o">=</span> <span class="x">A</span><span class="o">(</span><span class="x">t</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="x">B</span><span class="o">(</span><span class="x">t</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span>'},
+        {say:'Kill B by putting t = 5.',
+         eq: '<span class="n">180</span> <span class="o">=</span> <span class="n">6</span><span class="x">A</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">A</span> <span class="o">=</span> <span class="n">30</span>'},
+        {say:'Then kill A with t = -1.',
+         eq: '<span class="o">&#8722;</span><span class="n">24</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="x">B</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">B</span> <span class="o">=</span> <span class="n">4</span>'},
+        {say:'So A is 30 and B is 4.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">30</span>      <span class="x">B</span> <span class="o">=</span> <span class="n">4</span>'},
+        {say:'Check by putting them back: 30(t+1) + 4(t-5) is 30t + 30 + 4t - 20, which is 34t + 10. That is the top line of the question, so it is right.'}
+      ]
+    },
+    tr1: {
+      eyebrow:'trigonometry', title:'Reading a wave off its description.',
+      q: '<span class="o">max</span> <span class="n">4</span><span class="o">,</span> <span class="o">min</span> <span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="o">two</span> <span class="o">cycles</span> <span class="x">i</span><span class="x">n</span> <span class="n">360</span><span class="o">,</span> <span class="x">n</span><span class="x">o</span> <span class="o">sideways</span> <span class="o">shift</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'Four letters to find, and each one comes from a different feature. None of them need the others, so do them in any order and one at a time.'},
+        {say:'A is the height from the middle to the top. Take the min from the max and halve it.',
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">3</span>'},
+        {say:'D is where the middle line sits. Add them and halve instead.',
+         eq: '<span class="x">D</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">1</span>'},
+        {say:'B is about how squashed it is. Two full cycles in 360 means each one takes 180.',
+         eq: '<span class="o">period</span> <span class="o">=</span> <span class="n">180</span>'},
+        {say:'And B is 360 divided by the period. This is the one people get upside down, so it is worth writing the division out.',
+         eq: '<span class="x">B</span> <span class="o">=</span> <span class="n">360</span><span class="o">/</span><span class="n">180</span> <span class="o">=</span> <span class="n">2</span>'},
+        {say:'C is the sideways shift, and the question says there is none.',
+         eq: '<span class="x">C</span> <span class="o">=</span> <span class="n">0</span>'},
+        {say:'Put the four in their places.',
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">3</span>sin<span class="o">(</span><span class="n">2</span><span class="x">t</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span>'},
+        {say:'A is half the gap, D is the middle, B is 360 over the period. Same three every time, whether it is a sine or a cosine.'}
+      ]
+    },
+    tr2: {
+      eyebrow:'trigonometry', title:'The highest and lowest, without drawing it.',
+      q: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">5</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="o">the</span> <span class="o">maximum</span> <span class="o">and</span> <span class="o">minimum</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'You do not have to draw this or work anything out. Sine and cosine only ever run between minus one and plus one, and everything else in the expression acts on that.'},
+        {say:'The cosine part can be at most 1 and at least -1. That is fixed and it never changes.',
+         eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>'},
+        {say:'The -2 multiplies it, so that part runs between -2 and 2. Note the minus flips which end is which, but the two ends are the same two numbers.',
+         eq: '<span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="n">2</span>'},
+        {say:'Then the +5 lifts the whole thing.',
+         eq: '<span class="o">max</span> <span class="o">=</span> <span class="n">7</span>      <span class="o">min</span> <span class="o">=</span> <span class="n">3</span>'},
+        {say:'The 3 inside the bracket does nothing at all to the answer. It changes how often the wave repeats, not how high it goes, and it is there to see whether you know that.'}
+      ]
+    },
+    tr3: {
+      eyebrow:'trigonometry', title:'The second answer.',
+      q: '<span class="n">4</span>sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">+</span> <span class="n">5</span> <span class="o">=</span> <span class="n">3</span>   <span class="o">&#183;</span>   <span class="o">solve</span> <span class="o">for</span> <span class="x">t</span> <span class="o">between</span> <span class="n">0</span> <span class="o">and</span> <span class="n">360</span>',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The most expensive habit in this topic is stopping after one answer. Between 0 and 360 there are almost always two, and the calculator only ever gives you one of them.'},
+        {say:'Get the sine on its own first, exactly like an ordinary equation.',
+         eq: '<span class="n">4</span>sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>   <span class="x">s</span><span class="x">o</span>   sin<span class="o">(</span><span class="x">t</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.5</span>'},
+        {say:'Now the basic angle. Use the number WITHOUT its minus sign, always.',
+         eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> <span class="n">30</span>'},
+        {say:'The calculator would hand you -30 here, which is outside the range you were asked for, so it is no use as it stands. Work from the basic angle instead.'},
+        {say:'Sine is negative in the bottom half of the circle, which is the third and fourth quarters. Third quarter is 180 plus the basic angle.',
+         eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">30</span> <span class="o">=</span> <span class="n">210</span>'},
+        {say:'Fourth quarter is 360 take away the basic angle.',
+         eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">360</span> <span class="o">&#8722;</span> <span class="n">30</span> <span class="o">=</span> <span class="n">330</span>'},
+        {say:'Both answers, and both inside the range asked for.',
+         eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">210</span> <span class="o">and</span> <span class="n">330</span>'},
+        {say:'Check them if there is time. Sine of 210 is -0.5, and so is sine of 330. Two answers, one mark each, and the second is the one usually left behind.'}
+      ]
+    },
+    tr4: {
+      eyebrow:'trigonometry', title:'Which quarters, and why.',
+      q: null,
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
+        {say:'The whole second-answer problem comes down to knowing where each one is positive. Three facts, and they are different for each.'},
+        {say:'Tap one, then tap where it is positive.',
+         art:function(){ return match([['sin','positive in the 1st and 2nd quarters','Sine is the up-and-down one, and up is positive in the top half. So if sine comes out positive the two answers straddle 90. If it comes out negative they straddle 270.'],['cos','positive in the 1st and 4th quarters','Cosine is the across one, and across is positive on the right-hand side. So a positive cosine gives two answers that straddle 0 and 360, which is why the second one is 360 take away the first.'],['tan','positive in the 1st and 3rd quarters','Tangent repeats every 180 rather than every 360, which is why its second answer is the first one plus 180 and not 360 minus it. It is the odd one out and it is worth remembering as such.']], [2,0,1]); }},
+        {say:'Tangent is the one to watch, because its second answer is plus 180 rather than 360 minus. If you use the sine rule on a tangent question you will lose the second mark every time.'}
+      ]
+    },
 
     /* ---- quadratics and logs, from the L08-L09 and L13-L14 sheets. ---- */
 
