@@ -649,6 +649,21 @@
   .mgroup.subj:first-child{border-top:none; margin-top:0}
   .mico{font-size:19px; line-height:1}
 
+  
+  /* The toast was 195px wide with a 105px button inside it, so the greeting
+     wrapped to three lines. It is the first thing she sees on every return. */
+  .toast{max-width:calc(100vw - 28px); flex-wrap:wrap; row-gap:6px}
+  .toast > span{white-space:nowrap}
+  #restartBtn{flex:0 0 auto}
+
+  
+  /* The opening hint sat underneath the escape button in the bottom-right. */
+  .hint{padding-right:128px}
+
+  
+  /* A sentence was being cut mid-word rather than wrapping. */
+  .linkline{white-space:normal; overflow-wrap:break-word}
+
   </style>
 </head>
 <body>
@@ -1102,7 +1117,7 @@
   <section class="card deck" data-sub="biology" data-id="d:b6" data-mcq="b6" data-easy="Three sodium out, two potassium in, both against their gradients, so it needs ATP. Two things in opposite directions makes it an antiporter."></section>
   <section class="card deck" data-sub="biology" data-id="d:b7" data-mcq="b7" data-easy="Hydrophobic molecules cross the membrane and use receptors inside the cell. Hydrophilic ones cannot get in at all, whatever their shape. Ovary to bloodstream to a distant tissue is endocrine."></section>
   <section class="card deck" data-sub="biology" data-id="d:b8" data-mcq="b8" data-easy="Glycolysis is in the cytosol, the citric acid cycle in the mitochondrial matrix, the electron transport chain on the inner membrane. Per glucose, glycolysis nets 2 ATP and 2 NADH."></section>
-  <section class="card deck" data-sub="biology" data-id="d:b9" data-mcq="b9" data-easy="Km is the substrate concentration that gives half the maximum rate. Low Km means high affinity. It is the number you compare two enzymes on."></section>
+  <section class="card deck" data-sub="biology" data-id="d:b9" data-mcq="b9" data-easy="Km is the substrate concentration that gives half the maximum rate. Low Km means high affinity, which is what the comparison question is asking about."></section>
   <section class="card deck" data-sub="biology" data-id="d:b10" data-mcq="b10" data-easy="Competitive raises Km and leaves Vmax alone. Non-competitive lowers Vmax and leaves Km alone. If more substrate reduces the inhibition, it is competitive."></section>
   <section class="card deck" data-sub="biology" data-id="d:b11" data-mcq="b11" data-easy="Damage: superoxide, hydrogen peroxide, hydroxyl radical. Defence: superoxide dismutase, catalase, glutathione peroxidase, vitamin C. If an enzyme is broken, its substrate builds up."></section>
   <section class="card deck" data-sub="biology" data-id="d:b12" data-mcq="b12" data-easy="DNA is negatively charged because of its phosphate backbone, so it moves towards the positive electrode. Small fragments travel further. A stronger gel slows everything and separates the small ones better."></section>
@@ -1156,10 +1171,7 @@
   <div class="mlist" id="mlist"></div>
 </div>
 
-<div class="toast" id="toast">
-  <span>you came back &#128155;</span>
-  <button id="restartBtn" type="button">from the top</button>
-</div>
+<div class="toast" id="toast"><span>you came back &#128155;</span><button id="restartBtn" type="button">from the top</button></div>
 
 <div class="sheet" id="sheet" role="dialog" aria-label="A gentler version">
   <div class="wrap">
@@ -1369,10 +1381,10 @@
         '<text x="220" y="124" text-anchor="middle" font-size="11" fill="var(--mint)">Ni</text>' +
         '<text x="80" y="142" text-anchor="middle" font-size="9.5" opacity=".7">anode, gives</text>' +
         '<text x="220" y="142" text-anchor="middle" font-size="9.5" opacity=".7">cathode, takes</text>' +
-        '<polygon points="150,10 140,17 150,24" fill="var(--peach)"/>' +
-        '<text x="150" y="38" text-anchor="middle" font-size="9.5" fill="var(--peach)">electrons</text>' +
+        '<polygon points="166,10 176,17 166,24" fill="var(--peach)"/>' +
+        '<text x="150" y="38" text-anchor="middle" font-size="9.5" fill="var(--peach)">electrons, Cr to Ni</text>' +
       '</svg>',
-      'electrons go to the more positive one');
+      'they leave the chromium and arrive at the nickel');
   }
 
   /* the secretion pathway */
@@ -1389,7 +1401,7 @@
       }
     });
     return scene(
-      '<svg viewBox="0 0 300 112" role="img" aria-label="Casein made in the nucleus, folded in the rough ER, packaged by the Golgi and carried out in a vesicle">' +
+      '<svg viewBox="0 0 300 112" role="img" aria-label="The gene read in the nucleus, the protein built and folded at the rough ER, packaged by the Golgi and carried out in a vesicle">' +
         g +
         '<line x1="256" y1="18" x2="256" y2="86" class="stroke" stroke-dasharray="4 3"/>' +
         '<text x="272" y="56" font-size="9.5" opacity=".65" transform="rotate(90 272 56)">OUT</text>' +
@@ -1455,7 +1467,7 @@
     function centre(dx, dy){ return '<circle cx="' + dx + '" cy="' + dy + '" r="7" class="dot pick"/>'; }
     function arm(x1, y1, x2, y2){ return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" class="stroke"/><circle cx="' + x2 + '" cy="' + y2 + '" r="5.4" class="dot"/>'; }
     function lone(x, y){ return '<circle cx="' + x + '" cy="' + y + '" r="7" fill="var(--faint)" opacity=".45"/>'; }
-    var a = '<g transform="translate(38 46)">' + arm(0,0,0,-26) + arm(0,0,-24,14) + arm(0,0,24,14) + arm(0,0,0,26) + centre(0,0) + '</g>' +
+    var a = '<g transform="translate(38 46)">' + arm(0,0,0,-26) + arm(0,0,-25,9) + arm(0,0,25,9) + arm(0,0,0,20) + centre(0,0) + '</g>' +
             '<text x="38" y="98" text-anchor="middle" font-size="8.6">tetrahedral</text>';
     var b = '<g transform="translate(118 46)">' + arm(0,0,-22,16) + arm(0,0,22,16) + lone(0,-20) + centre(0,0) + '</g>' +
             '<text x="118" y="98" text-anchor="middle" font-size="8.6">bent</text>';
@@ -1655,8 +1667,9 @@
     function sy(v){ return top + (hi - v) * u; }
     var pts = [], t;
     for(t = 0; t <= 360; t += 3){
+      var f = o.cos ? Math.cos : Math.sin;
       pts.push((20 + t / 360 * 258).toFixed(1) + ',' +
-               sy((o.A === undefined ? 1 : o.A) * Math.sin(B * t * Math.PI / 180) + D).toFixed(1));
+               sy((o.A === undefined ? 1 : o.A) * f(B * t * Math.PI / 180) + D).toFixed(1));
     }
     var axis = sy(0);
     var g = '<line x1="14" y1="' + axis + '" x2="290" y2="' + axis + '" class="axis"/>' +
@@ -1754,22 +1767,304 @@
 
   /* Limiting reagent: two stacks, one runs out. */
   function sceneLimit(){
+    /* 2C + O2 -> 2CO. Three carbons need one and a half oxygens, so three and a
+       half of the five are left over. The first version drew one for one, which
+       contradicted the ratio stated three slides earlier in the same deck. */
     var g = '';
     for(var i = 0; i < 3; i++){
-      g += '<circle cx="' + (52 + i * 26) + '" cy="52" r="11" fill="var(--peach)" opacity=".8"/>' +
-           '<text x="' + (52 + i * 26) + '" y="56" text-anchor="middle" font-size="10" fill="#fff">C</text>';
+      g += '<circle cx="' + (56 + i * 32) + '" cy="52" r="13" fill="var(--peach)" opacity=".85"/>' +
+           '<text x="' + (56 + i * 32) + '" y="57" text-anchor="middle" font-size="11" fill="#fff">C</text>';
     }
     for(var j = 0; j < 5; j++){
-      g += '<circle cx="' + (52 + j * 26) + '" cy="104" r="11" fill="var(--mint)" opacity="' + (j < 3 ? '.8' : '.28') + '"/>' +
-           '<text x="' + (52 + j * 26) + '" y="108" text-anchor="middle" font-size="9" fill="#fff">O&#8322;</text>';
+      g += '<circle cx="' + (56 + j * 32) + '" cy="106" r="13" fill="var(--mint)" opacity="' +
+           (j < 1 ? '.85' : j < 2 ? '.45' : '.18') + '"/>' +
+           '<text x="' + (56 + j * 32) + '" y="111" text-anchor="middle" font-size="10" fill="#fff">O&#8322;</text>';
     }
-    g += '<text x="20" y="56" text-anchor="end" font-size="11">0.3</text>' +
-         '<text x="20" y="108" text-anchor="end" font-size="11">0.5</text>' +
-         '<rect x="150" y="88" width="82" height="32" rx="8" fill="none" stroke="var(--faint)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
-         '<text x="191" y="134" text-anchor="middle" font-size="10" opacity=".65">left over</text>' +
-         '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">the carbon runs out first</text>';
-    return scene('<svg viewBox="0 0 300 146" role="img" aria-label="Three carbons and five oxygens, with two oxygens left over">' +
+    g += '<text x="28" y="57" text-anchor="end" font-size="11">0.3</text>' +
+         '<text x="28" y="111" text-anchor="end" font-size="11">0.5</text>' +
+         '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">' +
+         'three carbons only need one and a half oxygens</text>' +
+         '<rect x="104" y="88" width="132" height="36" rx="9" fill="none" stroke="var(--faint)" ' +
+         'stroke-width="1.4" stroke-dasharray="4 3"/>' +
+         '<text x="170" y="140" text-anchor="middle" font-size="10" opacity=".65">' +
+         '3.5 left over, and the carbon is gone</text>';
+    return scene('<svg viewBox="0 0 300 150" role="img" aria-label="Three carbons use one and a half of the five oxygens, so three and a half are left unused">' +
       g + '</svg>', 'more of it does not mean enough of it');
+  }
+
+
+  /* A matrix drawn with brackets, because a list separated by commas and a
+     slash is not a matrix and three decks were asking her to work on one that
+     was never shown. */
+  function mat(rows, hi){
+    var cw = 34, ch = 27, w = rows[0].length * cw, h = rows.length * ch;
+    var x0 = 150 - w / 2, y0 = 14;
+    var g = '<path d="M' + (x0 - 7) + ' ' + y0 + ' H' + (x0 - 13) + ' V' + (y0 + h) +
+            ' H' + (x0 - 7) + '" class="stroke"/>' +
+            '<path d="M' + (x0 + w + 7) + ' ' + y0 + ' H' + (x0 + w + 13) + ' V' + (y0 + h) +
+            ' H' + (x0 + w + 7) + '" class="stroke"/>';
+    rows.forEach(function(r, i){
+      r.forEach(function(v, j){
+        var on = hi && hi[0] === i && hi[1] === j;
+        g += '<text x="' + (x0 + j * cw + cw / 2) + '" y="' + (y0 + i * ch + 19) +
+             '" text-anchor="middle" font-size="15" fill="' +
+             (on ? 'var(--peach)' : 'currentColor') + '">' + v + '</text>';
+      });
+    });
+    return '<svg viewBox="0 0 300 ' + (h + 26) + '" role="img" aria-label="a matrix">' + g + '</svg>';
+  }
+  function matPair(a, b, op, cap){
+    var A = mat(a).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+    return scene('<svg viewBox="0 0 300 ' + (a.length * 27 + 30) + '" role="img" aria-label="' + cap + '">' +
+      '<g transform="translate(-72 0)">' + A + '</g>' +
+      '<text x="150" y="' + (a.length * 27 / 2 + 20) + '" text-anchor="middle" font-size="16">' + op + '</text>' +
+      '<g transform="translate(74 0)">' + mat(b).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '') + '</g>' +
+      '</svg>', cap);
+  }
+
+
+  /* The area question is a cubic, so it gets a cubic. */
+  function sceneCubic(){
+    var pts = [], x;
+    function sx(v){ return 40 + v * 62; }
+    function sy(v){ return 132 - v * 0.85; }
+    for(x = 0; x <= 3.05; x += 0.06){
+      pts.push(sx(x).toFixed(1) + ',' + sy(5 * x * x * x - 2 * x + 8).toFixed(1));
+    }
+    var band = [];
+    for(x = 1; x <= 3; x += 0.06) band.push(sx(x).toFixed(1) + ',' + sy(5 * x * x * x - 2 * x + 8).toFixed(1));
+    return scene(
+      '<svg viewBox="0 0 300 160" role="img" aria-label="The area under the cubic between x equals 1 and x equals 3">' +
+        '<line x1="14" y1="132" x2="288" y2="132" class="axis"/>' +
+        '<line x1="' + sx(0) + '" y1="10" x2="' + sx(0) + '" y2="146" class="axis"/>' +
+        '<polygon points="' + sx(1) + ',132 ' + band.join(' ') + ' ' + sx(3) + ',132" fill="var(--peach)" opacity=".17"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '<line x1="' + sx(1) + '" y1="132" x2="' + sx(1) + '" y2="' + sy(11) + '" class="drop"/>' +
+        '<line x1="' + sx(3) + '" y1="132" x2="' + sx(3) + '" y2="' + sy(137) + '" class="drop"/>' +
+        '<text x="' + sx(1) + '" y="148" text-anchor="middle" font-size="11">1</text>' +
+        '<text x="' + sx(3) + '" y="148" text-anchor="middle" font-size="11">3</text>' +
+      '</svg>',
+      'the shaded strip is what you are measuring');
+  }
+
+
+  /* Michaelis-Menten: Vmax, and the substrate concentration that gives half of it. */
+  function sceneKm(){
+    var pts = [], x;
+    for(x = 0; x <= 100; x += 2){
+      var v = 70 * x / (18 + x);
+      pts.push((30 + x * 2.5).toFixed(1) + ',' + (116 - v).toFixed(1));
+    }
+    return scene(
+      '<svg viewBox="0 0 300 156" role="img" aria-label="A rate curve levelling off at Vmax, with Km marked where the rate is half of Vmax">' +
+        '<line x1="30" y1="116" x2="288" y2="116" class="axis"/>' +
+        '<line x1="30" y1="14" x2="30" y2="116" class="axis"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '<line x1="30" y1="46" x2="288" y2="46" stroke="var(--mint)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="286" y="42" text-anchor="end" font-size="10" fill="var(--mint)">Vmax</text>' +
+        '<line x1="30" y1="81" x2="75" y2="81" stroke="var(--peach)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<line x1="75" y1="81" x2="75" y2="116" stroke="var(--peach)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="24" y="85" text-anchor="end" font-size="10" fill="var(--peach)">half</text>' +
+        '<circle cx="75" cy="81" r="5" class="dot pick"/>' +
+        '<text x="75" y="132" text-anchor="middle" font-size="11" fill="var(--peach)">Km</text>' +
+        '<text x="180" y="150" text-anchor="middle" font-size="9.5" opacity=".6">how much substrate is around</text>' +
+      '</svg>',
+      'Km is a position along the bottom, not a height');
+  }
+
+  /* Leading strand in one run, lagging strand in pieces. */
+  function sceneStrands(){
+    var frag = '';
+    for(var i = 0; i < 4; i++){
+      var x = 46 + i * 54;
+      frag += '<line x1="' + x + '" y1="104" x2="' + (x + 42) + '" y2="104" stroke="var(--peach)" stroke-width="4" stroke-linecap="round"/>' +
+              '<circle cx="' + x + '" cy="104" r="5" fill="var(--butter)"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 142" role="img" aria-label="The leading strand made in one continuous run, the lagging strand made in fragments each with its own primer">' +
+        '<path d="M20 20 H280" class="stroke" stroke-dasharray="3 3"/>' +
+        '<line x1="46" y1="46" x2="264" y2="46" stroke="var(--mint)" stroke-width="4" stroke-linecap="round"/>' +
+        '<circle cx="46" cy="46" r="5" fill="var(--butter)"/>' +
+        '<text x="20" y="36" font-size="10" opacity=".65">leading</text>' +
+        '<text x="20" y="94" font-size="10" opacity=".65">lagging</text>' +
+        '<path d="M20 128 H280" class="stroke" stroke-dasharray="3 3"/>' +
+        frag +
+        '<circle cx="240" cy="130" r="5" fill="var(--butter)"/>' +
+        '<text x="252" y="134" font-size="9.5" fill="var(--butter)">= primer</text>' +
+        '<text x="150" y="66" text-anchor="middle" font-size="9.5" opacity=".6">one primer, one long run</text>' +
+      '</svg>',
+      'four pieces means four primers');
+  }
+
+  /* The lac operon, laid out along the DNA. */
+  function sceneOperon(){
+    function box(x, w, t, col){
+      return '<rect x="' + x + '" y="46" width="' + w + '" height="26" rx="4" class="stroke" fill="' + (col || 'var(--raise2)') + '"/>' +
+             '<text x="' + (x + w / 2) + '" y="64" text-anchor="middle" font-size="10">' + t + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 130" role="img" aria-label="The lac operon: the repressor gene, then promoter, operator and three genes read as one message">' +
+        '<line x1="10" y1="59" x2="292" y2="59" class="axis"/>' +
+        box(14, 40, 'lacI', 'var(--glow)') +
+        box(70, 34, 'P') + box(108, 34, 'O', 'var(--raise)') +
+        box(146, 42, 'lacZ') + box(192, 42, 'lacY') + box(238, 42, 'lacA') +
+        '<text x="14" y="38" font-size="9" fill="var(--peach)">makes the repressor</text>' +
+        '<text x="125" y="38" text-anchor="middle" font-size="9" opacity=".62">it sits here</text>' +
+        '<line x1="146" y1="86" x2="280" y2="86" stroke="var(--mint)" stroke-width="2.4"/>' +
+        '<text x="213" y="102" text-anchor="middle" font-size="9.5" fill="var(--mint)">one mRNA, three genes</text>' +
+      '</svg>',
+      'one promoter switches all three at once');
+  }
+
+  /* The membrane: oily middle, so only oily things cross. */
+  function sceneMembrane(){
+    var heads = '';
+    for(var i = 0; i < 19; i++){
+      var x = 18 + i * 15;
+      heads += '<circle cx="' + x + '" cy="52" r="6" fill="var(--soft)" opacity=".55"/>' +
+               '<line x1="' + x + '" y1="58" x2="' + x + '" y2="74" class="stroke" stroke-width="1.2"/>' +
+               '<circle cx="' + x + '" cy="98" r="6" fill="var(--soft)" opacity=".55"/>' +
+               '<line x1="' + x + '" y1="92" x2="' + x + '" y2="76" class="stroke" stroke-width="1.2"/>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A lipid bilayer, with an oily molecule passing through and a water-loving one bouncing off">' +
+        heads +
+        '<text x="10" y="26" font-size="10" opacity=".55">OUTSIDE</text>' +
+        '<circle cx="76" cy="26" r="9" fill="var(--mint)"/>' +
+        '<line x1="76" y1="36" x2="76" y2="118" stroke="var(--mint)" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<polygon points="76,126 71,114 81,114" fill="var(--mint)"/>' +
+        '<text x="90" y="30" font-size="9.5" fill="var(--mint)">oily, goes through</text>' +
+        '<circle cx="232" cy="26" r="9" fill="var(--peach)"/>' +
+        '<line x1="232" y1="36" x2="232" y2="44" stroke="var(--peach)" stroke-width="2"/>' +
+        '<path d="M222 44 L242 44" stroke="var(--peach)" stroke-width="2.6" stroke-linecap="round"/>' +
+        '<text x="214" y="142" text-anchor="middle" font-size="9.5" fill="var(--peach)">water-loving, stopped</text>' +
+      '</svg>',
+      'the middle is oily, and that decides everything');
+  }
+
+  /* A straight cut against a staggered one. */
+  function sceneSticky(){
+    function strand(x, y, seq, col){
+      var g = '';
+      for(var i = 0; i < seq.length; i++){
+        g += '<text x="' + (x + i * 15) + '" y="' + y + '" font-size="12" fill="' + (col || 'currentColor') + '">' + seq[i] + '</text>';
+      }
+      return g;
+    }
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="A blunt cut straight through both strands, and a staggered cut leaving single-stranded overhangs">' +
+        '<text x="12" y="20" font-size="9.5" opacity=".6">STRAIGHT ACROSS</text>' +
+        strand(14, 42, ['G','A','A','T','T','C']) +
+        strand(14, 60, ['C','T','T','A','A','G']) +
+        '<line x1="55" y1="28" x2="55" y2="68" stroke="var(--peach)" stroke-width="2"/>' +
+        '<text x="112" y="56" font-size="10" fill="var(--peach)">blunt ends</text>' +
+        '<text x="12" y="94" font-size="9.5" opacity=".6">STAGGERED</text>' +
+        strand(14, 116, ['G','A','A','T','T','C']) +
+        strand(14, 134, ['C','T','T','A','A','G']) +
+        '<path d="M22 102 V122 H82 V142" stroke="var(--mint)" stroke-width="2" fill="none"/>' +
+        '<text x="112" y="126" font-size="9.5" fill="var(--mint)">sticky ends</text>' + '<text x="112" y="140" font-size="9.5" fill="var(--mint)">they can pair up again</text>' +
+      '</svg>',
+      'a staggered cut leaves something to hold on to');
+  }
+
+  /* The two diagonals of a 2x2. */
+  function sceneDet(){
+    function cell(x, y, t){
+      return '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="19">' + t + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 138" role="img" aria-label="The leading diagonal multiplied, minus the other diagonal multiplied">' +
+        '<path d="M64 26 H56 V96 H64" class="stroke"/><path d="M156 26 H164 V96 H156" class="stroke"/>' +
+        cell(88, 52, '&#8722;2') + cell(132, 52, '2') +
+        cell(88, 88, '3') + cell(132, 88, '&#8722;4') +
+        '<line x1="78" y1="42" x2="142" y2="82" stroke="var(--mint)" stroke-width="2.2"/>' +
+        '<line x1="142" y1="42" x2="78" y2="82" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="5 3"/>' +
+        '<text x="186" y="50" font-size="11" fill="var(--mint)">(&#8722;2)(&#8722;4) = 8</text>' +
+        '<text x="186" y="74" font-size="11" fill="var(--peach)">(2)(3) = 6</text>' +
+        '<text x="186" y="100" font-size="12">8 &#8722; 6 = 2</text>' +
+        '<text x="150" y="128" text-anchor="middle" font-size="9.5" opacity=".6">solid one first, then take the dashed one away</text>' +
+      '</svg>',
+      'one diagonal minus the other');
+  }
+
+  /* Completing the square, as an actual square. */
+  function sceneCompSq(){
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="x squared plus 10x drawn as a square and two strips, with the missing corner added and then taken away">' +
+        '<rect x="42" y="30" width="66" height="66" class="stroke" fill="var(--glow)"/>' +
+        '<text x="75" y="68" text-anchor="middle" font-size="13">x&#178;</text>' +
+        '<rect x="108" y="30" width="30" height="66" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="123" y="68" text-anchor="middle" font-size="11">5x</text>' +
+        '<rect x="42" y="96" width="66" height="30" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="75" y="116" text-anchor="middle" font-size="11">5x</text>' +
+        '<rect x="108" y="96" width="30" height="30" class="stroke" fill="none" stroke-dasharray="4 3"/>' +
+        '<text x="123" y="116" text-anchor="middle" font-size="11" fill="var(--peach)">25</text>' +
+        '<text x="160" y="52" font-size="11">the square wants</text>' +
+        '<text x="160" y="70" font-size="11">that corner filled</text>' +
+        '<text x="160" y="96" font-size="11" fill="var(--peach)">so add 25,</text>' +
+        '<text x="160" y="114" font-size="11" fill="var(--peach)">then take 25 away</text>' +
+      '</svg>',
+      'half of 10 is 5, and the corner is 5 squared');
+  }
+
+  /* Same number of atoms on both sides. */
+  function sceneBalance2(){
+    function stack(x, n, col, lbl){
+      var g = '';
+      for(var i = 0; i < n; i++){
+        g += '<circle cx="' + (x + (i % 4) * 15) + '" cy="' + (96 - Math.floor(i / 4) * 15) + '" r="6" fill="' + col + '" opacity=".8"/>';
+      }
+      return g + '<text x="' + (x + 22) + '" y="122" text-anchor="middle" font-size="10">' + lbl + '</text>';
+    }
+    return scene(
+      '<svg viewBox="0 0 300 140" role="img" aria-label="Five carbons, twelve hydrogens and sixteen oxygens on each side of the equation">' +
+        '<text x="70" y="24" text-anchor="middle" font-size="11" opacity=".7">LEFT</text>' +
+        '<text x="228" y="24" text-anchor="middle" font-size="11" opacity=".7">RIGHT</text>' +
+        '<line x1="150" y1="30" x2="150" y2="112" class="axis"/>' +
+        stack(20, 5, 'var(--peach)', 'C 5') +
+        stack(86, 12, 'var(--mint)', 'H 12') +
+        stack(178, 5, 'var(--peach)', 'C 5') +
+        stack(244, 12, 'var(--mint)', 'H 12') +
+      '</svg>',
+      'balanced means the same count on both sides');
+  }
+
+  /* An exponential curve through the table points. */
+  function sceneExp(){
+    var pts = [], t;
+    for(t = 0; t <= 8; t += 0.2){
+      pts.push((36 + t * 28).toFixed(1) + ',' + (116 - 3 * Math.pow(4, t / 2) * 0.13).toFixed(1));
+    }
+    var dots = '';
+    [[0, 3], [2, 12], [4, 48], [6, 192]].forEach(function(p){
+      dots += '<circle cx="' + (36 + p[0] * 28) + '" cy="' + (116 - p[1] * 0.13) + '" r="5" class="dot pick"/>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="Points that quadruple every two seconds, on a curve that keeps getting steeper">' +
+        '<line x1="30" y1="116" x2="288" y2="116" class="axis"/>' +
+        '<line x1="30" y1="14" x2="30" y2="116" class="axis"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' + dots +
+        '<text x="92" y="110" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="148" y="94" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="204" y="60" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="180" y="140" text-anchor="middle" font-size="9.5" opacity=".6">same multiplier every step</text>' +
+      '</svg>',
+      'gaps grow, but the multiplier does not');
+  }
+
+  /* The cardboard box. */
+  function sceneBox(){
+    return scene(
+      '<svg viewBox="0 0 300 148" role="img" aria-label="An open box with height x and a square base of side 22 minus 2x">' +
+        '<polygon points="70,58 190,58 234,34 114,34" class="stroke" fill="var(--raise2)"/>' +
+        '<polygon points="70,58 190,58 190,112 70,112" class="stroke" fill="var(--raise)"/>' +
+        '<polygon points="190,58 234,34 234,88 190,112" class="stroke" fill="var(--raise2)"/>' +
+        '<line x1="58" y1="58" x2="58" y2="112" stroke="var(--peach)" stroke-width="2"/>' +
+        '<text x="48" y="90" text-anchor="end" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="130" y="132" text-anchor="middle" font-size="12">22 &#8722; 2x</text>' +
+        '<text x="150" y="22" text-anchor="middle" font-size="9.5" opacity=".6">CUT A SQUARE FROM EACH CORNER, FOLD UP</text>' +
+      '</svg>',
+      'the height is what you cut off');
   }
 
   function fig(svg, cap){
@@ -2233,7 +2528,7 @@
     return '<div class="lab" data-lab="' + kind + '">' +
       '<div class="labhead"><span class="labk">' + label + '</span>' +
       '<span class="labv" data-out>' + val + '</span></div>' +
-      '<input type="range" min="' + min + '" max="' + max + '" value="' + val + '">' +
+      '<input type="range" aria-label="' + label + '" min="' + min + '" max="' + max + '" value="' + val + '">' +
       '<svg viewBox="0 0 300 ' + (kind === "tangent" ? 222 : 172) + '" role="img" aria-label="' + label + ' experiment"></svg>' +
       '<div class="labout"><span>' + outLabel + '</span><b data-total>0</b><span>' + unit + '</span></div>' +
       '<div class="labnote" data-note></div>' +
@@ -2374,7 +2669,7 @@
         {say:'Add them up.',
          eq: '<span class="n">2</span><span class="o">(</span><span class="n">26.98</span><span class="o">)</span> <span class="o">+</span> <span class="n">3</span><span class="o">(</span><span class="n">32.07</span><span class="o">)</span> <span class="o">+</span> <span class="n">12</span><span class="o">(</span><span class="n">16.00</span><span class="o">)</span> <span class="o">=</span> <span class="n">342.17</span>'},
         {say:'Then divide.',
-         eq: '<span class="n">6.84</span> <span class="o">/</span> <span class="n">342.17</span> <span class="o">=</span> <span class="n">0.02</span> <span class="o">mol</span>'},
+         eq: '<span class="n">6.84</span> <span class="o">/</span> <span class="n">342.17</span> <span class="o">=</span> <span class="n">0.0200</span> <span class="o">mol</span>'},
         {say:'The bracket is where the marks go in this topic. Twelve oxygens, not four, because the 3 outside multiplies the 4 inside.'}
       ]
     },
@@ -2408,7 +2703,8 @@
         {say:'Then hydrogen. Twelve on the left, and water carries two each, so six waters.',
          eq: '<span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
         {say:'Now count the oxygen on the right, which is finally safe to do. Ten in the carbon dioxide plus six in the water.',
-         eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>'},
+         eq: '<span class="n">10</span> <span class="o">+</span> <span class="n">6</span> <span class="o">=</span> <span class="n">16</span> <span class="o">oxygen</span> <span class="o">atoms</span>',
+         art:function(){ return sceneBalance2(); }},
         {say:'Oxygen comes in twos, so you need eight of them.',
          eq: '<span class="x">C</span><sub class="p">5</sub><span class="x">H</span><sub class="p">12</sub> <span class="o">+</span> <span class="n">8</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">5</span> <span class="x">C</span><span class="x">O</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">6</span> <span class="x">H</span><sub class="p">2</sub><span class="x">O</span>'},
         {say:'Carbon, then hydrogen, then oxygen last. That order turns a puzzle into a routine, and this topic is worth easy marks once it is a routine.'}
@@ -2441,7 +2737,7 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'VSEPR sounds like theory and it is counting. Everything around the central atom pushes everything else as far away as it can get, and lone pairs push hardest.'},
         {say:'So the only question is how many bonds and how many lone pairs. Count those two numbers and the shape is decided.'},
-        {say:'Tap what is around the centre, then tap the shape it makes.',
+        {say:'Everything here is decided by two numbers. Pick what is around the centre, and see which shape it forces.',
          art:function(){ return match([['4 bonds, no lone pairs','tetrahedral','Tetrahedral, 109.5 degrees. Four things around the centre spread as far apart as they can get, and in three dimensions that is a tetrahedron rather than a cross. Methane is the standard example.'],['2 bonds, 1 lone pair','bent','Bent. The lone pair is still there taking up room even though you cannot see it in the formula, and it pushes the two bonds closer together. Sulfur dioxide.'],['4 bonds, 2 lone pairs','square planar','Square planar. The two lone pairs go opposite each other, above and below, which leaves the four bonds flat in a square. Xenon tetrafluoride.'],['3 bonds, 2 lone pairs','T-shaped','T-shaped. Chlorine trifluoride. Counting the lone pairs is the whole skill in this topic, because they take up space and are invisible in the written formula.']], [2,0,1]); }},
         {say:'The reason people lose marks here is forgetting that lone pairs occupy space even though they are invisible in the formula. Count them first, before you look at the shape names.',
          art:function(){ return sceneShapes(); }}
@@ -2454,7 +2750,7 @@
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
         {say:'Three kinds, and telling them apart is one question: are the atoms sharing, and if so, are they sharing fairly.'},
-        {say:'Tap a pair, then tap what holds it together.',
+        {say:'Three kinds of bond, three pairs of atoms. See if you can match them up before reading anything.',
          art:function(){ return match([['H to F','polar covalent','Polar covalent. They share, but fluorine pulls much harder, so one end is slightly negative. Sharing unequally is what polar means.'],['K to Cl','ionic','Ionic. A metal and a non-metal, so an electron is handed over rather than shared. Metal plus non-metal is the quickest test there is.'],['Cl to Cl','non-polar covalent','Non-polar covalent. Two identical atoms pull equally, so the sharing is even and neither end is charged.']], [2,0,1]); }},
         {say:'The quickest route through a bonding question: metal with non-metal is ionic, two identical atoms is non-polar, and two different non-metals is polar.'}
       ]
@@ -2468,7 +2764,7 @@
         {say:'Hydrogen bonding gets asked about constantly because it explains boiling points, and it has the narrowest rule in the module.'},
         {say:'The rule: hydrogen attached DIRECTLY to nitrogen, oxygen or fluorine. Those three. Not merely present in the molecule, attached to the hydrogen.',
          eq: '<span class="x">N</span><span class="o">,</span> <span class="x">O</span> <span class="x">o</span><span class="x">r</span> <span class="x">F</span>'},
-        {say:'Tap each one and see which can.',
+        {say:'Only some of these can hydrogen bond. Have a guess at which, then check yourself against each one.',
          art:function(){ return pickall([['HF',true,'Yes. Hydrogen bonding needs H attached directly to N, O or F, and this is H attached to F. Those three and nothing else.'],['HBr',false,'No. Bromine is not on the list. It is a bigger atom and does not pull hard enough, so this gets ordinary dipole attraction rather than hydrogen bonding.'],['CH4',false,'No. Carbon is not on the list either, and there is nothing here for a hydrogen bond to reach towards.'],['KCl',false,'No, and for a different reason: this is ionic, so there are no molecules to attract one another in the first place.']], true); }},
         {say:'And the reason it matters. Hydrogen bonds are the strongest of the intermolecular forces, so the compound that has them needs the most energy to pull apart, and therefore has the highest boiling point. That is the standard three-mark answer.'}
       ]
@@ -2538,7 +2834,7 @@
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'This topic is mostly numbers and addresses. There is nothing to reason out, so it is worth finding out now which ones are actually in your head.'},
-        {say:'Tap any of them. Right or wrong, each one explains itself.',
+        {say:'Have a go at each one. Right or wrong, every single one tells you why.',
          art:function(){ return pickall([['Two glucose through glycolysis gives 4 ATP and 4 NADH',true,'Correct, and the trap is the word TWO. Per glucose it is 2 and 2, so read the number in the question before answering from memory.'],['The citric acid cycle happens in the mitochondrial matrix',true,'Correct. Glycolysis is in the cytosol, the citric acid cycle is in the matrix, and the electron transport chain is on the inner membrane. Three processes, three addresses.'],['ATP is produced when pyruvate is converted to lactate',false,'No. That step makes no ATP at all. Its only purpose is to reoxidise NADH back to NAD+ so that glycolysis can keep running, and glycolysis is where the ATP came from.'],['Lactate fermentation produces no carbon dioxide',true,'Correct, and it is the clean difference from alcohol fermentation, which does. That is what the comparison question is after.'],['Fermentation happens in the absence of oxygen',true,'Correct. And the reason it exists at all is to regenerate NAD+, without which glycolysis stops after a few seconds.']], true); }},
         {say:'Three addresses to keep: glycolysis in the cytosol, citric acid cycle in the matrix, electron transport chain on the inner membrane. A surprising number of questions are only asking which room.'}
       ]
@@ -2551,10 +2847,11 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Km gets treated as a definition to memorise and it is really a description of how eager an enzyme is. Once you have that, the questions answer themselves.'},
         {say:'The definition first, because it is a mark on its own.',
-         eq: 'Km = the substrate concentration that gives half of Vmax'},
+         eq: 'Km = the substrate concentration that gives half of Vmax',
+         art:function(){ return sceneKm(); }},
         {say:'So a LOW Km means the enzyme reaches half speed with barely any substrate around, which means it grabs substrate readily. High affinity.'},
         {say:'And a high Km means it needs a lot of substrate before it gets going. Low affinity.'},
-        {say:'Which is why Km, and not size or optimum pH, is what you compare two enzymes on. It is the one number that says how good each is at its job.'},
+        {say:'Which is why Km, and not size or optimum pH, is the fair way to compare how readily two enzymes grab their substrate. It is not a complete measure of how good an enzyme is, because how fast it works once it has hold is a separate question, but affinity is what this comparison is about.'},
         {say:'One more that is worth having ready, because it is four true-or-false marks in one question. Enzymes DO change shape while working, that is induced fit. They CAN form bonds with reactants. They ARE affected by temperature and pH. And they are NOT used up.'}
       ]
     },
@@ -2566,7 +2863,7 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Two kinds of inhibitor, and telling them apart is worth several marks. You never have to work it out, only recognise which of two patterns you are looking at.',
          art:function(){ return sceneInhib(); }},
-        {say:'Tap what the graph does, then tap which inhibitor does it.',
+        {say:'Two graph signatures, two inhibitors. This one is pure recognition, so it is worth doing until it is instant.',
          art:function(){ return match([['Km goes up, Vmax stays the same','competitive','Competitive. The inhibitor is sitting in the active site, so the enzyme needs MORE substrate to reach half speed, which raises Km. But flood it with enough substrate and you still get there in the end, so Vmax is untouched. The tell in a word question: adding more substrate reduces the inhibition.'],['Vmax goes down, Km stays the same','non-competitive','Non-competitive. The inhibitor binds somewhere else and bends the enzyme out of shape, so some molecules are out of action entirely. The ones still working bind substrate exactly as well as before, which is why Km does not move. More substrate does not help, because substrate is not what is being blocked.'],['Both Km and Vmax go down together','uncompetitive','Uncompetitive. Rarer, and it binds only after the substrate is already attached. Worth recognising so it does not get mistaken for one of the other two, but the two above are what the questions are almost always about.']], [1,2,0]); }},
         {say:'And the shortcut for a worded question with no graph at all. If adding more substrate REDUCES the inhibition, it is competitive, because the two are fighting over the same seat and substrate can win by weight of numbers.'},
         {say:'That is exactly the sulfanilamide question on your sheet. More PABA reduces the inhibition, therefore competitive, and the explanation is that sulfanilamide resembles PABA closely enough to occupy the same active site.'}
@@ -2579,8 +2876,8 @@
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'This topic is a small cast of characters and knowing which side each one is on answers most of the questions.'},
-        {say:'Tap any of them. Right or wrong, each one explains itself.',
-         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three ROS to know are superoxide, hydrogen peroxide and the hydroxyl radical. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['A redox reaction involves an oxidoreductase enzyme',true,'Correct, and the name gives it away: oxido-reduct-ase. Several enzyme names in this module say what they do if you read them in pieces.']], true); }},
+        {say:'Have a go at each one. Right or wrong, every single one tells you why.',
+         art:function(){ return pickall([['Free radicals are very reactive',true,'Correct, and it follows from having an unpaired electron. Everything else about them comes from that one fact, including why the body needs a whole defence system.'],['Glutathione peroxidase is a reactive oxygen species',false,'No, it is an enzyme that REMOVES them. The three ROS to know are superoxide, hydrogen peroxide and the hydroxyl radical. Anything ending in -ase is an enzyme, and that suffix is a free clue in this topic.'],['Antioxidants promote the generation of free radicals',false,'The opposite. Antioxidants neutralise them, which makes antioxidants reducing agents. If an option has antioxidants doing damage, it is the wrong one.'],['Ionizing radiation helps reduce reactive oxygen species',false,'The opposite again. Radiation GENERATES them, which is a large part of why it damages cells. Vitamin C, catalase and superoxide dismutase are the ones that remove.'],['Every redox reaction needs an enzyme',false,'No. Iron rusting is a redox reaction and there is no enzyme anywhere near it. The true statement runs the other way round: if a redox reaction IS being catalysed, the enzyme doing it is an oxidoreductase. Read the name in pieces, oxido-reduct-ase, and it tells you what it does.']], true); }},
         {say:'Sort them into two lists and the questions become easy. Doing damage: superoxide, hydrogen peroxide, hydroxyl radical, and radiation which makes more of them. Cleaning up: superoxide dismutase, catalase, glutathione peroxidase, vitamin C.'},
         {say:'And the mutation question. If catalase is broken, hydrogen peroxide is not broken down, so it builds up, so it damages proteins, lipids and DNA. Broken enzyme, so its substrate accumulates, so damage follows. That chain shape is the answer to every question of this kind.'}
       ]
@@ -2608,7 +2905,8 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Restriction enzymes come up as three short questions and they are all answerable from what an enzyme is.'},
         {say:'What it does: it recognises a specific short sequence, then cuts by breaking the phosphodiester bonds in the backbone. Recognises, then cuts. Both halves are marks.'},
-        {say:'Straight across both strands at the same point gives blunt ends. A staggered cut leaves short single-stranded overhangs, and those are cohesive ends, also called sticky.'},
+        {say:'Straight across both strands at the same point gives blunt ends. A staggered cut leaves short single-stranded overhangs, and those are cohesive ends, also called sticky.',
+         art:function(){ return sceneSticky(); }},
         {say:'Sticky ends matter because the overhang can base pair with any other fragment cut by the same enzyme, which is what makes joining DNA from two sources possible at all.'},
         {say:'And the temperature question, which is not really about restriction enzymes. At 80 degrees the enzyme denatures: the bonds holding its shape break, so the active site loses its shape, so it can no longer bind the recognition sequence.'},
         {say:'Note that shape is the whole answer. Enzymes work by fitting, so anything that ruins the fit stops the enzyme, whether that is heat, pH or a mutation.'}
@@ -2621,8 +2919,8 @@
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Everything in this topic is one question: is there too much sugar in the blood, or too little. Get the direction right and the details follow.'},
-        {say:'Tap the situation, then tap what the body reaches for.',
-         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It only happens when the store is already empty, which is exactly what that exam option is testing.']], [1,2,0]); }},
+        {say:'Three situations, three responses. The whole topic is deciding which one you are looking at.',
+         art:function(){ return match([['Blood glucose is HIGH','insulin','Insulin. It switches storage ON: it activates glycogen synthase and inhibits glycogen phosphorylase, so glucose gets locked away as glycogen. Everything insulin does is about putting fuel away.'],['Blood glucose is LOW','glucagon','Glucagon. The opposite switch: it turns glycogen back into glucose and releases it into the blood. That breakdown process is glycogenolysis. Everything glucagon does is about getting fuel out.'],['Glycogen has run out and glucose is still low','gluconeogenesis','Gluconeogenesis, which is building glucose from things that are not carbohydrate, like lactate and glycerol. It is what the body turns to once the store is already empty, which is exactly what that exam option is testing.']], [1,2,0]); }},
         {say:'The naming trap worth knowing. Glycogen synthase is ACTIVE when it is dephosphorylated, not when it is phosphorylated. That comes up as a false-statement question and it catches people out because phosphorylation usually means switching on.'},
         {say:'And gluconeogenesis is not the same as glycogenolysis. Genesis means building new glucose from non-carbohydrate. Lysis means splitting existing glycogen. One letter apart on the page, opposite processes.'}
       ]
@@ -2658,7 +2956,7 @@
       steps:[
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Some of your paper is multiple choice and fill in the blanks, where the whole thing is recall and there is nothing to work out. Fastest marks on the paper if you have them, so they are worth checking first.'},
-        {say:'Tap any of these. Right or wrong, each one tells you why.'},
+        {say:'Have a go at each one. Right or wrong, every single one tells you why.'},
         {art:function(){ return pickall([['Oxidative phosphorylation produces ATP and water',true,'Correct. Oxygen is the final electron acceptor and it ends up as water, with ATP made by ATP synthase alongside. Oxygen is consumed here, not produced, which rules out the oxygen option.'],['ATP synthase is driven by the movement of protons',true,'Correct. Protons build up in the intermembrane space and flow back through ATP synthase, which turns like a waterwheel. Electrons drive the pumping, but protons drive the synthase itself.'],['Anaerobic respiration produces more ATP than aerobic',false,'The wrong way round. Aerobic gets roughly thirty-something ATP per glucose, anaerobic gets two. Anaerobic is faster to start, not richer.'],['Glycolysis only happens when oxygen is present',false,'No. Glycolysis is in the cytoplasm and runs with or without oxygen, which is exactly why anaerobic respiration is possible at all.'],['One turn of the Krebs cycle produces two molecules of carbon dioxide',true,'Correct, and worth memorising with its companions: one turn gives 2 CO2, 3 NADH, 1 FADH2 and 1 ATP.']], true); }},
         {say:'The one worth carrying: 2 carbon dioxide, 3 NADH, 1 FADH2 and 1 ATP per turn of the Krebs cycle. Those four numbers answer a surprising number of questions.'}
       ]
@@ -2703,7 +3001,8 @@
         {say:'The counting one. Ten cells, five rounds, and each round doubles.',
          eq: '<span class="n">10</span> <span class="o">&#215;</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">320</span>'},
         {say:'And the strand question. RNA primers are needed to start each new piece, and the lagging strand is built in many short fragments rather than one long run, so it needs many primers where the leading strand needs one.',
-         eq: 'lagging strand'},
+         eq: 'lagging strand',
+         art:function(){ return sceneStrands(); }},
         {say:'That is why RNA shows up more against the lagging strand. Every fragment starts with its own primer.'}
       ]
     },
@@ -2717,7 +3016,8 @@
         {say:'The repressor protein is coded by its own gene, sitting apart from the three genes the operon controls. That gene is lacI.',
          eq: 'lacI codes for the repressor'},
         {say:'When the operon is transcribed you get ONE mRNA carrying several genes, one after another. The word for that is polycistronic.',
-         eq: 'polycistronic'},
+         eq: 'polycistronic',
+         art:function(){ return sceneOperon(); }},
         {say:'And the explain marks: it is one promoter controlling several genes, so they are transcribed together onto a single mRNA and are switched on and off as a set. That is the whole point of an operon.'},
         {say:'Then the mutant question. Normally, no lactose means the repressor sits on the operator and blocks transcription. So ask what the mutation has broken.'},
         {say:'If the mutation stops the repressor binding, or damages the operator it binds to, then nothing blocks transcription and the genes are expressed even with no lactose present. Work out which part is broken, then say what that part normally stops.'}
@@ -2736,8 +3036,8 @@
         {say:'Which answers the energy question in one line. Moving anything against its concentration gradient does not happen by itself, so it needs ATP. That is active transport, and it is the definition rather than a fact to memorise.'},
         {say:'Is it an antiporter. Yes, and the reason is the whole word: it carries two different things in OPPOSITE directions at the same time. Same direction would be a symporter.',
          eq: 'antiporter'},
-        {say:'And the broken pump question. If the pump fails the gradients run down, so the neuron cannot reset itself after firing and cannot fire properly again. Signalling fails, and that is what a seizure looks like at the cell level.'},
-        {say:'Notice the shape of that answer: pump fails, so gradient goes, so no reset, so no signal. A chain of so-thats. That structure is what the three marks are for.'}
+        {say:'And the broken pump question. If the pump fails, the gradients run down, so the neuron cannot hold itself steady at rest and becomes far too easy to set off. It fires when it should not, and a seizure is that happening across a great many neurons at once.'},
+        {say:'Notice the shape of that answer: pump fails, so the gradient goes, so the cell cannot stay at rest, so it fires when it should not. A chain of so-thats, and that structure is what the three marks are for.'}
       ]
     },
     b7: {
@@ -2748,7 +3048,8 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'This one comes up in several disguises and it always turns on one property: can the molecule cross a membrane by itself.'},
         {say:'The membrane is oily in the middle. So anything oily goes straight through, and anything that likes water does not.',
-         eq: 'hydrophobic crosses, hydrophilic does not'},
+         eq: 'hydrophobic crosses, hydrophilic does not',
+         art:function(){ return sceneMembrane(); }},
         {say:'Estrogen is a steroid, so it is hydrophobic and it crosses. That is why its receptor is INSIDE the cell rather than on the surface.'},
         {say:'So when the question asks whether a hydrophilic version of estrogen would work as a drug, the answer is no, and the reason is not about the receptor at all.'},
         {say:'It cannot cross the membrane, so it never reaches the receptor, so it cannot activate it, however well it would have fitted. Three steps, three marks.'},
@@ -2783,7 +3084,8 @@
          eq: '<span class="o">first</span> <span class="o">row</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span>   <span class="o">first</span> <span class="o">column</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>',
          art:function(){ return sceneRowCol(); }},
         {say:'Multiply the pairs and add.',
-         eq: '<span class="n">3</span><span class="o">&#215;</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>'},
+         eq: '<span class="n">3</span><span class="o">&#215;</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>',
+         art:function(){ return matPair([['3','4'],['1','7']],[['3','&#8722;1'],['5','0']],'&#215;','the two you are multiplying'); }},
         {say:'Top-right uses the same first row, but the second column.',
          eq: '<span class="n">3</span><span class="x">x</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">0</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
         {say:'Bottom-left is the second row with the first column.',
@@ -2802,7 +3104,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This one hands you a free check and most people walk past it. It says the answer is (m, 1), which means it has already told you the bottom entry.'},
         {say:'Work out the top entry the usual way. First row against the column.',
-         eq: '<span class="n">4</span><span class="o">&#215;</span><span class="n">8</span> <span class="o">+</span> <span class="n">2</span><span class="o">&#215;</span><span class="n">9</span> <span class="o">=</span> <span class="n">32</span> <span class="o">+</span> <span class="n">18</span> <span class="o">=</span> <span class="n">50</span>'},
+         eq: '<span class="n">4</span><span class="o">&#215;</span><span class="n">8</span> <span class="o">+</span> <span class="n">2</span><span class="o">&#215;</span><span class="n">9</span> <span class="o">=</span> <span class="n">32</span> <span class="o">+</span> <span class="n">18</span> <span class="o">=</span> <span class="n">50</span>',
+         art:function(){ return matPair([['4','2'],['&#8722;1','1']],[['8'],['9']],'&#215;','it has already told you the bottom answer is 1'); }},
         {say:'So m is 50. But do the bottom one as well even though it was not asked for.',
          eq: '<span class="o">&#8722;</span><span class="n">1</span><span class="o">&#215;</span><span class="n">8</span> <span class="o">+</span> <span class="n">1</span><span class="o">&#215;</span><span class="n">9</span> <span class="o">=</span> <span class="n">1</span>'},
         {say:'It comes out as 1, which is exactly what the question said it should be. So the working is right and you can move on without doubting it.'},
@@ -2817,9 +3120,11 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Both formulas are on your sheet, and the order matters: the determinant comes first, because the inverse is built on top of it.'},
         {say:'For a 2 by 2, the determinant is the two on the leading diagonal multiplied, take away the other two multiplied.',
-         eq: '<span class="o">det</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">3</span><span class="o">)</span>'},
+         eq: '<span class="o">det</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">3</span><span class="o">)</span>',
+         art:function(){ return scene(mat([['&#8722;2','2'],['3','&#8722;4']]), 'the one you are working on'); }},
         {say:'Careful with the first pair. Minus times minus is plus.',
-         eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">6</span> <span class="o">=</span> <span class="n">2</span>'},
+         eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">8</span> <span class="o">&#8722;</span> <span class="n">6</span> <span class="o">=</span> <span class="n">2</span>',
+         art:function(){ return sceneDet(); }},
         {say:'If that had come out as nothing, there would be no inverse at all, and saying so is the answer. Here it is 2, so carry on.'},
         {say:'For the inverse: swap the two on the leading diagonal, flip the sign of the other two, and divide everything by the determinant.',
          eq: '<span class="o">swap</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="o">&#8722;</span><span class="n">4</span><span class="o">,</span> <span class="o">flip</span> <span class="n">2</span> <span class="o">and</span> <span class="n">3</span>'},
@@ -2837,7 +3142,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'A pair of simultaneous equations can be written as one matrix times a column of unknowns. Once it is in that shape, the inverse solves it in a single step.'},
         {say:'The numbers in front of x and y become the matrix, the unknowns become a column, and the right-hand sides become another column.',
-         eq: '<span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span> <span class="o">/</span> <span class="n">5</span><span class="o">,</span> <span class="n">9</span><span class="o">)</span><span class="o">(</span><span class="x">x</span><span class="o">,</span> <span class="x">y</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">16</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">24</span><span class="o">)</span>'},
+         eq: '<span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span> <span class="o">/</span> <span class="n">5</span><span class="o">,</span> <span class="n">9</span><span class="o">)</span><span class="o">(</span><span class="x">x</span><span class="o">,</span> <span class="x">y</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">16</span><span class="o">,</span> <span class="o">&#8722;</span><span class="n">24</span><span class="o">)</span>',
+         art:function(){ return matPair([['3','7'],['5','9']],[['16'],['&#8722;24']],'&#215;(x, y) =','the equations, written as one multiplication'); }},
         {say:'Determinant first, always.',
          eq: '<span class="o">det</span> <span class="o">=</span> <span class="n">27</span> <span class="o">&#8722;</span> <span class="n">35</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
         {say:'Then multiply the inverse by the right-hand column. Your calculator will do this if it has a matrix mode, and it is worth knowing whether yours does.'},
@@ -2938,7 +3244,7 @@
         {say:'You do not have to draw this or work anything out. Sine and cosine only ever run between minus one and plus one, and everything else in the expression acts on that.'},
         {say:'The cosine part can be at most 1 and at least -1. That is fixed and it never changes.',
          eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>',
-         art:function(){ return sceneWave({A:2,B:3,D:5,cy:104,maxmin:true,cap:'the inside number changes how often, not how high'}); }},
+         art:function(){ return sceneWave({A:2,B:3,D:5,cos:true,maxmin:true,cap:'the inside number changes how often, not how high'}); }},
         {say:'The -2 multiplies it, so that part runs between -2 and 2. Note the minus flips which end is which, but the two ends are the same two numbers.',
          eq: '<span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="n">2</span>'},
         {say:'Then the +5 lifts the whole thing.',
@@ -2975,7 +3281,7 @@
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The whole second-answer problem comes down to knowing where each one is positive. Three facts, and they are different for each.'},
-        {say:'Tap one, then tap where it is positive.',
+        {say:'The second answer depends entirely on this. Match each one to where it is positive.',
          art:function(){ return match([['sin','positive in the 1st and 2nd quarters','Sine is the up-and-down one, and up is positive in the top half. So if sine comes out positive the two answers straddle 90. If it comes out negative they straddle 270.'],['cos','positive in the 1st and 4th quarters','Cosine is the across one, and across is positive on the right-hand side. So a positive cosine gives two answers that straddle 0 and 360, which is why the second one is 360 take away the first.'],['tan','positive in the 1st and 3rd quarters','Tangent repeats every 180 rather than every 360, which is why its second answer is the first one plus 180 and not 360 minus it. It is the odd one out and it is worth remembering as such.']], [2,0,1]); }},
         {say:'Tangent is the one to watch, because its second answer is plus 180 rather than 360 minus. If you use the sine rule on a tangent question you will lose the second mark every time.'}
       ]
@@ -3017,7 +3323,7 @@
         {say:'The root of 484 is a whole number, which is a good sign these questions are built to come out tidy.',
          eq: '&#8730;<span class="o">(</span><span class="n">484</span><span class="o">)</span> <span class="o">=</span> <span class="n">22</span>'},
         {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">+</span><span class="o">&#8722;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">&#177;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
         {say:'The plus-or-minus means do it twice.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>',
          art:function(){ return scenePara({a:6,b:14,c:-12,roots:[0.667,-3],u:26,uy:1.6,cy:70,cap:'two crossings, two roots'}); }},
@@ -3073,7 +3379,8 @@
         {say:'Write the bracket with it, and square it.',
          eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>'},
         {say:'But that bracket is not equal to what you started with. Opening it gives x squared minus ten x plus 25, so it has 25 too many. Take them off again.',
-         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">25</span>'},
+         eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">25</span>',
+         art:function(){ return sceneCompSq(); }},
         {say:'Then bring the +3 from the original back down.',
          eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">25</span> <span class="o">+</span> <span class="n">3</span>'},
         {say:'And tidy.',
@@ -3088,7 +3395,7 @@
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Same move as the last one with one extra step, and that extra step is where nearly everyone loses the mark. Here is the working with the slip in it.'},
-        {say:'Tap the line where it goes wrong.',
+        {say:'One of these lines is where it goes wrong. See if you can find it before I tell you.',
          art:function(){ return spot(['<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span> <span class="o">+</span> <span class="n">15</span>','<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="o">(</span><span class="x">x</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="n">4</span> <span class="o">+</span> <span class="n">15</span>'], 3, 'The 2 outside has to multiply the -4 as well as the bracket. It should be <b>-8</b>, not -4, so the answer is 2(x + 2)<sup>2</sup> + 7 and not + 11. Everything above this line was right. This is the single most common slip in completing the square when there is a number in front.', ['That is the question as given. Nothing has been done to it.','Correct, and it is the right first move. Take the 2 out of the first two terms only, and leave the 15 outside where it is.','Correct. Half of 4 is 2, so the bracket is (x + 2) squared, and you take away 2 squared to cancel what you added. All inside the outer bracket so far.','']); }},
         {say:'So the finished version is 2(x + 2) squared + 7, and the turning point is (-2, 7). Whenever there is a number in front of the x squared, check that it multiplied everything inside the outer bracket and not merely the first thing.'}
       ]
@@ -3101,7 +3408,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two questions, and they need two completely different methods. Read which is being asked before doing anything, because doing the wrong one wastes the time and gets no marks.'},
         {say:'The first one just wants a number put in. Two seconds, so x is 2.',
-         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">260</span> <span class="o">&#8722;</span> <span class="n">20</span> <span class="o">=</span> <span class="n">246</span>'},
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">6</span> <span class="o">+</span> <span class="n">260</span> <span class="o">&#8722;</span> <span class="n">20</span> <span class="o">=</span> <span class="n">246</span>',
+         art:function(){ return scenePara({a:-5,b:130,c:6,tp:[13,851],u:8.6,uy:0.13,cx:30,cy:150,cap:'up, over the top, and back down'}); }},
         {say:'So 246 metres after two seconds. No calculus, no formula, nothing clever.'},
         {say:'The second is different. Maximum height means the top of the arc, where the steepness is zero, so this one does need differentiating.',
          eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">130</span> <span class="o">&#8722;</span> <span class="n">10</span><span class="x">x</span>'},
@@ -3122,7 +3430,8 @@
         {say:'Divide any term by the one before it. Do it twice to check you get the same answer both times.',
          eq: '<span class="frac"><span><span class="n">12</span></span><span><span class="n">3</span></span></span> <span class="o">=</span> <span class="n">4</span>      <span class="frac"><span><span class="n">48</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'So it multiplies by four each step. The next one is the last one times four.',
-         eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="o">&#215;</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>'},
+         eq: '<span class="x">q</span> <span class="o">=</span> <span class="n">192</span> <span class="o">&#215;</span> <span class="n">4</span> <span class="o">=</span> <span class="n">768</span>',
+         art:function(){ return sceneExp(); }},
         {say:'The check that tells growth from the other kind: differences here are 9, 36, 144, all different, but the ratios are 4, 4, 4, all the same. Same ratio means exponential.'}
       ]
     },
@@ -3133,7 +3442,7 @@
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'There are six log laws on your sheet and you do not have to remember any of them. What you do have to do is recognise which one a question is an instance of, and that is what these three are.'},
-        {say:'Tap a question, then the law it is an instance of.',
+        {say:'Every log question is one of three laws wearing different letters. See which is which.',
          art:function(){ return match([['lgx = lg3 + lg8','log m + log n = log(mn)','Two logs added means the insides multiply. So lg x = lg 24, and once both sides are a log of something, those somethings are equal. x = 24.'],['lgx = lg40 - lg5','log m - log n = log(m/n)','Two logs subtracted means the insides divide. lg x = lg 8, so x = 8. Note it is 40 divided by 5, not 40 take away 5.'],['log<sub class="p">2</sub> 5<sup class="p">4</sup>','log m<sup class="p">n</sup> = n log m','A power inside a log comes out to the front as a multiplier. This is the law that turns 5<sup class="p">x</sup> = 8 from impossible into one line.']], [1,2,0]); }},
         {say:'Every log question on your paper is one of those three wearing different letters. Adding, subtracting, or a power coming out to the front.'}
       ]
@@ -3157,13 +3466,13 @@
     },
     el4: {
       eyebrow:'exponentials and logs', title:'When x is stuck in the power.',
-      q: '<span class="n">5</span><sup class="p"></sup><span class="x">x</span> <span class="o">=</span> <span class="n">8</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
+      q: '<span class="n">5</span><sup class="p"><span class="x">x</span></sup> <span class="o">=</span> <span class="n">8</span>   <span class="o">&#183;</span>   <span class="o">find</span> <span class="x">x</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The x is up in the power, which means none of the ordinary moves reach it. You cannot divide it down or take it across. This is the exact problem logs were invented to solve.'},
         {say:'Take a log of both sides. Any base, as long as it is the same on both, and your calculator has lg built in so use that.',
-         eq: 'lg<span class="o">(</span><span class="n">5</span><sup class="p"></sup><span class="x">x</span><span class="o">)</span> <span class="o">=</span> lg<span class="n">8</span>'},
+         eq: 'lg<span class="o">(</span><span class="n">5</span><sup class="p"><span class="x">x</span></sup><span class="o">)</span> <span class="o">=</span> lg<span class="n">8</span>'},
         {say:'Now use the third law: a power inside a log comes out to the front. That is the whole move, and it is why the x is now reachable.',
          eq: '<span class="x">x</span> lg<span class="n">5</span> <span class="o">=</span> lg<span class="n">8</span>'},
         {say:'It is an ordinary equation now. Divide.',
@@ -3318,7 +3627,7 @@
          eq: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="o">(</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>'},
         {say:'Integrate the three terms. Add one to each power, divide by the new power.',
          eq: '<span class="o">[</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">]</span>',
-         art:function(){ return scenePara({a:0.9,b:0,c:6,shade:[1,3],u:34,cx:60,uy:2.4,cy:150,cap:'the shaded strip is what you are measuring'}); }},
+         art:function(){ return sceneCubic(); }},
         {say:'Top number in. Three to the fourth is 81.',
          eq: '<span class="n">101.25</span> <span class="o">&#8722;</span> <span class="n">9</span> <span class="o">+</span> <span class="n">24</span> <span class="o">=</span> <span class="n">116.25</span>'},
         {say:'Bottom number in.',
@@ -3335,7 +3644,7 @@
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This working is right the whole way down except for one line. It is the most common mistake in the topic and it is worth a mark every time.'},
-        {say:'Tap the line where it goes wrong.',
+        {say:'One of these lines is where it goes wrong. See if you can find it before I tell you.',
          art:function(){ return spot(['&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>   <span class="n">3</span><span class="x">x</span> <span class="x">d</span><span class="x">x</span>','<span class="o">=</span> <span class="o">[</span> <span class="n">3</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup><span class="o">/</span><span class="n">2</span> <span class="o">]</span> <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">6</span>','<span class="o">=</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">&#8722;</span> <span class="o">(</span><span class="frac"><span><span class="n">3</span></span><span><span class="n">2</span></span></span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup>','<span class="o">=</span> <span class="n">1.5</span> <span class="o">&#8722;</span> <span class="n">54</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">52.5</span>'], 2, 'Top take away bottom, always that way round. It should be 54 minus 1.5, which is <b>52.5</b>. Everything else was right, and the answer even came out the correct size, with the wrong sign on the front. An area cannot be negative, so this one tells you it is wrong if you look at it.', ['That is the question copied down. Nothing has been done to it yet.','Correct. The power went from 1 up to 2, then divide by the new 2. And no plus c, because the numbers on the sign make it a definite one.','','This line does the arithmetic of the line above it correctly. The mistake it inherits happened one line earlier.']); }},
         {say:'If your area ever comes out negative, this is almost always why. The size is right and the sign is wrong, which is a very cheap thing to check and to fix.'}
       ]
@@ -3354,8 +3663,8 @@
          art:function(){ return sceneFOD(); }},
         {say:'Nothing gets solved in this topic. Your paper gives you a story and asks which equation goes with it, so the whole job is telling three shapes apart.'},
         {say:'There are only three, and they differ by two small things: whether there is a minus, and whether there is a bracket.'},
-        {say:'Tap a story, then tap the equation you think belongs to it.',
-         art:function(){ return match([['A radioactive lump, decaying','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="x">x</span>','Decay. The amount falls, and it falls fastest when there is most left, so the rate depends on x and carries a minus. Solution x = Ae^(-kt), and the graph starts high and slides down towards nothing.'],['Money in an account earning interest','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="x">k</span><span class="x">x</span>','Growth. Same shape, no minus. The more you have, the faster it grows, so it never flattens off. Solution x = Ae^(kt), and the graph climbs forever and gets steeper.'],['Hot kopi cooling in an air-conditioned room','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">c</span><span class="o">)</span>','Cooling. This is the one with the bracket, and the bracket is the whole difference: it cools according to how far ABOVE room temperature it is, not how hot it is. Solution x = c + Ae^(-kt), and the graph falls but stops at room temperature rather than at nothing.']], [2,0,1]); }},
+        {say:'Three stories, three equations. Nothing to solve here, so go on instinct and see how you do.',
+         art:function(){ return match([['A radioactive lump, decaying','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="x">x</span>','Decay. The amount falls, and it falls fastest when there is most left, so the rate depends on x and carries a minus. Solution x = Ae<sup class="p">&#8722;kt</sup>, and the graph starts high and slides down towards nothing.'],['Money in an account earning interest','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="x">k</span><span class="x">x</span>','Growth. Same shape, no minus. The more you have, the faster it grows, so it never flattens off. Solution x = Ae<sup class="p">kt</sup>, and the graph climbs forever and gets steeper.'],['Hot kopi cooling in an air-conditioned room','<span class="x">d</span><span class="x">x</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="x">k</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">c</span><span class="o">)</span>','Cooling. This is the one with the bracket, and the bracket is the whole difference: it cools according to how far ABOVE room temperature it is, not how hot it is. Solution x = c + Ae<sup class="p">&#8722;kt</sup>, and the graph falls but stops at room temperature rather than at nothing.']], [2,0,1]); }},
         {say:'The minus is the difference between going up and going down. The bracket is the difference between falling to nothing and falling to somewhere and stopping.'}
       ]
     },
@@ -3367,7 +3676,7 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.',
          art:function(){ return sceneFOD(); }},
         {say:'Same three, drawn instead of written. The exam gives you all three columns at once and asks which row is consistent, so being able to go straight from picture to equation is most of the mark.'},
-        {say:'Same again. Tap the shape, then the solution that draws it.',
+        {say:'Same three again, drawn instead of written. Match each shape to the solution that produces it.',
          art:function(){ return match([['Starts high, slides down towards nothing','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Decay. It heads for zero and never quite arrives. Nothing is left in the end.'],['Climbs forever, getting steeper','<span class="x">x</span> <span class="o">=</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="x">k</span><span class="x">t</span></sup>','Growth. No ceiling anywhere in it. If a graph flattens off, this is not the one.'],['Falls, then flattens out above the bottom','<span class="x">x</span> <span class="o">=</span> <span class="x">c</span> <span class="o">+</span> <span class="x">A</span><span class="x">e</span><sup class="p"><span class="o">&#8722;</span><span class="x">k</span><span class="x">t</span></sup>','Cooling. The c is the floor it settles onto. That is room temperature, and it is why this graph stops falling while the decay one does not.']], [1,2,0]); }},
         {say:'One question to ask yourself every time: where does it end up. Nothing, forever upwards, or somewhere in between and then flat. Each answer belongs to exactly one of the three.'}
       ]
@@ -3407,7 +3716,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'You are given the two things a line needs: how steep it is and one place it definitely passes through.'},
         {say:'The sheet gives you this shape. The little one and the little two mean the point you were handed.',
-         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="x">y</span><sub class="p">1</sub> <span class="o">=</span> <span class="x">m</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sub class="p">1</sub><span class="o">)</span>'},
+         eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="x">y</span><sub class="p">1</sub> <span class="o">=</span> <span class="x">m</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="x">x</span><sub class="p">1</sub><span class="o">)</span>',
+         art:function(){ return sceneLine([6,-2],[0,-26],'the point you were given, and the line through it'); }},
         {say:'Put the three numbers in their slots. Watch the double minus on the y.',
          eq: '<span class="x">y</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="n">4</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="o">)</span>'},
         {say:'Which tidies to a plus.',
@@ -3446,7 +3756,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Three things asked, and two of them are free once the line is in the right shape. So do that first and do not try to read anything off it before.'},
         {say:'Divide every term by 3. Every term, including the 24.',
-         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>'},
+         eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span>',
+         art:function(){ return sceneLine([0,8],[-4,0],'where it crosses each axis'); }},
         {say:'Now the gradient is the number in front of the x. Nothing to work out.',
          eq: '<span class="o">gradient</span> <span class="o">=</span> <span class="n">2</span>'},
         {say:'And the y-intercept is the lonely number on the end. Also nothing to work out. That is where it crosses the upright axis.',
@@ -3516,7 +3827,8 @@
         {say:'And add up the left-hand side, position by position.',
          eq: '<span class="o">(</span><span class="n">5</span><span class="o">+</span><span class="n">7</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">12</span><span class="o">,</span> <span class="x">y</span><span class="o">+</span><span class="n">2</span><span class="o">)</span>'},
         {say:'Now split it into the two positions. Top equals top.',
-         eq: '<span class="n">12</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>'},
+         eq: '<span class="n">12</span> <span class="o">=</span> <span class="n">6</span><span class="x">x</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">2</span>',
+         art:function(){ return sceneVec([[12,6,'left side','var(--peach)'],[12,6,'right side','var(--mint)']],'both sides have to land on the same point'); }},
         {say:'And bottom equals bottom, which has nothing to do with the top.',
          eq: '<span class="x">y</span> <span class="o">+</span> <span class="n">2</span> <span class="o">=</span> <span class="n">6</span>   <span class="o">so</span>   <span class="x">y</span> <span class="o">=</span> <span class="n">4</span>'},
         {say:'That is the whole trick with these. One vector equation is really one small equation per position.'}
@@ -3573,8 +3885,8 @@
          eq: '<span class="o">|</span><span class="x">a</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">34</span><span class="o">)</span> <span class="o">=</span> <span class="n">5.83</span>'},
         {say:'And the other.',
          eq: '<span class="o">|</span><span class="x">b</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">40</span><span class="o">)</span> <span class="o">=</span> <span class="n">6.32</span>'},
-        {say:'Now put the three pieces into the formula. Only now, not before.',
-         eq: 'cos <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span> <span class="o">/</span> <span class="o">(</span><span class="n">5.83</span> <span class="x">x</span> <span class="n">6.32</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.7593</span>'},
+        {say:'Now put the three pieces into the formula, and keep the two lengths unrounded while you do it. Rounding them to 5.83 and 6.32 first shifts the final angle by about a tenth of a degree, which is enough to look wrong against the answer sheet.',
+         eq: 'cos <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span> <span class="o">/</span> <span class="o">(</span>&#8730;<span class="n">34</span> <span class="o">&#215;</span> &#8730;<span class="n">40</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">0.7593</span>'},
         {say:'And undo the cosine to get the angle back.',
          eq: '<span class="o">angle</span> <span class="o">=</span> cos<sup class="p"><span class="o">&#8722;</span><span class="n">1</span></sup><span class="o">(</span><span class="o">&#8722;</span><span class="n">0.7593</span><span class="o">)</span> <span class="o">=</span> <span class="n">139.40</span>'},
         {say:'More than 90, exactly as the negative dot product promised. That is your own check, built in and free.'}
@@ -3586,7 +3898,8 @@
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
-        {say:'Cross product is only ever for three-number vectors, and the answer is another three-number vector. It has a pattern, and the pattern is easier than it looks once you see it.'},
+        {say:'Cross product is only ever for three-number vectors, and the answer is another three-number vector. It has a pattern, and the pattern is easier than it looks once you see it.',
+         art:function(){ return sceneVec([[1,3,'a','var(--peach)'],[0,4,'b','var(--mint)']],'the answer points out of the page, at right angles to both'); }},
         {say:'For the FIRST number, cover up the first row of both. You are left with the bottom two rows. Cross-multiply them and subtract.',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">(</span><span class="n">5</span><span class="o">)</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="n">2</span><span class="o">)</span><span class="o">(</span><span class="n">1</span><span class="o">)</span> <span class="o">=</span> <span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span> <span class="o">=</span> <span class="n">3</span>'},
         {say:'For the SECOND number, cover up the second row. Same cross-multiply, but this one goes the other way round. That reversal is the whole trap in this topic.',
@@ -3795,7 +4108,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'A word problem, but the maths is question three again: brackets have to come out before anything can be differentiated.'},
         {say:'Do the two identical brackets first, on their own. This is the step worth writing down.',
-         eq: '<span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span><span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">484</span> <span class="o">&#8722;</span> <span class="n">88</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
+         eq: '<span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span><span class="o">(</span><span class="n">22</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span> <span class="o">=</span> <span class="n">484</span> <span class="o">&#8722;</span> <span class="n">88</span><span class="x">x</span> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>',
+         art:function(){ return sceneBox(); }},
         {say:'Now multiply all of that by the x outside.',
          eq: '<span class="x">V</span> <span class="o">=</span> <span class="n">484</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">88</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">4</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup>'},
         {say:'And it is just three ordinary terms now.',
@@ -4115,7 +4429,7 @@
         {say:'Solving one is the same as solving an equation. Same moves, same order.'},
         {aha:['except for one thing','If you multiply or divide by a <strong>negative</strong>, the sign turns round. Less-than becomes greater-than. That is the only difference in the entire topic.']},
         {say:'Why: 3 is less than 5. But owing $3 is better than owing $5, so once you cross zero the order reverses.'},
-        {say:'Here is one with the flip forgotten. Tap the line where it goes wrong.',
+        {say:'Here is one with the flip forgotten. One of these lines is where it goes wrong. See if you can find it before I tell you.',
          art:function(){ return spot([
             '-2x  &gt;  8',
             'divide both sides by -2',
@@ -4138,7 +4452,8 @@
         {say:'A wheelchair ramp. It has a height, a length along the ground, and a slope. Change one and the others have to move.'},
         {aha:['that is all sin, cos and tan are','Three ways of comparing two sides of a right-angled triangle. Not operations. Just <strong>ratios</strong>, like a recipe.']},
         {say:'SOH CAH TOA: Sin is Opposite over Hypotenuse, Cos is Adjacent over Hypotenuse, Tan is Opposite over Adjacent. The hypotenuse is always the long slanted one.'},
-        {say:'Opposite means across from the angle you are looking at. Adjacent means next to it. Which is which depends on which corner you are standing in, and that is the only genuinely fiddly part.'},
+        {say:'Opposite means across from the angle you are looking at. Adjacent means next to it. Which is which depends on which corner you are standing in, and that is the only genuinely fiddly part.',
+         art:function(){ return sceneTri({hyp:'hypotenuse',opp:'opposite',adj:'adjacent',ang:'this one',w:176,h:78,cap:'which side is which depends on the angle you are standing at'}); }},
         {aha:['not on your sheet, and asked','The <strong>sine rule</strong>, for triangles that are not right-angled. If you are given two sides and an angle opposite one of them, that is the one to reach for. Your paper finishes with exactly that.']},
         {say:'The identities are printed, including sin2A. Worth knowing they exist, because one integration question on your paper is impossible without one.'},
         {say:'Degrees when a question asks for an angle between 0 and 360. Radians when you see a &#960;. Check the calculator once.'}
@@ -4385,7 +4700,7 @@
          art:function(){ return lab('dial','the floor',0,4,0,'which means',''); }},
         {say:'So 6/x is 6x' + pw('-1') + ', and &#8730;x is x' + pw('1/2') + '. Both of those are now the right shape, and both are on your paper.'},
         {say:'Brackets are the same story. (3x' + pw('2') + ' + 5)(x' + pw('2') + ' + 1) has to be opened out before the rule will take it.'},
-        {say:'Here is a tidy-up with one slip in it. Tap the line where it goes wrong.',
+        {say:'Here is a tidy-up with one slip in it. One of these lines is where it goes wrong. See if you can find it before I tell you.',
          art:function(){ return spot([
             '6/x',
             '6 x to the power 1',
