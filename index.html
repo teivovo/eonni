@@ -1349,7 +1349,7 @@
         '<text x="34" y="126" font-size="17" fill="var(--peach)">+</text>' +
         '<line x1="38" y1="34" x2="38" y2="108" class="axis"/>' +
         '<polygon points="38,116 34,106 42,106" fill="var(--peach)"/>' +
-        '<text x="12" y="74" font-size="9" opacity=".6" transform="rotate(-90 12 74)">DNA IS NEGATIVE</text>' +
+        '<text x="18" y="12" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
       '</svg>',
       'small ones slip through faster');
   }
@@ -1487,6 +1487,289 @@
         '<text x="252" y="122" font-size="10" opacity=".55">TIME</text>' +
       '</svg>',
       'chop it, add the pieces up', true);
+  }
+
+
+  /* ---------------- parameterised scenes ---------------- */
+
+  /* Vectors drawn as arrows on a pair of axes.
+     v = [[x, y, label, colour], ...]; tail-to-head chains when chain is true. */
+  function sceneVec(v, cap, chain){
+    var W = 300, H = 176, pad = 26;
+
+    /* every point the drawing has to contain, so it can be scaled to fit */
+    var pts = [[0, 0]], ox = 0, oy = 0, i;
+    for(i = 0; i < v.length; i++){
+      if(chain){ ox += v[i][0]; oy += v[i][1]; pts.push([ox, oy]); }
+      else { pts.push([v[i][0], v[i][1]]); }
+    }
+    var xs = pts.map(function(p){ return p[0]; }), ys = pts.map(function(p){ return p[1]; });
+    var minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs);
+    var miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
+    var u = Math.min((W - pad * 2) / Math.max(1, maxx - minx),
+                     (H - pad * 2 - 16) / Math.max(1, maxy - miny));
+    u = Math.min(u, 17);
+    var cx = pad + (0 - minx) * u, cy = H - 30 - (0 - miny) * u;
+    function sx(x){ return cx + x * u; }
+    function sy(y){ return cy - y * u; }
+
+    var g = '<line x1="8" y1="' + sy(0) + '" x2="292" y2="' + sy(0) + '" class="axis"/>' +
+            '<line x1="' + sx(0) + '" y1="8" x2="' + sx(0) + '" y2="' + (H - 16) + '" class="axis"/>';
+
+    function arrow(x0, y0, x1, y1, col, lbl, dash){
+      var dx = x1 - x0, dy = y1 - y0, L = Math.sqrt(dx * dx + dy * dy) || 1;
+      var hx = x1 - dx / L * 10, hy = y1 - dy / L * 10;
+      var px = -dy / L * 5, py = dx / L * 5;
+      var out = '<line x1="' + x0 + '" y1="' + y0 + '" x2="' + hx + '" y2="' + hy +
+        '" stroke="' + col + '" stroke-width="2.6" stroke-linecap="round"' +
+        (dash ? ' stroke-dasharray="5 4"' : '') + '/>' +
+        '<polygon points="' + x1 + ',' + y1 + ' ' + (hx + px) + ',' + (hy + py) + ' ' +
+        (hx - px) + ',' + (hy - py) + '" fill="' + col + '"/>';
+      if(lbl){
+        out += '<text x="' + ((x0 + x1) / 2 + 10) + '" y="' + ((y0 + y1) / 2 - 4) +
+               '" font-size="12" fill="' + col + '">' + lbl + '</text>';
+      }
+      return out;
+    }
+
+    ox = 0; oy = 0;
+    for(i = 0; i < v.length; i++){
+      var a = v[i];
+      var fx = chain ? ox : 0, fy = chain ? oy : 0;
+      g += arrow(sx(fx), sy(fy), sx(fx + a[0]), sy(fy + a[1]), a[3] || 'var(--peach)', a[2]);
+      if(chain){ ox += a[0]; oy += a[1]; }
+    }
+    /* the resultant: the whole reason a chain is drawn as a chain */
+    if(chain && v.length > 1){
+      g += arrow(sx(0), sy(0), sx(ox), sy(oy), 'var(--butter)', 'the answer', true);
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cap + '">' +
+      g + '</svg>', cap);
+  }
+
+  /* A parabola, optionally with its roots, turning point and a shaded strip. */
+  function scenePara(o){
+    var a = o.a, b = o.b, c = o.c;
+    var W = 300, H = 176, cx = o.cx || 150, cy = o.cy || 118, u = o.u || 15;
+    function sx(x){ return cx + x * u; }
+    function sy(y){ return cy - y * (o.uy || u); }
+    var pts = [], x;
+    for(x = -9; x <= 9; x += 0.25){
+      var px = sx(x), py = sy(a * x * x + b * x + c);
+      if(px >= 8 && px <= 292 && py >= 8 && py <= H - 12) pts.push(px.toFixed(1) + ',' + py.toFixed(1));
+    }
+    var g = '<line x1="10" y1="' + cy + '" x2="290" y2="' + cy + '" class="axis"/>' +
+            '<line x1="' + cx + '" y1="10" x2="' + cx + '" y2="' + (H - 14) + '" class="axis"/>' +
+            '<polyline points="' + pts.join(' ') + '" class="curve"/>';
+    if(o.shade){
+      var band = [];
+      for(x = o.shade[0]; x <= o.shade[1]; x += 0.2) band.push(sx(x).toFixed(1) + ',' + sy(a*x*x+b*x+c).toFixed(1));
+      g += '<polygon points="' + sx(o.shade[0]) + ',' + cy + ' ' + band.join(' ') + ' ' +
+           sx(o.shade[1]) + ',' + cy + '" fill="var(--peach)" opacity=".17"/>';
+    }
+    (o.roots || []).forEach(function(r){
+      g += '<circle cx="' + sx(r) + '" cy="' + cy + '" r="5" class="dot pick"/>';
+    });
+    if(o.tp){
+      g += '<line x1="' + sx(o.tp[0]) + '" y1="' + sy(o.tp[1]) + '" x2="' + sx(o.tp[0]) +
+           '" y2="' + cy + '" class="drop yes"/>' +
+           '<circle cx="' + sx(o.tp[0]) + '" cy="' + sy(o.tp[1]) + '" r="5.6" class="dot pick yes"/>' +
+           '<line x1="' + (sx(o.tp[0]) - 26) + '" y1="' + sy(o.tp[1]) + '" x2="' + (sx(o.tp[0]) + 26) +
+           '" y2="' + sy(o.tp[1]) + '" class="tan flat"/>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* A straight line through two marked points. */
+  function sceneLine(p1, p2, cap){
+    var W = 300, H = 172, pad = 34;
+    var xs = [0, p1[0], p2[0]], ys = [0, p1[1], p2[1]];
+    var lox = Math.min.apply(null, xs) - 1, hix = Math.max.apply(null, xs) + 1;
+    var loy = Math.min.apply(null, ys) - 2, hiy = Math.max.apply(null, ys) + 2;
+    var ux = (W - pad * 2) / (hix - lox), uy = (H - pad - 26) / (hiy - loy);
+    function sx(x){ return pad + (x - lox) * ux; }
+    function sy(y){ return H - 26 - (y - loy) * uy; }
+    var g = '<line x1="8" y1="' + sy(0) + '" x2="292" y2="' + sy(0) + '" class="axis"/>' +
+            '<line x1="' + sx(0) + '" y1="8" x2="' + sx(0) + '" y2="' + (H - 14) + '" class="axis"/>';
+    var m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    /* clip the line to the visible box in BOTH directions. Clipping only in x
+       let a steep line run straight out of the bottom of the frame. */
+    function yAt(x){ return p1[1] + m * (x - p1[0]); }
+    function xAt(y){ return p1[0] + (y - p1[1]) / m; }
+    var ax = lox, ay = yAt(ax);
+    if(ay > hiy){ ay = hiy; ax = xAt(hiy); }
+    if(ay < loy){ ay = loy; ax = xAt(loy); }
+    var bx = hix, by = yAt(bx);
+    if(by > hiy){ by = hiy; bx = xAt(hiy); }
+    if(by < loy){ by = loy; bx = xAt(loy); }
+    g += '<line x1="' + sx(ax) + '" y1="' + sy(ay) +
+         '" x2="' + sx(bx) + '" y2="' + sy(by) + '" class="curve"/>';
+    /* the rise and the run */
+    g += '<line x1="' + sx(p1[0]) + '" y1="' + sy(p1[1]) + '" x2="' + sx(p2[0]) + '" y2="' + sy(p1[1]) + '" class="drop"/>' +
+         '<line x1="' + sx(p2[0]) + '" y1="' + sy(p1[1]) + '" x2="' + sx(p2[0]) + '" y2="' + sy(p2[1]) + '" class="drop"/>' +
+         '<text x="' + ((sx(p1[0]) + sx(p2[0])) / 2) + '" y="' + (sy(p1[1]) + 14) +
+         '" text-anchor="middle" font-size="10" fill="var(--peach)">along</text>' +
+         '<text x="' + (sx(p2[0]) + 6) + '" y="' + ((sy(p1[1]) + sy(p2[1])) / 2) +
+         '" font-size="10" fill="var(--peach)">up</text>';
+    [p1, p2].forEach(function(p){
+      var tx = Math.min(sx(p[0]) + 8, 218);
+      g += '<circle cx="' + sx(p[0]) + '" cy="' + sy(p[1]) + '" r="5.4" class="dot pick"/>' +
+           '<text x="' + tx + '" y="' + (sy(p[1]) - 8) + '" font-size="11">(' + p[0] + ', ' + p[1] + ')</text>';
+    });
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cap + '">' +
+      g + '</svg>', cap);
+  }
+
+  /* A right-angled triangle with two sides and an angle labelled. */
+  function sceneTri(o){
+    var W = 300, H = 150;
+    var x0 = 52, y0 = 118, w = o.w || 176, h = o.h || 74;
+    var g = '<polygon points="' + x0 + ',' + y0 + ' ' + (x0 + w) + ',' + y0 + ' ' +
+            (x0 + w) + ',' + (y0 - h) + '" class="stroke" fill="var(--raise2)"/>' +
+            '<rect x="' + (x0 + w - 13) + '" y="' + (y0 - 13) + '" width="13" height="13" class="axis" fill="none"/>';
+    if(o.hyp) g += '<text x="' + (x0 + w / 2 - 14) + '" y="' + (y0 - h / 2 - 6) +
+                   '" font-size="12" fill="var(--peach)">' + o.hyp + '</text>';
+    if(o.opp) g += '<text x="' + (x0 + w + 8) + '" y="' + (y0 - h / 2 + 4) +
+                   '" font-size="12" fill="var(--mint)">' + o.opp + '</text>';
+    if(o.adj) g += '<text x="' + (x0 + w / 2) + '" y="' + (y0 + 17) +
+                   '" text-anchor="middle" font-size="12">' + o.adj + '</text>';
+    if(o.ang){
+      g += '<path d="M' + (x0 + 26) + ' ' + y0 + ' A26 26 0 0 0 ' +
+           (x0 + 26 * Math.cos(Math.atan(h / w))) + ' ' + (y0 - 26 * Math.sin(Math.atan(h / w))) +
+           '" class="stroke" stroke-width="1.3"/>' +
+           '<text x="' + (x0 + 32) + '" y="' + (y0 - 8) + '" font-size="12" fill="var(--butter)">' + o.ang + '</text>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* A sine or cosine wave. line draws a horizontal cut so the two solutions show. */
+  function sceneWave(o){
+    var W = 300, H = 168, top = 20, bot = 40;
+    var A = Math.abs(o.A === undefined ? 1 : o.A), B = o.B || 1, D = o.D || 0;
+    /* include zero so the axis is always on screen */
+    var lo = Math.min(0, D - A, o.line !== undefined ? o.line : 0);
+    var hi = Math.max(0, D + A, o.line !== undefined ? o.line : 0);
+    var u = Math.min((H - top - bot) / Math.max(0.5, hi - lo), 34);
+    function sy(v){ return top + (hi - v) * u; }
+    var pts = [], t;
+    for(t = 0; t <= 360; t += 3){
+      pts.push((20 + t / 360 * 258).toFixed(1) + ',' +
+               sy((o.A === undefined ? 1 : o.A) * Math.sin(B * t * Math.PI / 180) + D).toFixed(1));
+    }
+    var axis = sy(0);
+    var g = '<line x1="14" y1="' + axis + '" x2="290" y2="' + axis + '" class="axis"/>' +
+            '<polyline points="' + pts.join(' ') + '" class="curve"/>';
+    /* if a cut line sits just below the axis, the degree labels would land on
+       top of it, so they go above instead */
+    var tickY = (o.line !== undefined && o.line < 0) ? axis - 8 : axis + 16;
+    ['0', '90', '180', '270', '360'].forEach(function(lbl, i){
+      var x = 20 + i / 4 * 258;
+      g += '<line x1="' + x + '" y1="' + (axis - 3) + '" x2="' + x + '" y2="' + (axis + 3) + '" class="axis"/>' +
+           '<text x="' + x + '" y="' + tickY + '" text-anchor="middle" font-size="9.5" opacity=".6">' + lbl + '</text>';
+    });
+    if(o.line !== undefined){
+      var ly = sy(o.line);
+      g += '<line x1="14" y1="' + ly + '" x2="290" y2="' + ly + '" stroke="var(--peach)" stroke-width="1.6" stroke-dasharray="4 3"/>';
+      (o.hits || []).forEach(function(t2){
+        var hx = 20 + t2 / 360 * 258;
+        g += '<circle cx="' + hx + '" cy="' + ly + '" r="5.4" class="dot pick"/>' +
+             '<text x="' + hx + '" y="' + (ly + 20) + '" text-anchor="middle" font-size="10.5" fill="var(--peach)">' + t2 + '</text>';
+      });
+    }
+    if(o.maxmin){
+      g += '<line x1="14" y1="' + sy(D + A) + '" x2="290" y2="' + sy(D + A) + '" class="axis"/>' +
+           '<text x="288" y="' + (sy(D + A) - 4) + '" text-anchor="end" font-size="10" fill="var(--mint)">max</text>' +
+           '<line x1="14" y1="' + sy(D - A) + '" x2="290" y2="' + sy(D - A) + '" class="axis"/>' +
+           '<text x="288" y="' + (sy(D - A) + 12) + '" text-anchor="end" font-size="10" fill="var(--peach)">min</text>';
+    }
+    return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.cap + '">' +
+      g + '</svg>', o.cap);
+  }
+
+  /* The fenced field: a wall along the top and three sides of fence. */
+  function sceneFence(){
+    var x0 = 66, y0 = 40, w = 168, h = 74;
+    return scene(
+      '<svg viewBox="0 0 300 152" role="img" aria-label="A rectangle fenced on three sides against a wall">' +
+        '<line x1="' + (x0 - 14) + '" y1="' + y0 + '" x2="' + (x0 + w + 14) + '" y2="' + y0 + '" stroke="var(--soft)" stroke-width="5" stroke-linecap="round"/>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 - 11) + '" text-anchor="middle" font-size="10" opacity=".6">WALL, NO FENCE NEEDED</text>' +
+        '<path d="M' + x0 + ' ' + y0 + ' V' + (y0 + h) + ' H' + (x0 + w) + ' V' + y0 + '" class="stroke" stroke-width="2.2" stroke-dasharray="6 4"/>' +
+        '<rect x="' + x0 + '" y="' + y0 + '" width="' + w + '" height="' + h + '" fill="var(--peach)" opacity=".13"/>' +
+        '<text x="' + (x0 - 9) + '" y="' + (y0 + h / 2) + '" text-anchor="end" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="' + (x0 + w + 9) + '" y="' + (y0 + h / 2) + '" font-size="13" fill="var(--peach)">x</text>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 + h + 19) + '" text-anchor="middle" font-size="13" fill="var(--peach)">20 &#8722; 2x</text>' +
+        '<text x="' + (x0 + w / 2) + '" y="' + (y0 + h / 2 + 5) + '" text-anchor="middle" font-size="11" opacity=".7">area</text>' +
+      '</svg>',
+      'only three sides need fencing');
+  }
+
+  /* Which row meets which column. */
+  function sceneRowCol(){
+    function cell(x, y, t, cls){
+      return '<rect x="' + x + '" y="' + y + '" width="30" height="26" rx="4" class="stroke" fill="' +
+        (cls || 'var(--raise2)') + '"/><text x="' + (x + 15) + '" y="' + (y + 18) +
+        '" text-anchor="middle" font-size="12">' + t + '</text>';
+    }
+    var g = '';
+    g += cell(20, 34, '3', 'var(--glow)') + cell(52, 34, '4', 'var(--glow)');
+    g += cell(20, 64, '1') + cell(52, 64, '7');
+    g += '<text x="98" y="56" font-size="15">&#215;</text>';
+    g += cell(120, 34, '3', 'var(--raise)') + cell(152, 34, '&#8722;1');
+    g += cell(120, 64, '5', 'var(--raise)') + cell(152, 64, '0');
+    g += '<text x="198" y="56" font-size="15">=</text>';
+    g += cell(222, 34, '29', 'var(--glow)') + cell(254, 34, '?');
+    g += cell(222, 64, '?') + cell(254, 64, '?');
+    g += '<rect x="16" y="30" width="70" height="34" rx="7" fill="none" stroke="var(--peach)" stroke-width="2"/>';
+    g += '<rect x="116" y="30" width="34" height="64" rx="7" fill="none" stroke="var(--mint)" stroke-width="2"/>';
+    g += '<text x="150" y="120" text-anchor="middle" font-size="10.5" opacity=".72">first row meets first column</text>';
+    g += '<text x="150" y="134" text-anchor="middle" font-size="10.5" fill="var(--peach)">3&#215;3 + 4&#215;5 = 29</text>';
+    return scene('<svg viewBox="0 0 300 144" role="img" aria-label="The first row of the left matrix multiplied by the first column of the right">' +
+      g + '</svg>', 'row from the left, column from the right');
+  }
+
+  /* Energy levels for adding two reactions together. */
+  function sceneEnergy(){
+    return scene(
+      '<svg viewBox="0 0 300 156" role="img" aria-label="Energy levels showing 180 up then 112 down giving 68 up overall">' +
+        '<line x1="26" y1="118" x2="98" y2="118" class="stroke" stroke-width="2.4"/>' +
+        '<line x1="114" y1="30" x2="186" y2="30" class="stroke" stroke-width="2.4"/>' +
+        '<line x1="202" y1="84" x2="274" y2="84" class="stroke" stroke-width="2.4"/>' +
+        '<text x="62" y="134" text-anchor="middle" font-size="11">N&#8322; + 2O&#8322;</text>' +
+        '<text x="150" y="22" text-anchor="middle" font-size="11">2NO + O&#8322;</text>' +
+        '<text x="238" y="100" text-anchor="middle" font-size="11">2NO&#8322;</text>' +
+        '<line x1="106" y1="112" x2="106" y2="38" stroke="var(--peach)" stroke-width="2"/>' +
+        '<polygon points="106,30 101,42 111,42" fill="var(--peach)"/>' +
+        '<text x="70" y="76" font-size="11" fill="var(--peach)">+180</text>' +
+        '<line x1="194" y1="36" x2="194" y2="76" stroke="var(--mint)" stroke-width="2"/>' +
+        '<polygon points="194,84 189,72 199,72" fill="var(--mint)"/>' +
+        '<text x="200" y="56" font-size="11" fill="var(--mint)">&#8722;112</text>' +
+        '<line x1="26" y1="118" x2="26" y2="84" stroke="var(--butter)" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<line x1="26" y1="84" x2="202" y2="84" stroke="var(--butter)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+        '<text x="30" y="76" font-size="12" fill="var(--butter)">net +68</text>' +
+      '</svg>',
+      'up 180, back down 112');
+  }
+
+  /* Limiting reagent: two stacks, one runs out. */
+  function sceneLimit(){
+    var g = '';
+    for(var i = 0; i < 3; i++){
+      g += '<circle cx="' + (52 + i * 26) + '" cy="52" r="11" fill="var(--peach)" opacity=".8"/>' +
+           '<text x="' + (52 + i * 26) + '" y="56" text-anchor="middle" font-size="10" fill="#fff">C</text>';
+    }
+    for(var j = 0; j < 5; j++){
+      g += '<circle cx="' + (52 + j * 26) + '" cy="104" r="11" fill="var(--mint)" opacity="' + (j < 3 ? '.8' : '.28') + '"/>' +
+           '<text x="' + (52 + j * 26) + '" y="108" text-anchor="middle" font-size="9" fill="#fff">O&#8322;</text>';
+    }
+    g += '<text x="20" y="56" text-anchor="end" font-size="11">0.3</text>' +
+         '<text x="20" y="108" text-anchor="end" font-size="11">0.5</text>' +
+         '<rect x="150" y="88" width="82" height="32" rx="8" fill="none" stroke="var(--faint)" stroke-width="1.4" stroke-dasharray="4 3"/>' +
+         '<text x="191" y="134" text-anchor="middle" font-size="10" opacity=".65">left over</text>' +
+         '<text x="150" y="22" text-anchor="middle" font-size="10.5" fill="var(--peach)">the carbon runs out first</text>';
+    return scene('<svg viewBox="0 0 300 146" role="img" aria-label="Three carbons and five oxygens, with two oxygens left over">' +
+      g + '</svg>', 'more of it does not mean enough of it');
   }
 
   function fig(svg, cap){
@@ -2143,7 +2426,8 @@
         {say:'What could the carbon make. The ratio of C to CO is 2 to 2, so one for one.',
          eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span> <span class="o">could</span> <span class="o">make</span> <span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
         {say:'What could the oxygen make. The ratio of O2 to CO is 1 to 2, so double it.',
-         eq: '<span class="n">0.5</span> <span class="o">mol</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">could</span> <span class="o">make</span> <span class="n">1.0</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
+         eq: '<span class="n">0.5</span> <span class="o">mol</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">could</span> <span class="o">make</span> <span class="n">1.0</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>',
+         art:function(){ return sceneLimit(); }},
         {say:'The carbon runs out first, so the carbon decides. You get the smaller of the two.',
          eq: '<span class="n">0.3</span> <span class="o">mol</span> <span class="x">C</span><span class="x">O</span>'},
         {say:'And that is the whole method. Never compare the raw amounts, because the ratio is doing the work. Here there is more oxygen than carbon and the carbon is still the one that runs out.'}
@@ -2200,7 +2484,8 @@
          eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span>   <span class="o">with</span> <span class="n">180</span> <span class="x">k</span><span class="x">J</span>'},
         {say:'And the second.',
          eq: '<span class="n">2</span><span class="x">N</span><span class="x">O</span> <span class="o">+</span> <span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>   <span class="o">with</span> <span class="o">&#8722;</span><span class="n">112</span> <span class="x">k</span><span class="x">J</span>'},
-        {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.'},
+        {say:'Now add them as though they were equations. The 2NO appears on the right of the first and the left of the second, so it cancels.',
+         art:function(){ return sceneEnergy(); }},
         {say:'What survives is nitrogen and two oxygens on the left, and two nitrogen dioxides on the right, which is exactly the reaction you were asked about.',
          eq: '<span class="x">N</span><sub class="p">2</sub> <span class="o">+</span> <span class="n">2</span><span class="x">O</span><sub class="p">2</sub> <span class="o">goes</span> <span class="x">t</span><span class="x">o</span> <span class="n">2</span><span class="x">N</span><span class="x">O</span><sub class="p">2</sub>'},
         {say:'So add the two energies the same way.',
@@ -2495,7 +2780,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Multiplying is row by column, and the trick that stops it going wrong is doing one entry at a time and saying it out loud as you go.'},
         {say:'Take a 2 by 2 times a 2 by 2. For the top-left entry of the answer, use the FIRST row of the left one and the FIRST column of the right one.',
-         eq: '<span class="o">first</span> <span class="o">row</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span>   <span class="o">first</span> <span class="o">column</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>'},
+         eq: '<span class="o">first</span> <span class="o">row</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">)</span>   <span class="o">first</span> <span class="o">column</span> <span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">)</span>',
+         art:function(){ return sceneRowCol(); }},
         {say:'Multiply the pairs and add.',
          eq: '<span class="n">3</span><span class="o">&#215;</span><span class="n">3</span> <span class="o">+</span> <span class="n">4</span><span class="o">&#215;</span><span class="n">5</span> <span class="o">=</span> <span class="n">9</span> <span class="o">+</span> <span class="n">20</span> <span class="o">=</span> <span class="n">29</span>'},
         {say:'Top-right uses the same first row, but the second column.',
@@ -2628,7 +2914,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Four letters to find, and each one comes from a different feature. None of them need the others, so do them in any order and one at a time.'},
         {say:'A is the height from the middle to the top. Take the min from the max and halve it.',
-         eq: '<span class="x">A</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">3</span>'},
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">3</span>',
+         art:function(){ return sceneWave({A:3,B:2,D:1,maxmin:true,cap:'two full cycles, middle line lifted to 1'}); }},
         {say:'D is where the middle line sits. Add them and halve instead.',
          eq: '<span class="x">D</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">1</span>'},
         {say:'B is about how squashed it is. Two full cycles in 360 means each one takes 180.',
@@ -2650,7 +2937,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'You do not have to draw this or work anything out. Sine and cosine only ever run between minus one and plus one, and everything else in the expression acts on that.'},
         {say:'The cosine part can be at most 1 and at least -1. That is fixed and it never changes.',
-         eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>'},
+         eq: 'cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">1</span> <span class="o">and</span> <span class="n">1</span>',
+         art:function(){ return sceneWave({A:2,B:3,D:5,cy:104,maxmin:true,cap:'the inside number changes how often, not how high'}); }},
         {say:'The -2 multiplies it, so that part runs between -2 and 2. Note the minus flips which end is which, but the two ends are the same two numbers.',
          eq: '<span class="o">&#8722;</span><span class="n">2</span>cos<span class="o">(</span><span class="n">3</span><span class="x">x</span><span class="o">)</span> <span class="x">i</span><span class="x">s</span> <span class="o">between</span> <span class="o">&#8722;</span><span class="n">2</span> <span class="o">and</span> <span class="n">2</span>'},
         {say:'Then the +5 lifts the whole thing.',
@@ -2671,7 +2959,8 @@
          eq: '<span class="o">basic</span> <span class="o">angle</span> <span class="o">=</span> <span class="n">30</span>'},
         {say:'The calculator would hand you -30 here, which is outside the range you were asked for, so it is no use as it stands. Work from the basic angle instead.'},
         {say:'Sine is negative in the bottom half of the circle, which is the third and fourth quarters. Third quarter is 180 plus the basic angle.',
-         eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">30</span> <span class="o">=</span> <span class="n">210</span>'},
+         eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">180</span> <span class="o">+</span> <span class="n">30</span> <span class="o">=</span> <span class="n">210</span>',
+         art:function(){ return sceneWave({A:1,B:1,line:-0.5,hits:[210,330],cap:'one flat line, two crossings'}); }},
         {say:'Fourth quarter is 360 take away the basic angle.',
          eq: '<span class="x">t</span> <span class="o">=</span> <span class="n">360</span> <span class="o">&#8722;</span> <span class="n">30</span> <span class="o">=</span> <span class="n">330</span>'},
         {say:'Both answers, and both inside the range asked for.',
@@ -2706,7 +2995,8 @@
         {say:'Collect the two x terms and write it in the usual order, highest power first.',
          eq: '<span class="x">y</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">16</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">8</span>'},
         {say:'Now everything is readable. a is the number in front of x squared, b in front of x, and c is on its own.',
-         eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span>    <span class="x">b</span> <span class="o">=</span> <span class="n">16</span>    <span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
+         eq: '<span class="x">a</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">6</span>    <span class="x">b</span> <span class="o">=</span> <span class="n">16</span>    <span class="x">c</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>',
+         art:function(){ return scenePara({a:-6,b:16,c:-8,tp:[1.333,2.667],u:26,uy:7,cy:130,cap:'a is negative, so the arc opens downward'}); }},
         {say:'The y-intercept is c. It is where the curve crosses the upright axis, and it needs no working at all.',
          eq: '<span class="x">y</span><span class="o">&#8722;</span><span class="o">intercept</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">8</span>'},
         {say:'And the shape. a is negative, so the arc opens downward, which makes the turning point a maximum. A hilltop.'},
@@ -2729,7 +3019,8 @@
         {say:'Now the rest of the formula. Minus b is minus 14, and 2a is 12.',
          eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">14</span> <span class="o">+</span><span class="o">&#8722;</span> <span class="n">22</span><span class="o">)</span><span class="o">/</span><span class="n">12</span>'},
         {say:'The plus-or-minus means do it twice.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>'},
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="frac"><span><span class="n">8</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="frac"><span><span class="n">2</span></span><span><span class="n">3</span></span></span>      <span class="x">o</span><span class="x">r</span>      <span class="x">x</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">36</span></span><span><span class="n">12</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">3</span>',
+         art:function(){ return scenePara({a:6,b:14,c:-12,roots:[0.667,-3],u:26,uy:1.6,cy:70,cap:'two crossings, two roots'}); }},
         {say:'Two roots, and a is positive so this one is a valley. The y-intercept, free as always, is the -12 on the end.'}
       ]
     },
@@ -2761,7 +3052,8 @@
         {say:'Find the roots first. This one factorises: two numbers multiplying to 15 and adding to -8.',
          eq: '<span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="n">0</span>   <span class="x">s</span><span class="x">o</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">3</span><span class="o">,</span> <span class="n">5</span>'},
         {say:'The line of symmetry is halfway between them. Add and halve.',
-         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">4</span>'},
+         eq: '<span class="x">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">3</span> <span class="o">+</span> <span class="n">5</span><span class="o">)</span><span class="o">/</span><span class="n">2</span> <span class="o">=</span> <span class="n">4</span>',
+         art:function(){ return scenePara({a:1,b:-8,c:15,roots:[3,5],tp:[4,-1],u:26,cx:70,uy:11,cy:80,cap:'the low point sits on the mirror line'}); }},
         {say:'That is the x of the turning point too, because the lowest point sits on the mirror line. So put it back into the original for the y.',
          eq: '<span class="x">y</span> <span class="o">=</span> <span class="n">16</span> <span class="o">&#8722;</span> <span class="n">32</span> <span class="o">+</span> <span class="n">15</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">1</span>'},
         {say:'And there it is.',
@@ -3025,7 +3317,8 @@
         {say:'So write it as one. The two x values become the numbers on the sign.',
          eq: '&#8747; <span class="o">from</span> <span class="n">1</span> <span class="x">t</span><span class="x">o</span> <span class="n">3</span>   <span class="o">(</span><span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">3</span></sup> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span> <span class="o">+</span> <span class="n">8</span><span class="o">)</span> <span class="x">d</span><span class="x">x</span>'},
         {say:'Integrate the three terms. Add one to each power, divide by the new power.',
-         eq: '<span class="o">[</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">]</span>'},
+         eq: '<span class="o">[</span> <span class="n">5</span><span class="x">x</span><sup class="p"><span class="n">4</span></sup><span class="o">/</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">8</span><span class="x">x</span> <span class="o">]</span>',
+         art:function(){ return scenePara({a:0.9,b:0,c:6,shade:[1,3],u:34,cx:60,uy:2.4,cy:150,cap:'the shaded strip is what you are measuring'}); }},
         {say:'Top number in. Three to the fourth is 81.',
          eq: '<span class="n">101.25</span> <span class="o">&#8722;</span> <span class="n">9</span> <span class="o">+</span> <span class="n">24</span> <span class="o">=</span> <span class="n">116.25</span>'},
         {say:'Bottom number in.',
@@ -3099,7 +3392,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'One formula, and it is on your sheet. The only thing that goes wrong is doing the subtractions in different orders on the top and the bottom.'},
         {say:'Gradient is how much it climbs divided by how far it goes across. Up over along.',
-         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">0</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">0</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">4</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>',
+         art:function(){ return sceneLine([2,0],[4,10],'up divided by along'); }},
         {say:'Both subtractions run the same way round: second point take away first, on the top and on the bottom.',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="frac"><span><span class="n">10</span></span><span><span class="n">2</span></span></span> <span class="o">=</span> <span class="n">5</span>'},
         {say:'So it climbs 5 up for every 1 across. If you had done the top one way and the bottom the other, you would have got minus 5, which is a line sloping the other way entirely.'}
@@ -3131,7 +3425,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This is the two questions before it, stacked. You are not given the gradient, so you work it out first, and then you are back to the previous question.'},
         {say:'Gradient first. Same order top and bottom.',
-         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>'},
+         eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span> <span class="o">&#8722;</span> <span class="n">4</span><span class="o">)</span><span class="o">/</span><span class="o">(</span><span class="n">5</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="o">)</span>',
+         art:function(){ return sceneLine([2,4],[5,-2],'going down as it goes across, so the gradient is negative'); }},
         {say:'Careful with the top: minus two take away four is minus six, not minus two.',
          eq: '<span class="x">m</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="frac"><span><span class="n">6</span></span><span><span class="n">3</span></span></span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">2</span>'},
         {say:'Now pick either point, it does not matter which, and use the same shape as before.',
@@ -3177,7 +3472,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two separate jobs in one question. Length first, because that one has no traps in it.'},
         {say:'Magnitude is Pythagoras. Square both, add, square root. The minus signs disappear when you square them, which is the point.',
-         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">170</span><span class="o">)</span>'},
+         eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">11</span><span class="o">)</span><sup class="p"><span class="n">2</span></sup><span class="o">)</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">170</span><span class="o">)</span>',
+         art:function(){ return sceneVec([[-7,-11,'v','var(--peach)']], 'the arrow points left and down, so it is in the bottom-left quarter'); }},
         {say:'So the length is:',
          eq: '<span class="o">|</span><span class="x">v</span><span class="o">|</span> <span class="o">=</span> <span class="n">13.04</span>'},
         {say:'Now direction, and this is where the marks go. First get the basic angle, using the numbers WITHOUT their minus signs.',
@@ -3196,7 +3492,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Before anything else, notice that p and q have two numbers and r and s have three. Two-number and three-number vectors never mix. If you ever find yourself adding one to the other, something has gone wrong further back.'},
         {say:'Adding is done position by position. Top with top, bottom with bottom. Nothing lines up diagonally and nothing cancels.',
-         eq: '<span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span><span class="o">+</span><span class="n">2</span><span class="o">,</span> <span class="n">12</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>'},
+         eq: '<span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">4</span><span class="o">+</span><span class="n">2</span><span class="o">,</span> <span class="n">12</span><span class="o">&#8722;</span><span class="n">4</span><span class="o">)</span>',
+         art:function(){ return sceneVec([[4,12,'p','var(--peach)'],[2,-4,'q','var(--mint)']], 'tail to head, and the answer is start to finish', true); }},
         {say:'So:',
          eq: '<span class="x">p</span> <span class="o">+</span> <span class="x">q</span> <span class="o">=</span> <span class="o">(</span><span class="n">6</span><span class="o">,</span> <span class="n">8</span><span class="o">)</span>'},
         {say:'Now the second one. Do the multiplying before the subtracting, exactly like ordinary numbers.',
@@ -3233,7 +3530,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'This one is a single subtraction, and the only thing that can go wrong is doing it the wrong way round.'},
         {say:'The rule is: where you are going, take away where you started. So AB is B take away A.',
-         eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="x">B</span> <span class="o">&#8722;</span> <span class="x">A</span>'},
+         eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="x">B</span> <span class="o">&#8722;</span> <span class="x">A</span>',
+         art:function(){ return sceneVec([[6,-3,'AB','var(--peach)']], 'the arrow from A to B'); }},
         {say:'Position by position. Careful with the last two, they both go negative.',
          eq: '<span class="x">A</span><span class="x">B</span> <span class="o">=</span> <span class="o">(</span><span class="n">8</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">,</span> <span class="n">4</span><span class="o">&#8722;</span><span class="n">7</span><span class="o">,</span> <span class="n">1</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span>'},
         {say:'So:',
@@ -3249,7 +3547,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Read the letters before you touch the numbers. B to X, then X to C. The X is in the middle of both, so the two hops join up.'},
         {say:'Because they join, going B to X and then X to C is the same as going straight from B to C. So add them.',
-         eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="x">B</span><span class="x">X</span> <span class="o">+</span> <span class="x">X</span><span class="x">C</span>'},
+         eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="x">B</span><span class="x">X</span> <span class="o">+</span> <span class="x">X</span><span class="x">C</span>',
+         art:function(){ return sceneVec([[2,6,'BX','var(--peach)'],[-3,5,'XC','var(--mint)']], 'two hops that join up make one straight arrow', true); }},
         {say:'Position by position.',
          eq: '<span class="x">B</span><span class="x">C</span> <span class="o">=</span> <span class="o">(</span><span class="n">2</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">,</span> <span class="n">6</span><span class="o">+</span><span class="n">5</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span><span class="o">,</span> <span class="n">11</span><span class="o">)</span>'},
         {say:'The question asked for the magnitude, not the vector. So one more step. Pythagoras.',
@@ -3267,7 +3566,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'There is a formula on your sheet for this. The work is doing its three pieces separately and not trying to hold them all at once.'},
         {say:'Piece one, the dot product. Multiply the tops together, multiply the bottoms together, then add those two results.',
-         eq: '<span class="x">a</span><span class="o">.</span><span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">18</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span>'},
+         eq: '<span class="x">a</span><span class="o">.</span><span class="x">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">5</span><span class="o">)</span><span class="o">(</span><span class="o">&#8722;</span><span class="n">2</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="o">&#8722;</span><span class="n">3</span><span class="o">)</span><span class="o">(</span><span class="n">6</span><span class="o">)</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span> <span class="o">&#8722;</span> <span class="n">18</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">28</span>',
+         art:function(){ return sceneVec([[5,-3,'a','var(--peach)'],[-2,6,'b','var(--mint)']], 'more than a right angle apart, which is what the minus told you'); }},
         {say:'It is negative. Do not panic and do not assume you have made a mistake. A negative dot product just means the angle is going to be more than 90 degrees.'},
         {say:'Piece two, the two lengths, one at a time.',
          eq: '<span class="o">|</span><span class="x">a</span><span class="o">|</span> <span class="o">=</span> &#8730;<span class="o">(</span><span class="n">34</span><span class="o">)</span> <span class="o">=</span> <span class="n">5.83</span>'},
@@ -3511,7 +3811,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'Two jobs in one question: where the flat bit is, and whether it is a hilltop or a valley.'},
         {say:'Differentiate, because the turning point is where the steepness is zero.',
-         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">6</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span>'},
+         eq: '<span class="x">d</span><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span> <span class="o">=</span> <span class="n">6</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span>',
+         art:function(){ return scenePara({a:-3,b:6,c:5,tp:[1,8],u:20,uy:5,cy:150,cap:'the flat bit at the top'}); }},
         {say:'Set that to nothing and solve. This is the x of the turning point.',
          eq: '<span class="n">6</span> <span class="o">&#8722;</span> <span class="n">6</span><span class="x">x</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">x</span> <span class="o">=</span> <span class="n">1</span>'},
         {say:'Now put that x back into the ORIGINAL equation to get the y. Not into the differentiated one.',
@@ -3539,7 +3840,8 @@
         {say:'The point:',
          eq: '<span class="o">(</span><span class="o">&#8722;</span><span class="n">1</span> <span class="o">,</span> <span class="o">&#8722;</span><span class="n">19</span><span class="o">)</span>'},
         {say:'Second derivative is 14, which is positive, so it is a minimum. A valley.',
-         eq: '<span class="x">d</span><sup class="p"><span class="n">2</span></sup><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">14</span>'}
+         eq: '<span class="x">d</span><sup class="p"><span class="n">2</span></sup><span class="x">y</span><span class="o">/</span><span class="x">d</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup> <span class="o">=</span> <span class="n">14</span>',
+         art:function(){ return scenePara({a:7,b:14,c:-12,tp:[-1,-19],u:20,uy:2.2,cy:60,cap:'a valley, so a minimum'}); }}
       ]
     },
     q16: {
@@ -3554,7 +3856,8 @@
         {say:'So the equation is just this, and now it looks familiar.',
          eq: '<span class="x">h</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">5</span><span class="x">t</span><sup class="p"><span class="n">2</span></sup> <span class="o">+</span> <span class="n">50</span><span class="x">t</span>'},
         {say:'Maximum height means the top of the arc, which means the steepness is zero. So differentiate.',
-         eq: '<span class="x">d</span><span class="x">h</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span><span class="x">t</span> <span class="o">+</span> <span class="n">50</span>'},
+         eq: '<span class="x">d</span><span class="x">h</span><span class="o">/</span><span class="x">d</span><span class="x">t</span> <span class="o">=</span> <span class="o">&#8722;</span><span class="n">10</span><span class="x">t</span> <span class="o">+</span> <span class="n">50</span>',
+         art:function(){ return scenePara({a:-5,b:50,c:0,tp:[5,125],u:22,uy:0.85,cx:40,cy:150,cap:'up, over the top, and down'}); }},
         {say:'Set it to nothing and solve.',
          eq: '<span class="o">&#8722;</span><span class="n">10</span><span class="x">t</span> <span class="o">+</span> <span class="n">50</span> <span class="o">=</span> <span class="n">0</span>   <span class="o">so</span>   <span class="x">t</span> <span class="o">=</span> <span class="n">5</span>'},
         {say:'Five seconds. And read the question again before you stop: it asked for the time, not the height. Do not do extra work and do not give the wrong quantity.'}
@@ -3588,7 +3891,8 @@
         {say:'Have a go on paper first. Even a wrong start is worth more than reading mine. Then swipe.'},
         {say:'The hard part of this question is not the calculus. It is writing down the area in the first place, in terms of one letter only.'},
         {say:'Area of a rectangle is the two sides multiplied. One side is x, the other is what the picture calls 20 - 2x.',
-         eq: '<span class="x">A</span> <span class="o">=</span> <span class="x">x</span><span class="o">(</span><span class="n">20</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>'},
+         eq: '<span class="x">A</span> <span class="o">=</span> <span class="x">x</span><span class="o">(</span><span class="n">20</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><span class="o">)</span>',
+         art:function(){ return sceneFence(); }},
         {say:'Open the bracket so it is in a shape you can differentiate.',
          eq: '<span class="x">A</span> <span class="o">=</span> <span class="n">20</span><span class="x">x</span> <span class="o">&#8722;</span> <span class="n">2</span><span class="x">x</span><sup class="p"><span class="n">2</span></sup>'},
         {say:'Maximum means the top of the arc, so the steepness there is zero.',
@@ -3649,7 +3953,8 @@
          eq: O+'='+E+'   '+N+'5'+E+' '+O+'-'+E+' '+N+'8'+E+'   '+O+'='+E+'   '+O+'-'+E+N+'3'},
         {say:'So there it is. Two numbers, both read straight off the sheet.',
          eq: O+'('+E+' '+N+'2'+E+O+' , '+E+O+'-'+E+N+'3'+E+' '+O+')'+E},
-        {say:'A ten second check, if you have time at the end. Differentiate and set it to zero: 4x - 8 = 0 gives x = 2, which matches what you got. If it had not matched, you would know to look again.'}
+        {say:'A ten second check, if you have time at the end. Differentiate and set it to zero: 4x - 8 = 0 gives x = 2, which matches what you got. If it had not matched, you would know to look again.',
+         art:function(){ return scenePara({a:2,b:-8,c:5,tp:[2,-3],u:26,cx:80,uy:9,cy:70,cap:'the flat bit, and its two coordinates'}); }}
       ]
     },
 
@@ -3719,7 +4024,8 @@
       auto:null, options:null,
       steps:[
         {say:'Label what you have been given before you choose anything at all. Two sides, and the angle is the thing missing.'},
-        {say:'The 0.8 is the side across from the angle, so that is the opposite. The 5 is the long sloping one, and that is always the hypotenuse.'},
+        {say:'The 0.8 is the side across from the angle, so that is the opposite. The 5 is the long sloping one, and that is always the hypotenuse.',
+         art:function(){ return sceneTri({hyp:'5 m',opp:'0.8 m',ang:'?',w:186,h:56,cap:'the long sloping one is always the hypotenuse'}); }},
         {aha:['SOH CAH TOA','Opposite and Hypotenuse together, with nothing else, is the <strong>S</strong>. So this is a sine question.']},
         {say:'Write the sentence out before you put any numbers into it.',
          eq: 'sin '+'&#952;'+'   '+O+'='+E+'   '+O+'opposite / hypotenuse'+E},
