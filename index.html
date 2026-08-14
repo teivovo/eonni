@@ -224,6 +224,15 @@
     line-height:1.5; color:var(--soft);
   }
 
+  /* a small look ahead, so a topic never arrives cold */
+  .tease{
+    align-self:flex-start;
+    font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--butter); border:1px dashed var(--edge); border-radius:999px;
+    padding:9px 15px;
+  }
+  .card.setup .eyebrow{color:var(--peach)}
+
   /* a genuine check in. she answers, and gets answered back. */
   .checkin{display:flex; flex-direction:column; gap:14px; width:100%}
   .chips{display:flex; flex-wrap:wrap; gap:9px}
@@ -556,7 +565,6 @@
     </div>
     <div class="hint"><span class="t-touch">swipe up</span><span class="t-mouse">scroll, or press the down arrow</span></div>
   </section>
-
   <section class="card" data-id="p:equals-sign">
     <div class="in">
       <div class="eyebrow rise">a silly fact first</div>
@@ -568,7 +576,6 @@
         and then dressing it up after.</p>
     </div>
   </section>
-
   <section class="card" data-id="p:fairprice">
     <div class="in">
       <div class="eyebrow rise">something you already do</div>
@@ -579,7 +586,6 @@
       <p class="rise sub">Nobody handed you a worksheet in that aisle. So nobody made it scary.</p>
     </div>
   </section>
-
   <section class="card" data-id="p:squiggles">
     <div class="in">
       <div class="eyebrow rise">what i think actually happened</div>
@@ -589,7 +595,6 @@
       <p class="rise sub">That was never your fault. <span class="kr">&#51652;&#51676; &#50500;&#45768;&#50556;</span>.</p>
     </div>
   </section>
-
   <section class="card" data-id="p:the-deal">
     <div class="in">
       <div class="eyebrow rise">the deal</div>
@@ -601,7 +606,6 @@
       </ul>
     </div>
   </section>
-
   <section class="card" data-id="p:mcq-section" data-easy="Your maths paper is online. Three parts: multiple choice, fill in the blanks, and long questions. I want to show you a trick for the multiple choice part.">
     <div class="in">
       <div class="eyebrow rise">now, the useful bit</div>
@@ -612,7 +616,6 @@
       <p class="rise sub">Not cheating. An actual method. The marker can't tell, because there's nothing to tell.</p>
     </div>
   </section>
-
   <section class="card" data-id="p:solving-vs-checking" data-easy="Solving is hard. Checking is easy. Multiple choice already gives you the answer, so just test the options instead of solving.">
     <div class="in">
       <div class="eyebrow rise">the whole idea</div>
@@ -624,11 +627,8 @@
       <p class="rise sub">The next few go sideways. One tiny step per screen, and you can stop anywhere. <span class="kr">&#52380;&#52380;&#55176;</span>.</p>
     </div>
   </section>
-
   <section class="card deck" data-id="d:a" data-mcq="a" data-easy="Put each option back into the equation. If both sides land on the same number, that is your answer."></section>
-
   <section class="card deck" data-id="d:b" data-mcq="b" data-easy="Same trick. Tap any option and I will put it into both sides for you. Nothing bad happens if it does not match."></section>
-
   <section class="card rest" data-id="r:checkin-1" data-easy="Two questions done. Take a break if you want one.">
     <div class="in">
       <div class="eyebrow rise">hold on a second</div>
@@ -636,7 +636,6 @@
       <div class="checkin rise"><div class="say">How was that, honestly?</div><div class="chips"><button type="button" class="chip" data-r="Good. That is genuinely all I was after. Nothing else today has to feel harder than that did.">fine actually</button><button type="button" class="chip" data-r="It is weird. You have been told for years that you have to <i>work it out</i>. Nobody mentions that checking is allowed, and it is worth exactly the same marks.">bit weird</button><button type="button" class="chip" data-r="Fair enough. Scary is allowed. You did it anyway, which is the only bit that counts. Go slower than me if you need to. I am not going anywhere.">still scary</button><button type="button" class="chip" data-r="Then stop. Genuinely. Close it. It will be exactly here when you come back, on this card, and nothing will have been lost.">i want to stop</button></div><div class="creply" data-reply></div></div>
     </div>
   </section>
-
   <section class="card" data-id="p:formula-sheet" data-easy="You get a formula sheet in the exam. Loads of the questions are answered straight off it. Always read the sheet before trying to be clever.">
     <div class="in">
       <div class="eyebrow rise">okay, second trick</div>
@@ -649,13 +648,9 @@
         The next two show you exactly what I mean.</p>
     </div>
   </section>
-
   <section class="card deck" data-id="d:why" data-mcq="why" data-easy="Integration means chopping something into tiny slices and adding them all up. The stretchy S is an S for Sum. The + c is the starting amount you were never told."></section>
-
   <section class="card deck" data-id="d:c" data-mcq="c" data-easy="Find the matching line on your formula sheet, then fill your own numbers into it. Add one to the power, divide by the new power, add c."></section>
-
   <section class="card deck" data-id="d:d" data-mcq="d" data-easy="A turning point is where the gradient is zero. Work out the gradient, put each option's x into it, and look for the one that gives zero."></section>
-
   <section class="card" data-id="p:tail8" data-easy="This trick works for: solve for x, which one is the derivative or integral, is this a turning point, and dot product questions. It does not work for explain, draw, or state questions.">
     <div class="in">
       <div class="eyebrow rise">being honest with you</div>
@@ -672,94 +667,16 @@
         Those need the other thing. I'll get you there too.</p>
     </div>
   </section>
-
-  <section class="card rest" data-id="r:silly-2" data-easy="The word sin comes from an old mistranslation. The notation really is arbitrary.">
+  <section class="card rest setup" data-id="s:six" data-easy="There are only six moves. Every topic is those six arranged differently.">
     <div class="in">
-      <div class="eyebrow rise">a small betrayal</div>
-      <div class="say rise">Something your lecturer will probably not tell you.</div>
-      <div class="quiet-note rise">A lot of why maths looks frightening is that it was named by people who hated writing things out in full.</div>
-      <div class="quiet-note rise"><b>sin</b> is short for sine, which came from a mistranslation of an Arabic word, which came from a Sanskrit word for a bowstring. Nobody ever meant for it to be called that. It is a typo that lasted a thousand years.</div>
-      <div class="quiet-note rise">So when the notation feels arbitrary and a bit unfair: that is because a fair amount of it genuinely is.</div>
+      <div class="eyebrow rise">before we start properly</div>
+      <div class="say rise">Can I tell you the thing that actually made this click for me?</div>
+      <div class="quiet-note rise">I spent about two years thinking every maths topic was a separate thing I had to learn from scratch. Vectors was one thing. Calculus was another thing. Matrices was a third thing. No wonder it felt endless.</div>
+      <div class="quiet-note rise">It is not like that at all. There are about <b>six things</b> you ever actually do. Every topic is those six, arranged differently and given a frightening name.</div>
+      <div class="quiet-note rise">Once you can see the six underneath, the whole paper stops being twenty topics and starts being one topic you have already met.</div>
+      <div class="tease rise">six little ones, coming up</div>
     </div>
   </section>
-
-  <section class="card deck" data-id="d:sim" data-mcq="sim" data-easy="Two unknowns need two facts. Either make one match and subtract it away, or rearrange one and post it into the other."></section>
-  <section class="card deck" data-id="d:ineq" data-mcq="ineq" data-easy="An inequality is a whole stretch of answers. Solve it like an equation, but if you multiply or divide by a negative the sign turns round."></section>
-  <section class="card deck" data-id="d:tramp" data-mcq="tramp" data-easy="sin, cos and tan are three ways of comparing two sides of a right-angled triangle. SOH CAH TOA."></section>
-  <section class="card rest" data-id="r:before-last" data-easy="Last lesson. The trap is stopping after the first answer.">
-    <div class="in">
-      <div class="eyebrow rise">one to go</div>
-      <div class="say rise">Right. Last one.</div>
-      <div class="quiet-note rise">And it is the one where people quietly lose marks they had already earned, because they find the right answer, stop, and never notice there was a second one sitting there the whole time.</div>
-      <div class="quiet-note rise">So this is the one to be stubborn on.</div>
-    </div>
-  </section>
-
-  <section class="card deck" data-id="d:wave" data-mcq="wave" data-easy="A is how tall, B is how many, C slides it sideways, D lifts it up. And a flat line crosses a wave more than once, so there is usually a second answer."></section>
-
-  <section class="card rest" data-id="r:checkin-mid" data-easy="You are past the middle. Skip around with the menu if you like.">
-    <div class="in">
-      <div class="eyebrow rise">past the middle</div>
-      <div class="say rise">You have gone past the middle of this thing.</div>
-      <div class="quiet-note rise">Which I only mention because when you started, opening it at all was the hard part.</div>
-      <div class="checkin rise"><div class="say">How is it going?</div><div class="chips"><button type="button" class="chip" data-r="Say that to yourself again next week when you are sitting in the hall. It will still be true then.">better than expected</button><button type="button" class="chip" data-r="It is long. You are not meant to do it in one go, and one go is honestly the worst way to do it. Bits of it, whenever.">long</button><button type="button" class="chip" data-r="Then skip. Use the list at the top left and go straight to whatever is nearest your next lesson. There is no order police.">bored</button><button type="button" class="chip" data-r="Okay. Put it down. Nothing on that paper is worth what it is doing to you tonight, and all of it will still be here tomorrow.">stressed</button></div><div class="creply" data-reply></div></div>
-    </div>
-  </section>
-
-  <section class="card deck" data-id="d:vec" data-mcq="vec" data-easy="A vector is a size with a direction. AB means where you end minus where you started. Its length is Pythagoras on the arrow."></section>
-  <section class="card deck" data-id="d:vang" data-mcq="vang" data-easy="Dot product, then the length of each arrow, then put all three into the printed formula. Zero dot product means right angles."></section>
-  <section class="card deck" data-id="d:pf" data-mcq="pf" data-easy="One fraction taken back apart into the pieces that made it. All three patterns are printed; you only have to spot which one it is."></section>
-  <section class="card deck" data-id="d:line" data-mcq="line" data-easy="y = mx + c. m is the steepness, c is where it crosses the upright axis. Parallel means same m."></section>
-
-  <section class="card rest" data-id="r:silly-1" data-easy="Just a fact about the plus sign. Nothing to learn here.">
-    <div class="in">
-      <div class="eyebrow rise">nothing to do with your exam</div>
-      <div class="say rise">Quick one while you are here.</div>
-      <div class="quiet-note rise">The equals sign is 468 years old. The <b>plus</b> sign is older, and nobody is completely sure who invented it. It seems to have started as a rushed way of writing the Latin word <i>et</i>, which just means <i>and</i>.</div>
-      <div class="quiet-note rise">So when you write 2 + 2, you are technically writing 2 and 2 in very bad handwriting from the 1400s. Anyway. Onwards.</div>
-    </div>
-  </section>
-
-  <section class="card deck" data-id="d:mat" data-mcq="mat" data-easy="Rows first, then columns. Two grids only multiply if the inside numbers match. Determinant and inverse are both printed on your sheet."></section>
-  <section class="card deck" data-id="d:defint" data-mcq="defint" data-easy="The two little numbers say where to start and stop. Integrate first, substitute second, then take the bottom answer away from the top one."></section>
-  <section class="card deck" data-id="d:fod" data-mcq="fod" data-easy="Four situations, four graph shapes. Match the story to the shape first, then pick the equation that goes with it."></section>
-  <section class="card deck" data-id="d:logs" data-mcq="logs" data-easy="A log asks how many times the multiplying happened. The log laws are on your sheet; change of base is not."></section>
-
-  <section class="card rest" data-id="r:six-done" data-easy="You have done all six moves. Everything else is those six in disguise.">
-    <div class="in">
-      <div class="eyebrow rise">six for six</div>
-      <div class="say rise">That is the whole toolkit.</div>
-      <div class="quiet-note rise">Everything left on that paper is those six moves wearing a costume. Vectors is subtracting. Matrices is counting. Trigonometry is a fraction with a triangle drawn round it.</div>
-      <div class="quiet-note rise">You do not need any more tools. You only need to start recognising the costumes.</div>
-      <div class="quiet-note rise">Now go and get a drink. I mean it. This is a good place to stop.</div>
-    </div>
-  </section>
-
-  <section class="card deck" data-id="d:dwhy" data-mcq="dwhy" data-easy="Differentiating means: given how far you have gone, work out how fast you are going. The steepness of one graph is the height of the other."></section>
-  <section class="card deck" data-id="d:drw" data-mcq="drw" data-easy="Your sheet has one rule for differentiating and it only accepts things shaped like a number, an x, and a little number on top. Most of the work is getting everything into that shape."></section>
-  <section class="card deck" data-id="d:drule" data-mcq="drule" data-easy="The little number comes down and multiplies what is already there, then the power drops by one. ln is not on the sheet: differentiate the inside, put it over the inside."></section>
-  <section class="card rest" data-id="r:checkin-diff" data-easy="Differentiation is: tidy it up, then bring the little number down. Have a break.">
-    <div class="in">
-      <div class="eyebrow rise">breathe</div>
-      <div class="say rise">Differentiation. The thing with the frightening name.</div>
-      <div class="quiet-note rise">And it turned out to be: tidy it up, then bring the little number down. That is the whole of what your lecturer spent three weeks on.</div>
-      <div class="checkin rise"><div class="say">Where are you at?</div><div class="chips"><button type="button" class="chip" data-r="Good. Quadratics next, and it is the easiest pile of marks on the entire paper. Nice one to do while you are warm.">okay, keep going</button><button type="button" class="chip" data-r="Then that is your lot for now. A full head does not take any more in, it just gets tired and cross.">head is full</button><button type="button" class="chip" data-r="That is not a memory problem, it is a not-enough-times problem. Nobody has this after one go. Do that deck again tomorrow, it takes four minutes.">i keep forgetting it</button><button type="button" class="chip" data-r="Late, probably. Go to sleep. Tired revision is the one kind that genuinely does not work.">what time is it</button></div><div class="creply" data-reply></div></div>
-    </div>
-  </section>
-
-  <section class="card deck" data-id="d:quad" data-mcq="quad" data-easy="Where the curve crosses the upright line is just c. The turning point is two numbers printed on your sheet, so the max height questions need no calculus at all."></section>
-
-  <section class="card" data-id="p:six-moves-intro" data-easy="Six small moves. Everything else in the module is one of these six wearing different clothes.">
-    <div class="in">
-      <div class="eyebrow rise">the other half</div>
-      <h2 class="rise">There are only six things you actually do.</h2>
-      <p class="rise">Everything on that paper, all twenty-odd lessons of it, is built out of
-        <b>six small moves</b>. Everything else is a costume.</p>
-      <p class="rise sub">One at a time, one sitting each. None of them is new to you.
-        You have just never been shown them on their own before.</p>
-    </div>
-  </section>
-
   <section class="card deck" data-id="d:m1" data-mcq="m1" data-easy="A function is a machine. You feed it a number, something comes out."></section>
   <section class="card deck" data-id="d:m2" data-mcq="m2" data-easy="The number outside a bracket gets multiplied by everything inside it."></section>
   <section class="card deck" data-id="d:m3" data-mcq="m3" data-easy="The little number is which floor the x lives on. Minus means downstairs, onto the bottom of a fraction. A half means square root."></section>
@@ -771,11 +688,135 @@
       <div class="checkin rise"><div class="say">Did that one land?</div><div class="chips"><button type="button" class="chip" data-r="Then you just did the most useful two minutes in the whole module. I am not exaggerating.">yeah</button><button type="button" class="chip" data-r="Sort of is plenty. Go back and drag it a few more times later. It sticks by repetition, not by understanding it harder.">sort of</button><button type="button" class="chip" data-r="Okay. Leave it. Come back to that one tomorrow when you are fresh, and skip ahead for now. It makes more sense the second time, and that is not a failing.">no</button></div><div class="creply" data-reply></div></div>
     </div>
   </section>
-
   <section class="card deck" data-id="d:m4" data-mcq="m4" data-easy="Two fractions will not add together until the bottom numbers match."></section>
   <section class="card deck" data-id="d:m5" data-mcq="m5" data-easy="Undo in the opposite order to how it was built. Last thing on is the first thing off."></section>
   <section class="card deck" data-id="d:m6" data-mcq="m6" data-easy="Minus a minus is a plus. And when a number moves across the equals sign, its sign flips."></section>
-
+  <section class="card rest" data-id="r:six-done" data-easy="You have done all six moves. Everything else is those six in disguise.">
+    <div class="in">
+      <div class="eyebrow rise">six for six</div>
+      <div class="say rise">That is the whole toolkit.</div>
+      <div class="quiet-note rise">Everything left on that paper is those six moves wearing a costume. Vectors is subtracting. Matrices is counting. Trigonometry is a fraction with a triangle drawn round it.</div>
+      <div class="quiet-note rise">You do not need any more tools. You only need to start recognising the costumes.</div>
+      <div class="quiet-note rise">Now go and get a drink. I mean it. This is a good place to stop.</div>
+    </div>
+  </section>
+  <section class="card rest setup" data-id="s:diff" data-easy="Differentiation is a speedometer. That is genuinely all it is.">
+    <div class="in">
+      <div class="eyebrow rise">story first</div>
+      <div class="say rise">I want to tell you about the first time I saw <b>dy/dx</b>.</div>
+      <div class="quiet-note rise">It was on a whiteboard, someone said <i>you will all have seen this before</i>, and I had not seen it before. I wrote it down anyway, nodded along for fifty minutes, and understood not one word of it.</div>
+      <div class="quiet-note rise">It took me an embarrassingly long time to find out what it actually meant. And when I did, I was cross, because it is <b>a speedometer</b>. That is the whole thing. Nobody had said the word speedometer once.</div>
+      <div class="quiet-note rise">So that is where we are starting. Not with the symbol. With the car.</div>
+      <div class="tease rise">next three are about that</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:dwhy" data-mcq="dwhy" data-easy="Differentiating means: given how far you have gone, work out how fast you are going. The steepness of one graph is the height of the other."></section>
+  <section class="card deck" data-id="d:drw" data-mcq="drw" data-easy="Your sheet has one rule for differentiating and it only accepts things shaped like a number, an x, and a little number on top. Most of the work is getting everything into that shape."></section>
+  <section class="card deck" data-id="d:drule" data-mcq="drule" data-easy="The little number comes down and multiplies what is already there, then the power drops by one. ln is not on the sheet: differentiate the inside, put it over the inside."></section>
+  <section class="card rest" data-id="r:checkin-diff" data-easy="Differentiation is: tidy it up, then bring the little number down. Have a break.">
+    <div class="in">
+      <div class="eyebrow rise">breathe</div>
+      <div class="say rise">Differentiation. The thing with the frightening name.</div>
+      <div class="quiet-note rise">And it turned out to be: tidy it up, then bring the little number down. That is the whole of what your lecturer spent three weeks on.</div>
+      <div class="checkin rise"><div class="say">Where are you at?</div><div class="chips"><button type="button" class="chip" data-r="Good. Quadratics next, and it is the easiest pile of marks on the entire paper. Nice one to do while you are warm.">okay, keep going</button><button type="button" class="chip" data-r="Then that is your lot for now. A full head does not take any more in, it just gets tired and cross.">head is full</button><button type="button" class="chip" data-r="That is not a memory problem, it is a not-enough-times problem. Nobody has this after one go. Do that deck again tomorrow, it takes four minutes.">i keep forgetting it</button><button type="button" class="chip" data-r="Late, probably. Go to sleep. Tired revision is the one kind that genuinely does not work.">what time is it</button></div><div class="creply" data-reply></div></div>
+    </div>
+  </section>
+  <section class="card rest setup" data-id="s:quad" data-easy="Every quadratic is the arc something makes when you throw it. The top of the arc is printed on your sheet.">
+    <div class="in">
+      <div class="eyebrow rise">the friendly one</div>
+      <div class="say rise">Throw your keys up in the air and catch them.</div>
+      <div class="quiet-note rise">That shape they made, up and over and down: that is a quadratic. Every single question in this topic is about that arc.</div>
+      <div class="quiet-note rise">The fireworks question on your paper. The football one. The box one. Same arc every time, with a different story wrapped round it so it looks like four topics instead of one.</div>
+      <div class="quiet-note rise">And the highest point of the arc is <b>printed on your sheet</b>. Two numbers, read off, no working. It is the softest set of marks on the whole paper and hardly anyone notices.</div>
+      <div class="tease rise">this is the easy money one</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:quad" data-mcq="quad" data-easy="Where the curve crosses the upright line is just c. The turning point is two numbers printed on your sheet, so the max height questions need no calculus at all."></section>
+  <section class="card rest" data-id="r:silly-1" data-easy="Just a fact about the plus sign. Nothing to learn here.">
+    <div class="in">
+      <div class="eyebrow rise">nothing to do with your exam</div>
+      <div class="say rise">Quick one while you are here.</div>
+      <div class="quiet-note rise">The equals sign is 468 years old. The <b>plus</b> sign is older, and nobody is completely sure who invented it. It seems to have started as a rushed way of writing the Latin word <i>et</i>, which just means <i>and</i>.</div>
+      <div class="quiet-note rise">So when you write 2 + 2, you are technically writing 2 and 2 in very bad handwriting from the 1400s. Anyway. Onwards.</div>
+    </div>
+  </section>
+  <section class="card rest setup" data-id="s:mat" data-easy="A matrix is a table of numbers. Most of the questions are just counting rows and columns.">
+    <div class="in">
+      <div class="eyebrow rise">worst name in the module</div>
+      <div class="say rise"><b>Matrix.</b> Honestly. It sounds like something from a film about robots taking over.</div>
+      <div class="quiet-note rise">It is a table. That is it. It is a table of numbers with the lines rubbed out, and somebody decided that deserved a dramatic name.</div>
+      <div class="quiet-note rise">Once you know it is a table, most of the questions stop being maths and start being <i>counting</i>. How many rows. How many columns. Can these two be stuck together.</div>
+      <div class="quiet-note rise">There is a hard bit at the end, and it is two formulas, and both of them are printed for you.</div>
+      <div class="tease rise">mostly counting, honestly</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:mat" data-mcq="mat" data-easy="Rows first, then columns. Two grids only multiply if the inside numbers match. Determinant and inverse are both printed on your sheet."></section>
+  <section class="card deck" data-id="d:defint" data-mcq="defint" data-easy="The two little numbers say where to start and stop. Integrate first, substitute second, then take the bottom answer away from the top one."></section>
+  <section class="card rest setup" data-id="s:fod" data-easy="Growth and decay is four everyday situations and four graph shapes. The exam asks it as multiple choice.">
+    <div class="in">
+      <div class="eyebrow rise">the one that looks worst</div>
+      <div class="say rise">If you have flipped through the syllabus and felt your stomach drop at something, it was probably this one.</div>
+      <div class="quiet-note rise"><b>First order differential equations.</b> Four words, all of them bad.</div>
+      <div class="quiet-note rise">Here is what it actually is: hot coffee goes cold. Money in an account grows. A battery runs down. A cafe fills up until there is nowhere left to sit.</div>
+      <div class="quiet-note rise">Four everyday situations, four shapes on a graph. Your paper asks it as <b>multiple choice</b>. You are matching pictures to stories, and I am not being kind about it, that is literally the question.</div>
+      <div class="tease rise">it is a matching game. really.</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:fod" data-mcq="fod" data-easy="Four situations, four graph shapes. Match the story to the shape first, then pick the equation that goes with it."></section>
+  <section class="card deck" data-id="d:logs" data-mcq="logs" data-easy="A log asks how many times the multiplying happened. The log laws are on your sheet; change of base is not."></section>
+  <section class="card rest" data-id="r:checkin-mid" data-easy="You are past the middle. Skip around with the menu if you like.">
+    <div class="in">
+      <div class="eyebrow rise">past the middle</div>
+      <div class="say rise">You have gone past the middle of this thing.</div>
+      <div class="quiet-note rise">Which I only mention because when you started, opening it at all was the hard part.</div>
+      <div class="checkin rise"><div class="say">How is it going?</div><div class="chips"><button type="button" class="chip" data-r="Say that to yourself again next week when you are sitting in the hall. It will still be true then.">better than expected</button><button type="button" class="chip" data-r="It is long. You are not meant to do it in one go, and one go is honestly the worst way to do it. Bits of it, whenever.">long</button><button type="button" class="chip" data-r="Then skip. Use the list at the top left and go straight to whatever is nearest your next lesson. There is no order police.">bored</button><button type="button" class="chip" data-r="Okay. Put it down. Nothing on that paper is worth what it is doing to you tonight, and all of it will still be here tomorrow.">stressed</button></div><div class="creply" data-reply></div></div>
+    </div>
+  </section>
+  <section class="card rest setup" data-id="s:vec" data-easy="A vector is a size with a direction attached. That is the whole idea.">
+    <div class="in">
+      <div class="eyebrow rise">a small rant</div>
+      <div class="say rise">Someone once gave me directions outside Somerset as <i>about two hundred metres</i>.</div>
+      <div class="quiet-note rise">Two hundred metres in <b>which direction</b>, though. That is not directions, that is a distance and a shrug.</div>
+      <div class="quiet-note rise">And that is the whole of vectors, right there. A number on its own is not always enough. Sometimes you need the number <b>and the way it is pointing</b>, and once you need both, you need a way to write both down.</div>
+      <div class="quiet-note rise">Everything else in this topic is bookkeeping on top of that one idea.</div>
+      <div class="tease rise">two short ones on this</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:vec" data-mcq="vec" data-easy="A vector is a size with a direction. AB means where you end minus where you started. Its length is Pythagoras on the arrow."></section>
+  <section class="card deck" data-id="d:vang" data-mcq="vang" data-easy="Dot product, then the length of each arrow, then put all three into the printed formula. Zero dot product means right angles."></section>
+  <section class="card deck" data-id="d:pf" data-mcq="pf" data-easy="One fraction taken back apart into the pieces that made it. All three patterns are printed; you only have to spot which one it is."></section>
+  <section class="card deck" data-id="d:line" data-mcq="line" data-easy="y = mx + c. m is the steepness, c is where it crosses the upright axis. Parallel means same m."></section>
+  <section class="card rest" data-id="r:silly-2" data-easy="The word sin comes from an old mistranslation. The notation really is arbitrary.">
+    <div class="in">
+      <div class="eyebrow rise">a small betrayal</div>
+      <div class="say rise">Something your lecturer will probably not tell you.</div>
+      <div class="quiet-note rise">A lot of why maths looks frightening is that it was named by people who hated writing things out in full.</div>
+      <div class="quiet-note rise"><b>sin</b> is short for sine, which came from a mistranslation of an Arabic word, which came from a Sanskrit word for a bowstring. Nobody ever meant for it to be called that. It is a typo that lasted a thousand years.</div>
+      <div class="quiet-note rise">So when the notation feels arbitrary and a bit unfair: that is because a fair amount of it genuinely is.</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:sim" data-mcq="sim" data-easy="Two unknowns need two facts. Either make one match and subtract it away, or rearrange one and post it into the other."></section>
+  <section class="card deck" data-id="d:ineq" data-mcq="ineq" data-easy="An inequality is a whole stretch of answers. Solve it like an equation, but if you multiply or divide by a negative the sign turns round."></section>
+  <section class="card rest setup" data-id="s:trig" data-easy="Trigonometry is fiddly rather than hard. Most lost marks come from stopping too early.">
+    <div class="in">
+      <div class="eyebrow rise">last stretch</div>
+      <div class="say rise">Right. Before we do the last two, something worth knowing.</div>
+      <div class="quiet-note rise">Trigonometry is not hard. It is <b>fiddly</b>, which is a different problem and it needs a different fix. Hard means you cannot do it. Fiddly means you can absolutely do it and you will lose marks anyway if you rush.</div>
+      <div class="quiet-note rise">Almost everything people drop here is dropped in the last ten seconds of the question: stopping too early, or having the calculator in the wrong mode.</div>
+      <div class="quiet-note rise">So this one is not about being clever. It is about being slightly stubborn at the end.</div>
+      <div class="tease rise">two left. nearly done.</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:tramp" data-mcq="tramp" data-easy="sin, cos and tan are three ways of comparing two sides of a right-angled triangle. SOH CAH TOA."></section>
+  <section class="card rest" data-id="r:before-last" data-easy="Last lesson. The trap is stopping after the first answer.">
+    <div class="in">
+      <div class="eyebrow rise">one to go</div>
+      <div class="say rise">Right. Last one.</div>
+      <div class="quiet-note rise">And it is the one where people quietly lose marks they had already earned, because they find the right answer, stop, and never notice there was a second one sitting there the whole time.</div>
+      <div class="quiet-note rise">So this is the one to be stubborn on.</div>
+    </div>
+  </section>
+  <section class="card deck" data-id="d:wave" data-mcq="wave" data-easy="A is how tall, B is how many, C slides it sideways, D lifts it up. And a flat line crosses a wave more than once, so there is usually a second answer."></section>
   <section class="card" data-id="p:tail9">
     <div class="in">
       <div class="eyebrow rise">so</div>
@@ -786,7 +827,6 @@
         Not hard. Just never explained from the right end.</p>
     </div>
   </section>
-
   <section class="card" data-id="p:tail10">
     <div class="in">
       <div class="eyebrow rise">done</div>
