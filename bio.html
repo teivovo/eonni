@@ -830,6 +830,21 @@
   </section>
   <section class="card deck" data-sub="biology" data-id="d:b21" data-mcq="b21" data-easy="Ask two questions of each patient: can they build glycogen, and can they release it. A has stores and no way in; B has a way in and no stores."></section>
   <section class="card deck" data-sub="biology" data-id="d:b22" data-mcq="b22" data-easy="Cellulase fits cellulose only, and produces glucose. Humans do not make it. Cellulose uses beta bonds; starch and glycogen use alpha ones."></section>
+  <section class="card rest setup" data-sub="biology" data-id="s:bio-worked" data-label="The real questions, worked" data-easy="Whole questions off your own sheets, worked through with the mark split named.">
+    <div class="in">
+      <div class="eyebrow rise">now the real ones</div>
+      <h2 class="rise">Off your own practice sheets.</h2>
+      <p class="rise">Whole questions this time, not pieces. Each one worked all the way through, with the mark split said out loud so you can see where the three become one.</p>
+      <p class="rise sub">If you only do one section of this module, do this one. It is the closest thing here to sitting the paper.</p>
+    </div>
+  </section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b1" data-mcq="w_b1" data-easy="Each organelle needs a name, a job, and what that job achieves for the casein. Nucleus holds and copies the gene. Golgi modifies and packages. Vesicles carry and release."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b2" data-mcq="w_b2" data-easy="Answer at the level the question asks for. No rough ER means casein cannot be made or folded, so no milk protein, so the mammary gland cannot produce milk."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b3" data-mcq="w_b3" data-easy="Semi-conservative. Helicase breaks the hydrogen bonds so the strands separate. 10 times 2 to the 5 is 320. The lagging strand needs many primers because it is made in fragments."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b4" data-mcq="w_b4" data-easy="Say what normally happens first: repressor binds the operator and blocks transcription. Then find which part the mutation broke, and say what that part normally stops."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b5" data-mcq="w_b5" data-easy="Translation. mRNA carries, tRNA delivers, rRNA joins. Peptide bonds. More exposed hydrophobic regions means more aggregation, and heat exposes more of them."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b6" data-mcq="w_b6" data-easy="Endocrine, because it travels in the blood to a distant target. Testosterone fails on shape. A hydrophilic analogue fails on getting in, not on shape."></section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b7" data-mcq="w_b7" data-easy="No dehydrogenases means no NADH, so nothing reaches the chain and the cycle stalls. Four CO2 means two rounds, so six NADH, so about 15 ATP. Show all three lines."></section>
   <section class="card rest" data-sub="biology" data-id="r:bio-before-last" data-label="Nearly there: last biology card" data-easy="Last biology topic. The trap is answering the fact and stopping.">
     <div class="in">
       <div class="eyebrow rise">one to go</div>
@@ -2389,6 +2404,124 @@
   });
 
   var DECKS = {
+    w_b1: {
+      eyebrow:'worked, from your L01 sheet', title:'The three organelles, three marks.',
+      q: 'state and explain the role of the nucleus, the Golgi and the secretory vesicles in making casein',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Three structures, three marks, so one mark each. Which means each one needs a name, a job, AND what that job does for the casein. Two thirds of a sentence gets you two thirds of nothing.'},
+        {say:'Nucleus. It holds the gene for casein, and transcription happens there, SO the instructions for the protein can be copied and sent out.'},
+        {say:'Golgi. It modifies and packages the casein, SO it can be sorted into vesicles and sent to the right place.'},
+        {say:'Secretory vesicles. They carry the casein to the cell surface and fuse with the membrane, SO it can be released into the lumen by exocytosis.'},
+        {say:'Three sentences, and every one has a so-that in it. Read them back and notice that the structure is identical each time: what it is, what it does, what that achieves.'},
+        {say:'That is the template for the whole paper. If you can only remember one thing tomorrow, remember that a role answer has three parts.'}
+      ]
+    },
+    w_b2: {
+      eyebrow:'worked, from your L01 sheet', title:'What happens with no rough ER.',
+      q: 'state the consequence at ORGAN level if the rough endoplasmic reticulum were absent, and justify it',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Three marks, and the trap is in two words: ORGAN level. Answer at the cell level and you lose most of it, however correct you are.'},
+        {say:'Start at the cell anyway, because that is where the reasoning begins. The rough ER is where ribosomes sit and where proteins destined for export are made and folded.'},
+        {say:'So with no rough ER, casein cannot be made or folded properly. That is the cell-level consequence and it is one mark.'},
+        {say:'Now climb. Casein is the main milk protein, so if it is not made, milk cannot be produced properly.'},
+        {say:'And at the organ level, which is what was asked: the mammary gland cannot produce or secrete milk. That is your answer.'},
+        {say:'The pattern is worth naming because it recurs. Organelle missing, so a molecule is not made, so the tissue cannot do its job, so the ORGAN fails. Follow the ladder up to whichever rung the question asked for, and stop there.'}
+      ]
+    },
+    w_b3: {
+      eyebrow:'worked, from your L02 sheet', title:'Replication, all four parts.',
+      q: 'the model, helicase, ten cells after five cycles, and which strand carries more RNA',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Nine marks across four parts and none of them takes more than two lines. Do the short ones first if the long one stalls you.'},
+        {say:'The model, one mark and one word.',
+         eq: 'semi-conservative'},
+        {say:'If they want it explained: each new molecule keeps ONE original strand and ONE new one. Conserved by half, which is what the word says.'},
+        {say:'Helicase, two marks, so it needs an action AND a consequence. It unwinds the double helix by breaking the hydrogen bonds between the base pairs, SO the two strands separate and can be used as templates.'},
+        {say:'The counting one, two marks, and they want the working shown. Each cycle doubles.',
+         eq: '<span class="n">10</span> <span class="x">x</span> <span class="n">2</span><sup class="p"><span class="n">5</span></sup> <span class="o">=</span> <span class="n">10</span> <span class="x">x</span> <span class="n">32</span> <span class="o">=</span> <span class="n">320</span>'},
+        {say:'Now the four-mark one. RNA nucleotides are the primers, and the lagging strand is built in many short fragments rather than one continuous run.'},
+        {say:'Each of those fragments needs its own primer, whereas the leading strand needs only one at the start. So more RNA is found against the LAGGING strand.',
+         eq: 'lagging strand'},
+        {say:'Four marks, four things: name the strand, say it is discontinuous, say each fragment needs a primer, say the leading strand needs only one. Miss any and you drop a mark.'}
+      ]
+    },
+    w_b4: {
+      eyebrow:'worked, from your L03 sheet', title:'The mutant operon, five marks.',
+      q: 'in the ABSENCE of lactose, would transcription happen in this mutant E. coli, and why',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Five marks on one question, which tells you they want a chain of reasoning rather than a yes or a no. So build the normal case first, then break it.'},
+        {say:'Normally, with no lactose about: lacI makes the repressor, the repressor binds the operator, and RNA polymerase cannot get past. No transcription. That is the baseline and it is worth stating.'},
+        {say:'Now find what the mutation has broken. It will be one of three things, and each gives a different answer.'},
+        {say:'If the mutation is in lacI, no working repressor is made, so nothing binds the operator, so transcription happens even with no lactose.'},
+        {say:'If the mutation is in the OPERATOR, the repressor has nowhere to sit, so again transcription happens with no lactose.'},
+        {say:'If the mutation is in the promoter, RNA polymerase cannot bind at all, so there is no transcription whatever the lactose is doing.'},
+        {say:'So the answer is: identify the broken part from the figure, say what that part normally does, and say what stops happening as a result. The marks are in the chain, not the verdict.'}
+      ]
+    },
+    w_b5: {
+      eyebrow:'worked, from your L08 sheet', title:'The translation figure, ten marks.',
+      q: 'name the process, the RNAs, the amino acid order, and the bond',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Ten marks and every part is one or two words. This is the cheapest question on the paper if you know the four answers.'},
+        {say:'The process, one mark.',
+         eq: 'translation'},
+        {say:'The RNAs, three marks, so name all three and say what each does. mRNA carries the message. tRNA brings the amino acids. rRNA is part of the ribosome and makes the bond.',
+         eq: 'mRNA, tRNA, rRNA'},
+        {say:'The amino acid order, two marks. Read the tRNAs in the figure in the order they arrive and write the amino acids they carry. Left to right along the mRNA, always.'},
+        {say:'The bond, one mark, one word.',
+         eq: 'peptide bond'},
+        {say:'Then the folding half. The protein with MORE hydrophobic regions still exposed will aggregate more, because those regions clump together with each other to escape the water.'},
+        {say:'And heat makes it worse, because it shakes the partly-folded shape open and exposes more of them. Same principle as the membrane: oily things find each other.'}
+      ]
+    },
+    w_b6: {
+      eyebrow:'worked, from your L11 sheet', title:'Estrogen, all three parts.',
+      q: 'the signalling type, whether testosterone activates the receptor, and whether a hydrophilic analogue would work',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Nine marks, three parts, three marks each. Each one is a decision plus a reason, and the reason is two of the three marks every time.'},
+        {say:'Part one, the signalling type. Made in the ovary, carried in the BLOOD, acting on breast tissue somewhere else entirely. Distant target via the bloodstream is endocrine.',
+         eq: 'endocrine'},
+        {say:'The explain marks: it is not juxtacrine because the cells are not touching, and not paracrine because the target is not nearby. Say why the other two are out and the marks are yours.'},
+        {say:'Part two, testosterone. No. Both are steroids and both get into the cell, so it is NOT about crossing the membrane, which is the trap.'},
+        {say:'It is about shape. A receptor binds a specific shape, and testosterone and estrogen are not the same shape, so it will not fit the binding site and will not activate it.'},
+        {say:'Part three, the hydrophilic analogue. Also no, and for the opposite reason to part two.'},
+        {say:'It activates the receptor, so shape is fine. But it is hydrophilic, so it cannot cross the membrane, so it never reaches a receptor that sits INSIDE the cell. Right key, cannot get to the door.'},
+        {say:'Notice parts two and three fail for opposite reasons. That is deliberate, and saying which reason applies is what separates a three from a one.'}
+      ]
+    },
+    w_b7: {
+      eyebrow:'worked, from your L05 sheet', title:'The Krebs prediction, and counting ATP.',
+      q: 'what happens with no dehydrogenases, and how much ATP from the NADH in X rounds',
+      auto:null, options:null,
+      steps:[
+        {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
+        {say:'Two parts. The first is a predict-and-explain and the second is arithmetic, and the arithmetic is worth doing slowly.'},
+        {say:'The dehydrogenases are what strip hydrogen off and load it onto NAD+ to make NADH. So with none of them, no NADH is made.'},
+        {say:'So the electron transport chain gets nothing delivered to it, so almost no ATP is made, and the Krebs cycle itself stalls because NAD+ is never regenerated. Three so-thats, and that is the shape of the marks.'},
+        {say:'Now the counting. Four carbon dioxide molecules were produced, and each turn of the cycle makes two.',
+         eq: '<span class="n">4</span> <span class="x">C</span><span class="x">O</span><span class="n">2</span> <span class="o">means</span> <span class="n">2</span> <span class="o">rounds</span>'},
+        {say:'Each round makes three NADH, so two rounds make six.',
+         eq: '<span class="n">2</span> <span class="x">x</span> <span class="n">3</span> <span class="o">=</span> <span class="n">6</span> <span class="o">NADH</span>'},
+        {say:'And each NADH is worth roughly 2.5 ATP through the chain.',
+         eq: '<span class="n">6</span> <span class="x">x</span> <span class="n">2.5</span> <span class="o">=</span> <span class="n">15</span> <span class="o">ATP</span>'},
+        {say:'Show every one of those three lines. If the final number is wrong but the working is right, you keep most of the marks. If you write only a number and it is wrong, you keep none.'}
+      ]
+    },
+
+    /* ---- A105 chemistry, second wave: the worksheet topics with no deck. ---- */
+
     b15: {
       eyebrow:'biology', title:'Why the histone has to be positive.',
       q: null,
