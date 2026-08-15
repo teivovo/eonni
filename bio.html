@@ -637,6 +637,15 @@
     .av img{transition:opacity .22s ease}
   }
 
+
+  /* the mid-question decision */
+  .nextmove{margin:6px 0 2px}
+  .nmq{
+    font-family:var(--num); font-size:11.5px; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--peach); margin:0 0 10px;
+  }
+  .nmopts{gap:8px}
+
   /* ---- scenes: the analogies, drawn ---- */
   .scene{position:relative}
   .playbtn{
@@ -665,6 +674,9 @@
   @keyframes slide   {from{transform:translateX(0)}      to{transform:translateX(196px)}}
   @keyframes fadein  {from{opacity:0}                    to{opacity:1}}
   @keyframes grow    {from{transform:scaleY(0)}          to{transform:scaleY(1)}}
+  /* draw a curve on from the left by widening a clip of it */
+  @keyframes sweep   {from{clip-path:inset(0 100% 0 0)}  to{clip-path:inset(0 0 0 0)}}
+  @keyframes ride    {from{offset-distance:0%}           to{offset-distance:100%}}
   /* one codon width, three times: the message is pulled through the
      ribosome a codon at a time, which is the thing being taught. */
   @keyframes codon   {from{transform:translateX(0)}      to{transform:translateX(-64px)}}
@@ -709,6 +721,20 @@
   }
   .subjsw a.here{background:var(--peach); border-color:var(--peach); color:#fff}
   .subjsw .ic{font-size:15px; display:block; line-height:1.5}
+
+  /* Two ways into one subject: the teaching deck, or her own paper worked.
+     These sit on their own line -- folding the paper pages into the row above
+     would have made it seven chips wide, which on a 390px phone is a row of
+     unreadable stubs. */
+  .modesw{display:flex; gap:8px; margin:0 0 10px}
+  .modesw a{
+    flex:1 1 0; text-align:center; text-decoration:none;
+    font-family:var(--num); font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--faint);
+    border:1px dashed var(--edge); border-radius:999px; padding:8px 4px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .modesw a.here{color:var(--peach); border-color:var(--peach); border-style:solid}
 
   </style>
 </head>
@@ -917,7 +943,7 @@
     <span class="label" style="margin:0">where to?</span>
     <button class="mclose" id="menuClose" type="button">close</button>
   </div>
-  <div class="subjsw"><a href="index.html" class="home"><span class="ic">&#127968;</span>Home</a><a href="maths.html"><span class="ic">&#128290;</span>Maths</a><a href="bio.html" class="here"><span class="ic">&#129440;</span>Biology</a><a href="chem.html"><span class="ic">&#129514;</span>Chemistry</a></div><div class="mlist" id="mlist"></div>
+  <div class="subjsw"><a href="index.html" class="home"><span class="ic">&#127968;</span>Home</a><a href="maths.html"><span class="ic">&#128290;</span>Maths</a><a href="bio.html" class="here"><span class="ic">&#129440;</span>Biology</a><a href="chem.html"><span class="ic">&#129514;</span>Chemistry</a></div><div class="modesw"><a href="bio.html" class="here">teaching</a><a href="bio-paper.html">her paper, worked</a></div><div class="mlist" id="mlist"></div>
 </div>
 
 <div class="toast" id="toast"><span>you came back &#128155;</span><button id="restartBtn" type="button">from the top</button></div>
@@ -1218,6 +1244,104 @@
   }
 
   /* the Grab: a car with two people in it and a speedometer underneath */
+
+  /* A projectile going up and coming back down, with the peak marked. The
+     question asks for the maximum height, and the maximum is a moment in a
+     movement, so it is worth seeing as one. */
+  function sceneThrow(o){
+    var pts = [], i, T = o.T, H = o.H, peak = o.peak;
+    for(i = 0; i <= 40; i++){
+      var t = T * i / 40;
+      var h = o.a * t * t + o.b * t + o.c;
+      pts.push((28 + 244 * t / T).toFixed(1) + ',' + (140 - 104 * h / H).toFixed(1));
+    }
+    var px = 28 + 244 * peak / T, py = 140 - 104 * o.top / H;
+    return scene(
+      '<svg viewBox="0 0 300 170" role="img" aria-label="' + o.cap + '">' +
+        '<line x1="20" y1="140" x2="288" y2="140" class="axis"/>' +
+        '<line x1="28" y1="14" x2="28" y2="146" class="axis"/>' +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        /* one class attribute, not two: the second was silently dropped and
+           the drop-line lost its dashed styling entirely. */
+        '<line class="anim drop" style="animation:fadein .4s ease-out 3.4s both" ' +
+          'x1="' + px.toFixed(1) + '" y1="' + py.toFixed(1) + '" x2="' + px.toFixed(1) +
+          '" y2="140" stroke-dasharray="4 3"/>' +
+        /* the dot rides the arc. offset-path rather than animateMotion,
+           because SMIL ignores animation-play-state and would start without
+           being asked. */
+        '<circle class="anim" r="6" fill="var(--peach)" ' +
+          'style="offset-path:path(&quot;M' + pts.join(' L').replace(/,/g, ' ') +
+          '&quot;); offset-rotate:0deg; animation:ride ' + (o.dur || 4) +
+          's ease-in-out forwards"/>' +
+        '<circle class="anim" style="animation:fadein .4s ease-out 3.4s both" cx="' +
+          px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="5.5" fill="var(--peach)"/>' +
+        '<text class="anim" style="animation:fadein .4s ease-out 3.6s both" x="' +
+          (px + 9).toFixed(1) + '" y="' + (py - 6).toFixed(1) +
+          '" font-size="10" fill="var(--peach)">' + o.label + '</text>' +
+        '<text x="150" y="162" text-anchor="middle" font-size="9" opacity=".55">TIME</text>' +
+      '</svg>', o.cap, true);
+  }
+
+  /* The area under a curve, filling in one strip at a time. Integration is
+     adding up slices, and this is the only place she gets to see the slices. */
+  function sceneArea(o){
+    var i, strips = '', N = 14;
+    for(i = 0; i < N; i++){
+      var t0 = o.lo + (o.hi - o.lo) * i / N;
+      var yv = o.f(t0 + (o.hi - o.lo) / (2 * N));
+      var x = 34 + 232 * (t0 - o.lo) / (o.hi - o.lo);
+      var w = 232 / N;
+      var h = 108 * yv / o.top;
+      strips += '<rect class="anim" style="animation:grow .34s ease-out ' +
+        (0.18 * i).toFixed(2) + 's both; transform-origin:' + (x + w / 2).toFixed(1) +
+        'px 132px" x="' + x.toFixed(1) + '" y="' + (132 - h).toFixed(1) +
+        '" width="' + (w - 1.4).toFixed(1) + '" height="' + h.toFixed(1) +
+        '" fill="var(--peach)" opacity=".28"/>';
+    }
+    var pts = [];
+    for(i = 0; i <= 40; i++){
+      var t = o.lo + (o.hi - o.lo) * i / 40;
+      pts.push((34 + 232 * (t - o.lo) / (o.hi - o.lo)).toFixed(1) + ',' +
+               (132 - 108 * o.f(t) / o.top).toFixed(1));
+    }
+    return scene(
+      '<svg viewBox="0 0 300 164" role="img" aria-label="' + o.cap + '">' +
+        '<line x1="20" y1="132" x2="288" y2="132" class="axis"/>' +
+        '<line x1="34" y1="12" x2="34" y2="138" class="axis"/>' +
+        strips +
+        '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '<text x="34" y="152" text-anchor="middle" font-size="10">' + o.loLab + '</text>' +
+        '<text x="266" y="152" text-anchor="middle" font-size="10">' + o.hiLab + '</text>' +
+      '</svg>', o.cap, true);
+  }
+
+  /* Coffee cooling towards the room, flattening onto the line rather than
+     crossing it. "Approaches but never reaches" is much easier to watch than
+     to read. */
+  function sceneCool(){
+    var pts = [], i;
+    for(i = 0; i <= 48; i++){
+      var t = i / 8;
+      var T = 20 + 70 * Math.exp(-0.42 * t);
+      pts.push((30 + 250 * i / 48).toFixed(1) + ',' + (128 - 1.15 * (T - 15)).toFixed(1));
+    }
+    var roomY = 128 - 1.15 * 5;
+    return scene(
+      '<svg viewBox="0 0 300 158" role="img" aria-label="A cooling curve that flattens onto the room temperature line without crossing it">' +
+        '<line x1="20" y1="128" x2="288" y2="128" class="axis"/>' +
+        '<line x1="30" y1="10" x2="30" y2="134" class="axis"/>' +
+        '<line x1="30" y1="' + roomY.toFixed(1) + '" x2="288" y2="' + roomY.toFixed(1) +
+          '" class="stroke" stroke-dasharray="5 4" opacity=".65"/>' +
+        '<text x="292" y="' + (roomY + 4).toFixed(1) +
+          '" text-anchor="end" font-size="9.5" opacity=".7">room</text>' +
+        '<g class="anim" style="animation:sweep 4.2s ease-out forwards">' +
+          '<polyline points="' + pts.join(' ') + '" class="curve"/>' +
+        '</g>' +
+        '<text x="150" y="150" text-anchor="middle" font-size="9" opacity=".55">TIME</text>' +
+      '</svg>',
+      'it flattens onto the room line and never crosses it', true);
+  }
+
   function sceneGrab(){
     var car =
       '<g class="anim" style="animation:drive 4.2s ease-in-out forwards">' +
@@ -2706,6 +2830,22 @@
   /* Select-all. opts = [[label, isRight, why], ...]. Every option explains
      itself on tap, including the ones that do not belong, so a wrong tap
      still teaches. Nothing is scored and there is nothing to submit. */
+
+  /* One decision, mid-question: what is the next move? The options are the
+     real mistakes that question is built to catch, and every one of them
+     explains itself when tapped, including the right one. Nothing is scored
+     and nothing says "wrong". */
+  function nextmove(prompt, opts){
+    var s = '<div class="nextmove"><div class="nmq">' + prompt + '</div>';
+    s += '<div class="pickall nmopts">';
+    opts.forEach(function(o, i){
+      s += '<button type="button" class="pk prose" data-i="' + i +
+           '" data-ok="' + (o[1] ? 1 : 0) +
+           '" data-why="' + attr(o[2]) + '">' + o[0] + '</button>';
+    });
+    return s + '<div class="labnote" data-note></div></div></div>';
+  }
+
   function pickall(opts, prose){
     var s = '<div class="pickall">';
     opts.forEach(function(o, i){
