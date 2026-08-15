@@ -1732,6 +1732,62 @@
       prompt, parts);
   }
 
+
+  /* An atom whose parts can be tapped: nucleus, inner shell, outer shell.
+     Her L01 table asks for nine numbers and every one of them comes from
+     somewhere on this picture. */
+  function figAtom(prompt, parts){
+    var fills = [2, 3], radii = [24, 46], g = '';
+    fills.forEach(function(nEl, sh){
+      var r = radii[sh];
+      g += '<g data-hot="' + (sh === 0 ? 'inner' : 'outer') + '">' +
+             '<circle class="hotfill" cx="86" cy="80" r="' + r + '" fill="none"/>';
+      for(var i = 0; i < nEl; i++){
+        var a = (i / nEl) * 2 * Math.PI - Math.PI / 2;
+        g += '<circle cx="' + (86 + r * Math.cos(a)).toFixed(1) + '" cy="' +
+             (80 + r * Math.sin(a)).toFixed(1) +
+             '" r="4" fill="var(--peach)" pointer-events="none"/>';
+      }
+      g += '</g>';
+    });
+    g += '<g data-hot="nucleus">' +
+           '<circle class="hotfill" cx="86" cy="80" r="13"/>' +
+           '<text x="86" y="84" text-anchor="middle" font-size="9.5" ' +
+             'pointer-events="none">5p 6n</text>' +
+         '</g>' +
+         '<text x="86" y="146" text-anchor="middle" font-size="10" opacity=".7">2.3</text>' +
+         '<text x="150" y="46" font-size="9.5" opacity=".6">boron, mass number 11</text>';
+    return hotspots(
+      '<svg viewBox="0 0 300 158" role="img" aria-label="A boron atom with five protons and six neutrons, two electrons in the inner shell and three in the outer">' +
+        g + '</svg>', prompt, parts);
+  }
+
+  /* Dilution, drawn: the same number of moles spread through more water.
+     Her Q5 pipettes 25 mL of 6 M into a 250 mL flask, and the thing worth
+     seeing is that the dots do not change in number. */
+  function figDilute(prompt, parts){
+    function flask(dx, w, h, dots, lab, id){
+      var g = '<g data-hot="' + id + '">' +
+        '<rect class="hotfill" x="' + dx + '" y="' + (128 - h) + '" width="' + w +
+          '" height="' + h + '" rx="6"/>';
+      for(var i = 0; i < dots; i++){
+        var cx = dx + 9 + (i % 5) * ((w - 18) / 4);
+        var cy = 128 - h + 12 + Math.floor(i / 5) * ((h - 22) / 2);
+        g += '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) +
+             '" r="3.4" fill="var(--peach)" pointer-events="none"/>';
+      }
+      return g + '<text x="' + (dx + w / 2) + '" y="146" text-anchor="middle" ' +
+             'font-size="10" pointer-events="none">' + lab + '</text></g>';
+    }
+    return hotspots(
+      '<svg viewBox="0 0 300 158" role="img" aria-label="A small concentrated sample beside a larger flask holding the same number of particles in more water">' +
+        flask(20, 76, 54, 15, '25 mL at 6 M', 'before') +
+        '<text x="132" y="104" text-anchor="middle" font-size="16" opacity=".5">to</text>' +
+        flask(160, 120, 96, 15, '250 mL at 0.6 M', 'after') +
+        '<text x="150" y="18" text-anchor="middle" font-size="9" opacity=".6">SAME NUMBER OF PARTICLES</text>' +
+      '</svg>', prompt, parts);
+  }
+
   function sceneGrab(){
     var car =
       '<g class="anim" style="animation:drive 4.2s ease-in-out forwards">' +
