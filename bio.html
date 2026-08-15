@@ -650,7 +650,7 @@
   @keyframes grow    {from{transform:scaleY(0)}          to{transform:scaleY(1)}}
   /* one codon width, three times: the message is pulled through the
      ribosome a codon at a time, which is the thing being taught. */
-  @keyframes codon   {from{transform:translateX(0)}      to{transform:translateX(-192px)}}
+  @keyframes codon   {from{transform:translateX(0)}      to{transform:translateX(-64px)}}
 
   
   /* subject headings in the menu: unmissable, not a small word */
@@ -852,7 +852,6 @@
   <section class="card deck" data-sub="biology" data-id="d:w_b4" data-mcq="w_b4" data-easy="Say what normally happens first: repressor binds the operator and blocks transcription. Then find which part the mutation broke, and say what that part normally stops."></section>
   <section class="card deck" data-sub="biology" data-id="d:w_b5" data-mcq="w_b5" data-easy="Translation. mRNA carries, tRNA delivers, rRNA joins. Peptide bonds. More exposed hydrophobic regions means more aggregation, and heat exposes more of them."></section>
   <section class="card deck" data-sub="biology" data-id="d:w_b6" data-mcq="w_b6" data-easy="Endocrine, because it travels in the blood to a distant target. Testosterone fails on shape. A hydrophilic analogue fails on getting in, not on shape."></section>
-  <section class="card deck" data-sub="biology" data-id="d:w_b7" data-mcq="w_b7" data-easy="No dehydrogenases means no NADH, so nothing reaches the chain and the cycle stalls. Four CO2 means two rounds, so six NADH, so about 15 ATP. Show all three lines."></section>
   <section class="card rest" data-sub="biology" data-id="r:bio-before-last" data-label="Nearly there: last biology card" data-easy="Last biology topic. The trap is answering the fact and stopping.">
     <div class="in">
       <div class="eyebrow rise">one to go</div>
@@ -861,6 +860,7 @@
       <div class="quiet-note rise">That single habit is worth more marks tomorrow than anything else on any of these cards.</div>
     </div>
   </section>
+  <section class="card deck" data-sub="biology" data-id="d:w_b7" data-mcq="w_b7" data-easy="No dehydrogenases means no NADH, so nothing reaches the chain and the cycle stalls. Four CO2 means two rounds, so six NADH, so 18 ATP. Show all three lines."></section>
 
 </div>
 
@@ -955,7 +955,7 @@
     var rooms = [
       [16, 22, 'nucleus', 'the plans'],
       [88, 22, 'rough ER', 'built here'],
-      [160, 22, 'Golgi', 'packed here'],
+      [160, 22, 'Golgi', 'packed'],
       [232, 22, 'vesicle', 'shipped'] ];
     var g = '';
     rooms.forEach(function(r, i){
@@ -1012,20 +1012,24 @@
 
   /* the ribosome reading mRNA with tRNA arriving */
   function sceneRibo(){
-    var cods = ['AUG', 'GCU', 'ACC', 'UUA'];
+    var cods = ['AUG', 'GCU', 'ACC'];
     var g = '';
     cods.forEach(function(c, i){
-      var x = 26 + i * 64;
+      var x = 90 + i * 64;
       g += '<rect x="' + x + '" y="80" width="56" height="18" rx="3" class="stroke" fill="var(--raise2)"/>' +
            '<text x="' + (x + 28) + '" y="93" text-anchor="middle" font-size="10" font-family="var(--num)">' + c + '</text>';
     });
     return scene(
       '<svg viewBox="0 0 300 120" role="img" aria-label="A ribosome sitting on a strand of mRNA, with a tRNA arriving from above carrying an amino acid, and a chain of amino acids growing behind">' +
-        '<g class="anim" style="animation:codon 3.6s steps(3) forwards">' +
-          '<line x1="10" y1="89" x2="290" y2="89" class="stroke" opacity=".4"/>' + g +
+        '<clipPath id="ribocut"><rect x="0" y="0" width="300" height="120"/></clipPath>' +
+        '<line x1="10" y1="89" x2="290" y2="89" class="stroke" opacity=".4"/>' +
+        '<g clip-path="url(#ribocut)">' +
+          '<g class="anim" style="animation:codon 3.6s ease-in-out forwards">' + g + '</g>' +
         '</g>' +
         '<text x="10" y="112" font-size="8.5" opacity=".55">mRNA, read left to right</text>' +
-        '<ellipse cx="118" cy="52" rx="46" ry="21" class="stroke" fill="var(--raise)" opacity=".92"/>' +
+        /* Sitting ON the message is the point; lifting it clear of the codon
+   text left it hovering, unattached to the thing it reads. */
+        '<ellipse cx="118" cy="58" rx="46" ry="21" class="stroke" fill="var(--raise)" opacity=".92"/>' +
         '<text x="118" y="56" text-anchor="middle" font-size="10">ribosome</text>' +
         '<g class="anim" style="animation:fadein 1.4s ease-out 1.1s both">' +
           '<path d="M188 30 v18 l-8 8 h16 l-8 -8" class="stroke" fill="none"/>' +
@@ -1098,7 +1102,7 @@
         '<rect x="18" y="86" width="60" height="30" rx="4" class="stroke" fill="var(--raise2)"/>' +
         '<line x1="48" y1="116" x2="48" y2="128" class="stroke"/>' +
         '<line x1="30" y1="128" x2="66" y2="128" class="stroke"/>' +
-        '<text x="48" y="80" text-anchor="middle" font-size="10">12.0 g</text>' +
+        '<text x="48" y="80" text-anchor="middle" font-size="10">? g</text>' +
         '<text x="48" y="144" text-anchor="middle" font-size="8.5" opacity=".6">weigh it</text>' +
         '<line x1="88" y1="100" x2="108" y2="100" class="stroke"/>' +
         '<polygon points="114,100 106,96 106,104" fill="var(--peach)"/>' +
@@ -1111,6 +1115,8 @@
         '<text x="180" y="95" font-size="9.5" opacity=".7">the line: 750 mL</text>' +
         '<text x="146" y="34" text-anchor="middle" font-size="8.5" opacity=".6">water to the mark</text>' +
         '<text x="230" y="126" text-anchor="middle" font-size="11" fill="var(--peach)">0.40 mol/L</text>' +
+        '<text x="48" y="14" text-anchor="middle" font-size="8.5" opacity=".6">this is what</text>' +
+        '<text x="48" y="25" text-anchor="middle" font-size="8.5" opacity=".6">you are after</text>' +
         '<text x="230" y="141" text-anchor="middle" font-size="8.5" opacity=".6">what you end up with</text>' +
       '</svg>',
       'the volume is the FINAL volume, up to the line -- not the water you poured in',
@@ -1142,8 +1148,8 @@
   /* the atom with its shells, filled 2 then 8 */
   function sceneShells(){
     var g = '';
-    var fills = [2, 8, 3];
-    var radii = [22, 40, 58];
+    var fills = [2, 3];
+    var radii = [26, 50];
     fills.forEach(function(n, sh){
       var r = radii[sh];
       g += '<circle cx="86" cy="80" r="' + r + '" class="stroke" fill="none" opacity=".45"/>';
@@ -1154,17 +1160,17 @@
       }
     });
     return scene(
-      '<svg viewBox="0 0 300 160" role="img" aria-label="An atom drawn with three shells holding two, eight and three electrons, with the outer three labelled as the valence electrons">' +
+      '<svg viewBox="0 0 300 160" role="img" aria-label="A boron atom drawn with two shells holding two and three electrons, with the outer three labelled as the valence electrons">' +
         g +
         '<circle cx="86" cy="80" r="11" class="stroke" fill="var(--raise)"/>' +
-        '<text x="86" y="84" text-anchor="middle" font-size="9.5">+13</text>' +
-        '<text x="86" y="152" text-anchor="middle" font-size="9.5" opacity=".7">2.8.3</text>' +
+        '<text x="86" y="84" text-anchor="middle" font-size="9.5">+5</text>' +
+        '<text x="86" y="152" text-anchor="middle" font-size="9.5" opacity=".7">2.3</text>' +
         '<line x1="150" y1="46" x2="182" y2="46" class="stroke" opacity=".5"/>' +
         '<text x="188" y="42" font-size="9.5">3 in the outer shell</text>' +
-        '<text x="188" y="56" font-size="8.5" opacity=".62">so group 3, so 3 bonds</text>' +
+        '<text x="188" y="56" font-size="8.5" opacity=".62">so boron makes 3 bonds</text>' +
         '<line x1="150" y1="94" x2="182" y2="94" class="stroke" opacity=".5"/>' +
-        '<text x="182" y="90" font-size="9.5">inner ones are full</text>' +
-        '<text x="182" y="104" font-size="8.5" opacity=".62">2 then 8, and they</text>' +
+        '<text x="182" y="90" font-size="9.5">first shell is full</text>' +
+        '<text x="182" y="104" font-size="8.5" opacity=".62">2 electrons, and they</text>' +
         '<text x="182" y="116" font-size="8.5" opacity=".62">never do any chemistry</text>' +
       '</svg>',
       'only the outer ring does anything -- everything underneath is packing');
@@ -1754,12 +1760,13 @@
     var g = '';
     for(var i = 0; i < 3; i++){
       g += '<circle cx="' + (56 + i * 32) + '" cy="52" r="13" fill="var(--peach)" opacity=".85"/>' +
-           '<text x="' + (56 + i * 32) + '" y="57" text-anchor="middle" font-size="11">C</text>';
+           '<text x="' + (56 + i * 32) + '" y="57" text-anchor="middle" font-size="11" fill="#fff">C</text>';
     }
     for(var j = 0; j < 5; j++){
       g += '<circle cx="' + (56 + j * 32) + '" cy="106" r="13" fill="var(--mint)" opacity="' +
-           (j < 1 ? '.85' : j < 2 ? '.45' : '.18') + '"/>' +
-           '<text x="' + (56 + j * 32) + '" y="111" text-anchor="middle" font-size="10">O&#8322;</text>';
+           (j < 1 ? '.85' : j < 2 ? '.32' : '.18') + '"/>' +
+           '<text x="' + (56 + j * 32) + '" y="111" text-anchor="middle" font-size="10"' +
+           (j < 1 ? ' fill="#fff"' : '') + '>O&#8322;</text>';
     }
     g += '<text x="28" y="57" text-anchor="end" font-size="11">0.3</text>' +
          '<text x="28" y="111" text-anchor="end" font-size="11">0.5</text>' +
@@ -2688,7 +2695,7 @@
          art:function(){ return sceneCellPlan(); }},
         {say:'Nucleus. It holds the gene for casein, and transcription happens there, SO the instructions for the protein can be copied and sent out.'},
         {say:'Golgi. It modifies and packages the casein, SO it can be sorted into vesicles and sent to the right place.'},
-        {say:'Secretory vesicles. They carry the casein to the cell surface and fuse with the membrane, SO it can be released into the lumen by exocytosis.'},
+        {say:'Secretory vesicles. They transport the casein to the cell membrane, SO it can be secreted out of the cell into the lumen. Your notes use the word secretion rather than exocytosis, so use theirs.'},
         {say:'Three sentences, and every one has a so-that in it. Read them back and notice that the structure is identical each time: what it is, what it does, what that achieves.'},
         {say:'That is the template for the whole paper. If you can only remember one thing tomorrow, remember that a role answer has three parts.'}
       ]
@@ -2734,11 +2741,11 @@
         {say:'Have a go on paper first, out loud if it is easier. Then swipe.'},
         {say:'Five marks on one question, which tells you they want a chain of reasoning rather than a yes or a no. So build the normal case first, then break it.'},
         {say:'Normally, with no lactose about: lacI makes the repressor, the repressor binds the operator, and RNA polymerase cannot get past. No transcription. That is the baseline and it is worth stating.'},
-        {say:'Now find what the mutation has broken. It will be one of three things, and each gives a different answer.'},
-        {say:'If the mutation is in lacI, no working repressor is made, so nothing binds the operator, so transcription happens even with no lactose.'},
-        {say:'If the mutation is in the OPERATOR, the repressor has nowhere to sit, so again transcription happens with no lactose.'},
-        {say:'If the mutation is in the promoter, RNA polymerase cannot bind at all, so there is no transcription whatever the lactose is doing.'},
-        {say:'So the answer is: identify the broken part from the figure, say what that part normally does, and say what stops happening as a result. The marks are in the chain, not the verdict.'}
+        {say:'Now compare the figure with the normal operon on your lecture slide. The normal one has seven parts in a row: Pi, lacI, Plac, the operator, then lacZ, lacY, lacA. Count what is drawn in the exam figure and one of them is missing.'},
+        {say:'It is Pi, the promoter that belongs to the regulatory gene. Everything else is present and in the right order, so that absence IS the mutation.'},
+        {say:'So the answer is YES, transcription takes place even with no lactose. Now say why, in five links, because there are five marks.'},
+        {say:'No Pi, so RNA polymerase cannot bind in front of lacI. So lacI is never transcribed. So no repressor protein is made. So the operator stays free with nothing sitting on it. So RNA polymerase binds Plac and transcribes lacZ, lacY and lacA regardless of lactose.'},
+        {say:'That is constitutive expression, and it is the same outcome you built in the activity on mutated operons. If the figure you get instead has a broken Plac, the answer flips to NO, because then the polymerase cannot start at the structural genes at all. Check which promoter is missing before you write anything.'}
       ]
     },
     w_b5: {
@@ -2753,10 +2760,10 @@
         {say:'The RNAs, three marks, so name all three and say what each does. mRNA carries the message. tRNA brings the amino acids. rRNA is part of the ribosome and makes the bond.',
          eq: 'mRNA, tRNA, rRNA',
          art:function(){ return sceneRibo(); }},
-        {say:'The amino acid order, two marks. Read the tRNAs in the figure in the order they arrive and write the amino acids they carry. Left to right along the mRNA, always.'},
+        {say:'The amino acid order, two marks. Read left to right along the mRNA, and here is where the two marks go: amino acid ONE is on the tRNA that has already LEFT, sitting to the left of the ribosome. Count that one too. If you only read the tRNAs inside the ribosome you will hand in three amino acids where four were asked for.'},
         {say:'The bond, one mark, one word.',
          eq: 'peptide bond'},
-        {say:'Then the folding half. The protein with MORE hydrophobic regions still exposed will aggregate more, because those regions clump together with each other to escape the water.'},
+        {say:'Then the folding half, three marks. Look at which protein has the hydrophobic residues drawn on the OUTSIDE rather than buried in the middle. That is Protein R, and R is your answer: those exposed regions clump together with each other to escape the water, so R aggregates more.'},
         {say:'And heat makes it worse, because it shakes the partly-folded shape open and exposes more of them. Same principle as the membrane: oily things find each other.'}
       ]
     },
@@ -2770,8 +2777,8 @@
         {say:'Part one, the signalling type. Made in the ovary, carried in the BLOOD, acting on breast tissue somewhere else entirely. Distant target via the bloodstream is endocrine.',
          eq: 'endocrine'},
         {say:'The explain marks: it is not juxtacrine because the cells are not touching, and not paracrine because the target is not nearby. Say why the other two are out and the marks are yours.'},
-        {say:'Part two, testosterone. No. Both are steroids and both get into the cell, so it is NOT about crossing the membrane, which is the trap.'},
-        {say:'It is about shape. A receptor binds a specific shape, and testosterone and estrogen are not the same shape, so it will not fit the binding site and will not activate it.'},
+        {say:'Part two, testosterone. No. Both are lipid-soluble and both get into the cell, so it is NOT about crossing the membrane, which is the trap.'},
+        {say:'It is about specificity, and that is the word your notes use. A ligand has a particular charge, shape and size that lets it bind one receptor and not another. Testosterone is not complementary to the estrogen receptor binding site, so it will not fit it and will not activate it.'},
         {say:'Part three, the hydrophilic analogue. Also no, and for the opposite reason to part two.'},
         {say:'It activates the receptor, so shape is fine. But it is hydrophilic, so it cannot cross the membrane, so it never reaches a receptor that sits INSIDE the cell. Right key, cannot get to the door.'},
         {say:'Notice parts two and three fail for opposite reasons. That is deliberate, and saying which reason applies is what separates a three from a one.'}
@@ -2791,8 +2798,8 @@
          eq: '<span class="n">4</span> <span class="x">C</span><span class="x">O</span><span class="n">2</span> <span class="o">means</span> <span class="n">2</span> <span class="o">rounds</span>'},
         {say:'Each round makes three NADH, so two rounds make six.',
          eq: '<span class="n">2</span> <span class="x">x</span> <span class="n">3</span> <span class="o">=</span> <span class="n">6</span> <span class="o">NADH</span>'},
-        {say:'And each NADH is worth roughly 2.5 ATP through the chain.',
-         eq: '<span class="n">6</span> <span class="x">x</span> <span class="n">2.5</span> <span class="o">=</span> <span class="n">15</span> <span class="o">ATP</span>'},
+        {say:'And your sheet counts each NADH as 3 ATP through the chain, and each FADH2 as 2. Use those numbers, not the 2.5 and 1.5 you will find in a textbook, because the 38 and 36 totals on the next slide of your notes only add up on 3 and 2.',
+         eq: '<span class="n">6</span> <span class="x">x</span> <span class="n">3</span> <span class="o">=</span> <span class="n">18</span> <span class="o">ATP</span>'},
         {say:'Show every one of those three lines. If the final number is wrong but the working is right, you keep most of the marks. If you write only a number and it is wrong, you keep none.'}
       ]
     },
