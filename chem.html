@@ -165,12 +165,17 @@
     font-family:var(--num); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--faint); text-align:center;
   }
-  svg text{fill:currentColor; font-family:var(--num)}
-  /* A bare element rule beats a presentation attribute, so every fill="..."
-     on an SVG label was being discarded. This restores it for labels that
-     sit ON a solid coloured shape, where the inherited grey measures 1.33:1.
-     Deliberately NOT applied by lifting the whole rule: the pale tinted
-     discs elsewhere read WORSE in white, which was proved by trying it. */
+  /* A bare element rule beats a presentation attribute, so `svg text{fill:...}`
+     silently discarded EVERY fill="..." on every label in every drawing. The
+     first fix rescued only the white ones by re-stating them at higher
+     specificity; the peach, mint and butter labels stayed grey, which killed
+     the colour-coding that ties a label to the line it names. On the vector
+     figures that left two grey labels beside one arrow with nothing to say
+     which was which.
+     Corrected 15 August 2026: set the default only where the author did not,
+     so an explicit fill wins as it always should have. */
+  svg text:not([fill]){fill:currentColor}
+  svg text{font-family:var(--num)}
   svg text[fill="#fff"]{fill:#fff}
   .stroke{fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
   .curve{fill:none; stroke:var(--soft); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
@@ -643,6 +648,9 @@
   @keyframes slide   {from{transform:translateX(0)}      to{transform:translateX(196px)}}
   @keyframes fadein  {from{opacity:0}                    to{opacity:1}}
   @keyframes grow    {from{transform:scaleY(0)}          to{transform:scaleY(1)}}
+  /* one codon width, three times: the message is pulled through the
+     ribosome a codon at a time, which is the thing being taught. */
+  @keyframes codon   {from{transform:translateX(0)}      to{transform:translateX(-192px)}}
 
   
   /* subject headings in the menu: unmissable, not a small word */
@@ -899,6 +907,227 @@
     }
   });
 
+
+  /* the cell as a building with departments, and the route through it */
+  function sceneCellPlan(){
+    var rooms = [
+      [16, 22, 'nucleus', 'the plans'],
+      [88, 22, 'rough ER', 'built here'],
+      [160, 22, 'Golgi', 'packed here'],
+      [232, 22, 'vesicle', 'shipped'] ];
+    var g = '';
+    rooms.forEach(function(r, i){
+      g += '<rect x="' + r[0] + '" y="' + r[1] + '" width="52" height="44" rx="6" class="stroke" fill="var(--raise2)"/>' +
+           '<text x="' + (r[0] + 26) + '" y="' + (r[1] + 26) + '" text-anchor="middle" font-size="10">' + r[2] + '</text>' +
+           '<text x="' + (r[0] + 26) + '" y="' + (r[1] + 40) + '" text-anchor="middle" font-size="8.5" opacity=".6">' + r[3] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="Four departments in a row, with a parcel travelling from the nucleus through the rough ER and the Golgi to a vesicle">' +
+        '<rect x="8" y="12" width="284" height="64" rx="10" class="stroke" fill="none" stroke-dasharray="5 4" opacity=".45"/>' +
+        '<text x="14" y="9" font-size="9" opacity=".55">ONE CELL</text>' +
+        g +
+        '<g class="anim" style="animation:slide 4.6s ease-in-out forwards">' +
+          '<circle cx="42" cy="86" r="7" fill="var(--peach)"/>' +
+        '</g>' +
+      '</svg>',
+      'the protein is made at one stop and finished at the next -- press play and watch it move',
+      true);
+  }
+
+  /* mitosis: the four stages side by side, so they are compared and not listed */
+  function sceneMitosis(){
+    var st = [['prophase', 'threads appear'], ['metaphase', 'line up'],
+              ['anaphase', 'pulled apart'], ['telophase', 'two nuclei']];
+    var g = '';
+    st.forEach(function(t, i){
+      var cx = 46 + i * 70;
+      g += '<circle cx="' + cx + '" cy="46" r="27" class="stroke" fill="var(--raise2)"/>';
+      if(i === 0){
+        g += '<path d="M' + (cx - 13) + ' 38 q6 8 13 0 q7 -8 13 0" class="stroke" fill="none"/>' +
+             '<path d="M' + (cx - 13) + ' 54 q6 -8 13 0 q7 8 13 0" class="stroke" fill="none"/>';
+      } else if(i === 1){
+        g += '<line x1="' + cx + '" y1="26" x2="' + cx + '" y2="66" class="stroke" stroke-dasharray="3 3" opacity=".5"/>' +
+             '<rect x="' + (cx - 4) + '" y="32" width="8" height="7" rx="2" fill="var(--peach)"/>' +
+             '<rect x="' + (cx - 4) + '" y="43" width="8" height="7" rx="2" fill="var(--peach)"/>' +
+             '<rect x="' + (cx - 4) + '" y="54" width="8" height="7" rx="2" fill="var(--peach)"/>';
+      } else if(i === 2){
+        g += '<rect x="' + (cx - 20) + '" y="36" width="8" height="7" rx="2" fill="var(--peach)"/>' +
+             '<rect x="' + (cx + 12) + '" y="36" width="8" height="7" rx="2" fill="var(--peach)"/>' +
+             '<rect x="' + (cx - 20) + '" y="50" width="8" height="7" rx="2" fill="var(--peach)"/>' +
+             '<rect x="' + (cx + 12) + '" y="50" width="8" height="7" rx="2" fill="var(--peach)"/>';
+      } else {
+        g += '<circle cx="' + (cx - 11) + '" cy="46" r="8" class="stroke" fill="var(--raise)"/>' +
+             '<circle cx="' + (cx + 11) + '" cy="46" r="8" class="stroke" fill="var(--raise)"/>';
+      }
+      g += '<text x="' + cx + '" y="88" text-anchor="middle" font-size="9.5">' + t[0] + '</text>' +
+           '<text x="' + cx + '" y="101" text-anchor="middle" font-size="8.5" opacity=".6">' + t[1] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 108" role="img" aria-label="The four stages of mitosis drawn side by side: threads appear, they line up on the middle, they are pulled apart, and two nuclei form">' +
+        g + '</svg>',
+      'the middle two are the ones that get confused -- line up, then pulled apart');
+  }
+
+  /* the ribosome reading mRNA with tRNA arriving */
+  function sceneRibo(){
+    var cods = ['AUG', 'GCU', 'ACC', 'UUA'];
+    var g = '';
+    cods.forEach(function(c, i){
+      var x = 26 + i * 64;
+      g += '<rect x="' + x + '" y="80" width="56" height="18" rx="3" class="stroke" fill="var(--raise2)"/>' +
+           '<text x="' + (x + 28) + '" y="93" text-anchor="middle" font-size="10" font-family="var(--num)">' + c + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 120" role="img" aria-label="A ribosome sitting on a strand of mRNA, with a tRNA arriving from above carrying an amino acid, and a chain of amino acids growing behind">' +
+        '<g class="anim" style="animation:codon 3.6s steps(3) forwards">' +
+          '<line x1="10" y1="89" x2="290" y2="89" class="stroke" opacity=".4"/>' + g +
+        '</g>' +
+        '<text x="10" y="112" font-size="8.5" opacity=".55">mRNA, read left to right</text>' +
+        '<ellipse cx="118" cy="52" rx="46" ry="21" class="stroke" fill="var(--raise)" opacity=".92"/>' +
+        '<text x="118" y="56" text-anchor="middle" font-size="10">ribosome</text>' +
+        '<g class="anim" style="animation:fadein 1.4s ease-out 1.1s both">' +
+          '<path d="M188 30 v18 l-8 8 h16 l-8 -8" class="stroke" fill="none"/>' +
+          '<circle cx="188" cy="24" r="8" fill="var(--mint)"/>' +
+          '<text x="206" y="28" font-size="8.5" opacity=".7">tRNA brings one</text>' +
+        '</g>' +
+        '<g class="anim" style="animation:fadein 1.2s ease-out .2s both">' +
+          '<circle cx="52" cy="34" r="8" fill="var(--peach)"/>' +
+          '<circle cx="72" cy="30" r="8" fill="var(--peach)"/>' +
+          '<line x1="60" y1="33" x2="64" y2="32" class="stroke"/>' +
+          '<text x="16" y="15" font-size="8.5" opacity=".65">the chain so far</text>' +
+        '</g>' +
+      '</svg>',
+      'press play: the ribosome stays put and the message is pulled through it',
+      true);
+  }
+
+  /* the Krebs cycle as a loop that visibly produces things */
+  function sceneKrebs(){
+    var out = [['3 NADH', 44], ['1 FADH2', 74], ['1 ATP', 104], ['2 CO2', 134]];
+    var g = '';
+    out.forEach(function(o, i){
+      g += '<line x1="212" y1="' + o[1] + '" x2="236" y2="' + o[1] + '" class="stroke" opacity=".55"/>' +
+           '<polygon points="242,' + o[1] + ' 234,' + (o[1] - 4) + ' 234,' + (o[1] + 4) + '" fill="var(--peach)"/>' +
+           '<text x="248" y="' + (o[1] + 4) + '" font-size="10">' + o[0] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 178" role="img" aria-label="The citric acid cycle drawn as a ring, with acetyl CoA going in at the top and four products coming out of the side">' +
+        '<circle cx="120" cy="89" r="58" class="stroke" fill="none" stroke-dasharray="6 5" opacity=".55"/>' +
+        '<text x="120" y="84" text-anchor="middle" font-size="11">citric acid</text>' +
+        '<text x="120" y="99" text-anchor="middle" font-size="11">cycle</text>' +
+        '<line x1="120" y1="10" x2="120" y2="28" class="stroke"/>' +
+        '<polygon points="120,34 115,25 125,25" fill="var(--mint)"/>' +
+        '<text x="120" y="8" text-anchor="middle" font-size="9.5" fill="var(--mint)">acetyl CoA in</text>' +
+        g +
+        '<text x="120" y="168" text-anchor="middle" font-size="9" opacity=".6">ONE turn. Two turns per glucose.</text>' +
+      '</svg>',
+      'one turn gives all four -- and a glucose sends two acetyl CoA in, so double everything');
+  }
+
+  /* the mole: a counting word, drawn as three piles that weigh the periodic number */
+  function sceneMole(){
+    var piles = [['C', '12 g', 62], ['O', '16 g', 150], ['Na', '23 g', 238]];
+    var g = '';
+    piles.forEach(function(p){
+      var x = p[2];
+      var dots = '';
+      for(var r = 0; r < 3; r++){
+        for(var c = 0; c < 5; c++){
+          dots += '<circle cx="' + (x - 22 + c * 11) + '" cy="' + (40 + r * 11) + '" r="3.6" fill="var(--peach)" opacity=".55"/>';
+        }
+      }
+      g += dots +
+        '<text x="' + x + '" y="22" text-anchor="middle" font-size="13" fill="var(--peach)">' + p[0] + '</text>' +
+        '<rect x="' + (x - 34) + '" y="84" width="68" height="20" rx="4" class="stroke" fill="var(--raise2)"/>' +
+        '<text x="' + x + '" y="98" text-anchor="middle" font-size="11" font-family="var(--num)">' + p[1] + '</text>';
+    });
+    return scene(
+      '<svg viewBox="0 0 300 132" role="img" aria-label="Three equal piles of atoms of carbon, oxygen and sodium, each weighing a different number of grams">' +
+        g +
+        '<text x="150" y="124" text-anchor="middle" font-size="9" opacity=".6">SAME NUMBER OF ATOMS. DIFFERENT WEIGHT.</text>' +
+      '</svg>',
+      'a mole is a pile size, not a weight -- the weight is whatever that many of those atoms happen to come to');
+  }
+
+  /* making a solution up: mass in, water to the line */
+  function sceneMakeUp(){
+    return scene(
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A weighed solid tipped into a flask, water added up to a marked line, and the concentration read off as moles per litre">' +
+        '<rect x="18" y="86" width="60" height="30" rx="4" class="stroke" fill="var(--raise2)"/>' +
+        '<line x1="48" y1="116" x2="48" y2="128" class="stroke"/>' +
+        '<line x1="30" y1="128" x2="66" y2="128" class="stroke"/>' +
+        '<text x="48" y="80" text-anchor="middle" font-size="10">12.0 g</text>' +
+        '<text x="48" y="144" text-anchor="middle" font-size="8.5" opacity=".6">weigh it</text>' +
+        '<line x1="88" y1="100" x2="108" y2="100" class="stroke"/>' +
+        '<polygon points="114,100 106,96 106,104" fill="var(--peach)"/>' +
+        '<path d="M150 44 L166 86 V126 a8 8 0 0 1 -8 8 H134 a8 8 0 0 1 -8 -8 V86 Z" class="stroke" fill="none"/>' +
+        '<path d="M143 44 h14" class="stroke"/>' +
+        '<g class="anim" style="animation:grow 2.4s ease-out forwards; transform-origin:146px 134px">' +
+          '<path d="M166 92 V126 a8 8 0 0 1 -8 8 H134 a8 8 0 0 1 -8 -8 V92 Z" fill="var(--peach)" opacity=".3"/>' +
+        '</g>' +
+        '<line x1="120" y1="92" x2="172" y2="92" class="stroke" stroke-dasharray="4 3" opacity=".8"/>' +
+        '<text x="180" y="95" font-size="9.5" opacity=".7">the line: 750 mL</text>' +
+        '<text x="146" y="34" text-anchor="middle" font-size="8.5" opacity=".6">water to the mark</text>' +
+        '<text x="230" y="126" text-anchor="middle" font-size="11" fill="var(--peach)">0.40 mol/L</text>' +
+        '<text x="230" y="141" text-anchor="middle" font-size="8.5" opacity=".6">what you end up with</text>' +
+      '</svg>',
+      'the volume is the FINAL volume, up to the line -- not the water you poured in',
+      true);
+  }
+
+  /* energy profile with and without a catalyst */
+  function sceneCatalyst(){
+    return scene(
+      '<svg viewBox="0 0 300 160" role="img" aria-label="Two reaction profiles on the same axes: the uncatalysed one has a tall hump and the catalysed one a lower hump, both starting and ending at the same heights">' +
+        '<line x1="34" y1="18" x2="34" y2="128" class="stroke"/>' +
+        '<line x1="34" y1="128" x2="288" y2="128" class="stroke"/>' +
+        '<text x="14" y="74" font-size="9" opacity=".6" transform="rotate(-90 14 74)">ENERGY</text>' +
+        '<text x="160" y="146" text-anchor="middle" font-size="9" opacity=".6">PROGRESS OF REACTION</text>' +
+        '<path d="M46 94 C110 94 108 26 160 26 C212 26 214 108 272 108" fill="none" stroke="var(--peach)" stroke-width="2.2"/>' +
+        '<g class="anim" style="animation:fadein 1.6s ease-out .3s both">' +
+          '<path d="M46 94 C110 94 116 58 160 58 C204 58 210 108 272 108" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-dasharray="6 4"/>' +
+        '</g>' +
+        '<line x1="160" y1="26" x2="160" y2="94" class="stroke" stroke-dasharray="3 3" opacity=".6"/>' +
+        '<text x="168" y="22" font-size="9.5" fill="var(--peach)">no catalyst</text>' +
+        '<text x="196" y="76" font-size="9.5" fill="var(--mint)">with catalyst</text>' +
+        '<text x="40" y="88" font-size="9" opacity=".65">start</text>' +
+        '<text x="252" y="122" font-size="9" opacity=".65">end</text>' +
+      '</svg>',
+      'both ends stay put -- a catalyst lowers the hump and changes nothing else',
+      true);
+  }
+
+  /* the atom with its shells, filled 2 then 8 */
+  function sceneShells(){
+    var g = '';
+    var fills = [2, 8, 3];
+    var radii = [22, 40, 58];
+    fills.forEach(function(n, sh){
+      var r = radii[sh];
+      g += '<circle cx="86" cy="80" r="' + r + '" class="stroke" fill="none" opacity=".45"/>';
+      for(var i = 0; i < n; i++){
+        var a = (i / n) * 2 * Math.PI - Math.PI / 2;
+        g += '<circle cx="' + (86 + r * Math.cos(a)).toFixed(1) + '" cy="' + (80 + r * Math.sin(a)).toFixed(1) +
+             '" r="3.4" fill="var(--peach)"/>';
+      }
+    });
+    return scene(
+      '<svg viewBox="0 0 300 160" role="img" aria-label="An atom drawn with three shells holding two, eight and three electrons, with the outer three labelled as the valence electrons">' +
+        g +
+        '<circle cx="86" cy="80" r="11" class="stroke" fill="var(--raise)"/>' +
+        '<text x="86" y="84" text-anchor="middle" font-size="9.5">+13</text>' +
+        '<text x="86" y="152" text-anchor="middle" font-size="9.5" opacity=".7">2.8.3</text>' +
+        '<line x1="150" y1="46" x2="182" y2="46" class="stroke" opacity=".5"/>' +
+        '<text x="188" y="42" font-size="9.5">3 in the outer shell</text>' +
+        '<text x="188" y="56" font-size="8.5" opacity=".62">so group 3, so 3 bonds</text>' +
+        '<line x1="150" y1="94" x2="182" y2="94" class="stroke" opacity=".5"/>' +
+        '<text x="182" y="90" font-size="9.5">inner ones are full</text>' +
+        '<text x="182" y="104" font-size="8.5" opacity=".62">2 then 8, and they</text>' +
+        '<text x="182" y="116" font-size="8.5" opacity=".62">never do any chemistry</text>' +
+      '</svg>',
+      'only the outer ring does anything -- everything underneath is packing');
+  }
+
   function person(x, y, k){
     k = k || 1;
     return '<g class="stroke" transform="translate(' + x + ' ' + y + ') scale(' + k + ')">' +
@@ -1020,16 +1249,21 @@
                '</text>';
     });
     return scene(
-      '<svg viewBox="0 0 300 140" role="img" aria-label="A gel with DNA bands, small fragments travelling further towards the positive electrode">' +
+      /* 140 tall left no room once the plus and the caption were separated,
+   so the caption clipped the moment the collision cleared. */
+      '<svg viewBox="0 0 300 150" role="img" aria-label="A gel with DNA bands, small fragments travelling further towards the positive electrode">' +
         '<rect x="70" y="14" width="180" height="112" rx="8" class="stroke" fill="var(--raise2)"/>' +
         '<rect x="82" y="18" width="60" height="9" rx="3" class="stroke" fill="var(--raise)"/>' +
         '<text x="112" y="12" text-anchor="middle" font-size="9" opacity=".6">WELL</text>' +
         bands +
         '<text x="34" y="24" font-size="15" fill="var(--soft)">&#8722;</text>' +
-        '<text x="34" y="126" font-size="17" fill="var(--peach)">+</text>' +
-        '<line x1="38" y1="34" x2="38" y2="108" class="axis"/>' +
-        '<polygon points="38,116 34,106 42,106" fill="var(--peach)"/>' +
-        '<text x="18" y="136" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
+        /* Three things stacked in 30px: arrowhead, plus, caption. Dropping
+           the plus clear of the arrow ran it into the caption instead, so
+           the arrow moves up rather than the plus down. */
+        '<text x="34" y="124" font-size="17" fill="var(--peach)">+</text>' +
+        '<line x1="38" y1="34" x2="38" y2="100" class="axis"/>' +
+        '<polygon points="38,108 34,98 42,98" fill="var(--peach)"/>' +
+        '<text x="18" y="143" font-size="9" opacity=".6">DNA IS NEGATIVE</text>' +
       '</svg>',
       'small ones slip through faster');
   }
@@ -1196,6 +1430,13 @@
     var g = '<line x1="8" y1="' + sy(0) + '" x2="292" y2="' + sy(0) + '" class="axis"/>' +
             '<line x1="' + sx(0) + '" y1="8" x2="' + sx(0) + '" y2="' + (H - 16) + '" class="axis"/>';
 
+    /* Where the resultant will run, worked out BEFORE the components are
+       drawn, so each component label can be pushed to its far side. */
+    var tx = 0, ty = 0;
+    for(var q0 = 0; q0 < v.length; q0++){ tx += v[q0][0]; ty += v[q0][1]; }
+    var avoidX = chain ? (sx(0) + sx(tx)) / 2 : null;
+    var avoidY = chain ? (sy(0) + sy(ty)) / 2 : null;
+
     function arrow(x0, y0, x1, y1, col, lbl, dash){
       var dx = x1 - x0, dy = y1 - y0, L = Math.sqrt(dx * dx + dy * dy) || 1;
       var hx = x1 - dx / L * 10, hy = y1 - dy / L * 10;
@@ -1210,7 +1451,28 @@
            the right. A vertical arrow put its label straight onto the axis. */
         var ux = -dy / L, uy = dx / L;
         if(ux < 0){ ux = -ux; uy = -uy; }
-        out += '<text x="' + ((x0 + x1) / 2 + ux * 14 + 4) + '" y="' + ((y0 + y1) / 2 + uy * 14) +
+        /* Always stepping to the positive-x side put the "p" label straight
+           onto the dashed resultant, which crossed it out. Step away from the
+           resultant instead: a component on the left of it gets a label
+           further left, one on the right gets a label further right.
+           Fixed 15 August 2026 after the stroke-path detector caught it. */
+        var mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+        /* The resultant is the thing being avoided, so it must not avoid
+           itself: its own midpoint IS the avoid point, which made the test
+           flip it and push "the answer" off the left edge of the frame.
+           Only the components step aside. */
+        if(avoidX !== null && !dash){
+          var away = (mx <= avoidX) ? -1 : 1;
+          if(ux * away < 0){ ux = -ux; uy = -uy; }
+        }
+        var lx = mx + ux * 15 + (ux < 0 ? -4 : 4);
+        var anch = ux < 0 ? 'end' : 'start';
+        /* and keep it inside the frame whatever the geometry decided */
+        var room = lbl.length * 6.6;
+        if(anch === 'end' && lx - room < 6){ lx = mx + Math.abs(ux) * 15 + 4; anch = 'start'; }
+        if(anch === 'start' && lx + room > W - 6){ lx = W - 6; anch = 'end'; }
+        out += '<text x="' + lx + '" y="' + (my + uy * 15) +
+               '" text-anchor="' + anch +
                '" font-size="12" fill="' + col + '">' + lbl + '</text>';
       }
       return out;
@@ -1297,9 +1559,14 @@
          '<text x="' + (sx(p2[0]) + 6) + '" y="' + ((sy(p1[1]) + sy(p2[1])) / 2) +
          '" font-size="10" fill="var(--peach)">up</text>';
     [p1, p2].forEach(function(p){
-      var tx = Math.min(sx(p[0]) + 8, 218);
+      /* Straight up from the dot puts the label ON the line, because the line
+         goes through the dot. Step it perpendicular instead: a line climbing
+         to the right leaves the space above-LEFT clear, and vice versa. */
+      var up = m > 0;
+      var tx = up ? Math.max(sx(p[0]) - 12, 14) : Math.min(sx(p[0]) + 12, 214);
       g += '<circle cx="' + sx(p[0]) + '" cy="' + sy(p[1]) + '" r="5.4" class="dot pick"/>' +
-           '<text x="' + tx + '" y="' + (sy(p[1]) - 8) + '" font-size="11">(' + p[0] + ', ' + p[1] + ')</text>';
+           '<text x="' + tx + '" y="' + (sy(p[1]) - 13) + '" text-anchor="' +
+           (up ? 'end' : 'start') + '" font-size="11">(' + p[0] + ', ' + p[1] + ')</text>';
     });
     return scene('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cap + '">' +
       g + '</svg>', cap);
@@ -1647,10 +1914,17 @@
     return scene(
       '<svg viewBox="0 0 300 138" role="img" aria-label="The leading diagonal multiplied, minus the other diagonal multiplied">' +
         '<path d="M64 26 H56 V96 H64" class="stroke"/><path d="M156 26 H164 V96 H156" class="stroke"/>' +
-        cell(88, 52, '&#8722;2') + cell(132, 52, '2') +
-        cell(88, 88, '3') + cell(132, 88, '&#8722;4') +
-        '<line x1="78" y1="42" x2="142" y2="82" stroke="var(--mint)" stroke-width="2.2"/>' +
-        '<line x1="142" y1="42" x2="78" y2="82" stroke="var(--peach)" stroke-width="2.2" stroke-dasharray="5 3"/>' +
+        cell(88, 48, '&#8722;2') + cell(132, 48, '2') +
+        cell(88, 92, '3') + cell(132, 92, '&#8722;4') +
+        /* The diagonals are meant to POINT AT the pair that multiplies, not
+           to be drawn across the digits. Ends inset clear of the glyphs, and
+           painted before the numbers so they pass behind rather than over. */
+        /* corner to corner, but confined to the gap between the rows and
+           columns: a shallow line across the middle did not read as a
+           diagonal at all, which is the one thing this figure exists
+           to show. */
+        '<line x1="100" y1="56" x2="120" y2="84" stroke="var(--mint)" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<line x1="120" y1="56" x2="100" y2="84" stroke="var(--peach)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="5 3"/>' +
         '<text x="186" y="50" font-size="11" fill="var(--mint)">(&#8722;2)(&#8722;4) = 8</text>' +
         '<text x="186" y="74" font-size="11" fill="var(--peach)">(2)(3) = 6</text>' +
         '<text x="186" y="100" font-size="12">8 &#8722; 6 = 2</text>' +
@@ -1716,7 +1990,7 @@
         '<line x1="30" y1="116" x2="288" y2="116" class="axis"/>' +
         '<line x1="30" y1="14" x2="30" y2="116" class="axis"/>' +
         '<polyline points="' + pts.join(' ') + '" class="curve"/>' + dots +
-        '<text x="92" y="110" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
+        '<text x="92" y="102" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
         '<text x="148" y="94" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
         '<text x="204" y="60" text-anchor="middle" font-size="10" fill="var(--peach)">&#215;4</text>' +
         '<text x="180" y="140" text-anchor="middle" font-size="9.5" opacity=".6">same multiplier every step</text>' +
@@ -2370,7 +2644,8 @@
         {say:'Have a go on paper first. Then swipe.'},
         {say:'This one is pure arithmetic and it is free marks, so do it slowly rather than cleverly.'},
         {say:'Add the atoms up first. That total is the bottom of every fraction that follows, so getting it wrong once costs you all four answers.',
-         eq: '<span class="n">329</span> <span class="o">+</span> <span class="n">829</span> <span class="o">+</span> <span class="n">529</span> <span class="o">=</span> <span class="n">1687</span>'},
+         eq: '<span class="n">329</span> <span class="o">+</span> <span class="n">829</span> <span class="o">+</span> <span class="n">529</span> <span class="o">=</span> <span class="n">1687</span>',
+         art:function(){ return sceneMole(); }},
         {say:'Now each abundance is its own count over that total, times a hundred.',
          eq: '<span class="n">329</span><span class="o">/</span><span class="n">1687</span> <span class="x">x</span> <span class="n">100</span> <span class="o">=</span> <span class="n">19.50</span><span class="o">%</span>'},
         {say:'Same again for the other two, and they should come to a hundred between them. If they do not, you have mis-added.',
@@ -2398,7 +2673,8 @@
         {say:'The atom is neutral, so electrons equal protons. Five. And the total charge is zero, because that is what neutral means.',
          eq: '<span class="o">electrons</span> <span class="n">5</span><span class="o">,</span> <span class="o">total</span> <span class="o">charge</span> <span class="n">0</span>'},
         {say:'Now arrange them. Two go in the first shell, and the rest in the second.',
-         eq: '<span class="n">2.3</span><span class="o">,</span> <span class="o">so</span> <span class="n">2</span> <span class="o">shells</span> <span class="o">and</span> <span class="n">3</span> <span class="o">valence</span> <span class="o">electrons</span>'},
+         eq: '<span class="n">2.3</span><span class="o">,</span> <span class="o">so</span> <span class="n">2</span> <span class="o">shells</span> <span class="o">and</span> <span class="n">3</span> <span class="o">valence</span> <span class="o">electrons</span>',
+         art:function(){ return sceneShells(); }},
         {say:'Three valence electrons is why boron sits in group three, and it is why boron makes three bonds. The configuration is not a separate fact to learn. It IS the group number.'},
         {say:'Try it on the rest of the table.',
          art:function(){ return match([['Mass number','protons plus neutrons','The top number. It counts the heavy things in the nucleus, and electrons are far too light to count.'],['Atomic number','protons only','The bottom number, and it is what makes the element that element. Change it and you have a different element entirely.'],['Neutrons','mass number minus atomic number','Always a subtraction, never given directly. Isotopes of the same element differ here and nowhere else.'],['Valence electrons','electrons in the outer shell','What decides the chemistry. Everything about how an element bonds comes off this one number.']], [1,3,0,2], 'Not that one. Ask which of the two numbers on the symbol it comes from, or whether it is the difference between them.'); }}
@@ -2436,7 +2712,8 @@
         {say:'Then moles, then divide by the volume in litres.',
          eq: '<span class="n">100</span><span class="o">/</span><span class="n">180.16</span> <span class="o">=</span> <span class="n">0.555</span> <span class="o">mol</span><span class="o">,</span> <span class="o">in</span> <span class="n">1</span> <span class="x">L</span> <span class="o">=</span> <span class="n">0.555</span> <span class="o">mol</span><span class="o">/</span><span class="x">L</span>'},
         {say:'Backwards now. You are given a concentration and a volume and you want a mass, so run the same chain the other way. Concentration times volume gives moles.',
-         eq: '<span class="n">0.40</span> <span class="x">x</span> <span class="n">0.750</span> <span class="o">=</span> <span class="n">0.30</span> <span class="o">mol</span>'},
+         eq: '<span class="n">0.40</span> <span class="x">x</span> <span class="n">0.750</span> <span class="o">=</span> <span class="n">0.30</span> <span class="o">mol</span>',
+         art:function(){ return sceneMakeUp(); }},
         {say:'And the volume MUST be in litres before it goes in. 750 mL is 0.750 L. Leaving it as 750 makes your answer a thousand times too big, and it is the single most common slip in this topic.'},
         {say:'Then moles times molar mass gives the mass.',
          eq: '<span class="o">NaOH</span><span class="o">:</span> <span class="n">22.99</span> <span class="o">+</span> <span class="n">16.00</span> <span class="o">+</span> <span class="n">1.008</span> <span class="o">=</span> <span class="n">40.00</span>'},
@@ -2495,7 +2772,8 @@
         {say:'Surface area. Breaking a lump into powder exposes more of it, so more particles are available to be collided with, so faster. Same reasoning as concentration, different cause.'},
         {say:'Temperature. This one does BOTH, and saying both is where the extra mark is. Particles move faster, so they collide more often, AND more of them have enough energy to get over the activation barrier.'},
         {say:'And the second half is the bigger effect by a long way. A small rise in temperature makes a large difference to how many particles clear the barrier.'},
-        {say:'Catalyst. It does not speed the particles up at all. It provides a different route with a lower barrier, so a greater fraction of the collisions that were already happening are now energetic enough.'},
+        {say:'Catalyst. It does not speed the particles up at all. It provides a different route with a lower barrier, so a greater fraction of the collisions that were already happening are now energetic enough.',
+         art:function(){ return sceneCatalyst(); }},
         {say:'Which is why a catalyst is not used up. It is not taking part in the reaction so much as offering a shortcut, and it is there at the end to offer it again.'},
         {say:'Which of these are correct?',
          art:function(){ return pickall([['Increasing concentration increases the frequency of collisions',true,'Correct, and that is the complete explanation. More particles per unit volume, more bumps per second.'],['A catalyst lowers the activation energy',true,'Correct. It provides an alternative pathway with a lower barrier. Note it lowers the barrier, it does not give the particles more energy.'],['A catalyst is used up in the reaction',false,'No. It is regenerated, which is why a tiny amount can process a great deal of reactant. If it were consumed it would be a reactant, not a catalyst.'],['Raising temperature increases both collision frequency and collision energy',true,'Correct, and saying both is what separates a two-mark answer from a one-mark one. The energy half is the larger effect.'],['Powdering a solid increases the rate because the particles gain energy',false,'Half right and marked wrong. Powdering does increase the rate, but through surface area, not energy. The particles are exactly as energetic as they were in the lump.']], true); }}
