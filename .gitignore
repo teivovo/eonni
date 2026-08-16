@@ -4,3 +4,8 @@
 *.png
 _smoke/
 .playwright-mcp/
+
+# The two generated maths handouts, and only those. The blanket *.pdf rule
+# above keeps her source practice papers out of a public repo and stays.
+!maths-cram.pdf
+!maths-cheatsheet.pdf

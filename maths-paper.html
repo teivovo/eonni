@@ -818,8 +818,8 @@
   <section class="card deck" data-sub="maths-paper" data-id="d:p_v5" data-mcq="p_v5" data-easy="Check the middle letters join up before adding. |BC| = 11.05, but |PC| = 5.10 because PX and CX both end at X."></section>
   <section class="card deck" data-sub="maths-paper" data-id="d:p_v6" data-mcq="p_v6" data-easy="Dot product, then the two lengths, then the printed formula. 44.18, 30.51, and 139.40 which is obtuse because its dot product is negative."></section>
   <section class="card deck" data-sub="maths-paper" data-id="d:p_v7" data-mcq="p_v7" data-easy="Cover a row, cross-multiply, and reverse the middle one. (-3, 1, 4), (26, -3, -4), and m = 3, n = -36 checked by the given 6."></section>
-  <section class="card deck" data-sub="maths-paper" data-id="d:p_t1" data-mcq="p_t1" data-easy="Name the two sides involved, then pick the ratio. h = 6.71 by tan, k = 7.50 by sin."></section>
-  <section class="card deck" data-sub="maths-paper" data-id="d:p_t2" data-mcq="p_t2" data-easy="Ladder: cos gives 4.24 m, and the wall angle is 45 by angles in a triangle. Pendulum: half of 30 is 15, so the rise is 45 - 45cos15 = 1.53 cm."></section>
+  <section class="card deck" data-sub="maths-paper" data-id="d:p_t1" data-mcq="p_t1" data-easy="Label the sides off the diagram first, then pick the ratio. h = 5.14 by sin, k = 17.32 by cos, and in (b) the unknown is underneath so you divide."></section>
+  <section class="card deck" data-sub="maths-paper" data-id="d:p_t2" data-mcq="p_t2" data-easy="Ladder: cos gives 4.24 m, and the wall angle is 45 by angles in a triangle. Pendulum: the 30 is measured from the vertical, so the rise is 45 - 45cos30 = 6.03 cm."></section>
   <section class="card deck" data-sub="maths-paper" data-id="d:p_t3" data-mcq="p_t3" data-easy="A is half the gap, D is the middle, B is 360 over the period, C is the shift. y = 3sin(2x) + 1."></section>
   <section class="card deck" data-sub="maths-paper" data-id="d:p_t4" data-mcq="p_t4" data-easy="A = -2 because it is asked for, D = 0, B = 1, and a right shift of 10 means minus 10 inside. y = -2cos(x - 10)."></section>
   <section class="card deck" data-sub="maths-paper" data-id="d:p_t5" data-mcq="p_t5" data-easy="The wave part only ever runs between -1 and 1. So -1 and -7, then 7 and 3, and the number inside the bracket is irrelevant."></section>
@@ -3705,48 +3705,43 @@
     },
     p_t1: {
       eyebrow:'L05-06 - trig ratios', title:'Unknown sides.',
-      q: '<span class="o">Diagram</span> <span class="o">(</span><span class="x">a</span><span class="o">)</span><span class="o">:</span> <span class="o">an</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">40</span> <span class="o">degrees</span> <span class="o">with</span> <span class="o">the</span> <span class="o">adjacent</span> <span class="o">side</span> <span class="n">8</span><span class="o">,</span> <span class="o">find</span> <span class="x">h</span> <span class="o">opposite</span> <span class="o">it</span><span class="o">.</span> <span class="o">Diagram</span> <span class="o">(</span><span class="x">b</span><span class="o">)</span><span class="o">:</span> <span class="o">an</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">30</span> <span class="o">degrees</span> <span class="o">with</span> <span class="o">hypotenuse</span> <span class="n">15</span><span class="o">,</span> <span class="o">find</span> <span class="o">the</span> <span class="o">opposite</span> <span class="o">side</span> <span class="x">k</span><span class="o">.</span>',
+      q: '<span class="o">Diagram</span> <span class="o">(</span><span class="x">a</span><span class="o">)</span><span class="o">:</span> <span class="x">a</span> <span class="o">right</span><span class="o">&#8722;</span><span class="o">angled</span> <span class="o">triangle</span> <span class="o">with</span> <span class="o">an</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">40</span> <span class="o">degrees</span> <span class="o">and</span> <span class="o">hypotenuse</span> <span class="n">8.</span> <span class="o">Find</span> <span class="x">h</span><span class="o">,</span> <span class="o">the</span> <span class="o">side</span> <span class="o">opposite</span> <span class="o">the</span> <span class="o">angle</span><span class="o">.</span> <span class="o">Diagram</span> <span class="o">(</span><span class="x">b</span><span class="o">)</span><span class="o">:</span> <span class="o">an</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">30</span> <span class="o">degrees</span> <span class="o">with</span> <span class="o">the</span> <span class="o">adjacent</span> <span class="o">side</span> <span class="n">15.</span> <span class="o">Find</span> <span class="x">k</span><span class="o">,</span> <span class="o">the</span> <span class="o">hypotenuse</span><span class="o">.</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
-        {say:'Label what you have before choosing anything. Which two sides are involved decides which of the three ratios you need.'},
-        {say:'Diagram (a): 8 is next to the angle, h is across from it.',
-         art:function(){ return nextmove('which ratio?', [['tan, because it is opposite over adjacent',true,'Yes. Name the two sides involved first, then the ratio picks itself. tan40 = h/8.'],['sin, because it is opposite over hypotenuse',false,'There is no hypotenuse in play here. The 8 is the side NEXT to the angle, not the long sloping one.'],['cos, because it is adjacent over hypotenuse',false,'Again, the hypotenuse is not one of the two sides mentioned. Only the opposite and the adjacent are.']]); }},
-        {say:'(a) has the side next to the angle and wants the side across from it. Opposite and adjacent together is TAN.',
-         eq: 'tan <span class="n">40</span> <span class="o">=</span> <span class="x">h</span><span class="o">/</span><span class="n">8</span>',
-         art:function(){ return sceneTri({adj:'8', opp:'h', ang:'40', cap:'the 8 is next to the angle and h is across from it, so tan'}); }},
+        {say:'Label the sides from the DIAGRAM before choosing anything. Which two sides are involved decides the ratio, and reading that off the words alone is how people pick the wrong one.'},
+        {say:'The hypotenuse is always the long sloping side, opposite the right angle. The opposite is across from the marked angle. The adjacent is the one next to it.'},
+        {say:'(a) gives the hypotenuse and wants the side across from the angle. Opposite and hypotenuse together is SIN.',
+         eq: 'sin <span class="n">40</span> <span class="o">=</span> <span class="x">h</span><span class="o">/</span><span class="n">8</span>'},
         {say:'Rearrange and put it in.',
-         eq: '<span class="x">h</span> <span class="o">=</span> <span class="n">8</span> tan <span class="n">40</span> <span class="o">=</span> <span class="n">6.71</span>'},
-        {say:'(b) has the long sloping side and wants the one across from the angle. Opposite and hypotenuse is SIN.',
-         eq: 'sin <span class="n">30</span> <span class="o">=</span> <span class="x">k</span><span class="o">/</span><span class="n">15</span>'},
-        {say:'Rearrange.',
-         eq: '<span class="x">k</span> <span class="o">=</span> <span class="n">15</span> sin <span class="n">30</span> <span class="o">=</span> <span class="n">7.50</span>'},
-        {say:'Both are one line once the right ratio is chosen. Choosing it is the actual skill, and it comes from naming the two sides first.'}
+         eq: '<span class="x">h</span> <span class="o">=</span> <span class="n">8</span> sin <span class="n">40</span> <span class="o">=</span> <span class="n">5.14</span>'},
+        {say:'(b) gives the side next to the angle and wants the long sloping one. Adjacent and hypotenuse is COS - and this time the unknown is underneath.',
+         eq: 'cos <span class="n">30</span> <span class="o">=</span> <span class="n">15</span><span class="o">/</span><span class="x">k</span>'},
+        {say:'So multiply up and divide, rather than multiplying straight out.',
+         eq: '<span class="x">k</span> <span class="o">=</span> <span class="n">15</span> <span class="o">/</span> cos <span class="n">30</span> <span class="o">=</span> <span class="n">17.32</span>'},
+        {say:'When the unknown is on the BOTTOM of the fraction, the last step is a division rather than a multiplication. That is the only difference between these two.'}
       ]
     },
     p_t2: {
       eyebrow:'L05-06 - applications', title:'The ladder and the pendulum.',
-      q: '<span class="x">A</span> <span class="o">ladder</span> <span class="o">against</span> <span class="x">a</span> <span class="o">vertical</span> <span class="o">wall</span> <span class="o">makes</span> <span class="n">45</span> <span class="o">degrees</span> <span class="o">with</span> <span class="o">the</span> <span class="o">ground</span><span class="o">,</span> <span class="o">its</span> <span class="o">foot</span> <span class="n">3</span> <span class="x">m</span> <span class="o">from</span> <span class="o">the</span> <span class="o">wall</span><span class="o">.</span> <span class="o">Find</span> <span class="o">its</span> <span class="o">length</span><span class="o">,</span> <span class="o">and</span> <span class="o">the</span> <span class="o">angle</span> <span class="o">it</span> <span class="o">makes</span> <span class="o">with</span> <span class="o">the</span> <span class="o">wall</span><span class="o">.</span> <span class="o">Then</span><span class="o">:</span> <span class="x">a</span> <span class="o">pendulum</span> <span class="n">45</span> <span class="x">c</span><span class="x">m</span> <span class="o">long</span> <span class="o">swings</span> <span class="o">through</span> <span class="x">a</span> <span class="o">vertical</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">30</span> <span class="o">degrees</span><span class="o">;</span> <span class="o">find</span> <span class="o">the</span> <span class="o">height</span> <span class="o">the</span> <span class="o">bob</span> <span class="o">rises</span><span class="o">.</span>',
+      q: '<span class="x">A</span> <span class="o">ladder</span> <span class="o">against</span> <span class="x">a</span> <span class="o">vertical</span> <span class="o">wall</span> <span class="o">makes</span> <span class="n">45</span> <span class="o">degrees</span> <span class="o">with</span> <span class="o">the</span> <span class="o">ground</span><span class="o">,</span> <span class="o">its</span> <span class="o">foot</span> <span class="n">3</span> <span class="x">m</span> <span class="o">from</span> <span class="o">the</span> <span class="o">wall</span><span class="o">.</span> <span class="o">Find</span> <span class="o">its</span> <span class="o">length</span><span class="o">,</span> <span class="o">and</span> <span class="o">the</span> <span class="o">angle</span> <span class="o">it</span> <span class="o">makes</span> <span class="o">with</span> <span class="o">the</span> <span class="o">wall</span><span class="o">.</span> <span class="o">Then</span><span class="o">:</span> <span class="x">a</span> <span class="o">pendulum</span> <span class="n">45</span> <span class="x">c</span><span class="x">m</span> <span class="o">long</span> <span class="o">swings</span> <span class="o">through</span> <span class="x">a</span> <span class="o">vertical</span> <span class="o">angle</span> <span class="o">of</span> <span class="n">30</span> <span class="o">degrees</span><span class="o">.</span> <span class="o">Find</span> <span class="o">the</span> <span class="o">height</span> <span class="o">the</span> <span class="o">bob</span> <span class="o">rises</span><span class="o">.</span>',
       auto:null, options:null,
       steps:[
         {say:'Have a go on paper first. Then swipe.'},
-        {say:'Draw it before anything else. The ladder is the hypotenuse, the 3 m along the ground is adjacent to the 45.'},
-        {say:'Adjacent and hypotenuse is COS.',
-         eq: 'cos <span class="n">45</span> <span class="o">=</span> <span class="n">3</span><span class="o">/</span><span class="x">L</span>',
-         art:function(){ return sceneTri({hyp:'ladder', adj:'3 m', ang:'45', cap:'the ladder is the long sloping one, so it is the hypotenuse'}); }},
-        {say:'Rearrange for the length.',
-         eq: '<span class="x">L</span> <span class="o">=</span> <span class="n">3</span><span class="o">/</span>cos <span class="n">45</span> <span class="o">=</span> <span class="n">4.24</span> <span class="x">m</span>'},
-        {say:'The angle with the wall needs no trig at all. The three angles in the triangle are 90, 45 and the one you want.',
+        {say:'Draw it before anything else. The ladder is the hypotenuse, and the 3 m along the ground is adjacent to the 45.'},
+        {say:'Adjacent and hypotenuse is COS, with the unknown underneath.',
+         eq: 'cos <span class="n">45</span> <span class="o">=</span> <span class="n">3</span><span class="o">/</span><span class="x">L</span>'},
+        {say:'So divide.',
+         eq: '<span class="x">L</span> <span class="o">=</span> <span class="n">3</span> <span class="o">/</span> cos <span class="n">45</span> <span class="o">=</span> <span class="n">4.24</span> <span class="x">m</span>'},
+        {say:'The angle with the wall needs no trig at all. The three angles of the triangle are 90, 45 and the one you want.',
          eq: '<span class="n">180</span> <span class="o">&#8722;</span> <span class="n">90</span> <span class="o">&#8722;</span> <span class="n">45</span> <span class="o">=</span> <span class="n">45</span>'},
-        {say:'The pendulum swings THROUGH 30 degrees.',
-         art:function(){ return nextmove('what angle do you use?', [['15, half of it',true,'Yes. It swings 15 either side of vertical, so the drop is 45 cos 15 and the rise is 45 - 43.47 = 1.53 cm.'],['30, as given',false,'That gives 6.03 cm. The swing is symmetrical about the vertical, so the angle from vertical to one end is half the total.'],['60, twice it',false,'Nothing in the question doubles. The 30 is the whole swing, so half of it is the angle from vertical.']]); }},
-        {say:'Now the pendulum, and here is the trap: it swings THROUGH 30 degrees, so it goes 15 either side of vertical.',
-         eq: '<span class="o">half</span><span class="o">&#8722;</span><span class="o">angle</span> <span class="o">=</span> <span class="n">15</span>'},
-        {say:'At the end of the swing the bob hangs 45 cos 15 below the pivot. Hanging straight down it was 45 below.',
-         eq: '<span class="o">drop</span> <span class="o">=</span> <span class="n">45</span> cos <span class="n">15</span> <span class="o">=</span> <span class="n">43.47</span>'},
-        {say:'So the rise is the difference.',
-         eq: '<span class="o">rise</span> <span class="o">=</span> <span class="n">45</span> <span class="o">&#8722;</span> <span class="n">43.47</span> <span class="o">=</span> <span class="n">1.53</span> <span class="x">c</span><span class="x">m</span>'},
-        {say:'Using 30 instead of 15 gives 6.03, which is the wrong answer to a question about a swing that is symmetrical about the vertical.'}
+        {say:'Now the pendulum, and this is where the diagram earns its keep. The 30 degrees is marked from the VERTICAL string across to the raised position. It is not the total swing, so nothing gets halved.',
+         eq: '<span class="o">angle</span> <span class="o">from</span> <span class="o">vertical</span> <span class="o">=</span> <span class="n">30</span>'},
+        {say:'At the raised position the bob hangs 45 cos 30 below the pivot. Hanging straight down it was the full 45 below.',
+         eq: '<span class="o">drop</span> <span class="o">=</span> <span class="n">45</span> cos <span class="n">30</span> <span class="o">=</span> <span class="n">38.97</span>'},
+        {say:'So the rise is the difference between the two.',
+         eq: '<span class="o">rise</span> <span class="o">=</span> <span class="n">45</span> <span class="o">&#8722;</span> <span class="n">38.97</span> <span class="o">=</span> <span class="n">6.03</span> <span class="x">c</span><span class="x">m</span>'},
+        {say:'The rule is rise = L(1 - cos of the angle FROM THE VERTICAL). Read where the angle is marked before using it: if a question ever gives you the whole swing instead, that one does need halving first.'}
       ]
     },
     p_t3: {
