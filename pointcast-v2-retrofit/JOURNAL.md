@@ -61,3 +61,17 @@ _(entries appended below as they are received)_
 
 ---
 
+## Step 02 — Remove cable assembly only, set the rest aside
+
+**Kelvin's note:** "Only remove cable assembly. Set the rest aside"
+
+Photo: cable assembly held in hand, lifted clear of the still-bagged polariser body.
+- Grey/beige jacketed round cable, coiled, ~2 m, one cable tie still on the coil.
+- One end: **CNLINKO connector — black knurled coupling nut, red centre body,
+  black rear gland nut.** Cable enters at 90° (right-angle) to the connector axis.
+- Metal collar / strain relief visible at the cable exit.
+- White text printed along the cable jacket (not legible in this shot).
+- Polariser body left bagged and set aside; only the cable assembly taken out.
+
+---
+
