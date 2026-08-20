@@ -381,3 +381,22 @@ position" — 2 photos
 
 ---
 
+## Step 17 — Reassemble: insert pins back into the housing using the new groove
+
+**Kelvin's note:** "Reassemble by inserting the pins back into the connector housing
+using the new groove"
+
+- Photo: looking into the open end of the black connector housing. Visible inside —
+  **internal keyway ribs/splines**, the **red O-ring seal** seated on the outer
+  face, and a **small cut/notch worked into the housing rim** (upper right) matching
+  the new groove position.
+- Reassembly: feed the pin carrier back into the housing, **using the newly cut
+  groove as the locating feature** instead of the original one. The new groove
+  registers on the housing key, which sets the corrected pin clocking.
+- Push home until fully seated.
+
+> **Check before proceeding:** pins square and evenly proud, carrier seated flat,
+> no plastic swarf trapped inside, red O-ring undamaged and still in its groove.
+
+---
+
