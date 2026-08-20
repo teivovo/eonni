@@ -227,3 +227,21 @@ and unscrew it completely"
 
 ---
 
+## Step 10 — Pull out the retaining ring with a slim sharp tool
+
+**Kelvin's note:** "Use a slim sharp tool to pull out the retaining ring"
+
+- Working on the rear/cable side of the insert, laid flat on the bench, cable
+  entering from the left.
+- **Red retaining ring** seated in the annular groove around the inner bore of the
+  insert.
+- Tool used: slim sharp probe / pick / scriber (small flat-blade also workable) —
+  entered into the groove and used to lever the retaining ring up and out.
+- Conductors visible through the bore: orange, white/pink, blue.
+
+> **Caution for the doc:** work the pick under the ring, not against the
+> conductors or the moulding. Don't nick or stretch the ring — it is reused.
+> Also keep clear of the red O-ring on the insert (Step 09).
+
+---
+
