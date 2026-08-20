@@ -205,3 +205,25 @@ and unscrew it completely"
 
 ---
 
+## Step 09 — End state of segment: insert withdrawn from red body
+
+**Kelvin's note:** "End state of segment"
+
+- Internal connector insert now fully unscrewed and drawn out of the red shell,
+  still wired — cable core remains attached, connector hanging on the loom.
+- **Red shell:** "LINKO" moulded into the outer surface; internal thread visible
+  at the open end. Grey cable jacket enters through it.
+- **Insert:** black knurled body, multiple external thread starts, **red O-ring
+  (face/radial seal) fitted in its groove** — protect this, it is the primary
+  seal.
+- **Wiring visible:** individually coloured conductors leaving the cable jacket —
+  blue, orange, green, white, pink/white identifiable in shot; black heatshrink
+  sleeving over the joints/tails at the insert end.
+- Bottom of frame: the previously separated connector shaft with the gold pins,
+  set down on the bench.
+
+### To capture
+- [ ] Full wire colour → pin number table before anything is disturbed
+
+---
+
