@@ -415,3 +415,21 @@ using the new groove"
 
 ---
 
+## Step 19 — Quick pull test on the retaining ring
+
+**Kelvin's note:** "Perform a quick pull test to ensure retaining ring is installed
+correctly"
+
+- Hold the connector body and give the cable a firm steady pull — the core must not
+  move or lift out. If it shifts, the retaining ring is not properly seated: back
+  out and refit (Step 18).
+- Photo (rear view, ring seated): retaining ring flush in its groove, red O-ring
+  visible on the outer body. Conductors clearly identifiable at this angle —
+  **white/pink, tan/beige, blue, orange, green, brown** running from the stripped
+  grey jacket into the core.
+
+> Simple go/no-go check. Pull by hand only, in line with the connector — do not jerk
+> or lever sideways.
+
+---
+
