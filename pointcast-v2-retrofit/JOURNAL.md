@@ -265,3 +265,22 @@ and unscrew it completely"
 
 ---
 
+## Step 12 — Lift out the inner core
+
+**Kelvin's note:** "You'll be able to simply lift up the inner core"
+
+- With the retaining ring removed, the **inner core (contact insert) lifts straight
+  out** of the black outer sleeve — no tool, no force.
+- Core comes away as one piece with the conductors still terminated: black
+  cylindrical body, gold contacts visible at the joint, individual black heatshrink
+  sleeves over each termination.
+- Conductors confirmed at this end: **blue, orange, green, brown** (+ their white
+  partners) — Cat5-style pairs.
+
+Now separated and laid out on the bench:
+1. Inner core + wired cable (in hand)
+2. Black outer sleeve / insert body with **red O-ring** still fitted (centre right)
+3. Legacy bulkhead, red flange, 7 gold pins (bottom right)
+
+---
+
