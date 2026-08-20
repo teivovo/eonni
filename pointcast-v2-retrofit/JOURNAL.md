@@ -308,3 +308,28 @@ flat-blade screwdriver.
 
 ---
 
+## Step 14 — Trim off all of the side wall of the pin encasement
+
+**Kelvin's note:** "Using a pair of wire cutters, trim off all of the side wall" — 2 photos
+
+**Photo A (before):** the pin encasement as removed — short black cylinder, plain
+outer wall with a step near the open end and a **small moulded tab/tooth standing
+proud of the rim** (part of the keying that fouls the legacy bulkhead).
+
+**Photo B (after):** side wall cut away entirely. What remains is essentially the
+**flat end disc with the 7 holes** — 6 in a ring + 1 centre — plus a small residual
+lug on one edge. Cut edges are rough/deformed from the cutters (cosmetic only).
+
+- Tool: wire cutters / side cutters.
+- Work around the circumference, nibbling the wall down to the face of the disc.
+
+> **Cautions for the doc:** cut the wall only — do not cut into the disc face or
+> the hole webs; the disc still has to locate and space the 7 pins.
+> Deburr/clean up so no swarf or loose plastic remains near the contacts.
+> Eye protection — plastic fragments fly when nibbling with cutters.
+
+> This step, with the pin re-clocking, is what defeats the "two additional
+> internal alignment teeth" problem identified in Step 06.
+
+---
+
