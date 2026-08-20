@@ -110,3 +110,32 @@ Action: twist the back cable clamp to unfasten it.
 
 ---
 
+## Step 05 — Legacy bulkhead identified / remove from packet
+
+**Kelvin's note:** "This is the legacy version of the bulkhead that we are adapting
+the new cable's new connector to. The new one basically just has the same part
+number ending with 401A"
+
+### Part identification (from CNLINKO bag label)
+| | |
+|---|---|
+| Manufacturer | CNLINKO (Shenzhen Linko Electric Co., Ltd) — www.cnlinko.com |
+| **Legacy bulkhead P/N** | **YM-20-J07SX-02-401** |
+| **New (v2) bulkhead P/N** | **YM-20-J07SX-02-401A** — same P/N, `A` suffix |
+| Internal / order code | 11320007400106 |
+| Qty | 1 PCS |
+| L/N | MF01 |
+| Bag code | C162 |
+| SN | 2606001246 |
+| Standard on bag | GB/T 4208-2017 (IP ratings) |
+
+Series: YM-20, 7-pin (`J07S`). Black moulded bulkhead receptacle visible inside
+the bag, with a metal retaining/lanyard eyelet.
+
+**Action:** remove the bulkhead from the packet.
+
+> Key point for the procedure doc: legacy `-401` vs new `-401A` is the whole
+> reason for the retrofit. Confirm what physically differs between the two.
+
+---
+
