@@ -433,3 +433,19 @@ correctly"
 
 ---
 
+## Step 20 — Reassemble the housing; use the bulkhead to tighten the inner core
+
+**Kelvin's note:** "Reassemble the housing and use the bulkhead to tighten the inner
+core"
+
+- Insert reassembled into the red shell and screwed home.
+- **Same bulkhead-as-tool trick as Step 08, in reverse** — engage the bulkhead on
+  the connector and twist to drive the inner core down tight into the red body.
+- Photo: connector reassembled and looking correct — gold pins proud, red seal ring
+  visible behind the pin face, black coupling nut, red body, cable exiting the rear
+  gland. Black protective cap for the bulkhead sitting on the bench at right.
+
+> Tighten firm by hand via the bulkhead. Don't overdo it — plastic threads.
+
+---
+
