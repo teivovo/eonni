@@ -233,8 +233,8 @@ and unscrew it completely"
 
 - Working on the rear/cable side of the insert, laid flat on the bench, cable
   entering from the left.
-- **Red retaining ring** seated in the annular groove around the inner bore of the
-  insert.
+- **Retaining ring (black)** seated in the annular groove around the inner bore of
+  the insert. (Red ring visible nearby is the separate O-ring seal.)
 - Tool used: slim sharp probe / pick / scriber (small flat-blade also workable) —
   entered into the groove and used to lever the retaining ring up and out.
 - Conductors visible through the bore: orange, white/pink, blue.
@@ -242,6 +242,26 @@ and unscrew it completely"
 > **Caution for the doc:** work the pick under the ring, not against the
 > conductors or the moulding. Don't nick or stretch the ring — it is reused.
 > Also keep clear of the red O-ring on the insert (Step 09).
+
+---
+
+## Step 11 — Remove the retaining ring and set it aside
+
+**Kelvin's note:** "Remove the retaining ring and set it aside"
+
+- **Retaining ring is black**, C-shaped / split, flexible. Lifted clear of the
+  insert and set aside for reuse. Keep with the job — it goes back in on reassembly.
+- **Red O-ring** now clearly visible seated in its groove on the black insert body
+  — this is a separate part from the retaining ring, leave it in place.
+- **Cable make-up now visible:** jacket stripped back, twisted pairs —
+  **blue, orange, green, brown, plus whites/pinks** — i.e. Cat5-style 4-pair
+  construction, with black heatshrink sleeving over the tails toward the insert.
+- Bottom of frame: the removed pin insert (red flange, 7 gold pins) sitting on the
+  bench for reference.
+
+### To capture
+- [ ] Which pairs/colours actually land on which of the 7 pins (one conductor unused
+      if 8-core)
 
 ---
 
