@@ -284,3 +284,27 @@ Now separated and laid out on the bench:
 
 ---
 
+## Step 13 — Remove the pin encasement (front shroud)
+
+**Kelvin's note:** "Remove pin encasement." — 2 photos
+
+**Photo A:** black cylindrical **pin encasement / front shroud** being slid off the
+inner core. Gold pins visible emerging as it lifts. Core body has moulded keying
+lugs/tabs on its outer face.
+
+**Photo B:** encasement fully off and held separately. It is a black cap with
+**7 through-holes** — 6 in a ring + 1 centre, matching the pin pattern, and a small
+moulded index/orientation mark on the face.
+Underneath: the **pin carrier disc with 7 long gold pins** fully exposed, each
+conductor terminated below and covered with black heatshrink; Cat5 pairs (blue,
+orange, green, brown + whites) running out to the cable.
+
+Tools visible on the bench for this stage: side/flush cutters and a small
+flat-blade screwdriver.
+
+> The encasement is the part that carries the keying — likely the component
+> to be modified or re-clocked. Note its index mark before removal so the
+> original orientation is recoverable.
+
+---
+
