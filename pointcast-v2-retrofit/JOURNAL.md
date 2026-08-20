@@ -75,3 +75,22 @@ Photo: cable assembly held in hand, lifted clear of the still-bagged polariser b
 
 ---
 
+## Step 03 — Twist and unfasten the back cable clamp
+
+**Kelvin's note:** "Twist and unfasten the back cable clamp."
+
+Close-up of the new CNLINKO connector, cable exiting top of frame.
+Connector layout top-to-bottom:
+1. **Black knurled nut (cable end) = back cable clamp** — the part being undone here.
+2. Red moulded centre body.
+3. Larger black knurled coupling nut (mating end, toward bulkhead).
+
+Action: twist the back cable clamp to unfasten it.
+
+> **Doc rendering note (Kelvin):** the screwdriver in this photo is being used as a
+> pointer only — replace it with a drawn callout arrow in the final procedure
+> document. It points at the back cable clamp (upper black nut).
+> Apply this convention to any later photo where a screwdriver is used to point.
+
+---
+
