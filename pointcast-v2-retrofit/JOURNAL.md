@@ -333,3 +333,30 @@ lug on one edge. Cut edges are rough/deformed from the cutters (cosmetic only).
 
 ---
 
+## Step 15 — Mark/cut a new groove; alignment pin facing up
+
+**Kelvin's note:** "Cut a new groove at this position. The alignment pin should be
+facing up" — 3 photos
+
+**Photo 1 (reference, orientation set):** trimmed disc face-on. 7 through-holes
+(6 ring + 1 centre) plus smaller blind recesses between them around the outer ring.
+**Existing groove/notch is at the lower-left edge**, roughly the 7–8 o'clock
+position, with a second small notch at the bottom.
+
+**Photos 2 & 3 (position called out):** scriber/pick used as a pointer, tip resting
+on the **left-hand edge of the disc at roughly the 9 o'clock position** — this is
+where the **new groove is to be cut**.
+
+**Orientation rule (critical):** hold the disc with the **alignment pin facing up**
+— this is the datum for locating the new groove. All positions above are referenced
+to that orientation.
+
+> **Doc rendering note:** replace the scriber with a callout arrow (per Step 03
+> convention) and mark the new-groove position clearly against the alignment-pin-up
+> datum. A dimensioned or clock-position diagram would be worth adding here — this
+> is the step most likely to be got wrong.
+> **To capture:** angular offset of the new groove from the existing one, and how
+> deep/wide it needs to be.
+
+---
+
