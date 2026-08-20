@@ -185,3 +185,23 @@ Note that the connectors will not fully mate together"
 
 ---
 
+## Step 08 — Use the bulkhead as a tool to loosen and unscrew the internal connector shaft
+
+**Kelvin's note:** "Use the bulkhead to help loosen the internal connector shaft
+and unscrew it completely"
+
+- With the two parts loosely engaged (Step 07 datum), the **bulkhead is used as a
+  grip/wrench** on the plug's inner insert. The keying that stops free rotation is
+  what lets the bulkhead drive the internal shaft.
+- Hold the red body in one hand, twist the bulkhead to break the internal
+  connector shaft free of the red body, then unscrew the shaft **completely**.
+- Photo shows the coupling nut / inner black insert partly backed out of the red
+  body, the joint line clearly open.
+
+> Useful field trick — no special tool needed, the mating bulkhead is the tool.
+> Worth calling out explicitly in the procedure doc.
+> **To capture:** thread direction (assumed normal RH / anticlockwise to loosen)
+> and whether any thread-lock was present.
+
+---
+
