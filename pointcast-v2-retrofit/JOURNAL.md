@@ -139,3 +139,30 @@ the bag, with a metal retaining/lanyard eyelet.
 
 ---
 
+## Step 06 — Root cause of incompatibility: pin rotation + extra alignment teeth
+
+**Kelvin's note:** "This is the difference between pin rotation and the presence of
+two additional internal alignment teeth"
+
+Side-by-side mating-face comparison, held together for reference:
+
+**LEFT — new cable-side connector (male plug, pins):** 7 gold pins, 6 in a ring +
+1 centre. Circular black housing, keyways moulded into the inner shell wall.
+
+**RIGHT — legacy bulkhead (female receptacle, sockets):** 7 gold sockets, 6 + 1
+centre, positions moulded-numbered **1–7** around the insert. Square flange with
+2 diagonal mounting holes, red body visible behind the black flange face.
+
+### The two blocking differences
+1. **Pin rotation (clocking)** — the pin/socket pattern is rotated between the
+   two parts, so pin numbering does not line up when mated in the natural
+   orientation.
+2. **Two additional internal alignment teeth** — the new connector has extra
+   keying teeth inside the shell that the legacy bulkhead does not accommodate,
+   physically preventing full insertion.
+
+> This is the core of the retrofit — both must be resolved for the new connector
+> to seat and pin out correctly on the legacy `-401` bulkhead.
+
+---
+
