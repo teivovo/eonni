@@ -360,3 +360,24 @@ to that orientation.
 
 ---
 
+## Step 16 — Extend the new groove onto the connecting piece
+
+**Kelvin's note:** "Extend the new groove onto the connecting piece at the same
+position" — 2 photos
+
+- The groove cut in the trimmed disc (Step 15) must be **carried through onto the
+  connecting piece** (the black pin-carrier body behind the pins) so it forms one
+  continuous channel.
+- **Same angular position** — indexed off the alignment pin, per the Step 15 datum.
+- Photos show the pin carrier held with the 7 gold pins projecting, and a **fresh
+  cut/notch worked into the black collar** of the carrier, aligned with the disc
+  groove. Cut edges rough, consistent with cutters/knife work.
+- The carrier body is in two visible black bands; the groove crosses them at the
+  same clock position.
+
+> **Cautions for the doc:** cut only as deep as needed to clear the bulkhead's
+> alignment tooth. Keep well away from the pins and their terminations — do not
+> compromise the insulation between contacts. Clear all swarf before reassembly.
+
+---
+
