@@ -400,3 +400,18 @@ using the new groove"
 
 ---
 
+## Step 18 — Refit the retaining ring
+
+**Kelvin's note:** "Reassemble retaining ring"
+
+- Black retaining ring (set aside at Step 11) pressed back into its groove in the
+  rear of the insert, over the wired core, thumb-seated all the way round.
+- Photo: rear face of the assembled insert, red O-ring visible on the outer body,
+  conductors (white/pink, orange, blue, green, brown) exiting through the bore into
+  the grey cable jacket. Pliers on the bench.
+
+> Check the ring is fully home and even in the groove all the way round — it is
+> what retains the core against the cable clamp load.
+
+---
+
