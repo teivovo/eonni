@@ -166,3 +166,22 @@ centre, positions moulded-numbered **1–7** around the insert. Square flange wi
 
 ---
 
+## Step 07 — Trial fit: push together until rotation stops (will NOT fully mate)
+
+**Kelvin's note:** "Fit them together loosely until no loose rotation is possible.
+Note that the connectors will not fully mate together"
+
+- New cable connector (red body, black coupling nut) offered up to the legacy
+  bulkhead (black square flange, red sealing gasket on the underside of the flange).
+- Pushed together only until the keying picks up and **free rotation stops** —
+  this is the reference/datum position for the rotation check.
+- **Confirmed: the two will not seat fully.** A visible gap remains between the
+  black coupling nut and the bulkhead flange; the coupling nut cannot be run down
+  onto the bulkhead. Consistent with the extra alignment teeth fouling (Step 06).
+
+> Procedure doc: this is a diagnostic/reference step, not an assembly step —
+> do not force. Purpose is to establish the clocking datum and confirm the
+> interference before any material is removed.
+
+---
+
