@@ -94,3 +94,19 @@ Action: twist the back cable clamp to unfasten it.
 
 ---
 
+## Step 04 — End state after back cable clamp removal
+
+**Kelvin's note:** "End state after removal"
+
+- Back cable clamp (black nut) fully unscrewed and slid back along the grey cable,
+  now sitting loose ~100 mm up the coil. Not removed from the cable — captive on it.
+- Connector rear now exposed: **red threaded collar** with a slotted/fingered
+  collet section at the top where the cable passes through (the gland/seal grip).
+  External thread on the red body is what the black clamp nut screws down onto.
+- Black coupling nut at the mating end still in place on the red body.
+- Also in frame (bottom): a separate **metal circular connector, knurled chrome
+  coupling nut with two side screws, on a black cable** — the legacy-side / other
+  cable end. To be identified.
+
+---
+
