@@ -449,3 +449,35 @@ core"
 
 ---
 
+## Step 21 — Result: connector mates correctly. ⚠ PIN 4 / PIN 5 SWAP
+
+**Kelvin's note:** "The connector will now mate correctly with the old bulkhead.
+Note that this method will result in the bulkhead to have a logical pin swap between
+pin 4 and pin 5 so just be careful"
+
+- Connector fully reassembled: back cable clamp screwed back down onto the red body,
+  coupling nut in place, cable exiting the rear gland. Assembly complete.
+- **Confirmed: the modified connector now mates correctly with the legacy
+  `YM-20-J07SX-02-401` bulkhead.**
+
+> ## ⚠️ CRITICAL — LOGICAL PIN SWAP: PIN 4 ↔ PIN 5
+> The re-clocking used by this method leaves the bulkhead with **pin 4 and pin 5
+> transposed** relative to the standard pinout. This is a known and accepted
+> consequence of the retrofit, not a fault.
+>
+> Anything that references the bulkhead pinout — wiring at the far end, test
+> procedures, continuity checks, fault-finding — must account for 4↔5 being
+> swapped.
+>
+> **For the procedure doc:** this needs to be a boxed warning at the top of the
+> document AND repeated at this step. Recommend also labelling the retrofitted
+> assembly physically (tag/label on the cable) so a future tech doesn't get caught
+> out.
+
+### To capture
+- [ ] Confirm which signals sit on pins 4 and 5, so the impact of the swap is stated
+      concretely rather than just by pin number
+- [ ] Decide the physical labelling convention for retrofitted units
+
+---
+
