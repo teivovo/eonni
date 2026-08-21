@@ -15,9 +15,31 @@ are marked done.
 
 ## Photo index
 
-| # | File | Step | Caption |
-|---|------|------|---------|
-| _(none yet)_ | | | |
+All 26 photographs are stored in `photos/`, EXIF-oriented and resized.
+
+| Step | File(s) |
+|---|---|
+| 01 | `step01-box-opened.jpg` |
+| 02 | `step02-cable-assembly.jpg` |
+| 03 | `step03-back-cable-clamp.jpg` |
+| 04 | `step04-clamp-removed.jpg` |
+| 05 | `step05-bulkhead-label.jpg` |
+| 06 | `step06-mating-faces.jpg` |
+| 07 | `step07-trial-fit.jpg` |
+| 08 | `step08-unscrew-shaft.jpg` |
+| 09 | `step09-insert-withdrawn.jpg` |
+| 10 | `step10-retaining-ring-pick.jpg` |
+| 11 | `step11-retaining-ring-removed.jpg` |
+| 12 | `step12-inner-core-out.jpg` |
+| 13 | `step13a-encasement-off.jpg`, `step13b-encasement-separate.jpg` |
+| 14 | `step14a-sidewall-before.jpg`, `step14b-sidewall-trimmed.jpg` |
+| 15 | `step15a-disc-reference.jpg`, `step15b-groove-position.jpg`, `step15c-groove-position2.jpg` |
+| 16 | `step16a-groove-carrier.jpg`, `step16b-groove-carrier2.jpg` |
+| 17 | `step17-refit-housing.jpg` |
+| 18 | `step18-retaining-ring-refit.jpg` |
+| 19 | `step19-pull-test.jpg` |
+| 20 | `step20-housing-tightened.jpg` |
+| 21 | `step21-completed.jpg` |
 
 ---
 
@@ -481,3 +503,56 @@ pin 4 and pin 5 so just be careful"
 
 ---
 
+
+---
+
+## Corrections applied after review (2026-08-21)
+
+The photographs were located on disk and embedded in the procedure document.
+Working from the correctly EXIF-oriented images turned up two errors in the
+journal entries above. Both are corrected here rather than by rewriting the
+original entries, so the record of what was originally noted is preserved.
+
+### C1 — Step 06 / Figure 1: left and right were the wrong way round
+The photo carries EXIF orientation 3 (180°). Read in its correct orientation:
+
+- **LEFT** = legacy bulkhead receptacle (sockets, moulded 1–7, square flange)
+- **RIGHT** = new cable-side plug (7 gold pins)
+
+Step 06 above states the opposite. The procedure document has the corrected caption.
+
+### C2 — Step 15: the "9 o'clock" groove position was derived from an
+un-rotated image
+The step-15 photos carry EXIF orientation 6 (90° CW). The clock positions recorded
+in Step 15 were read off the un-rotated frames and do not hold once the images are
+viewed the right way up. In the correctly oriented view the new groove sits close to
+the **upper edge** of the disc, offset from the existing notches on the left-hand edge.
+
+The procedure document no longer quotes a clock position. It points to the
+photographs as the authority and carries a red open item requiring the angular
+offset and groove dimensions to be measured before field issue.
+
+### N1 — Legacy bulkhead contact numbering, read from the photograph
+Now legible in `step06-mating-faces.jpg`, flange upright:
+
+| Position | Number |
+|---|---|
+| Top left | 1 |
+| Top right | 2 |
+| Middle left | 3 |
+| **Centre** | **4** |
+| Middle right | 5 |
+| Bottom left | 6 |
+| Bottom right | 7 |
+
+### Q1 — Open question raised by N1
+Position **4 is the centre contact**; position 5 is on the outer ring. A purely
+rotational re-clocking permutes the six ring contacts among themselves and leaves
+the centre contact in place, so a swap between the centre contact and a ring contact
+would not be expected from rotation alone.
+
+The 4↔5 swap recorded at Step 21 is Kelvin's direct observation of the hardware and
+stands as recorded. What needs confirming is **which numbering scheme** "pin 4" and
+"pin 5" refer to — bulkhead face numbering, connector insert numbering, or the
+conductor/circuit numbering used at the far end. Flagged in the procedure document
+as a red open item in Section 4.1 and as item 1b in Section 9.

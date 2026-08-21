@@ -1,7 +1,7 @@
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak,
   Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle, LevelFormat,
-  Header, Footer, PageNumber, convertInchesToTwip, TableLayoutType, VerticalAlign
+  Header, Footer, PageNumber, convertInchesToTwip, TableLayoutType, VerticalAlign, ImageRun
 } = require('/tmp/claude-0/-home-user-eonni/5b8a75e6-bcde-5614-87cb-c4d51f387f27/scratchpad/node_modules/docx');
 const fs = require('fs');
 
@@ -130,44 +130,83 @@ function callout(title, lines, bg, barColor) {
   });
 }
 
-// Placeholder frame for a photograph
-function photoPlaceholder(caption) {
+// ---- Photographs -----------------------------------------------------------
+const PHOTO_DIR = '/home/user/eonni/pointcast-v2-retrofit/photos';
+
+function jpegSize(buf) {
+  let i = 2;
+  while (i < buf.length) {
+    if (buf[i] !== 0xFF) { i++; continue; }
+    const m = buf[i + 1];
+    if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) {
+      return { h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7) };
+    }
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  throw new Error('no SOF');
+}
+
+// Scale an image to fit inside a box (px at 96 dpi)
+function fitted(file, boxW, boxH) {
+  const buf = fs.readFileSync(`${PHOTO_DIR}/${file}`);
+  const { w, h } = jpegSize(buf);
+  const k = Math.min(boxW / w, boxH / h);
+  return { buf, w: Math.round(w * k), h: Math.round(h * k) };
+}
+
+function figCaption(text, width) {
+  return new Paragraph({
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 60, after: 0, line: 240 },
+    children: [new TextRun({ text, italics: true, color: '5A5A5A', size: 17, font: 'Calibri' })]
+  });
+}
+
+// One photograph, centred
+function photo(file, caption, boxW = 360, boxH = 470) {
+  const im = fitted(file, boxW, boxH);
+  return [
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 60, after: 0 },
+      keepNext: true,
+      children: [new ImageRun({ data: im.buf, type: 'jpg', transformation: { width: im.w, height: im.h } })]
+    }),
+    figCaption(caption),
+    new Paragraph({ spacing: { after: 200 }, children: [] })
+  ];
+}
+
+// Two or three photographs side by side
+function photoRow(items, boxH = 330) {
+  const n = items.length;
+  const colW = Math.floor(CW / n);
+  const boxW = Math.floor((colW / 1440) * 96) - 14;
+  const cells = items.map(it => {
+    const im = fitted(it.file, boxW, boxH);
+    return new TableCell({
+      width: { size: colW, type: WidthType.DXA },
+      margins: { top: 60, bottom: 60, left: 80, right: 80 },
+      verticalAlign: VerticalAlign.TOP,
+      children: [
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 0 },
+          children: [new ImageRun({ data: im.buf, type: 'jpg', transformation: { width: im.w, height: im.h } })]
+        }),
+        figCaption(it.caption)
+      ]
+    });
+  });
   return [
     new Table({
       width: { size: CW, type: WidthType.DXA },
-      columnWidths: [CW],
+      columnWidths: cells.map(() => colW),
       layout: TableLayoutType.FIXED,
-      borders: {
-        top:    { style: BorderStyle.DASHED, size: 6, color: 'AAAAAA' },
-        bottom: { style: BorderStyle.DASHED, size: 6, color: 'AAAAAA' },
-        left:   { style: BorderStyle.DASHED, size: 6, color: 'AAAAAA' },
-        right:  { style: BorderStyle.DASHED, size: 6, color: 'AAAAAA' },
-        insideHorizontal: NONE, insideVertical: NONE
-      },
-      rows: [new TableRow({
-cantSplit: true,
-      height: { value: 2600, rule: 'atLeast' },
-      children: [new TableCell({
-          width: { size: CW, type: WidthType.DXA },
-          shading: { type: ShadingType.CLEAR, fill: 'FAFAFA', color: 'auto' },
-          margins: { top: 300, bottom: 300, left: 200, right: 200 },
-          verticalAlign: VerticalAlign.CENTER,
-          children: [
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 40 },
-              children: [new TextRun({ text: '[ PHOTOGRAPH ]', bold: true, color: '999999', size: 19, font: 'Calibri' })]
-            }),
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 0 },
-              children: [new TextRun({ text: caption, italics: true, color: '777777', size: 18, font: 'Calibri' })]
-            })
-          ]
-        })]
-      })]
+      borders: noBorders,
+      rows: [new TableRow({ cantSplit: true, children: cells })]
     }),
-    new Paragraph({ spacing: { after: 160 }, children: [] })
+    new Paragraph({ spacing: { after: 200 }, children: [] })
   ];
 }
 
@@ -303,7 +342,7 @@ children.push(table(
     ['Date of work', '20 August 2026'],
     ['Revision', '1.0 — first issue'],
     ['Status', 'Issued for review'],
-    ['Source', 'Compiled from the working journal and photographs recorded during the first physical retrofit (21 recorded steps)']
+    ['Source', 'Compiled from the working journal and the 26 photographs recorded during the first physical retrofit (21 recorded steps)']
   ],
   [2100, CW - 2100],
   { boldCol: 0 }
@@ -432,12 +471,36 @@ children.push(table(
 ));
 
 children.push(spacer(200));
-children.push(h2('4.1  How the procedure resolves them'));
+children.push(h2('4.1  Legacy bulkhead contact layout'));
+children.push(p('The contact positions are moulded into the face of the legacy bulkhead. Read with the square flange upright, as photographed in Figure 1:'));
+children.push(spacer(60));
+children.push(table(
+  ['Position on the face', 'Moulded number'],
+  [
+    ['Top left', '1'],
+    ['Top right', '2'],
+    ['Middle left', '3'],
+    ['Centre', '4'],
+    ['Middle right', '5'],
+    ['Bottom left', '6'],
+    ['Bottom right', '7']
+  ],
+  [4200, CW - 4200],
+  { boldCol: 1 }
+));
+children.push(spacer(140));
+children.push(callout('⚠  Open question — raise before this document is issued', [
+  [{ t: 'Read from the photograph, ' }, { t: 'position 4 is the centre contact', b: true }, { t: ' and position 5 is the middle-right contact on the outer ring.' }],
+  'A purely rotational re-clocking of the insert permutes the six outer-ring contacts among themselves and leaves the centre contact where it is. On that reasoning a swap between the centre contact and a ring contact would not be expected from rotation alone.',
+  'The 4↔5 swap is recorded here exactly as observed on the hardware during the retrofit, and that observation stands. What needs confirming is which numbering scheme "pin 4" and "pin 5" refer to — the bulkhead face numbering shown above, the connector insert numbering, or the conductor/circuit numbering used at the far end. Confirm before issue and restate the warning in whichever scheme the field will actually use.'
+], WARNBG, RED));
+children.push(spacer(200));
+children.push(h2('4.2  How the procedure resolves them'));
 children.push(p('Both are addressed by the same modification. The pin encasement’s side wall — which carries the offending alignment teeth — is removed entirely, and a new locating groove is cut at a different angular position. When the pin carrier is refitted using the new groove, it seats at a corrected rotational position that the legacy bulkhead accepts.'));
 children.push(p('The cost of this approach is the pin 4 / pin 5 transposition described in Section 2. It is a deliberate trade: full mechanical mating and sealing are preserved, at the price of a known and documented pinout deviation.'));
 
 children.push(spacer(200));
-children.push(...photoPlaceholder('Figure 1 — Mating faces compared. Left: new cable-side plug (7 gold pins, 6 + 1 centre). Right: legacy bulkhead receptacle (7 gold sockets, positions moulded 1–7, square flange, red gasket).'));
+children.push(...photo('step06-mating-faces.jpg', 'Figure 1 — Mating faces compared. Left: legacy bulkhead receptacle (7 gold sockets, positions moulded 1–7, square flange, red gasket). Right: new cable-side plug (7 gold pins, 6 in a ring + 1 centre).', 430, 340));
 
 children.push(new Paragraph({ children: [new PageBreak()] }));
 
@@ -475,9 +538,9 @@ children.push(h1('6.  Procedure'));
 children.push(p('Twenty-one steps in six stages. Step numbers below are procedure step numbers; the reference at the right of each step header gives the corresponding entry in the working journal from which this document was compiled.'));
 children.push(spacer(120));
 
-children.push(callout('Photograph placeholders', [
-  'The frames marked [ PHOTOGRAPH ] correspond to photographs taken during the work. Insert the images into these frames before the document is issued for field use.',
-  'Where a photograph shows a screwdriver or scriber being used to point at a feature, replace it with a drawn callout arrow when preparing the final images. The tool is a pointer only, not part of the operation.'
+children.push(callout('About the photographs', [
+  'The photographs are the working shots taken during the first physical retrofit. They are the authoritative record of what each step looked like.',
+  'Where a screwdriver or scriber appears in a photograph it is being used as a pointer to indicate a feature — it is not part of the operation. These should be replaced with drawn callout arrows if the document is reissued as polished artwork.'
 ], NOTEBG, 'A67C00'));
 
 children.push(spacer(200));
@@ -491,7 +554,7 @@ children.push(...step(1, 'Open the packaging and inspect as received', 'Journal 
   bullet('Identify the contents: polariser body (light grey die-cast housing with a dark grey centre cover plate), the attached cable assembly terminating in the new CNLINKO connector, a right-angle coaxial connector on the same lead run, and a second coiled white cable bagged separately.'),
   bullet('Record the carton label and any part numbers before the packaging is discarded.'),
   spacer(80),
-  ...photoPlaceholder('Figure 2 — Assembly as received. Note the red collar on the CNLINKO connector at left — the immediate visual identifier of the new part.')
+  ...photo('step01-box-opened.jpg', 'Figure 2 — Assembly as received: polariser body bagged, cable coiled around it, CNLINKO connector with its red collar at lower left.')
 ]));
 
 children.push(...step(2, 'Remove the cable assembly only', 'Journal 02', [
@@ -500,7 +563,7 @@ children.push(...step(2, 'Remove the cable assembly only', 'Journal 02', [
   bullet('One end carries the CNLINKO connector: black knurled coupling nut, red centre body, black rear gland nut, with the cable entering at 90° to the connector axis.'),
   bullet('Leave the cable tie in place until you need the slack — it keeps the coil manageable on the bench.'),
   spacer(80),
-  ...photoPlaceholder('Figure 3 — Cable assembly removed, polariser body set aside.')
+  ...photo('step02-cable-assembly.jpg', 'Figure 3 — Cable assembly removed, polariser body left bagged and set aside.')
 ]));
 
 children.push(...step(3, 'Identify the legacy bulkhead', 'Journal 05', [
@@ -529,7 +592,7 @@ children.push(...step(3, 'Identify the legacy bulkhead', 'Journal 05', [
   ]),
   bullet('Remove the bulkhead from its packet. Black moulded receptacle with a metal retaining/lanyard eyelet.'),
   spacer(80),
-  ...photoPlaceholder('Figure 4 — CNLINKO bag label showing YM-20-J07SX-02-401.')
+  ...photo('step05-bulkhead-label.jpg', 'Figure 4 — CNLINKO bag label showing the legacy part number YM-20-J07SX-02-401.')
 ]));
 
 // STAGE B
@@ -554,7 +617,7 @@ children.push(...step(5, 'Trial fit — confirm the parts will not seat', 'Journ
   bullet('Push them together only until the keying picks up and free rotation stops. That position is the reference datum.'),
   bulletRich([{ t: 'Confirm the two ' }, { t: 'will not seat fully', b: true }, { t: ': a visible gap remains between the black coupling nut and the bulkhead flange, and the coupling nut cannot be run down onto the bulkhead.' }]),
   spacer(80),
-  ...photoPlaceholder('Figure 5 — Trial fit. Gap at the flange confirms the parts will not fully mate.')
+  ...photo('step07-trial-fit.jpg', 'Figure 5 — Trial fit. The gap between the coupling nut and the bulkhead flange confirms the parts will not fully mate.')
 ]));
 
 children.push(new Paragraph({ children: [new PageBreak()] }));
@@ -571,7 +634,10 @@ children.push(...step(6, 'Unfasten the back cable clamp', 'Journal 03, 04', [
   p('Twist the back cable clamp to unfasten it and slide it back along the cable, roughly 100 mm clear of the connector. It stays captive on the cable — do not attempt to remove it.'),
   p('The connector rear is now exposed: a red threaded collar with a slotted collet section where the cable passes through. The external thread on the red body is what the clamp nut screws onto.'),
   spacer(80),
-  ...photoPlaceholder('Figure 6 — Back cable clamp unfastened and slid back along the cable, red threaded collar exposed.')
+  ...photoRow([
+    { file: 'step03-back-cable-clamp.jpg', caption: 'Figure 6a — The back cable clamp (arrowed) is the nut to undo.' },
+    { file: 'step04-clamp-removed.jpg',    caption: 'Figure 6b — Clamp unfastened and slid back, red threaded collar exposed.' }
+  ], 300)
 ]));
 
 children.push(...step(7, 'Unscrew the internal connector shaft using the bulkhead', 'Journal 08', [
@@ -586,7 +652,10 @@ children.push(...step(7, 'Unscrew the internal connector shaft using the bulkhea
     'Thread direction and the presence of any thread-locking compound were not recorded during the first retrofit. Confirm and add to this step before final issue. Normal right-hand thread (anticlockwise to loosen) is assumed.'
   ], NOTEBG, 'A67C00'),
   spacer(120),
-  ...photoPlaceholder('Figure 7 — Insert withdrawn from the red shell, still wired. Red O-ring visible in its groove.')
+  ...photoRow([
+    { file: 'step08-unscrew-shaft.jpg',    caption: 'Figure 7a — The bulkhead used as a wrench to break the inner shaft free.' },
+    { file: 'step09-insert-withdrawn.jpg', caption: 'Figure 7b — Insert withdrawn, still wired. Red O-ring visible in its groove.' }
+  ], 300)
 ]));
 
 children.push(...step(8, 'Remove the retaining ring', 'Journal 10, 11', [
@@ -601,7 +670,10 @@ children.push(...step(8, 'Remove the retaining ring', 'Journal 10, 11', [
     'Keep clear of the red O-ring, which is a separate part and stays in place.'
   ], WARNBG, RED),
   spacer(120),
-  ...photoPlaceholder('Figure 8 — Levering the retaining ring out of its groove with a slim sharp tool.')
+  ...photoRow([
+    { file: 'step10-retaining-ring-pick.jpg',    caption: 'Figure 8a — Levering the retaining ring out with a slim sharp tool.' },
+    { file: 'step11-retaining-ring-removed.jpg', caption: 'Figure 8b — Ring removed and set aside. Red O-ring stays in place.' }
+  ], 300)
 ]));
 
 children.push(...step(9, 'Lift out the inner core', 'Journal 12', [
@@ -612,7 +684,7 @@ children.push(...step(9, 'Lift out the inner core', 'Journal 12', [
   spacer(80),
   p('You should now have three separated items on the bench: the inner core with the cable attached, the black insert body with the red O-ring still fitted, and the red shell.'),
   spacer(80),
-  ...photoPlaceholder('Figure 9 — Inner core lifted clear, parts laid out.')
+  ...photo('step12-inner-core-out.jpg', 'Figure 9 — Inner core lifted clear. Insert body with red O-ring at centre right; legacy bulkhead at lower right.')
 ]));
 
 children.push(...step(10, 'Remove the pin encasement', 'Journal 13', [
@@ -621,7 +693,10 @@ children.push(...step(10, 'Remove the pin encasement', 'Journal 13', [
   bulletRich([{ t: 'It carries a ' }, { t: 'small moulded index / orientation mark', b: true }, { t: ' on the face, and a moulded tab standing proud of the rim. Note this mark before removal so the original orientation remains recoverable.' }]),
   bullet('Beneath it, the pin carrier disc holds the 7 long gold pins, each conductor terminated below and covered with black heatshrink.'),
   spacer(80),
-  ...photoPlaceholder('Figure 10 — Pin encasement removed. 7 gold pins fully exposed on the carrier disc.')
+  ...photoRow([
+    { file: 'step13a-encasement-off.jpg',       caption: 'Figure 10a — Sliding the pin encasement off the inner core.' },
+    { file: 'step13b-encasement-separate.jpg',  caption: 'Figure 10b — Encasement removed; 7 gold pins fully exposed on the carrier disc.' }
+  ], 300)
 ]));
 
 children.push(new Paragraph({ children: [new PageBreak()] }));
@@ -645,7 +720,10 @@ children.push(...step(11, 'Trim off the side wall of the pin encasement', 'Journ
     'Deburr and clean up so that no swarf or loose plastic remains near the contacts.'
   ], WARNBG, RED),
   spacer(120),
-  ...photoPlaceholder('Figure 11 — Before and after. The moulded tab on the rim (left) is part of the keying that fouls the legacy bulkhead; after trimming (right) only the 7-hole disc remains.')
+  ...photoRow([
+    { file: 'step14a-sidewall-before.jpg',  caption: 'Figure 11a — Before. Note the moulded tab standing proud of the rim — part of the keying that fouls the legacy bulkhead.' },
+    { file: 'step14b-sidewall-trimmed.jpg', caption: 'Figure 11b — After. Side wall nibbled away, leaving the 7-hole disc.' }
+  ], 300)
 ]));
 
 children.push(...step(12, 'Cut a new groove in the disc', 'Journal 15', [
@@ -654,21 +732,26 @@ children.push(...step(12, 'Cut a new groove in the disc', 'Journal 15', [
   ], WARNBG, RED),
   spacer(140),
   p('With the disc held alignment-pin-up:'),
-  bullet('The existing groove/notch sits at the lower-left edge, roughly the 7 to 8 o’clock position, with a second small notch at the bottom.'),
-  bulletRich([{ t: 'Cut the ' }, { t: 'new groove on the left-hand edge at approximately the 9 o’clock position', b: true }, { t: '.' }]),
+  bullet('Two existing notches are moulded into the edge of the disc. In the reference view (Figure 12) they appear on the left-hand edge.'),
+  bulletRich([{ t: 'Cut the ' }, { t: 'new groove at the position arrowed in Figure 13', b: true }, { t: ' — close to the upper edge of the disc as photographed, offset from the existing notches. Figures 13a and 13b are the authority for the position; work from the photographs, not from a description.' }]),
   bullet('Cut cleanly with a sharp knife or fine needle file. Dress the edges so the groove will slide freely on the housing key.'),
   spacer(80),
-  callout('Open item — dimensions required', [
-    'The angular offset of the new groove from the existing one, and the required groove depth and width, were not measured during the first retrofit. Measure and record them, then add a dimensioned diagram to this step before the document is issued for field use. This is the step most likely to be got wrong from a clock-position description alone.'
-  ], NOTEBG, 'A67C00'),
+  callout('⚠  Open item — dimensions required before field issue', [
+    'The angular offset of the new groove from the existing notches, and the required groove depth and width, were not measured during the first retrofit. This step currently relies on the photographs alone.',
+    'Measure the offset and the groove dimensions, then add a dimensioned diagram here before this document is issued as a controlled field procedure. This is the step most likely to be got wrong, and the one with the least margin for error.'
+  ], WARNBG, RED),
   spacer(120),
-  ...photoPlaceholder('Figure 12 — New groove position marked on the trimmed disc, alignment pin facing up. Replace the pointing tool with a callout arrow in the final artwork.')
+  ...photo('step15a-disc-reference.jpg', 'Figure 12 — Reference view of the trimmed disc, alignment pin facing up. Existing notches visible on the left-hand edge.', 300, 400),
+  ...photoRow([
+    { file: 'step15b-groove-position.jpg', caption: 'Figure 13a — Position for the new groove, indicated by the pointing tool.' },
+    { file: 'step15c-groove-position2.jpg', caption: 'Figure 13b — Same position, second view. This is the authority for the cut.' }
+  ], 300)
 ]));
 
 children.push(...step(13, 'Extend the new groove onto the connecting piece', 'Journal 16', [
   p('Carry the groove through onto the connecting piece — the black pin-carrier body behind the pins — so that disc and carrier form one continuous channel.'),
   bulletRich([{ t: 'Use the ' }, { t: 'same angular position', b: true }, { t: ', indexed off the alignment pin as in Step 12.' }]),
-  bullet('The carrier body presents two visible black bands; the groove crosses both at the same clock position.'),
+  bullet('The carrier body presents two visible black bands; the groove crosses both at the same angular position.'),
   spacer(80),
   callout('Cautions', [
     'Cut only as deep as needed to clear the bulkhead’s alignment tooth.',
@@ -676,7 +759,10 @@ children.push(...step(13, 'Extend the new groove onto the connecting piece', 'Jo
     'Clear all swarf before reassembly.'
   ], WARNBG, RED),
   spacer(120),
-  ...photoPlaceholder('Figure 13 — Groove extended onto the connecting piece, aligned with the groove in the disc.')
+  ...photoRow([
+    { file: 'step16a-groove-carrier.jpg', caption: 'Figure 14a — Groove carried through onto the connecting piece.' },
+    { file: 'step16b-groove-carrier2.jpg', caption: 'Figure 14b — Second view, showing the cut crossing both black bands.' }
+  ], 300)
 ]));
 
 children.push(new Paragraph({ children: [new PageBreak()] }));
@@ -695,14 +781,14 @@ children.push(...step(14, 'Refit the pin carrier using the new groove', 'Journal
   checkbox('No plastic swarf trapped inside'),
   checkbox('Red O-ring undamaged and still in its groove'),
   spacer(100),
-  ...photoPlaceholder('Figure 14 — Looking into the housing: internal keyway ribs, red O-ring, and the notch in the rim matching the new groove.')
+  ...photo('step17-refit-housing.jpg', 'Figure 15 — Looking into the housing: internal keyway ribs, red O-ring, and the notch in the rim matching the new groove.')
 ]));
 
 children.push(...step(15, 'Refit the retaining ring', 'Journal 18', [
   p('Press the black retaining ring back into its groove at the rear of the insert, over the wired core. Thumb-seat it evenly all the way round.'),
   bullet('The ring is what retains the core against the cable clamp load. It must be fully home and even around its whole circumference.'),
   spacer(80),
-  ...photoPlaceholder('Figure 15 — Retaining ring refitted and seated flush in its groove.')
+  ...photo('step18-retaining-ring-refit.jpg', 'Figure 16 — Retaining ring refitted and seated flush in its groove.')
 ]));
 
 children.push(...step(16, 'Pull test', 'Journal 19', [
@@ -715,7 +801,9 @@ children.push(...step(16, 'Pull test', 'Journal 19', [
     'Do not jerk the cable or lever it sideways. Pull by hand only, in line with the connector axis.'
   ], WARNBG, RED),
   spacer(120),
-  checkbox('Pull test passed — core does not move')
+  checkbox('Pull test passed — core does not move'),
+  spacer(100),
+  ...photo('step19-pull-test.jpg', 'Figure 16b — Rear view with the ring seated. Conductor colours clearly identifiable at this angle.', 300, 400)
 ]));
 
 children.push(...step(17, 'Reassemble the housing and tighten the inner core', 'Journal 20', [
@@ -724,7 +812,7 @@ children.push(...step(17, 'Reassemble the housing and tighten the inner core', '
   bullet('Twist to drive the inner core down tight into the red body.'),
   bullet('Tighten firm by hand via the bulkhead. Do not overtighten — these are plastic threads.'),
   spacer(80),
-  ...photoPlaceholder('Figure 16 — Connector reassembled: gold pins proud, red seal ring visible behind the pin face.')
+  ...photo('step20-housing-tightened.jpg', 'Figure 17 — Connector reassembled: gold pins proud, red seal ring visible behind the pin face.')
 ]));
 
 children.push(...step(18, 'Refit the back cable clamp', 'Journal 21', [
@@ -746,7 +834,7 @@ children.push(...step(19, 'Confirm the connector mates', 'Journal 21', [
   checkbox('Coupling nut runs down freely onto the bulkhead'),
   checkbox('Assembly locks positively and does not rock or rotate when mated'),
   spacer(100),
-  ...photoPlaceholder('Figure 17 — Completed assembly. Externally near-identical to an unmodified connector — hence the labelling requirement.')
+  ...photo('step21-completed.jpg', 'Figure 18 — Completed assembly. Externally near-identical to an unmodified connector — hence the labelling requirement.')
 ]));
 
 children.push(...step(20, 'Verify the O-ring and sealing', '—', [
@@ -838,11 +926,12 @@ children.push(table(
   ['#', 'Open item', 'Section', 'Why it matters'],
   [
     ['1', 'Signal function carried on pins 4 and 5', '2, 6 (Step 21)', 'A warning naming the affected signals is far harder to overlook than one naming bare pin numbers'],
+    ['1b', 'Which numbering scheme "pin 4" and "pin 5" refer to', '4.1', 'Position 4 reads as the centre contact, which a rotational re-clocking would not be expected to move. Must be resolved before issue'],
     ['2', 'Full wire colour to pin number mapping', '6 (Step 9, 21)', 'Needed for continuity testing and fault-finding'],
     ['3', 'Angular offset, depth and width of the new groove', '6 (Step 12)', 'Clock positions alone are not a reliable instruction; this is the step most likely to be got wrong'],
     ['4', 'Thread direction and presence of thread-lock on the inner shaft', '6 (Step 7)', 'Avoids a technician working against a left-hand thread or a bonded joint'],
     ['5', 'Labelling convention for retrofitted assemblies', '8', 'The only defence against the 4↔5 swap catching out a future technician'],
-    ['6', 'Photographs to be inserted into the placeholder frames', '6', 'The procedure is difficult to follow from text alone'],
+    ['6', 'Pointing tools in photographs to be replaced with drawn callout arrows', '6', 'Cosmetic only — the working photographs are complete and usable as they stand'],
     ['7', 'Identity and purpose of the second (white) cable in the carton', '6 (Step 1)', 'Not needed for the retrofit, but should be accounted for on the packing list']
   ],
   [500, 3200, 1500, CW - 500 - 3200 - 1500],
